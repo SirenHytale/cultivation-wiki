@@ -20,7 +20,7 @@ import re
 import sys
 
 # --------------------------------------------------------------------------
-SITE_URL = "https://cultivation.mermaids.dev"      # no trailing slash
+SITE_URL = "https://xianxia.dev"      # no trailing slash
 SITE_NAME = "Cultivation Wiki"
 CARD = "/assets/img/social-card.png"
 CARD_W, CARD_H = 1200, 630

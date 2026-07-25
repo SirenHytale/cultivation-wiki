@@ -774,8 +774,16 @@ pre.mermaid { background: none; border: 0; padding: 0; margin: 0; opacity: 0; tr
 pre.mermaid[data-processed="true"] { opacity: 1; }
 /* Mermaid writes an inline max-width sized to the graph's natural width, which
    leaves diagrams marooned in the middle of a wide column. Override it so a
-   diagram fills its frame and its labels scale up to a readable size. */
-pre.mermaid svg { width: 100% !important; max-width: 100% !important; height: auto; }
+   diagram fills its frame and its labels scale up to a readable size.
+   The max-height is essential: without it a tall diagram (subgraphs stacked
+   vertically) scaled to 100% width becomes hundreds of pixels of giant boxes.
+   With a viewBox present the SVG just scales down to fit, keeping its ratio. */
+pre.mermaid svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  max-height: 780px;
+}
 
 /* ---------- 10. Responsive ----------------------------------------------- */
 

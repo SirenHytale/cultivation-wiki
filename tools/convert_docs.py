@@ -22,6 +22,8 @@ import pathlib
 import re
 import sys
 
+import enhance  # noqa: E402  (same directory)
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT.parent / "mermaids.dev" / "cultivation"
 OUT = ROOT   # pages live at the repo root: <slug>/index.html
@@ -524,6 +526,8 @@ def main() -> None:
                      'alt="" width="340" height="24">\n\n') + sub
         title = meta.get("title", out_name.replace(".html", "").title())
         desc = meta.get("description", f"Cultivation mod documentation — {title}")
+        body = enhance.enhance(slug, body)
+
         # Breadcrumb tracks the visible <h1>, not the front matter, so the two
         # never disagree on screen (e.g. "Main Config" vs "Config").
         h1 = re.search(r"<h1>(.*?)</h1>", body, re.S)
