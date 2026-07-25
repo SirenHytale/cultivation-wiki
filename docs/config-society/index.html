@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Society Configs — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Society Configs">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Configuration</span><span class="sep">/</span><span>Society Configs</span>
+      <span class="sep">·</span><span class="han-dim">配</span>
+    </div>
+
+    <h1>Society Configs</h1>
+
+    <p class="page-lede">The five files in <code>mods/Siren_Cultivation/Society/</code> cover everything that only matters because other cultivators exist - the <a href="../sects/">Sects</a> they gather into, the <a href="../formations/">Formations</a> they inscribe on ground they hold, the <a href="../dwelling/">Cave Abodes</a> they retreat to, the <a href="../wars/">Sect Wars</a> they fight over halls, and the <a href="../duels/">Duels</a> they stake Qi on.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Sect Config</h2>
+
+    <p>Sect rosters, halls, and the sect-wide Qi bonus, found in the path <code>mods/Siren_Cultivation/Society/SectConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Sect Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>2</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Sects-Enabled"</td><td>true</td><td>Master toggle for the whole sect system.</td></tr><tr><td>"Description-Sects-Enabled"</td><td>A long string explaining the value above.</td><td>When false every <code>/sect</code> command refuses politely, the sect Qi bonus stops applying, and sects vanish from the rankings - but existing sect data is kept on disk untouched for if you re-enable.</td></tr><tr><td>"Sect-Max-Members"</td><td>12</td><td>Caps each sect's roster, leader included.</td></tr><tr><td>"Sect-Hall-Min-Vein-Tier"</td><td>1</td><td>The minimum Spirit Vein quality a chunk must have rolled for <code>/sect claim</code> to succeed there. 1 = rich veins and above, 2 = dragon veins only. Normal chunks can never host a hall.</td></tr><tr><td>"Description-Sect-Hall"</td><td>A long string explaining the values above.</td><td>Restates the roster cap and vein tier gate, and notes that a sect holds one hall - claiming again moves it.</td></tr><tr><td>"Sect-Qi-Bonus-Percent-Rich-Hall"</td><td>5.0</td><td>Percent extra Qi from all sources every member gains while the sect's hall sits on a rich vein.</td></tr><tr><td>"Sect-Qi-Bonus-Percent-Dragon-Hall"</td><td>8.0</td><td>The same bonus for a hall on a dragon vein.</td></tr><tr><td>"Description-Sect-Qi-Bonus"</td><td>A long string explaining the values above.</td><td>The bonus applies server-wide to every member wherever they are, and a sect with no hall gets nothing - the hall is the point.</td></tr><tr><td>"Sect-Invite-Expiry-Seconds"</td><td>300</td><td>How long a pending sect invite stays open before it lapses.</td></tr><tr><td>"Sect-Inscription-Enabled"</td><td>true</td><td>Whether a leader may carve a technique manual into their hall, lending that art to every member.</td></tr><tr><td>"Description-Sect-Inscription"</td><td>A long string explaining the value above.</td><td>A leader standing in their hall consumes a technique manual with <code>/sect inscribe</code>; every member then knows that art for exactly as long as the sect HOLDS the hall. Only one may be inscribed at a time, and only technique manuals work - skill-tree manuals grant permanent nodes and cannot be lent out.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Formation Config</h2>
+
+    <p>The three placeable spirit arrays, found in the path <code>mods/Siren_Cultivation/Society/FormationConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Formation Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Formations-Enabled"</td><td>true</td><td>Master toggle for the whole formation system.</td></tr><tr><td>"Max-Formations-Per-Controller"</td><td>3</td><td>How many formations one controller - a sect, or a soloist by UUID - may hold placed at once. Placing while at the cap is refused.</td></tr><tr><td>"Description-Formations"</td><td>A long string explaining the values above.</td><td>A formation is placed by using its Flag item while standing in a chunk, anchors to that chunk with a square (Chebyshev) radius, and is controlled by the placer's sect if they have one, otherwise personally. Using the same Flag again on a chunk you already control that type at removes it.</td></tr><tr><td>"QiGathering-Radius-Chunks"</td><td>2</td><td>Square radius, in chunks, of the Qi-Gathering formation (聚灵阵).</td></tr><tr><td>"QiGathering-Regen-Multiplier"</td><td>1.4</td><td>Multiplies meditation Qi regen for its controllers inside that radius.</td></tr><tr><td>"QiGathering-Benefits-Everyone"</td><td>false</td><td>If true, any meditator in range benefits rather than only the controllers.</td></tr><tr><td>"Description-QiGathering"</td><td>A long string explaining the values above.</td><td>Restates who benefits by default (the sect's members, or the personal owner) and what the everyone toggle changes.</td></tr><tr><td>"Warding-Radius-Chunks"</td><td>2</td><td>Square radius, in chunks, of the Warding formation (护山大阵).</td></tr><tr><td>"Warding-Outsider-Regen-Multiplier"</td><td>0.25</td><td>Multiplies meditation Qi regen for OUTSIDERS inside that radius. Controllers are unaffected.</td></tr><tr><td>"Description-Warding"</td><td>A long string explaining the values above.</td><td>Adds that outsiders also cannot place their own formations on a warded chunk.</td></tr><tr><td>"Trapping-Radius-Chunks"</td><td>1</td><td>Square radius, in chunks, of the Trapping formation (困仙阵).</td></tr><tr><td>"Trapping-Interval-Seconds"</td><td>3.0</td><td>How often the trap fires on intruders inside that radius.</td></tr><tr><td>"Trapping-Damage-Percent-Of-Max-Health"</td><td>4.0</td><td>Percent of max health each trap tick deals, through the normal damage pipeline so armor and reductions apply.</td></tr><tr><td>"Trapping-Debuff-Effect"</td><td>"Root"</td><td>A vanilla EntityEffect asset id applied each tick. Real options include Root, Slow, Stun, and Poison. Leave blank to skip the debuff.</td></tr><tr><td>"Trapping-Debuff-Duration-Seconds"</td><td>2.5</td><td>How long that effect lasts per tick.</td></tr><tr><td>"Trapping-Lethal"</td><td>false</td><td>Off by default - a trap wounds and roots intruders but leaves them a sliver of health, so they must flee its bounds. Set true to let it finish off a persistent trespasser.</td></tr><tr><td>"Description-Trapping"</td><td>A long string explaining the values above.</td><td>The full trap tick: who it fires on, what it applies, that controllers pass through freely, and what the lethality toggle changes.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Dwelling Config</h2>
+
+    <p>Cave Abodes (洞府), their Spirit Springs, their upkeep, and closed-door seclusion, found in the path <code>mods/Siren_Cultivation/Society/DwellingConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Dwelling Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>2</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Dwellings-Enabled"</td><td>true</td><td>Master toggle for Cave Abodes.</td></tr><tr><td>"Dwelling-Radius-Chunks"</td><td>1</td><td>Square (Chebyshev) radius in chunks around the claimed chunk. 1 = a 3x3 chunk pocket, which is the "cave" an abode is meant to be.</td></tr><tr><td>"Dwelling-Owner-Regen-Multiplier"</td><td>1.25</td><td>Meditation Qi multiplier for the owner inside their own abode.</td></tr><tr><td>"Dwelling-Outsider-Regen-Multiplier"</td><td>0.5</td><td>Meditation Qi multiplier for anyone who does not belong there.</td></tr><tr><td>"Description-Dwellings"</td><td>A long string explaining the values above.</td><td>Claiming with <code>/cultivation abode claim</code>, one abode per cultivator, both regen multipliers, and that outsiders cannot inscribe formations on its ground.</td></tr><tr><td>"Spring-Qi-Per-Hour"</td><td>60.0</td><td>Qi the Spirit Spring gathers per real-world hour, online or not.</td></tr><tr><td>"Spring-Rich-Vein-Multiplier"</td><td>1.5</td><td>Multiplies that rate when the abode sits on a rich Spirit Vein.</td></tr><tr><td>"Spring-Dragon-Vein-Multiplier"</td><td>2.5</td><td>Multiplies that rate when it sits on a dragon vein.</td></tr><tr><td>"Spring-Pool-Base-Cap"</td><td>500.0</td><td>Base ceiling on the banked pool.</td></tr><tr><td>"Spring-Pool-Cap-Per-Realm"</td><td>250.0</td><td>Added to that ceiling per realm the owner has reached.</td></tr><tr><td>"Description-Spring"</td><td>A long string explaining the values above.</td><td>The spring fills whether or not the owner is online but overflows and wastes anything past the cap, and the pool must be collected in person with <code>/cultivation abode collect</code> while standing inside.</td></tr><tr><td>"Upkeep-Enabled"</td><td>true</td><td>Whether an abode must be fed at all. False makes abodes permanent and free.</td></tr><tr><td>"Upkeep-Item-Hours"</td><td>"Cultivation_SpiritStone:24,Cultivation_DivineCore:36,Cultivation_ProfoundCore:12,Cultivation_SpiritCore:4,Cultivation_QiGatheringPill:6,Cultivation_ClarityPill:6,Cultivation_TribulationWardPill:8,Cultivation_ClearMindPill:8"</td><td>Comma-separated <code>itemId:hours</code> tribute pairs. Anything not listed here is refused as tribute, so a server owner can add their own currency simply by naming it.</td></tr><tr><td>"Upkeep-Initial-Free-Hours"</td><td>0.0</td><td>Upkeep a newly claimed abode starts with. Zero on purpose: any non-zero grant is re-granted on every new claim, so raising it lets a player abandon and re-claim in a loop to dwell for free.</td></tr><tr><td>"Upkeep-Max-Banked-Hours"</td><td>720.0</td><td>The most upkeep an abode may hold banked at once.</td></tr><tr><td>"Upkeep-Grace-Hours"</td><td>168.0</td><td>How long after upkeep runs out before the claim is released entirely and the banked pool is lost.</td></tr><tr><td>"Description-Upkeep"</td><td>A long string explaining the values above.</td><td>Depositing tribute, the initial-grant exploit warning, the bank cap, and the two-stage lapse - the spring stops immediately, the claim releases after grace. A sect hall's spring is never released this way; it simply stops gathering until fed.</td></tr><tr><td>"Sect-Hall-Spring-Enabled"</td><td>true</td><td>Whether a sect's claimed hall grows its own shared Spirit Spring, on top of every member's personal abode.</td></tr><tr><td>"Sect-Spring-Rate-Multiplier"</td><td>1.5</td><td>How much faster the hall's spring gathers than a personal one.</td></tr><tr><td>"Sect-Spring-Pool-Cap-Multiplier"</td><td>2.0</td><td>How much deeper the hall's pool is than a personal one.</td></tr><tr><td>"Description-SectSpring"</td><td>A long string explaining the values above.</td><td>A hall spring is collectable by ANY member standing in the hall - first there takes it - follows the hall when it moves, passes to the victor of a siege, and takes upkeep like a personal abode.</td></tr><tr><td>"SpiritStone-Kill-Drop-Chance"</td><td>0.04</td><td>Chance a Spirit Stone (灵石) drops when a cultivator slays a creature, rolled independently of the cultivation-core roll so a kill can yield both.</td></tr><tr><td>"SpiritStone-Tribulation-Drop-Chance"</td><td>0.35</td><td>Chance a Spirit Stone drops when a cultivator SURVIVES a tribulation strike.</td></tr><tr><td>"Description-SpiritStone"</td><td>A long string explaining the values above.</td><td>Spirit Stones are the currency abodes are sustained with, and the tribulation drop is framed as the heavens' lightning crystallizing the Qi it scatters.</td></tr><tr><td>"Seclusion-Enabled"</td><td>true</td><td>Master toggle for closed-door seclusion (闭关).</td></tr><tr><td>"Seclusion-Qi-Per-Hour"</td><td>25.0</td><td>Qi gathered per real-world hour while secluded offline, credited on next login. Deliberately well below what sitting awake earns.</td></tr><tr><td>"Seclusion-Max-Hours"</td><td>24.0</td><td>The most hours of any one absence that count.</td></tr><tr><td>"Seclusion-Drains-Spring"</td><td>true</td><td>With this on, secluded Qi is DRAWN FROM the abode's spring rather than conjured, so seclusion and collecting the pool compete for the same reserve and an abode cannot pay out twice for the same hours.</td></tr><tr><td>"Description-Seclusion"</td><td>A long string explaining the values above.</td><td>Begin meditating inside your own abode (or your sect's hall) and log out to enter seclusion. It requires upkeep to still be paid, is capped per absence, and exists so a cultivator who cannot sit for forty minutes still advances.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>War Config</h2>
+
+    <p>Sect sieges over rival halls, found in the path <code>mods/Siren_Cultivation/Society/WarConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"War Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Wars-Enabled"</td><td>true</td><td>Master toggle for sect wars.</td></tr><tr><td>"War-Required-Hold-Seconds"</td><td>120.0</td><td>Total seconds an attacker must hold the contested hall chunk, uncontested, within the window to capture it.</td></tr><tr><td>"War-Window-Seconds"</td><td>600.0</td><td>How long the siege stays open from declaration. If the hold is not reached in time the siege fails.</td></tr><tr><td>"War-Defender-Grace-Seconds"</td><td>8.0</td><td>A defender seen at the hall pauses hold accrual for this long afterward.</td></tr><tr><td>"War-Cooldown-Hours"</td><td>24.0</td><td>Real-world hours the defender sect is immune from further sieges after a war, win or lose.</td></tr><tr><td>"War-Requires-Defender-Online"</td><td>true</td><td>Offline protection - a sect with nobody online cannot be besieged.</td></tr><tr><td>"Description-Wars"</td><td>A long string explaining the values above.</td><td>The full siege loop: declaration, the open window, hold accrual while no defender is present, capture transferring the hall, failure at the window's end, and the cooldown either way. Notes that the defender's own Warding and Trapping formations naturally hinder attackers.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Duel Config</h2>
+
+    <p>Qi-wagered duels between cultivators, found in the path <code>mods/Siren_Cultivation/Society/DuelConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Duel Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>3</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Duels-Enabled"</td><td>true</td><td>Master toggle for <code>/cultivation duel</code>.</td></tr><tr><td>"Duel-Challenge-Expiry-Seconds"</td><td>60.0</td><td>How long an unanswered challenge stays open.</td></tr><tr><td>"Duel-Max-Wager"</td><td>0</td><td>The largest banked Qi a player may stake on a single duel. 0 means uncapped.</td></tr><tr><td>"Duel-Overrides-World-Pvp"</td><td>true</td><td>Whether an accepted duel may exchange blows on a world with PvP switched off. A duel is mutual, staked consent, so this defaults on - and it only ever lets the two duelists hit each other, only while the duel is live, and never through spawn protection or invulnerability.</td></tr><tr><td>"Duel-Max-Duration-Seconds"</td><td>600.0</td><td>How long a live duel may run before it is voided with no wager changing hands. A backstop against duels that can never be decided. 0 disables the timeout.</td></tr><tr><td>"Description-Duels"</td><td>A long string explaining the values above.</td><td>The whole duel flow: challenge and wager, expiry, how a duel is decided and what the loser forfeits, exactly what the PvP override does and does not permit, and that a duel whose participant logs out is voided the same way as one that times out.</td></tr></tbody>
+    </table>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

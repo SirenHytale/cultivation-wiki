@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Tree — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - The radial nine-branch skill tree">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The Path</span><span class="sep">/</span><span>Skill Tree</span>
+      <span class="sep">·</span><span class="han-dim">道</span>
+    </div>
+
+    <h1>Skill Tree</h1>
+
+    <p class="page-lede">Open it with <code>/cultivation skilltree</code> (alias <code>skills</code>). The tree is a radial diagram: nine branches radiate outward from a central medallion, 40 degrees apart, and every node you unlock lights up its spoke. The canvas scrolls in both directions, so you can drag out to the rim and back.</p>
+
+    <h2>Skill Points</h2>
+
+    <p>You earn points by advancing, not by grinding:</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Points-Per-Advancement</code></td><td>1</td><td>Granted on every sub-stage advancement.</td></tr><tr><td><code>Points-Per-Breakthrough</code></td><td>2</td><td>Granted on top of the above when you break through into a new realm.</td></tr></tbody>
+    </table>
+
+    <p>A failed ritual demotes you a stage and revokes the points that stage granted. If you already spent them, the debt is carried until you re-earn them. Admins can hand out points directly with <code>/cultivation admin grantskillpoints</code>.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Nine Branches</h2>
+
+    <p>Each branch is dedicated to one stat. Enum order is ring order, and neighbours matter: a hybrid node borrows from the branch immediately beside it.</p>
+
+    <table>
+    <thead><tr><th>Branch</th><th>Stat</th><th>Track</th></tr></thead>
+    <tbody><tr><td>Vitality</td><td>Max Health</td><td>Flat</td></tr><tr><td>Resilience</td><td>Breath</td><td>Flat</td></tr><tr><td>Might</td><td>Damage %</td><td>Percent</td></tr><tr><td>Warding</td><td>Damage Reduction %</td><td>Percent</td></tr><tr><td>Insight</td><td>Qi Gain %</td><td>Percent (own track)</td></tr><tr><td>Harmony</td><td>Ritual Speed %</td><td>Percent</td></tr><tr><td>Swiftness</td><td>Movement Speed %</td><td>Percent</td></tr><tr><td>Endurance</td><td>Stamina</td><td>Flat</td></tr><tr><td>Spirit</td><td>Mana</td><td>Flat</td></tr></tbody>
+    </table>
+
+    <p>Health, Mana, Stamina and Breath are flat additive amounts applied through the entity stat map. The percentage stats are applied outside it: Damage % layers into your damage multiplier alongside realm and race, Qi Gain % into every Qi source, Ritual Speed % into the advancement/breakthrough/refinement duration formulas, Damage Reduction % into incoming damage alongside Life-Bound armor, and Movement Speed % directly onto your base movement speed.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Node Tiers and Prerequisites</h2>
+
+    <p>Every node needs its parent unlocked first. A branch is a straight spoke to tier 4, forks in two at tier 5, forks again at tier 7, and rejoins at a single tier-8 capstone.</p>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart TD;
+    T1["Tiers 1-4&lt;br/&gt;1 point each&lt;br/&gt;branch stat only"];
+    T1 --&gt; T5A["Tier 5 fork A&lt;br/&gt;2 points"];
+    T1 --&gt; T5B["Tier 5 fork B&lt;br/&gt;2 points"];
+    T5A --&gt; T6A["Tier 6 A&lt;br/&gt;2 points"];
+    T5B --&gt; T6B["Tier 6 B&lt;br/&gt;2 points"];
+    T6A --&gt; T7A1["Tier 7 A1&lt;br/&gt;3 points"];
+    T6A --&gt; T7A2["Tier 7 A2&lt;br/&gt;3 points"];
+    T6B --&gt; T7B1["Tier 7 B1&lt;br/&gt;3 points"];
+    T6B --&gt; T7B2["Tier 7 B2&lt;br/&gt;3 points"];
+    T7A2 --&gt; T8["Tier 8 capstone&lt;br/&gt;4 points&lt;br/&gt;needs A2 AND B1"];
+    T7B1 --&gt; T8;
+</pre>
+    </div>
+
+    <p>Tiers 1 to 4 carry one bonus, in the branch's own stat. Tiers 5, 6 and 7 are <strong>hybrids</strong> carrying two: the branch's own stat at the larger amount, plus a smaller borrowed amount of a neighbouring branch's stat. Fork A borrows from the branch one step counter-clockwise, fork B from the one clockwise, and tiers 6 and 7 continue their parent's exact pairing at bigger numbers.</p>
+
+    <table>
+    <thead><tr><th>Tier</th><th>Cost</th><th>Flat primary / secondary</th><th>Percent primary / secondary</th></tr></thead>
+    <tbody><tr><td>1 - 4</td><td>1 each</td><td>10 / 20 / 35 / 55</td><td>3 / 5 / 8 / 12 (Insight: 4 / 7 / 10 / 14)</td></tr><tr><td>5 (fork)</td><td>2</td><td>55 / 30</td><td>7 / 4</td></tr><tr><td>6</td><td>2</td><td>80 / 45</td><td>10 / 6</td></tr><tr><td>7</td><td>3</td><td>110 / 60</td><td>12 / 7</td></tr><tr><td>8 (capstone)</td><td>4</td><td>see below</td><td>see below</td></tr></tbody>
+    </table>
+
+    <p>Whether an amount uses the flat or percent column follows the <strong>stat</strong>, not the branch - a Vitality node borrowing Breath uses flat numbers for both halves, while one borrowing Might uses the percent numbers for the borrowed half.</p>
+
+    <p>A full branch is 13 nodes and 28 points, so all nine branches to the rim is 117 nodes and 252 points. Deep specialization is a real commitment rather than an inevitability.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Tier-8 Transcendence Capstones</h2>
+
+    <p>Each branch ends in exactly one tier-8 node, back on the branch's own spoke. These are the tree's <strong>only dual-prerequisite nodes</strong>: you must hold both spoke-adjacent tier-7 nodes (A2 and B1), which means committing to both halves of the fork rather than picking one side and running.</p>
+
+    <p>Each capstone grants one of three utility stats, rotating around the ring so three branches carry each:</p>
+
+    <table>
+    <thead><tr><th>Capstone Stat</th><th>Amount</th><th>Branches</th></tr></thead>
+    <tbody><tr><td>Qi Cost Reduction %</td><td>+8% each</td><td>Vitality, Warding, Swiftness</td></tr><tr><td>Life-Bound XP Gain %</td><td>+25% each</td><td>Resilience, Insight, Endurance</td></tr><tr><td>Vein Drain Radius</td><td>+1 chunk ring each</td><td>Might, Harmony, Spirit</td></tr></tbody>
+    </table>
+
+    <p><strong>Qi Cost Reduction</strong> shaves a percentage off the Qi every advancement and breakthrough requires, clamped in total by <code>Qi-Cost-Reduction-Cap-Percent</code> (40% by default) so rank-up costs cannot collapse. <strong>Life-Bound XP Gain</strong> multiplies the XP your <a href="../lifebound/">bound gear</a> earns. <strong>Vein Drain Radius</strong> widens how many rings of neighbouring chunks your meditation can draw from, on top of <code>Spirit-Vein-Drain-Radius-Chunks</code>.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Respec</h2>
+
+    <p><code>/cultivation respec</code> (aliases <code>resetskillpoints</code>, <code>resetskills</code>) clears your tree and refunds every point you spent. It is enabled by default and can be switched off with <code>Respec-Enabled</code> to make builds permanent.</p>
+
+    <p>Nodes taught by a <a href="../manuals/">manual</a> cost no points, so they are excluded from the refund and survive the respec intact - reading manuals cannot mint skill points, and respeccing cannot destroy a manual you already consumed.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation skilltree</code></td><td>Open the radial skill tree. Alias: <code>skills</code>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation respec</code></td><td>Refund every spent point and clear the tree.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>List every bonus currently applying to you, skill tree included.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin grantskillpoints</code></td><td>Grant a player skill points.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>Point grants, the Qi cost cap and the respec toggle live in <code>Cultivation/SkillTreeConfig.json</code> - see <a href="../config-cultivation/">Cultivation Configs</a> - and every command above is on the <a href="../commands/">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

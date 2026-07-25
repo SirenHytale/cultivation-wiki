@@ -1,10 +1,14 @@
 /* ---------------------------------------------------------------------------
    Site navigation — single source of truth for the top bar AND the sidebar.
-   Loaded as a plain <script> (not fetch'd) so the site also works from
-   file:// when you double-click index.html to preview it.
+   Loaded as a plain <script> rather than fetch'd JSON — one less request and
+   no CORS/MIME surprises on a static host.
 
-   Add a page:  drop the .html in docs/, add one line here, rerun
+   Pages serve at clean URLs: docs/<slug>/index.html is reached as
+   "docs/<slug>/", so every href here ends in a slash and never ".html".
+
+   Add a page:  create docs/<slug>/index.html, add one line here, then rerun
                 python tools/build_index.py
+   Preview:     python tools/serve.py   (file:// cannot resolve directory URLs)
    `soon: true` renders a greyed "soon" row instead of a link, so an
    unwritten page never 404s.
 --------------------------------------------------------------------------- */
@@ -18,11 +22,11 @@ window.SITE = {
 
   /* Top navigation bar */
   primary: [
-    { title: "Home",            href: "index.html" },
-    { title: "Getting Started", href: "docs/getting-started.html" },
-    { title: "Realms",          href: "docs/realms.html" },
-    { title: "Commands",        href: "docs/commands.html" },
-    { title: "API",             href: "docs/api.html" }
+    { title: "Home",            href: "./" },
+    { title: "Getting Started", href: "docs/getting-started/" },
+    { title: "Realms",          href: "docs/realms/" },
+    { title: "Commands",        href: "docs/commands/" },
+    { title: "API",             href: "docs/api/" }
   ],
 
   /* External links (rendered in the footer) */
@@ -38,65 +42,65 @@ window.SITE = {
     {
       title: "Start Here", han: "起",
       items: [
-        { title: "Home",             href: "index.html" },
-        { title: "Getting Started",  href: "docs/getting-started.html" },
-        { title: "Commands",         href: "docs/commands.html" },
-        { title: "Permissions",      href: "docs/permissions.html" }
+        { title: "Home",             href: "./" },
+        { title: "Getting Started",  href: "docs/getting-started/" },
+        { title: "Commands",         href: "docs/commands/" },
+        { title: "Permissions",      href: "docs/permissions/" }
       ]
     },
     {
       title: "The Path", han: "道",
       items: [
-        { title: "Realms & Stages",  href: "docs/realms.html" },
-        { title: "Qi Gathering",     href: "docs/qi-gathering.html" },
-        { title: "Tribulations",     href: "docs/tribulations.html" },
-        { title: "Races",            href: "docs/races.html" },
-        { title: "Skill Tree",       href: "docs/skilltree.html" },
-        { title: "The Dao",          href: "docs/dao.html" },
-        { title: "Karma",            href: "docs/karma.html" }
+        { title: "Realms & Stages",  href: "docs/realms/" },
+        { title: "Qi Gathering",     href: "docs/qi-gathering/" },
+        { title: "Tribulations",     href: "docs/tribulations/" },
+        { title: "Races",            href: "docs/races/" },
+        { title: "Skill Tree",       href: "docs/skilltree/" },
+        { title: "The Dao",          href: "docs/dao/" },
+        { title: "Karma",            href: "docs/karma/" }
       ]
     },
     {
       title: "Arts & Treasures", han: "術",
       items: [
-        { title: "Techniques",        href: "docs/techniques.html" },
-        { title: "Manuals",           href: "docs/manuals.html" },
-        { title: "Alchemy",           href: "docs/alchemy.html" },
-        { title: "Weapon Refinement", href: "docs/refinement.html" },
-        { title: "Life-Bound",        href: "docs/lifebound.html" },
-        { title: "Spirit Beasts",     href: "docs/beasts.html" }
+        { title: "Techniques",        href: "docs/techniques/" },
+        { title: "Manuals",           href: "docs/manuals/" },
+        { title: "Alchemy",           href: "docs/alchemy/" },
+        { title: "Weapon Refinement", href: "docs/refinement/" },
+        { title: "Life-Bound",        href: "docs/lifebound/" },
+        { title: "Spirit Beasts",     href: "docs/beasts/" }
       ]
     },
     {
       title: "The World", han: "界",
       items: [
-        { title: "Sects",            href: "docs/sects.html" },
-        { title: "Formations",       href: "docs/formations.html" },
-        { title: "Cave Abode",       href: "docs/dwelling.html" },
-        { title: "Duels",            href: "docs/duels.html" },
-        { title: "Sect Wars",        href: "docs/wars.html" }
+        { title: "Sects",            href: "docs/sects/" },
+        { title: "Formations",       href: "docs/formations/" },
+        { title: "Cave Abode",       href: "docs/dwelling/" },
+        { title: "Duels",            href: "docs/duels/" },
+        { title: "Sect Wars",        href: "docs/wars/" }
       ]
     },
     {
       title: "Configuration", han: "配",
       items: [
-        { title: "Overview",         href: "docs/config.html" },
-        { title: "Core Config",      href: "docs/config-core.html" },
-        { title: "Cultivation",      href: "docs/config-cultivation.html" },
-        { title: "Arts",             href: "docs/config-arts.html" },
-        { title: "Society",          href: "docs/config-society.html" },
-        { title: "Race",             href: "docs/config-race.html" },
-        { title: "Data Files",       href: "docs/config-data.html" }
+        { title: "Overview",         href: "docs/config/" },
+        { title: "Core Config",      href: "docs/config-core/" },
+        { title: "Cultivation",      href: "docs/config-cultivation/" },
+        { title: "Arts",             href: "docs/config-arts/" },
+        { title: "Society",          href: "docs/config-society/" },
+        { title: "Race",             href: "docs/config-race/" },
+        { title: "Data Files",       href: "docs/config-data/" }
       ]
     },
     {
       title: "For Developers", han: "匠",
       items: [
-        { title: "API Overview",     href: "docs/api.html" },
-        { title: "Reference",        href: "docs/api-reference.html" },
-        { title: "Events",           href: "docs/api-events.html" },
-        { title: "Add-ons",          href: "docs/api-addons.html" },
-        { title: "Registries",       href: "docs/api-registries.html" }
+        { title: "API Overview",     href: "docs/api/" },
+        { title: "Reference",        href: "docs/api-reference/" },
+        { title: "Events",           href: "docs/api-events/" },
+        { title: "Add-ons",          href: "docs/api-addons/" },
+        { title: "Registries",       href: "docs/api-registries/" }
       ]
     }
   ]

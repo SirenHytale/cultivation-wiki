@@ -4,9 +4,12 @@
 Walks every .html page, splits it at each <h2>, and writes one search record
 per section to data/search-index.js.
 
-Emitted as a .js file assigning a global (not .json) on purpose: browsers block
-fetch() on file:// URLs, so a JSON index would make the site unsearchable when
-you double-click index.html to preview it. A <script> tag has no such limit.
+Emitted as a .js file assigning a global rather than .json: it loads with a
+plain <script> tag, so there is no fetch, no CORS and no MIME configuration to
+get wrong on a static host.
+
+Record URLs are the clean, served paths (docs/realms/, not
+docs/realms/index.html), matching the links in data/nav.js.
 
 Usage (from the repo root):
     python tools/build_index.py
@@ -137,6 +140,15 @@ class PageParser(HTMLParser):
             self.buf.append(data)
 
 
+def clean_url(rel: str) -> str:
+    """Repo path -> the URL it is actually served at (no .html, no index.html)."""
+    if rel == "index.html":
+        return "./"
+    if rel.endswith("/index.html"):
+        return rel[: -len("index.html")]
+    return rel
+
+
 def clean_title(raw: str) -> str:
     t = re.sub(r"\s+", " ", raw).strip()
     # "Realms & Stages — Cultivation Wiki"  ->  "Realms & Stages"
@@ -180,25 +192,26 @@ def build() -> list[dict]:
 
     for path in pages:
         rel = path.relative_to(ROOT).as_posix()
+        url = clean_url(rel)
         parser = PageParser()
         parser.feed(path.read_text(encoding="utf-8"))
         parser.close()
 
         title = clean_title(parser.title) or rel
-        group = section_for(rel, nav_map)
+        group = section_for(url, nav_map)
 
         for head, text in parser.sections:
             text = text.strip()
             if len(text) < 40 and not head:
                 continue
             records.append({
-                "u": rel + ("#" + slug(head) if head else ""),
+                "u": url + ("#" + slug(head) if head else ""),
                 "t": head or title,
                 "s": f"{group} › {title}" if head else group,
                 "h": title if head else "",
                 "x": text[:1400],
             })
-        print(f"  {rel}: {len([s for s in parser.sections])} sections")
+        print(f"  {url}: {len(parser.sections)} sections")
 
     return records
 

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formations — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Placeable chunk-anchored spirit arrays">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The World</span><span class="sep">/</span><span>Formations</span>
+      <span class="sep">·</span><span class="han-dim">界</span>
+    </div>
+
+    <h1>Formations</h1>
+
+    <p class="page-lede">A <strong>Formation (阵法)</strong> is a spirit array inscribed into the ground, anchored to one chunk and reaching out over the chunks around it. There are three kinds: one that feeds your own cultivation, one that starves everyone else's, and one that hurts anybody who walks in uninvited. They are how a <a href="../sects/">Sect</a> turns a claimed mountain into ground that actually defends itself.</p>
+
+    <p>The whole system is gated behind <code>Formations-Enabled</code> (default <code>true</code>).</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Three Arrays</h2>
+
+    <table>
+    <thead><tr><th>Array</th><th>Radius</th><th>Effect</th></tr></thead>
+    <tbody><tr><td><strong>Spirit-Gathering Array</strong> (聚灵阵)</td><td>2 chunks (<code>QiGathering-Radius-Chunks</code>)</td><td>Multiplies meditation Qi regen by <strong>1.4x</strong> (<code>QiGathering-Regen-Multiplier</code>) for its controllers meditating in range.</td></tr><tr><td><strong>Mountain-Guarding Array</strong> (护山大阵)</td><td>2 chunks (<code>Warding-Radius-Chunks</code>)</td><td>Multiplies meditation Qi regen by <strong>0.25x</strong> (<code>Warding-Outsider-Regen-Multiplier</code>) for outsiders meditating in range. Controllers are unaffected.</td></tr><tr><td><strong>Immortal-Binding Array</strong> (困仙阵)</td><td>1 chunk (<code>Trapping-Radius-Chunks</code>)</td><td>Roots and wounds intruders caught inside it.</td></tr></tbody>
+    </table>
+
+    <p>Radius is square (Chebyshev), measured in chunks from the anchor - so radius 2 covers a 5x5 block of chunks, and radius 1 a 3x3.</p>
+
+    <p>By default a Spirit-Gathering Array only feeds its own controllers. Set <code>QiGathering-Benefits-Everyone</code> to <code>true</code> to make it a public good that helps any meditator in range.</p>
+
+    <p>A Mountain-Guarding Array does more than choke Qi: outsiders also cannot inscribe their own formations on warded ground, and cannot claim a <a href="../dwelling/">Cave Abode</a> there.</p>
+
+    <p><strong>The Immortal-Binding Array's trap</strong>, every <strong>3 seconds</strong> (<code>Trapping-Interval-Seconds</code>), does the following to every intruder standing inside it:</p>
+
+    <ul><li>Deals <strong>4% of their max health</strong> (<code>Trapping-Damage-Percent-Of-Max-Health</code>) through the normal damage pipeline, so armour and the mod's own damage reductions apply.</li><li>Applies the <code>Root</code> entity effect for <strong>2.5 seconds</strong> (<code>Trapping-Debuff-Effect</code> / <code>Trapping-Debuff-Duration-Seconds</code>). Blank the effect id to skip the debuff and keep only the damage.</li><li>Never kills. <code>Trapping-Lethal</code> is <code>false</code> by default, so a trap tick always leaves at least a sliver of health - the intruder has to flee its bounds, not respawn. Set it <code>true</code> to let a trap finish off a persistent trespasser.</li></ul>
+
+    <p>Controllers walk through their own trap freely.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Who Controls a Formation</h2>
+
+    <p>Control follows a single rule: <strong>your sect if you are in one, otherwise you personally.</strong></p>
+
+    <ul><li>Placed by a sect member, the array is controlled by the sect, and every member of that sect is a beneficiary.</li><li>Placed by a soloist, it is controlled by their UUID alone.</li></ul>
+
+    <p>Membership is resolved live, so joining or leaving a sect immediately changes who benefits from - and who is an outsider to - that sect's arrays, without touching the stored formation. Two consequences worth knowing:</p>
+
+    <ul><li><strong>Renaming a sect</strong> carries its formations with it (see <a href="../sects/">Sects</a>), so a sect never ends up warded and trapped by its own arrays.</li><li><strong>Disbanding a sect</strong> disperses every array it controlled. Left behind they would match no living sect, making everyone an outsider forever, with nobody able to remove them.</li></ul>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Placing and Removing</h2>
+
+    <p>Each array has its own <strong>Formation Flag</strong> item. Use the flag while standing in the chunk you want as the anchor.</p>
+
+    <table>
+    <thead><tr><th>Flag item</th><th>Places</th><th>Crafted from</th></tr></thead>
+    <tbody><tr><td>Spirit-Gathering Array Flag</td><td>聚灵阵</td><td>1 Profound Core + 1 Spirit Core</td></tr><tr><td>Mountain-Guarding Array Flag</td><td>护山大阵</td><td>1 Divine Core + 1 Profound Core</td></tr><tr><td>Immortal-Binding Array Flag</td><td>困仙阵</td><td>2 Divine Cores</td></tr></tbody>
+    </table>
+
+    <p>See <a href="../qi-gathering/">Qi Gathering</a> for where cultivation cores come from. None of the three flags drops on death.</p>
+
+    <p>The flag is a <strong>toggle</strong>. Using it on a chunk where you already control an array of that same type <strong>removes</strong> it instead of placing a second one. Otherwise:</p>
+
+    <ul><li>The flag is consumed only on a successful placement - a refusal costs you nothing.</li><li>Placement is refused if another controller already holds an array of that type on that exact chunk.</li><li>Placement is refused on ground warded against you, whether by someone else's Mountain-Guarding Array or by a sustained <a href="../dwelling/">Cave Abode</a>.</li><li>Placement is refused once you are at your cap: <strong>3 formations per controller</strong> (<code>Max-Formations-Per-Controller</code>). The cap is per controller, so a whole sect shares three between them.</li></ul>
+
+    <p><code>/cultivation formations</code> (aliases <code>formation</code>, <code>arrays</code>) lists every array you control - type, world, anchor chunk and radius, newest first - so you can walk back to one and disperse it.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Overlap and Stacking</h2>
+
+    <p>Only an <em>exact-chunk duplicate of the same type</em> is refused, so arrays on neighbouring chunks overlap freely. To keep that from compounding, <strong>each type applies at most once</strong> however many arrays of that type cover the chunk you are standing on. Three Mountain-Guarding arrays laid side by side choke an outsider at 0.25x, not 0.25x cubed.</p>
+
+    <p>Different types do combine: an outsider meditating inside both a Spirit-Gathering array that benefits everyone and a Mountain-Guarding array gets 1.4 x 0.25.</p>
+
+    <p>A <a href="../dwelling/">Cave Abode</a>'s own meditation multipliers are applied separately from this, on top.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation formations</code></td><td>Lists every formation you control, with its anchor chunk and radius.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>Placement and removal have no command - they are done entirely with the flag items.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <p>Every value on this page lives in the society config - see <a href="../config-society/">Society Config</a> for the full field reference, and <a href="../commands/">Commands</a> for every command in the mod. Formations interlock with <a href="../sects/">Sects</a>, defend a hall during <a href="../wars/">Sect Wars</a>, and share their warding rules with <a href="../dwelling/">Cave Abodes</a>.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

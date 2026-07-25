@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life-Bound Treasures — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Life-Bound Treasures">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Arts &amp; Treasures</span><span class="sep">/</span><span>Life-Bound Treasures</span>
+      <span class="sep">·</span><span class="han-dim">術</span>
+    </div>
+
+    <h1>Life-Bound Treasures</h1>
+
+    <p class="page-lede">A <strong>Life-Bound Treasure</strong> is a weapon or armor piece personalized to one specific player rather than to its item type - it levels up from combat, and its bonus grows with it.</p>
+
+    <h2>Binding an Item</h2>
+
+    <p>Run <code>/cultivation bind</code> while holding the item to personalize it. Running the command again on your own already-bound item resets it back to level 1.</p>
+
+    <ul><li><strong>Weapons</strong> gain XP from every hit that lands (any creature, not just kills), and level up to deal more damage.</li><li><strong>Armor</strong> gains XP from surviving hits, and levels up to reduce incoming damage.</li><li>The item's level shows in its name, and its tooltip states exactly how much benefit it is currently granting - no hidden numbers.</li></ul>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Leveling Curve</h2>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>LifeBound-Base-Xp-Requirement</code></td><td>75</td><td>XP needed to go from level 1 to level 2.</td></tr><tr><td><code>LifeBound-Xp-Growth-Rate</code></td><td>1.07</td><td>Multiplies the XP requirement for every level gained, stacking.</td></tr><tr><td><code>LifeBound-Max-Level</code></td><td>100</td><td>Once reached, the item stops gaining XP - and awakens.</td></tr></tbody>
+    </table>
+
+    <p>Both XP rates are a multiplier against the <strong>final</strong> damage dealt or taken on a hit, after weapon bonus and armor reduction are already applied:</p>
+
+    <ul><li><code>LifeBound-Weapon-Xp-Per-Damage-Dealt</code>: 0.15 - a 20-damage hit dealt grants 3 XP.</li><li><code>LifeBound-Armor-Xp-Per-Damage-Taken</code>: 0.1 - fires only if the wearer survives the hit.</li></ul>
+
+    <p>The <a href="../skilltree/">skill tree's</a> tier-8 Life-Bound XP Gain capstones multiply both rates.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Combat Bonuses</h2>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>LifeBound-Weapon-Damage-Percent-Per-Level</code></td><td>1.0</td><td>Damage bonus percent added per level.</td></tr><tr><td><code>LifeBound-Weapon-Max-Damage-Percent</code></td><td>100</td><td>Hard cap on a single weapon's damage bonus.</td></tr><tr><td><code>LifeBound-Armor-Reduction-Percent-At-Max-Level</code></td><td>55</td><td>What one armor piece reduces at max level, scaling linearly from 0% at level 1 - a level-50 piece grants half of it.</td></tr><tr><td><code>LifeBound-Armor-Max-Damage-Reduction-Percent</code></td><td>60</td><td>Hard cap on the combined reduction from every worn Life-Bound piece.</td></tr></tbody>
+    </table>
+
+    <p>The 60% combined cap exists so a fully-levelled Life-Bound set cannot approach damage immunity, however many pieces are worn.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Awakening</h2>
+
+    <p>A Life-Bound Treasure that reaches <code>LifeBound-Max-Level</code> <strong>awakens</strong>, and gains a final benefit applied on top of the usual caps:</p>
+
+    <ul><li><code>Awakened-Bonus-Percent</code> (10): extra damage percent for a weapon, extra damage reduction percent for armor.</li><li><code>Awakened-Proc-Chance</code> (0.25): each landed weapon hit has a 25% chance to flare with a spirit-energy particle burst.</li></ul>
+
+    <p>Because the awakened bonus is applied after the caps, an awakened weapon can exceed <code>LifeBound-Weapon-Max-Damage-Percent</code> and an awakened set can exceed the 60% combined armor cap - awakening is the reward for taking one item all the way to 100.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Changing Owners</h2>
+
+    <p>If a Life-Bound item ends up with a different player - traded, dropped and picked up - <code>LifeBound-Reset-On-Transfer</code> (true by default) decides what happens:</p>
+
+    <ul><li><strong>true:</strong> the item silently rebinds to its new holder at level 1 / 0 XP the next time they land a hit with it.</li><li><strong>false:</strong> the item stays permanently bound to its original owner and grants nothing to anyone else.</li></ul>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation bind</code></td><td>Bind the held item, or reset your own bound item to level 1.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setlifebound {player} {level} [xp]</code></td><td>Force the level (and optionally XP) of a held Life-Bound item.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>Every number on this page lives in <code>Arts/LifeBoundConfig.json</code> - see <a href="../config-arts/">Arts Configs</a> - and the commands are documented in full on the <a href="../commands/">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

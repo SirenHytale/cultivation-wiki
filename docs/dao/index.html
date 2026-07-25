@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Dao — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Elemental daos, Yin-Yang balance, and the Devil and Righteous paths">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The Path</span><span class="sep">/</span><span>The Dao</span>
+      <span class="sep">·</span><span class="han-dim">道</span>
+    </div>
+
+    <h1>The Dao</h1>
+
+    <p class="page-lede">Open your Dao page with <code>/cultivation dao</code>. It holds two tracks that run side by side: the <strong>Elemental Dao (五行道)</strong> you deliberately choose, and the <strong>Yin-Yang balance</strong> your deeds quietly write for you.</p>
+
+    <p>The elemental half unlocks at <strong>Foundation Establishment</strong> (<code>Dao-Unlock-Realm</code>). Your first choice is free. The Yin-Yang half is live from the very start unless a server sets <code>YinYang-Endgame-Only</code>, which hides and suspends it until <code>YinYang-Unlock-Realm</code> (Nascent Soul).</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Ten Elements</h2>
+
+    <p>Five classic Wu Xing elements form one ring, and five shadow elements form another. Each element <strong>overcomes</strong> the next in its own ring, wrapping around. Cross-ring matchups are neutral - a Fire cultivator has no elemental edge over a Poison one either way.</p>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart LR;
+    subgraph Classic["Wu Xing ring"];
+        Wood["Wood"] --&gt; Earth["Earth"];
+        Earth --&gt; Water["Water"];
+        Water --&gt; Fire["Fire"];
+        Fire --&gt; Metal["Metal"];
+        Metal --&gt; Wood;
+    end;
+    subgraph Shadow["Shadow ring"];
+        Ice["Ice"] --&gt; Wind["Wind"];
+        Wind --&gt; Poison["Poison"];
+        Poison --&gt; Lightning["Lightning"];
+        Lightning --&gt; Void["Void"];
+        Void --&gt; Ice;
+    end;
+</pre>
+    </div>
+
+    <p>An arrow reads "overcomes". Wood overcomes Earth, Earth overcomes Water, and so on around the ring; Ice overcomes Wind, Wind overcomes Poison, and so on around the shadow ring.</p>
+
+    <p>Every element maps to a real damage type. Fire, Ice and Poison use vanilla causes; Wood, Earth, Water, Metal, Wind, Lightning and Void are damage assets this mod ships, all inheriting the engine's Elemental cause.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Damage Conversion and the Counter Cycle</h2>
+
+    <p>Once you walk a dao, your outgoing melee damage is converted to that element's damage type and adjusted:</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Dao-Damage-Bonus-Percent</code></td><td>10</td><td>Flat bonus on any converted strike.</td></tr><tr><td><code>Dao-Counter-Bonus-Percent</code></td><td>15</td><td>Extra damage against a defender whose element yours overcomes.</td></tr><tr><td><code>Dao-Counter-Penalty-Percent</code></td><td>10</td><td>Less damage against the element that overcomes yours.</td></tr><tr><td><code>Dao-Wood-Heal-Percent-Of-Damage</code></td><td>20</td><td>Wood's alternative to the flat bonus.</td></tr></tbody>
+    </table>
+
+    <p><strong>Wood is the healing path.</strong> It takes no flat damage bonus at all - instead you are healed for 20% of the damage you deal. The counter bonuses still apply normally.</p>
+
+    <p>A cultivator with no dao at all is not left out: a <a href="../refinement/">refined weapon</a> supplies its own element for conversion and the counter cycle, and when that element matches its wielder's own dao it adds a resonance bonus on top. <a href="../techniques/">Techniques</a> that deal damage route through the same filter, so Sword Qi Slash and Nine Heavens Thunder Palm are recoloured by your dao for free.</p>
+
+    <h2>Switching, and Drift</h2>
+
+    <p>Switching dao deliberately costs banked Qi and honours a real-time cooldown:</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Dao-Switch-Base-Qi-Cost</code></td><td>500</td><td>Base Qi cost of a switch.</td></tr><tr><td><code>Dao-Switch-Qi-Cost-Realm-Multiplier</code></td><td>1.6</td><td>Multiplied per realm reached.</td></tr><tr><td><code>Dao-Switch-Cooldown-Hours</code></td><td>24</td><td>Real-world hours between deliberate switches.</td></tr></tbody>
+    </table>
+
+    <p>Your dao can also <strong>drift</strong> on its own. Every elemental kill feeds <code>Dao-Affinity-Per-Elemental-Kill</code> (1) into the hidden affinity of the killing blow's element, and your race's alignment bias feeds it too. When another element's affinity exceeds your chosen dao's by <code>Dao-Drift-Margin</code> (25) you get a warning; if it keeps growing past twice the margin, your dao converts on its own - no Qi cost, no cooldown. Set <code>Dao-Drift-Enabled</code> false to freeze daos to deliberate choices only.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Yin-Yang Balance</h2>
+
+    <p>Every cultivator carries a Yin-Yang balance that moves with what they do:</p>
+
+    <ul><li><strong>Meditation</strong> shifts it by <code>Meditation-Alignment-Shift-Per-Tick</code> (0.2) per drain tick - toward Yang on a good chunk, toward Yin on an evil one. 5% of chunks (<code>Chunk-Evil-Qi-Chance</code>) carry evil qi.</li><li><strong>Your race</strong> skews that shift by its own <code>Qi-Alignment-Yin-Bias-Percent</code> - a Demon at +50% darkens even good qi, a Deity at -30% purifies dark qi. See <a href="../races/">Races</a>.</li><li><strong>Killing</strong> adds <code>Kill-Yin-Amount</code> (1) Yin per kill, multiplied by <code>Night-Kill-Yin-Multiplier</code> (2) when the world is in its night phase. Slaughter under darkness stains deepest.</li></ul>
+
+    <p>Where you sit on that scale decides what you get:</p>
+
+    <table>
+    <thead><tr><th>State</th><th>Effect</th></tr></thead>
+    <tbody><tr><td>Balanced - within <code>Balance-Window-Percent</code> (15%) of a 50/50 split</td><td><code>Balance-Bonus-Percent</code> (10%) to <strong>all</strong> Qi gain and damage, fading linearly toward the window's edge.</td></tr><tr><td>Deep Yin - past <code>Lean-Threshold-Percent</code> (70%) Yin share</td><td><code>Yin-Power-Damage-Percent</code> (+10%) damage and <code>Yin-Lifedrain-Percent</code> (5%) of damage dealt returned as health.</td></tr><tr><td>Deep Yang - past the same threshold of Yang share</td><td><code>Yang-Defense-Percent</code> (10%) incoming-damage reduction and <code>Yang-Heal-Bonus-Percent</code> (+25%) to healing you receive, Wood strikes included.</td></tr></tbody>
+    </table>
+
+    <p>Balance and lean are mutually exclusive by construction: you cannot be both perfectly centred and deeply leaned. Choosing which to chase is the real decision of the system.</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Devil and Righteous Paths</h2>
+
+    <p>Lean far enough and the balance stops being a stat and becomes a <strong>path</strong>. Path is never chosen - it follows the deeds, and it shifts back when they do. Your Dao page shows the one you currently walk, and you are told in chat when it changes.</p>
+
+    <table>
+    <thead><tr><th>Path</th><th>Trigger</th><th>Perks</th></tr></thead>
+    <tbody><tr><td><strong>Devil Path (魔道)</strong></td><td>Yin lean fraction at or past <code>Path-Lean-Fraction-Threshold</code> (0.5)</td><td><code>Path-Devil-Damage-Vs-Righteous-Percent</code> (+15%) against Righteous cultivators, and <code>Path-Devil-PK-Qi-Reward</code> (100) banked Qi harvested for slaying any player.</td></tr><tr><td><strong>Righteous Path (正道)</strong></td><td>Yang lean fraction at or past the same threshold</td><td><code>Path-Righteous-Damage-Vs-Devil-Percent</code> (+15%) against Devils, and <code>Path-Righteous-Defense-Vs-Devil-Percent</code> (15%) less damage taken from them.</td></tr><tr><td><strong>Unaligned</strong></td><td>anything short of the threshold</td><td>The mortal middle road - no path perks, but the balance bonus is easiest to hold here.</td></tr></tbody>
+    </table>
+
+    <p>The Devil Path's Qi harvest is rate-limited so it cannot be farmed. Killing the same victim again within <code>Pk-Same-Victim-Cooldown-Seconds</code> (900) pays nothing, and killing anyone whose realm index is below <code>Pk-Min-Victim-Realm</code> (1) pays nothing regardless. Both gates cover the dao deeds and the <a href="../manuals/">manual</a> drop roll as well as the Qi. Normal PvP is untouched - only the cultivation spoils are gated.</p>
+
+    <p>A farmed kill is not merely unrewarded: it charges more <a href="../karma/">karma</a> than an honest one, and a Devil accrues karma faster than anyone. The heavens collect at your next <a href="../tribulations/">tribulation</a>.</p>
+
+    <p>A deep lean in either direction also changes what a breakthrough looks like: past <code>HeartDevil-Lean-Threshold</code> (0.5) you face the <strong>Heart-Devil Trial (心魔劫)</strong> instead of tribulation lightning.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation dao</code></td><td>Open the Dao page - element, affinities, balance, path and karma.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>Every bonus currently applying to you, dao included.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>Every value on this page lives in the Dao config - see <a href="../config-arts/">Config</a> - and the commands are on the <a href="../commands/">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

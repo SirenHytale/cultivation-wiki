@@ -26,8 +26,12 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT.parent / "mermaids.dev" / "cultivation"
 OUT = ROOT / "docs"
 
+# Pages are written as <slug>/index.html so they serve at a clean, extensionless
+# URL (/docs/realms/). That puts every page two directories below the repo root.
+ASSETS = "../../"
+
 # Pages that are hand-authored in this repo and must never be overwritten.
-PROTECTED = {"realms.html", "qi-gathering.html", "getting-started.html"}
+PROTECTED = {"realms", "qi-gathering", "getting-started"}
 
 # ---------------------------------------------------------------------------
 # Source -> output mapping. Order here is only cosmetic (progress output).
@@ -74,44 +78,45 @@ PAGES: list[tuple] = [
     ("api/registries.md",      "api-registries.html",     "For Developers"),
 ]
 
-# Permalink -> output page. Used to rewrite every in-site link.
+# Permalink -> target. Bare values are page slugs (optionally with an #anchor)
+# and get turned into "../<slug>/" by resolve_link; "" means the site root.
 LINKS: dict[str, str] = {
-    "/cultivation/": "../index.html",
-    "/cultivation/commands/": "commands.html",
-    "/cultivation/permissions/": "permissions.html",
-    "/cultivation/realms/": "realms.html",
-    "/cultivation/qi-gathering/": "qi-gathering.html",
-    "/cultivation/tribulations/": "tribulations.html",
-    "/cultivation/races/": "races.html",
-    "/cultivation/races/human/": "races.html#human",
-    "/cultivation/races/demon/": "races.html#demon",
-    "/cultivation/races/deity/": "races.html#deity",
-    "/cultivation/skilltree/": "skilltree.html",
-    "/cultivation/dao/": "dao.html",
-    "/cultivation/karma/": "karma.html",
-    "/cultivation/techniques/": "techniques.html",
-    "/cultivation/manuals/": "manuals.html",
-    "/cultivation/alchemy/": "alchemy.html",
-    "/cultivation/refinement/": "refinement.html",
-    "/cultivation/lifebound/": "lifebound.html",
-    "/cultivation/beasts/": "beasts.html",
-    "/cultivation/sects/": "sects.html",
-    "/cultivation/formations/": "formations.html",
-    "/cultivation/dwelling/": "dwelling.html",
-    "/cultivation/duels/": "duels.html",
-    "/cultivation/wars/": "wars.html",
-    "/cultivation/config/": "config.html",
-    "/cultivation/config/core/": "config-core.html",
-    "/cultivation/config/cultivation/": "config-cultivation.html",
-    "/cultivation/config/arts/": "config-arts.html",
-    "/cultivation/config/society/": "config-society.html",
-    "/cultivation/config/race/": "config-race.html",
-    "/cultivation/config/data/": "config-data.html",
-    "/cultivation/api/": "api.html",
-    "/cultivation/api/reference/": "api-reference.html",
-    "/cultivation/api/events/": "api-events.html",
-    "/cultivation/api/addons/": "api-addons.html",
-    "/cultivation/api/registries/": "api-registries.html",
+    "/cultivation/": "",
+    "/cultivation/commands/": "commands",
+    "/cultivation/permissions/": "permissions",
+    "/cultivation/realms/": "realms",
+    "/cultivation/qi-gathering/": "qi-gathering",
+    "/cultivation/tribulations/": "tribulations",
+    "/cultivation/races/": "races",
+    "/cultivation/races/human/": "races#human",
+    "/cultivation/races/demon/": "races#demon",
+    "/cultivation/races/deity/": "races#deity",
+    "/cultivation/skilltree/": "skilltree",
+    "/cultivation/dao/": "dao",
+    "/cultivation/karma/": "karma",
+    "/cultivation/techniques/": "techniques",
+    "/cultivation/manuals/": "manuals",
+    "/cultivation/alchemy/": "alchemy",
+    "/cultivation/refinement/": "refinement",
+    "/cultivation/lifebound/": "lifebound",
+    "/cultivation/beasts/": "beasts",
+    "/cultivation/sects/": "sects",
+    "/cultivation/formations/": "formations",
+    "/cultivation/dwelling/": "dwelling",
+    "/cultivation/duels/": "duels",
+    "/cultivation/wars/": "wars",
+    "/cultivation/config/": "config",
+    "/cultivation/config/core/": "config-core",
+    "/cultivation/config/cultivation/": "config-cultivation",
+    "/cultivation/config/arts/": "config-arts",
+    "/cultivation/config/society/": "config-society",
+    "/cultivation/config/race/": "config-race",
+    "/cultivation/config/data/": "config-data",
+    "/cultivation/api/": "api",
+    "/cultivation/api/reference/": "api-reference",
+    "/cultivation/api/events/": "api-events",
+    "/cultivation/api/addons/": "api-addons",
+    "/cultivation/api/registries/": "api-registries",
     # Redirect stubs on the old site resolve straight to their destination.
     "/cultivation/curseforge/": "https://www.curseforge.com/hytale/mods/cultivation/",
     "/cultivation/download/": "https://www.curseforge.com/hytale/mods/cultivation/download",
@@ -127,9 +132,20 @@ HAN = {  # decorative glyph for the page eyebrow, by group
 
 
 def resolve_link(url: str) -> str:
+    """Map an old permalink to a relative, extensionless URL for this site.
+
+    Pages live at docs/<slug>/index.html, so a sibling page is "../<slug>/" and
+    the site root is "../../".
+    """
     url = url.strip()
     if url in LINKS:
-        return LINKS[url]
+        target = LINKS[url]
+        if target.startswith("http"):
+            return target
+        if target == "":
+            return "../../"
+        slug, _, anchor = target.partition("#")
+        return f"../{slug}/" + (f"#{anchor}" if anchor else "")
     if url.startswith(("http://", "https://", "#", "mailto:")):
         return url
     # An unmapped site-absolute link would 404 silently; surface it instead.
@@ -274,7 +290,7 @@ def convert(md: str, demote: int = 0, allow_lede: bool = True) -> tuple[dict, st
 
         # --- horizontal rule ---------------------------------------------
         if RE_HR.match(line):
-            out.append('<img class="divider-ink" src="../assets/img/divider-ink.svg" '
+            out.append(f'<img class="divider-ink" src="{ASSETS}assets/img/divider-ink.svg" '
                        'alt="" width="340" height="24">')
             i += 1
             continue
@@ -409,17 +425,17 @@ def parse_list(lines: list[str], i: int, refs: dict[str, str]) -> tuple[str, int
 # Page shell
 # ---------------------------------------------------------------------------
 SHELL = """<!doctype html>
-<html lang="en" data-root="../" data-theme="dark">
+<html lang="en" data-root="../../" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} — Cultivation Wiki</title>
 <meta name="description" content="{desc}">
-<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/xianxia.css">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -443,10 +459,10 @@ SHELL = """<!doctype html>
 
 <div id="site-footer"></div>
 
-<script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script src="../assets/js/site.js"></script>
+<script src="../../assets/js/site.js"></script>
 </body>
 </html>
 """
@@ -492,8 +508,9 @@ def main() -> None:
         if not src.exists():
             print(f"  !! missing source: {src_rel}")
             continue
-        if out_name in PROTECTED:
-            print(f"  -- skipped (hand-authored): {out_name}")
+        slug = out_name[:-5] if out_name.endswith(".html") else out_name
+        if slug in PROTECTED:
+            print(f"  -- skipped (hand-authored): {slug}/")
             continue
 
         meta, body = convert(src.read_text(encoding="utf-8"))
@@ -520,9 +537,10 @@ def main() -> None:
             body=indent_body(body),
         )
         if not args.dry_run:
-            (OUT / out_name).write_text(page, encoding="utf-8")
+            (OUT / slug).mkdir(parents=True, exist_ok=True)
+            (OUT / slug / "index.html").write_text(page, encoding="utf-8")
         written += 1
-        print(f"  {src_rel:28s} -> docs/{out_name:26s} ({len(body):>6,} bytes)")
+        print(f"  {src_rel:28s} -> docs/{slug + '/':27s} ({len(body):>6,} bytes)")
 
     print(f"\n{written} pages {'would be ' if args.dry_run else ''}written")
     if UNMAPPED:
