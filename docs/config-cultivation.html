@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cultivation Configs — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Cultivation Configs">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Configuration</span><span class="sep">/</span><span>Cultivation Configs</span>
+      <span class="sep">·</span><span class="han-dim">配</span>
+    </div>
+
+    <h1>Cultivation Configs</h1>
+
+    <p class="page-lede">The five files in <code>mods/Siren_Cultivation/Cultivation/</code> are the progression core: where Qi comes from, what it costs to climb, what the heavens charge you for climbing, and what a rank-up pays out. Between them they cover <a href="qi-gathering.html">Qi Gathering</a>, <a href="realms.html">Cultivation Realms</a>, <a href="tribulations.html">Tribulations</a>, <a href="races.html">Races</a>, and the <a href="skilltree.html">Skill Tree</a>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Spirit Core Config</h2>
+
+    <p>Drop chances and Qi values for Spirit, Profound, and Divine Cores, found in the path <code>mods/Siren_Cultivation/Cultivation/SpiritCoreConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Spirit Core Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Spirit-Core-Drop-Chance"</td><td>0.12</td><td>Tier 1 (common) drop chance per creature kill, as a 0-1 fraction.</td></tr><tr><td>"Spirit-Core-Qi-Value"</td><td>30.0</td><td>Qi granted when a Spirit Core is absorbed.</td></tr><tr><td>"Profound-Core-Drop-Chance"</td><td>0.035</td><td>Tier 2 (rarer, tougher creatures) drop chance per kill.</td></tr><tr><td>"Profound-Core-Qi-Value"</td><td>80.0</td><td>Qi granted when a Profound Core is absorbed.</td></tr><tr><td>"Divine-Core-Drop-Chance"</td><td>0.008</td><td>Tier 3 (rare, powerful creatures) drop chance per kill.</td></tr><tr><td>"Divine-Core-Qi-Value"</td><td>220.0</td><td>Qi granted when a Divine Core is absorbed.</td></tr><tr><td>"Description-Drop-Chances"</td><td>A long string explaining the values above.</td><td>All three Drop-Chance values are a 0-1 fraction, rolled independently and rarest-tier-first on every creature kill - at most one core drops per kill.</td></tr><tr><td>"Meditation-Core-Bonus-Multiplier"</td><td>1.1</td><td>Multiplies a core's Qi value if it is absorbed while the player is currently meditating (the mix-of-both-methods bonus). 1.10 = 10% extra Qi.</td></tr><tr><td>"Description-Meditation-Core-Bonus-Multiplier"</td><td>A long string explaining the value above.</td><td>Restates that this is the reward for combining meditation with core absorption rather than picking one method.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Spirit Vein Config</h2>
+
+    <p>Spirit Vein tiers, meditation timing, and the Qi absorption item modifiers, found in the path <code>mods/Siren_Cultivation/Cultivation/SpiritVeinConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Spirit Vein Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>5</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Spirit-Vein-Min-Qi"</td><td>150.0</td><td>Lower bound of the random maxQi a normal chunk's Spirit Vein seeds with.</td></tr><tr><td>"Spirit-Vein-Max-Qi"</td><td>500.0</td><td>Upper bound of that same random range. Every chunk starts full.</td></tr><tr><td>"Description-Spirit-Vein-Min-Max-Qi"</td><td>A long string explaining the values above.</td><td>Every chunk's vein is seeded on first access with a random maxQi between the two values, deterministically from the world seed, and starts full - unless it rolls as a rich or dragon vein instead.</td></tr><tr><td>"Spirit-Vein-Rich-Chance"</td><td>0.03</td><td>Odds (0-1) that a chunk's Spirit Vein rolls "rich" instead of normal, using the Rich-Min/Max-Qi range below. Rolled once per chunk, deterministically, off the world seed.</td></tr><tr><td>"Spirit-Vein-Rich-Min-Qi"</td><td>1200.0</td><td>Lower bound for a rich vein's Qi pool.</td></tr><tr><td>"Spirit-Vein-Rich-Max-Qi"</td><td>2600.0</td><td>Upper bound for a rich vein's Qi pool.</td></tr><tr><td>"Description-Spirit-Vein-Rich"</td><td>A long string explaining the values above.</td><td>Explains that a rich roll replaces the normal min/max range entirely, and is rolled once per chunk deterministically like the normal range.</td></tr><tr><td>"Spirit-Vein-Dragon-Chance"</td><td>0.003</td><td>Odds (0-1) that a chunk rolls a "dragon vein" - the rarest tier. Rolled before the rich-vein roll.</td></tr><tr><td>"Spirit-Vein-Dragon-Min-Qi"</td><td>3500.0</td><td>Lower bound for a dragon vein's Qi pool.</td></tr><tr><td>"Spirit-Vein-Dragon-Max-Qi"</td><td>5500.0</td><td>Upper bound for a dragon vein's Qi pool.</td></tr><tr><td>"Description-Spirit-Vein-Dragon"</td><td>A long string explaining the values above.</td><td>Notes that the dragon roll happens before the rich roll, and that meditating players are told when they sit on a rich or dragon vein.</td></tr><tr><td>"Spirit-Vein-Rich-Regen-Multiplier"</td><td>1.25</td><td>How much faster a rich vein regenerates than Spirit-Vein-Regen-Per-Second.</td></tr><tr><td>"Spirit-Vein-Dragon-Regen-Multiplier"</td><td>1.6</td><td>How much faster a dragon vein regenerates than Spirit-Vein-Regen-Per-Second.</td></tr><tr><td>"Description-Spirit-Vein-Regen-Multipliers"</td><td>A long string explaining the values above.</td><td>Warns that multiplier * Spirit-Vein-Regen-Per-Second must stay BELOW Spirit-Vein-Drain-Per-Second, or the vein refills faster than one meditator drains it and becomes an infinite Qi source.</td></tr><tr><td>"Spirit-Vein-Regen-Per-Second"</td><td>1.5</td><td>How much Qi a vein passively regenerates per second.</td></tr><tr><td>"Spirit-Vein-Drain-Per-Second"</td><td>2.75</td><td>How much Qi a meditating player drains from the vein per second.</td></tr><tr><td>"Spirit-Vein-Drain-Radius-Chunks"</td><td>1</td><td>How many rings of neighboring chunks a meditating player can also drain from once their own chunk runs low (0 = only their own chunk, 1 = a 3x3 area).</td></tr><tr><td>"Description-Spirit-Vein-Drain-Radius-Chunks"</td><td>A long string explaining the value above.</td><td>Restates the ring counting, with 0 meaning own chunk only and 1 meaning a 3x3 area.</td></tr><tr><td>"Meditation-Tick-Interval-Seconds"</td><td>1.0</td><td>How often, in seconds, a meditating player's Qi gain is calculated.</td></tr><tr><td>"Meditation-Movement-Cancel-Threshold"</td><td>0.35</td><td>How far, in blocks, a meditating player may drift from where they sat down before meditation is automatically cancelled.</td></tr><tr><td>"Description-Meditation-Movement-Cancel-Threshold"</td><td>A long string explaining the value above.</td><td>Restates the drift distance and that exceeding it cancels meditation automatically.</td></tr><tr><td>"Meditation-Movement-Check-Interval-Seconds"</td><td>0.25</td><td>How often, in seconds, meditating players are checked for movement and seating.</td></tr><tr><td>"Qi-Absorption-Item-Modifiers"</td><td><code>[{"ItemId": "Cultivation_QiGatheringTalisman", "Multiplier": 1.5}]</code></td><td>An array of item id / multiplier pairs. Holding a matching item in your hotbar's active slot while meditating multiplies your Spirit Vein absorption rate by that amount.</td></tr><tr><td>"Description-Qi-Absorption-Item-Modifiers"</td><td>A long string explaining the array above.</td><td>Only Spirit Vein absorption is affected, never core Qi values, and other mods may register additional entries in Java through the <a href="api.html">Cultivation API</a>.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Breakthrough Config</h2>
+
+    <p>Timing and Qi-presence requirements for both sub-stage advancements and realm breakthroughs, plus the two <a href="tribulations.html">tribulation</a> trials, found in the path <code>mods/Siren_Cultivation/Cultivation/BreakthroughConfig.json</code>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Breakthrough Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>4</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Breakthrough-Min-Chunk-Qi"</td><td>750.0</td><td>The chunk a player is meditating in must hold at least this much Spirit Vein Qi for their realm-breakthrough attempt to make progress - a presence check, not a drain.</td></tr><tr><td>"Description-Breakthrough-Min-Chunk-Qi"</td><td>A long string explaining the value above.</td><td>Stresses that the vein is not consumed by the check, only required to be present.</td></tr><tr><td>"Breakthrough-Base-Seconds"</td><td>24.0</td><td>How long, in seconds, a realm breakthrough takes from the very first realm.</td></tr><tr><td>"Breakthrough-Duration-Realm-Multiplier"</td><td>1.35</td><td>Multiplies the breakthrough duration for each realm reached, stacking.</td></tr><tr><td>"Description-Breakthrough-Duration"</td><td>A long string explaining the values above.</td><td>Total duration in seconds = Breakthrough-Base-Seconds * Breakthrough-Duration-Realm-Multiplier ^ realmIndex, before any race speed bonus.</td></tr><tr><td>"Advancement-Min-Chunk-Qi"</td><td>200.0</td><td>Same presence-check mechanism as Breakthrough-Min-Chunk-Qi, just a lower bar since sub-stage advancements happen far more often.</td></tr><tr><td>"Description-Advancement-Min-Chunk-Qi"</td><td>A long string explaining the value above.</td><td>Restates that this is the same presence check at a lower threshold.</td></tr><tr><td>"Advancement-Base-Seconds"</td><td>8.0</td><td>How long, in seconds, a sub-stage advancement takes from the very first realm.</td></tr><tr><td>"Advancement-Duration-Realm-Multiplier"</td><td>1.3</td><td>Same formula shape as breakthroughs, just shorter.</td></tr><tr><td>"Description-Advancement-Duration"</td><td>A long string explaining the values above.</td><td>Total duration = Advancement-Base-Seconds * Advancement-Duration-Realm-Multiplier ^ realmIndex, before any race speed bonus.</td></tr><tr><td>"Tribulation-Enabled"</td><td>true</td><td>Master toggle for heavenly tribulation lightning during realm breakthrough rituals.</td></tr><tr><td>"Tribulation-Strike-Interval-Seconds"</td><td>6.0</td><td>How many seconds of ritual progress pass between lightning strikes.</td></tr><tr><td>"Tribulation-Damage-Percent-Of-Max-Health"</td><td>15.0</td><td>Percent of the cultivator's max health each breakthrough strike deals, before realm scaling.</td></tr><tr><td>"Tribulation-Damage-Realm-Multiplier"</td><td>1.12</td><td>Multiplies strike damage per realm reached, stacking.</td></tr><tr><td>"Tribulation-Lethal"</td><td>true</td><td>If false, a strike always leaves at least a sliver of health instead of killing.</td></tr><tr><td>"Description-Tribulation"</td><td>A long string explaining the values above.</td><td>Lays out the whole strike formula: damage percent of max health, multiplied by the realm multiplier raised to realmIndex, delivered on the strike interval, and whether it may kill.</td></tr><tr><td>"Advancement-Tribulation-Enabled"</td><td>false</td><td>Off by default - opt in to make routine sub-stage advancements also carry tribulation lightning.</td></tr><tr><td>"Advancement-Tribulation-Damage-Percent-Of-Max-Health"</td><td>6.0</td><td>The much lower damage percent used when advancement tribulation is enabled.</td></tr><tr><td>"Description-Advancement-Tribulation"</td><td>A long string explaining the values above.</td><td>Notes that advancement tribulation reuses the same interval, realm scaling, and lethality rule as breakthroughs, only with this lower percent.</td></tr><tr><td>"HeartDevil-Enabled"</td><td>true</td><td>Master toggle for the Heart-Devil Trial (心魔劫) - the inner-demon tribulation variant that replaces lightning for deeply leaned cultivators.</td></tr><tr><td>"HeartDevil-Lean-Threshold"</td><td>0.5</td><td>How deep (0-1) the stronger of the Yin/Yang lean must be before the heart-devil manifests instead of lightning.</td></tr><tr><td>"HeartDevil-Max-Composure"</td><td>100.0</td><td>The per-attempt composure (道心) pool the cultivator defends.</td></tr><tr><td>"HeartDevil-Composure-Drain-Per-Pulse"</td><td>34.0</td><td>Base composure lost per pulse. The actual drain is this multiplied by (0.5 + leanFraction), so a deeper lean faces a fiercer demon.</td></tr><tr><td>"HeartDevil-Debuff-Effect"</td><td>"Stun"</td><td>A vanilla EntityEffect asset id applied on each pulse. Real options include Stun, Root, Slow, and Poison. Leave blank to skip the debuff.</td></tr><tr><td>"HeartDevil-Debuff-Duration-Seconds"</td><td>1.5</td><td>How long that entity effect lasts per pulse.</td></tr><tr><td>"HeartDevil-Deviation-Demotes"</td><td>true</td><td>On Qi Deviation (走火入魔), demote one sub-stage - which wipes banked Qi, as any failed ritual does. If false, the stage is kept and only the Qi fraction below is lost.</td></tr><tr><td>"HeartDevil-Deviation-Qi-Loss-Percent"</td><td>100.0</td><td>Percent of banked Qi lost on Qi Deviation when HeartDevil-Deviation-Demotes is false.</td></tr><tr><td>"HeartDevil-On-Advancement"</td><td>false</td><td>Whether the heart-devil can also manifest during sub-stage advancement rituals. Off by default so routine advancements stay safe.</td></tr><tr><td>"Description-HeartDevil"</td><td>A long string explaining the values above.</td><td>Walks the whole trial: pulses fire on Tribulation-Strike-Interval-Seconds, drain scaled composure and apply the debuff, a banked Clear-Mind Pill charge negates one pulse, and composure reaching zero fails the ritual with Qi Deviation.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Race System Config</h2>
+
+    <p>Cross-race server behavior that is not specific to any one race's stats, found in the path <code>mods/Siren_Cultivation/Cultivation/RaceSystemConfig.json</code>. The per-race numbers themselves live in the <a href="config-race.html">Race Configs</a>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Race System Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Race-Admin-Bypasses-Realm-Gate"</td><td>true</td><td>If true, <code>/cultivation admin setrace</code> (and the admin UI's Set Race action) can force any online player's race regardless of whether they have reached that race's own configured unlock realm. If false, the admin override is refused for players below that realm.</td></tr><tr><td>"Description-Race-Admin-Bypasses-Realm-Gate"</td><td>A long string explaining the value above.</td><td>Restates the override rule and points at each race file's own <code>Unlock-Realm</code>.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Skill Tree Config</h2>
+
+    <p>How skill points are earned and spent, found in the path <code>mods/Siren_Cultivation/Cultivation/SkillTreeConfig.json</code>. See the <a href="skilltree.html">Skill Tree</a> page for the tree itself.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Skill Tree Config"</td><td>The name given to this config file.</td></tr><tr><td>"ConfigVersion"</td><td>2</td><td>Current Version when you have loaded for the plugin.</td></tr><tr><td>"Points-Per-Advancement"</td><td>1</td><td>Skill points granted every time a player completes a regular sub-stage advancement.</td></tr><tr><td>"Description-Points-Per-Advancement"</td><td>A long string explaining the value above.</td><td>Clarifies that this covers sub-stage advancements only, and that realm breakthroughs pay this plus Points-Per-Breakthrough.</td></tr><tr><td>"Points-Per-Breakthrough"</td><td>2</td><td>Extra skill points granted, on top of Points-Per-Advancement, when a player breaks through into a new realm.</td></tr><tr><td>"Description-Points-Per-Breakthrough"</td><td>A long string explaining the value above.</td><td>Restates that the breakthrough award is additive on top of the advancement award.</td></tr><tr><td>"Qi-Cost-Reduction-Cap-Percent"</td><td>40.0</td><td>Ceiling for the stacked tier-8 Qi Cost Reduction skill stat, so rank-up Qi requirements can never collapse toward zero no matter how many capstones a build collects.</td></tr><tr><td>"Description-Qi-Cost-Reduction-Cap"</td><td>A long string explaining the value above.</td><td>Restates that the stat is clamped to this total percent however many capstones grant it.</td></tr><tr><td>"Respec-Enabled"</td><td>true</td><td>If true, players can run <code>/cultivation respec</code> to clear their entire skill tree and get every spent point refunded.</td></tr><tr><td>"Description-Respec-Enabled"</td><td>A long string explaining the value above.</td><td>Notes that setting this false makes skill choices permanent, and that admins can still grant extra points.</td></tr></tbody>
+    </table>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alchemy — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - The four spirit pills, what they do and how they are made">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Arts &amp; Treasures</span><span class="sep">/</span><span>Alchemy</span>
+      <span class="sep">·</span><span class="han-dim">術</span>
+    </div>
+
+    <h1>Alchemy</h1>
+
+    <p class="page-lede">Alchemy turns <a href="qi-gathering.html">cultivation cores</a> into <strong>spirit pills</strong> - consumable one-shot advantages that make a stretch of cultivating, or a single dangerous ritual, go your way. Four ship with the mod. Each has its own recipe, and each is consumed on use.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Pills</h2>
+
+    <table>
+    <thead><tr><th>Pill</th><th>Quality</th><th>Recipe</th><th>Effect</th></tr></thead>
+    <tbody><tr><td><strong>Qi Gathering Pill</strong></td><td>Rare</td><td>2x Spirit Core</td><td>Multiplies <strong>all</strong> Qi you gather by <code>QiPill-Gain-Multiplier</code> (1.5) for <code>QiPill-Duration-Seconds</code> (300).</td></tr><tr><td><strong>Clarity Pill</strong></td><td>Rare</td><td>1x Profound Core + 1x Spirit Core</td><td>Multiplies ritual durations by <code>ClarityPill-Ritual-Speed-Multiplier</code> (0.75) for <code>ClarityPill-Duration-Seconds</code> (300).</td></tr><tr><td><strong>Tribulation Ward Pill</strong></td><td>Epic</td><td>1x Divine Core + 1x Lightning Essence</td><td>Banks <code>WardPill-Shield-Charges</code> (1) charge, up to <code>WardPill-Max-Stored-Charges</code> (3).</td></tr><tr><td><strong>Clear-Mind Pill</strong></td><td>Epic</td><td>1x Divine Core + 1x Profound Core</td><td>Banks <code>ClearMindPill-Charges</code> (1) charge, up to <code>ClearMindPill-Max-Stored-Charges</code> (3).</td></tr></tbody>
+    </table>
+
+    <h2>Qi Gathering Pill</h2>
+
+    <p>Applies to every source of cultivation Qi - meditation drain and absorbed cores alike - for five minutes. Re-consuming refreshes the timer rather than stacking a second copy. It multiplies alongside your <a href="races.html">race</a> bonus, your <a href="skilltree.html">skill tree's</a> Insight branch, and everything else that touches Qi gain.</p>
+
+    <h2>Clarity Pill</h2>
+
+    <p>Multiplies the duration of a breakthrough, an advancement or a <a href="refinement.html">refinement</a> ritual by 0.75 - a quarter faster - for five minutes. It stacks <strong>multiplicatively</strong> with the race and skill-tree ritual-speed bonuses, and the same 90% floor that clamps those applies to the total.</p>
+
+    <p>Shorter rituals also mean fewer tribulation bolts, since bolts fall on a fixed interval of ritual progress.</p>
+
+    <h2>Tribulation Ward Pill</h2>
+
+    <p>A banked charge <strong>fully negates the damage of one tribulation lightning strike</strong>. The bolt still falls, with all its noise and light - it simply does not hurt you. Charges persist until they are spent, so you can bank up to three before a dangerous breakthrough and walk into it knowing the first three bolts are free.</p>
+
+    <p>This is the direct counter to a heavy <a href="karma.html">karma</a> ledger, and the reason a Divine Core is worth holding onto rather than absorbing.</p>
+
+    <h2>Clear-Mind Pill</h2>
+
+    <p>The Heart-Devil Trial's answer to the Ward Pill. A banked charge holds your composure through <strong>one pulse</strong> of the trial - the inner demon still appears, but that pulse drains no composure at all. Charges persist until used, up to three at a time.</p>
+
+    <p>A deeply Yin- or Yang-leaned cultivator faces the Heart-Devil Trial instead of lightning, so a Ward Pill does them no good and a Clear-Mind Pill is the only ward that helps. See <a href="tribulations.html">Tribulations</a>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Notes</h2>
+
+    <ul><li>Pills are recipes on the items themselves, so they are crafted the same way any other recipe in the game is.</li><li>None of the four drop on death.</li><li>All four are also valid <a href="beasts.html">spirit beast</a> food, worth 25 Qi each when fed - a considerably worse use of a Divine Core than eating the pill yourself.</li></ul>
+
+    <p>Every duration, multiplier and charge count lives in the alchemy config - see <a href="config-arts.html">Config</a> - and the related commands are on the <a href="commands.html">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

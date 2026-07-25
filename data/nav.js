@@ -20,13 +20,16 @@ window.SITE = {
     { title: "Home",            href: "index.html" },
     { title: "Getting Started", href: "docs/getting-started.html" },
     { title: "Realms",          href: "docs/realms.html" },
-    { title: "Qi Gathering",    href: "docs/qi-gathering.html" }
+    { title: "Commands",        href: "docs/commands.html" },
+    { title: "API",             href: "docs/api.html" }
   ],
 
-  /* External links (rendered on the right of the top bar and in the footer) */
+  /* External links (rendered in the footer) */
   external: [
-    { title: "CurseForge", href: "https://www.curseforge.com/" },
-    { title: "GitHub",     href: "https://github.com/" }
+    { title: "CurseForge", href: "https://www.curseforge.com/hytale/mods/cultivation/" },
+    { title: "Download",   href: "https://www.curseforge.com/hytale/mods/cultivation/download" },
+    { title: "Source",     href: "https://github.com/meFroggy/Cultivation" },
+    { title: "HStats",     href: "https://hstats.dev/mods/828f65ac-8c45-4510-893b-cc90cd9734aa" }
   ],
 
   /* Sidebar sections */
@@ -36,9 +39,8 @@ window.SITE = {
       items: [
         { title: "Home",             href: "index.html" },
         { title: "Getting Started",  href: "docs/getting-started.html" },
-        { title: "Commands",         href: "docs/commands.html",      soon: true },
-        { title: "Permissions",      href: "docs/permissions.html",   soon: true },
-        { title: "Configuration",    href: "docs/config.html",        soon: true }
+        { title: "Commands",         href: "docs/commands.html" },
+        { title: "Permissions",      href: "docs/permissions.html" }
       ]
     },
     {
@@ -46,41 +48,54 @@ window.SITE = {
       items: [
         { title: "Realms & Stages",  href: "docs/realms.html" },
         { title: "Qi Gathering",     href: "docs/qi-gathering.html" },
-        { title: "Tribulations",     href: "docs/tribulations.html",  soon: true },
-        { title: "Races",            href: "docs/races.html",         soon: true },
-        { title: "Skill Tree",       href: "docs/skilltree.html",     soon: true },
-        { title: "The Dao",          href: "docs/dao.html",           soon: true },
-        { title: "Karma",            href: "docs/karma.html",         soon: true }
+        { title: "Tribulations",     href: "docs/tribulations.html" },
+        { title: "Races",            href: "docs/races.html" },
+        { title: "Skill Tree",       href: "docs/skilltree.html" },
+        { title: "The Dao",          href: "docs/dao.html" },
+        { title: "Karma",            href: "docs/karma.html" }
       ]
     },
     {
       title: "Arts & Treasures", han: "術",
       items: [
-        { title: "Techniques",       href: "docs/techniques.html",    soon: true },
-        { title: "Manuals",          href: "docs/manuals.html",       soon: true },
-        { title: "Alchemy",          href: "docs/alchemy.html",       soon: true },
-        { title: "Weapon Refinement",href: "docs/refinement.html",    soon: true },
-        { title: "Life-Bound",       href: "docs/lifebound.html",     soon: true },
-        { title: "Spirit Beasts",    href: "docs/beasts.html",        soon: true }
+        { title: "Techniques",        href: "docs/techniques.html" },
+        { title: "Manuals",           href: "docs/manuals.html" },
+        { title: "Alchemy",           href: "docs/alchemy.html" },
+        { title: "Weapon Refinement", href: "docs/refinement.html" },
+        { title: "Life-Bound",        href: "docs/lifebound.html" },
+        { title: "Spirit Beasts",     href: "docs/beasts.html" }
       ]
     },
     {
       title: "The World", han: "界",
       items: [
-        { title: "Sects",            href: "docs/sects.html",         soon: true },
-        { title: "Formations",       href: "docs/formations.html",    soon: true },
-        { title: "Cave Abode",       href: "docs/dwelling.html",      soon: true },
-        { title: "Duels",            href: "docs/duels.html",         soon: true },
-        { title: "Sect Wars",        href: "docs/wars.html",          soon: true }
+        { title: "Sects",            href: "docs/sects.html" },
+        { title: "Formations",       href: "docs/formations.html" },
+        { title: "Cave Abode",       href: "docs/dwelling.html" },
+        { title: "Duels",            href: "docs/duels.html" },
+        { title: "Sect Wars",        href: "docs/wars.html" }
+      ]
+    },
+    {
+      title: "Configuration", han: "配",
+      items: [
+        { title: "Overview",         href: "docs/config.html" },
+        { title: "Core Config",      href: "docs/config-core.html" },
+        { title: "Cultivation",      href: "docs/config-cultivation.html" },
+        { title: "Arts",             href: "docs/config-arts.html" },
+        { title: "Society",          href: "docs/config-society.html" },
+        { title: "Race",             href: "docs/config-race.html" },
+        { title: "Data Files",       href: "docs/config-data.html" }
       ]
     },
     {
       title: "For Developers", han: "匠",
       items: [
-        { title: "API Overview",     href: "docs/api.html",           soon: true },
-        { title: "Events",           href: "docs/api-events.html",    soon: true },
-        { title: "Add-ons",          href: "docs/api-addons.html",    soon: true },
-        { title: "Registries",       href: "docs/api-registries.html",soon: true }
+        { title: "API Overview",     href: "docs/api.html" },
+        { title: "Reference",        href: "docs/api-reference.html" },
+        { title: "Events",           href: "docs/api-events.html" },
+        { title: "Add-ons",          href: "docs/api-addons.html" },
+        { title: "Registries",       href: "docs/api-registries.html" }
       ]
     }
   ]

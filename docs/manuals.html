@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manuals — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Lootable books that teach a technique or a skill node">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Arts &amp; Treasures</span><span class="sep">/</span><span>Manuals</span>
+      <span class="sep">·</span><span class="han-dim">術</span>
+    </div>
+
+    <h1>Manuals</h1>
+
+    <p class="page-lede">A <strong>cultivation manual</strong> is a lootable book that permanently teaches you something. Use it to read it. A manual teaches either a <a href="techniques.html">technique</a> or a <a href="skilltree.html">skill tree</a> node - never both - and it is the only thing in the mod that hands out progression you did not pay for.</p>
+
+    <p>The system is on by default (<code>Manuals-Enabled</code>).</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>What They Teach</h2>
+
+    <p><strong>A technique manual</strong> adds that art to your learned set, permanently. This only matters for an art whose rule sets <code>Requires-Manual</code> true - and none of the nine built-in techniques do by default, so out of the box a technique manual is something a server owner or another mod adds alongside a gated art.</p>
+
+    <p><strong>A skill-node manual</strong> unlocks that node for free. It still honours the node's prerequisites - a manual cannot hand you a tier-5 fork whose tier-4 parent you never took - but it ignores the point cost entirely.</p>
+
+    <p>Nodes taught this way are recorded as <em>granted</em> rather than merely unlocked, which matters for <code>/cultivation respec</code>: a respec refunds points per node you paid for, so a free node is excluded from the refund and survives the reset intact. Reading manuals cannot mint skill points, and respeccing cannot destroy a manual you already consumed.</p>
+
+    <h2>The Shipped Manuals</h2>
+
+    <p>Five ship with the mod, all teaching a first-tier skill node:</p>
+
+    <table>
+    <thead><tr><th>Manual</th><th>Teaches</th><th>Drop Weight</th></tr></thead>
+    <tbody><tr><td>Manual of Iron Sinew</td><td>Vitality, tier 1 (max health)</td><td>1.0</td></tr><tr><td>Manual of the Hidden Edge</td><td>Might, tier 1 (damage %)</td><td>1.0</td></tr><tr><td>Manual of the Clear Spring</td><td>Insight, tier 1 (Qi gain %)</td><td>1.0</td></tr><tr><td>Manual of the Unmoving Mountain</td><td>Warding, tier 1 (damage reduction %)</td><td>0.6</td></tr><tr><td>Manual of the Windchaser's Stride</td><td>Swiftness, tier 1 (movement speed %)</td><td>0.6</td></tr></tbody>
+    </table>
+
+    <p>Which manual drops is chosen from this table by <code>Weight</code>. A weight of 0 means an entry never drops on its own and can only be handed out deliberately. The table is config-driven, and another mod can register its own manuals in Java.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Where They Drop</h2>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Manual-Tribulation-Drop-Chance</code></td><td>0.04</td><td>Rolled every time you <strong>survive</strong> a tribulation strike.</td></tr><tr><td><code>Manual-Demonic-Cultivator-Drop-Chance</code></td><td>0.12</td><td>Rolled when you slay an NPC whose role id is listed in <code>Manual-Demonic-Cultivator-Npc-Roles</code>.</td></tr><tr><td><code>Manual-Player-Kill-Drop-Chance</code></td><td>0.02</td><td>Rolled when you slay another player.</td></tr></tbody>
+    </table>
+
+    <p><code>Manual-Demonic-Cultivator-Npc-Roles</code> is <strong>empty by default</strong> - a server owner fills it with the NPC role ids their world treats as demonic cultivators, which is what makes that drop source live.</p>
+
+    <p>The player-kill roll is deliberately tiny, and it is special: what falls is a manual for something the <strong>victim themselves knew</strong>, drawn from their own learned techniques and unlocked nodes. Cutting down a cultivator can genuinely shake an art loose from them. Like every other PvP spoil it is gated by the anti-farm rules - a farmed kill rolls nothing at all. See <a href="karma.html">Karma</a>.</p>
+
+    <p>A manual that has nowhere to go is not awarded. If your hotbar and storage are both full, the roll is reported honestly: no item, no message, no claim of a find.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Reading One</h2>
+
+    <p>Use the manual in hand. It is consumed on a successful read when <code>Manual-Consumed-On-Use</code> is true (the default).</p>
+
+    <p>A manual you cannot use refuses and consumes nothing either way:</p>
+
+    <ul><li><strong>Already known</strong> - you already have that technique or node.</li><li><strong>Prerequisite missing</strong> - the node it teaches sits behind a node you have not taken.</li><li><strong>Unknown</strong> - it names a technique or node that does not exist.</li></ul>
+
+    <p>Manual behaviour, drop chances and the drop table all live in the arts configs - see <a href="config-arts.html">Config</a> - and the related commands are on the <a href="commands.html">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

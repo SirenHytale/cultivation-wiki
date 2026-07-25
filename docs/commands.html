@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commands — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Commands">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Start Here</span><span class="sep">/</span><span>Commands</span>
+      <span class="sep">·</span><span class="han-dim">起</span>
+    </div>
+
+    <h1>Commands</h1>
+
+    <p class="page-lede">The mod registers two root commands: <code>/cultivation</code> (aliases: <code>/cult</code>, <code>/qi</code>) and <code>/sect</code>.</p>
+
+    <p>Arguments in <code>{braces}</code> are required, arguments in <code>[brackets]</code> are optional. Anything that takes a player takes a player reference - the name of an online player.</p>
+
+    <p>The whole sect suite is mounted underneath the cultivation root as well, so <code>/cultivation sect create</code> and <code>/sect create</code> are the same command acting on the same data. The shorter <code>/sect</code> spelling is used throughout this page.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Player Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation</code></td><td>Opens your cultivation stats page.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation info (i)</code></td><td>Prints your realm, stage, and Qi progress to chat.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation meditate (med, cultivate)</code></td><td>Toggles meditation, drawing Spirit Qi from the vein of the chunk you sat down in. Standing up mid-ritual forfeits it - see <a href="qi-gathering.html">Qi Gathering</a>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bind</code></td><td>Personalizes the item in your hand into a <a href="lifebound.html">Life-Bound Treasure</a>. Run again on your own bound item to reset it to level 1.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation race</code></td><td>Opens the race menu to view racial benefits and choose your <a href="races.html">race</a> once you are eligible.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation hud</code></td><td>Toggles the persistent Cultivation HUD on or off.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation settings (options)</code></td><td>Opens the player settings menu.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>Opens the Active Bonuses page, listing every modifier currently affecting you.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Cultivation Arts</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation skilltree (skills)</code></td><td>Opens the <a href="skilltree.html">Skill Tree</a>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation dao</code></td><td>Opens the <a href="dao.html">Dao</a> page - your element, path, and Yin-Yang balance.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation technique (tech) [name]</code></td><td>With no name, lists every <a href="techniques.html">technique</a> with its unlock realm, Qi cost, and current availability. With a name, performs that technique.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation refine (temper) [element]</code></td><td>With no element, reports the held weapon's current refinement and what the next tier would cost and risk. With an element, spends the Qi up front and seats you into the <a href="refinement.html">refinement</a> ritual.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation respec (resetskillpoints, resetskills)</code></td><td>Refunds every skill point you paid for and clears those nodes. Nodes taught by a <a href="manuals.html">manual</a> cost no points, so they are neither refunded nor wiped. Requires <code>Respec-Enabled</code>.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Spirit Beasts</h2>
+
+    <p>Binding a beast happens out in the world rather than through a command - see <a href="beasts.html">Spirit Beasts</a>.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation beast (companion, pet)</code></td><td>Prints your bound beast's species, kind, element, realm, and current contribution.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast summon (call)</code></td><td>Calls your bound beast into the world at your side. Its bonus applies only while it is summoned.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast dismiss (recall)</code></td><td>Sends the beast's body away. It keeps every stage it has cultivated.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast feed</code></td><td>Feeds the entire stack in your hand to the beast, converting each item's Qi worth into beast XP.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast info</code></td><td>The same readout as bare <code>/cultivation beast</code>, in subcommand form.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast release [confirm]</code></td><td>Severs the bond entirely so you can tame another. Everything the beast cultivated is lost, so it only acts when passed the literal word <code>confirm</code>.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Cave Abode</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation abode (dwelling, cave)</code></td><td>Reports your <a href="dwelling.html">Cave Abode</a>, and your sect hall's spring if you have one, from anywhere.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>Claims (or moves) your abode to the chunk you are standing in. Any ground will take an abode, but the vein beneath it decides how fast the spring gathers.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect (drink)</code></td><td>Drinks the Spirit Spring dry, banking what it gathered as your own Qi. Must be run standing inside the abode or your sect's hall.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit (offer)</code></td><td>Offers the entire stack in your hand as upkeep, each item worth the hours listed for it in <code>Upkeep-Item-Hours</code>. Must be run inside the abode.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>The same readout as bare <code>/cultivation abode</code>, in subcommand form.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon</code></td><td>Gives up your abode and frees the ground. Whatever the spring had banked is lost with it.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Formations</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation formations (formation, arrays)</code></td><td>Lists every <a href="formations.html">formation</a> you control - your sect's and your personal ones - with its type, world, anchor chunk, and radius.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Duels</h2>
+
+    <p><code>/cultivation duel</code> takes an action word, and some actions take a further argument. See <a href="duels.html">Duels</a>.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation duel challenge {player} [wager]</code></td><td>Stakes banked Qi and challenges another cultivator. A missing or unreadable wager counts as 0.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel accept {player}</code></td><td>Accepts that player's pending challenge, starting the duel.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel decline {player}</code></td><td>Declines that player's pending challenge.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel yield (forfeit)</code></td><td>Forfeits your current duel - the wager goes to your opponent.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Sects</h2>
+
+    <p>Every command here is also reachable as <code>/cultivation sect ...</code>. In-sect authority (leader, elder, member) is enforced per action rather than by permission node - see <a href="sects.html">Sects</a>.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu UI.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create {name}</code></td><td>Founds a new sect under that name.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite {player}</code></td><td>Invites an online player to your sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join {sect}</code></td><td>Joins a sect by name.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your current sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick {player}</code></td><td>Removes a member from your sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband</code></td><td>Dissolves your sect entirely.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims (or moves) the sect hall to the chunk you are standing in. Only succeeds on a Spirit Vein of the configured quality.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the technique manual in your hand into the hall, teaching that art to every member for as long as the sect holds the hall. The manual is consumed. Run empty-handed, it scours the existing inscription away instead.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info (i)</code></td><td>Prints your sect's standing - members, hall, and bonuses.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu (ui)</code></td><td>Opens the sect menu UI, the same page bare <code>/sect</code> opens.</td><td><code>cultivation.sect</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Sect Wars</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/sect war [sect]</code></td><td>With no argument, or with <code>status</code>, reports the siege your sect is in - hold accrued, time left in the window, whether defenders are contesting it - or the cooldown remaining if there is no siege. Any member may query it.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war {sect}</code></td><td>Declares a siege on that rival sect's claimed hall. Leader only. See <a href="wars.html">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Rankings</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation top (leaderboard)</code></td><td>Prints the server's top 10 cultivators by realm and stage.</td><td><code>cultivation</code></td></tr><tr><td><code>/sect top (leaderboard)</code></td><td>Prints the server's top 10 sects.</td><td><code>cultivation.sect</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Admin Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation admin</code></td><td>Opens the live in-game config editor UI.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin setrealm [player] {realm}</code></td><td>Sets a player's <a href="realms.html">realm</a> directly, keeping their current stage.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin setstage [player] {stage}</code></td><td>Sets a player's sub-stage directly (Early, Middle, Late, or Peak), keeping their current realm.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin setqi [player] {qi}</code></td><td>Sets a player's currently banked Qi directly.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin setrace [player] {race}</code></td><td>Sets a player's <a href="races.html">race</a> directly. Bypasses that race's unlock realm unless <code>Race-Admin-Bypasses-Realm-Gate</code> is set to false.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin grantracechoice [player] [amount]</code></td><td>Grants additional race changes, letting the player reopen the race menu and pick again. Defaults to 1.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin grantskillpoints [player] [amount]</code></td><td>Grants additional <a href="skilltree.html">skill tree</a> points. Defaults to 1.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin setlifebound [player] {level} [xp]</code></td><td>Force-sets the level, and optionally the banked XP within that level, of the <a href="lifebound.html">Life-Bound Treasure</a> the player is holding.</td><td><code>cultivation.admin</code></td></tr><tr><td><code>/cultivation admin reset [player]</code></td><td>Resets a player's cultivation progress back to Body Refinement, Early-Stage, with 0 Qi.</td><td><code>cultivation.admin</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Debug Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation debug (d)</code></td><td>The debug command group.</td><td><code>cultivation.debug</code></td></tr><tr><td><code>/cultivation debug vein</code></td><td>Prints the tier and current/max Qi of the Spirit Vein in the chunk you are standing in.</td><td><code>cultivation.debug.vein</code></td></tr></tbody>
+    </table>
+
+    <p>Every admin command that targets another player accepts an optional player argument - omit it to target yourself. See <a href="permissions.html">Permissions</a> for the full permission list and what is granted by default.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

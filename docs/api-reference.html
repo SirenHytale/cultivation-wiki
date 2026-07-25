@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - the CultivationAPI facade methods">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>For Developers</span><span class="sep">/</span><span>API Reference</span>
+      <span class="sep">·</span><span class="han-dim">匠</span>
+    </div>
+
+    <h1>API Reference</h1>
+
+    <p class="page-lede">The rest of <code>plugin.siren.API.CultivationAPI</code> - the methods an addon calls directly, rather than the <a href="api-events.html">events</a> it listens to or the <a href="api-registries.html">registries</a> it adds to.</p>
+
+    <p>Everything on the class is <code>static</code>; the constructor is private and it is never instantiated. Most methods take the same two arguments every Hytale ECS system already has in hand:</p>
+
+    <ul><li><code>ComponentAccessor&lt;EntityStore&gt; accessor</code> - the accessor for the store the entity lives in.</li><li><code>Ref&lt;EntityStore&gt; ref</code> - the entity itself.</li></ul>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Threading</h2>
+
+    <p>The source is explicit about this in one place: the event listeners are invoked synchronously on the world thread of the player the event happened to, and you must hop threads yourself - <code>CompletableFuture.runAsync(task, otherWorld)</code> - before touching anything that lives on another world.</p>
+
+    <p>The reads below carry no separate documented threading contract of their own; they are plain component reads through the accessor you pass in, so the accessor's own thread rules apply. Call them from the world thread that owns the <code>Ref</code> you are reading.</p>
+
+    <p>Registration and listener calls are the exception in the opposite direction: they are safe from any plugin's <code>setup()</code> in any load order, because the backing structures are static maps and <code>CopyOnWriteArrayList</code>s that nothing reads until a player interacts with the mod.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Component types</h2>
+
+    <p>Ask for a <code>ComponentType</code> when you want to read or write a Cultivation component through the ECS yourself rather than through the convenience reads below.</p>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.getCultivationComponentType()</code></td><td><code>ComponentType&lt;EntityStore, CultivationComponent&gt;</code></td><td>Realm, stage and banked Qi.</td></tr><tr><td><code>CultivationAPI.getCultivationStateComponentType()</code></td><td><code>ComponentType&lt;EntityStore, CultivationStateComponent&gt;</code></td><td>Transient state - meditation, ritual progress.</td></tr><tr><td><code>CultivationAPI.getCultivationSettingsComponentType()</code></td><td><code>ComponentType&lt;EntityStore, CultivationSettingsComponent&gt;</code></td><td>Per-player settings, such as the HUD toggle.</td></tr><tr><td><code>CultivationAPI.getRaceComponentType()</code></td><td><code>ComponentType&lt;EntityStore, RaceComponent&gt;</code></td><td>The player's chosen <a href="races.html">race</a>.</td></tr><tr><td><code>CultivationAPI.getSkillTreeComponentType()</code></td><td><code>ComponentType&lt;EntityStore, SkillTreeComponent&gt;</code></td><td>Unlocked nodes and unspent points - see <a href="skilltree.html">Skill Tree</a>.</td></tr><tr><td><code>CultivationAPI.getTechniqueComponentType()</code></td><td><code>ComponentType&lt;EntityStore, TechniqueComponent&gt;</code></td><td>Learned arts and cooldowns - see <a href="techniques.html">Techniques</a>.</td></tr><tr><td><code>CultivationAPI.getSpiritVeinComponentType()</code></td><td><code>ComponentType&lt;ChunkStore, SpiritVeinComponent&gt;</code></td><td>A chunk's Spirit Vein pool. Note this one is a <strong><code>ChunkStore</code></strong> component, not an entity component - see <a href="qi-gathering.html">Qi Gathering</a>.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Cultivation state</h2>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.getCultivationComponent(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>CultivationComponent</code> (nullable)</td><td>The raw component, or <code>null</code> when the entity does not have one.</td></tr><tr><td><code>CultivationAPI.getCultivationStateComponent(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>CultivationStateComponent</code> (nullable)</td><td>The raw state component, or <code>null</code>.</td></tr><tr><td><code>CultivationAPI.getRaceComponent(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>RaceComponent</code> (nullable)</td><td>The raw race component, or <code>null</code>.</td></tr><tr><td><code>CultivationAPI.getRealm(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>CultivationRealm</code> (nullable)</td><td>The player's current <a href="realms.html">realm</a>, or <code>null</code> if they have no <code>CultivationComponent</code> - for example, not a player entity.</td></tr><tr><td><code>CultivationAPI.getStage(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>CultivationStage</code> (nullable)</td><td>The player's current sub-stage, or <code>null</code> on the same condition.</td></tr><tr><td><code>CultivationAPI.getGlobalLevel(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>int</code></td><td>Realm and stage flattened into one ever-increasing number. <code>0</code> when they have no <code>CultivationComponent</code>.</td></tr><tr><td><code>CultivationAPI.getQi(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>float</code></td><td>Banked Qi - progress toward their next sub-stage or breakthrough. <code>0</code> when they have no <code>CultivationComponent</code>.</td></tr><tr><td><code>CultivationAPI.getRace(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>PlayerRace</code> (never null)</td><td>The player's current race, defaulting to Human when they have no <code>RaceComponent</code> yet.</td></tr><tr><td><code>CultivationAPI.isMeditating(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>boolean</code></td><td>Whether they are sitting in meditation right now. <code>false</code> when they have no state component.</td></tr></tbody>
+    </table>
+
+    <p><code>CultivationRealm</code> runs <code>BODY_REFINEMENT</code>, <code>QI_CONDENSATION</code>, <code>FOUNDATION_ESTABLISHMENT</code>, <code>GOLDEN_CORE_FORMATION</code>, <code>NASCENT_SOUL</code>, <code>SOUL_FORMATION</code>, <code>VOID_REFINEMENT</code>. <code>CultivationStage</code> runs <code>EARLY</code>, <code>MIDDLE</code>, <code>LATE</code>, <code>PEAK</code>. Both are documented player-side on the <a href="realms.html">Cultivation Realms</a> page.</p>
+
+    <p>There is no <code>setQi</code> or <code>grantQi</code> on the facade. To change a player's banked Qi from an addon, hook <code>CultivationEvents.onPreQiGain</code> and re-scale <code>event.setAmount(...)</code> on the gain that is already happening - that is the supported path, and it is the same one the mod's own race, skill, pill, sect and dao multipliers take. See the <a href="api-events.html">events page</a>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Skill tree</h2>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.getAvailableSkillPoints(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref)</code></td><td><code>int</code></td><td>Unspent skill tree points, or <code>0</code> when they have no <code>SkillTreeComponent</code> yet.</td></tr><tr><td><code>CultivationAPI.isNodeUnlocked(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref, String nodeId)</code></td><td><code>boolean</code></td><td>Whether the player has unlocked that node id. <code>false</code> when they have no <code>SkillTreeComponent</code>, or the id matches no unlocked node.</td></tr></tbody>
+    </table>
+
+    <p>Node ids are the ones in <code>plugin.siren.ECS.SkillTree.SkillTreeRegistry</code> - for example <code>"VITALITY_1"</code>. The player-facing map of the tree is on the <a href="skilltree.html">Skill Tree</a> page, and points are granted per the <code>Points-Per-Breakthrough</code> and <code>Points-Per-Advancement</code> keys on the <a href="config.html">Config</a> page.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Techniques</h2>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.performTechnique(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref, PlayerRef playerRef, Technique technique)</code></td><td><code>boolean</code></td><td>Performs a technique right now. Returns <code>true</code> if it was performed, <code>false</code> if a gate blocked it.</td></tr></tbody>
+    </table>
+
+    <p>This runs every gate - system enabled, per-technique enabled, realm unlock, dao match, Qi cost, cooldown - and on success deducts the Qi, stamps the cooldown and runs the effect. The player is messaged either way, with the effect's success message or the failure reason. Use it to wire a technique to your own trigger: a keybind, a different item, an event of your own.</p>
+
+    <p>It works on built-in techniques and on ones you registered yourself, and it fires <code>TechniqueEvents.PreTechniquePerformEvent</code> and <code>TechniquePerformEvent</code> in both cases. See <a href="api-registries.html">API Registries</a> for building a technique, and <a href="techniques.html">Techniques</a> for the player-facing list.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Registration</h2>
+
+    <p>Covered in full on <a href="api-registries.html">API Registries</a>:</p>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>Adds a race to the race menu, gated on <code>unlockRealm</code>.</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>Adds a performable technique.</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>Builds the rule for <code>registerTechnique</code>.</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>Sets an item's Spirit Vein absorption multiplier while meditating.</td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>See also</h2>
+
+    <ul><li><a href="api-events.html">API Events</a> - reshape or veto any mechanic.</li><li><a href="api-registries.html">API Registries</a> - add races, techniques and Qi items.</li><li><a href="config.html">Config</a> and <a href="commands.html">Commands</a> - the server-owner-facing equivalents of most of the above.</li></ul>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spirit Beasts — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Taming, hatching and raising a spirit beast companion">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Arts &amp; Treasures</span><span class="sep">/</span><span>Spirit Beasts</span>
+      <span class="sep">·</span><span class="han-dim">術</span>
+    </div>
+
+    <h1>Spirit Beasts</h1>
+
+    <p class="page-lede">A <strong>spirit beast (灵兽)</strong> is a companion bound to you for good - it advances through the same realms you do, on its own XP pool, and serves you according to what kind of creature it is.</p>
+
+    <p>You may keep <strong>one</strong> bound beast at a time. Release it before binding another. It is summoned and dismissed at will, keeps its own vanilla AI while it is out, is pulled back to you whenever it strays further than <code>Leash-Distance</code> (24 blocks), and despawns on its own the moment you log out.</p>
+
+    <p>The system is enabled by default (<code>Beasts-Enabled</code>).</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Three Kinds</h2>
+
+    <p>A species' kind is what makes collecting a second beast worth doing. A <strong>dismissed</strong> beast does nothing at all - the bonus is for keeping it at your side.</p>
+
+    <table>
+    <thead><tr><th>Kind</th><th>What it does</th><th>Defaults</th></tr></thead>
+    <tbody><tr><td><strong>Guardian</strong></td><td>Raises your outgoing damage, and fights beside you with its own AI.</td><td><code>Guardian-Damage-Percent-Base</code> 4%, +0.6% per level.</td></tr><tr><td><strong>Warden</strong></td><td>Cuts your incoming damage.</td><td><code>Warden-Reduction-Percent-Base</code> 5%, +0.7% per level, capped at 40%.</td></tr><tr><td><strong>Gatherer</strong></td><td>Multiplies your meditation Qi while summoned.</td><td><code>Gatherer-Qi-Multiplier-Base</code> x1.15, +0.02 per level.</td></tr></tbody>
+    </table>
+
+    <p>Every figure is multiplied by the species' own <code>Power</code>, and again by <code>Element-Resonance-Multiplier</code> (1.25) when the beast's element matches your chosen <a href="dao.html">dao</a>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Taming</h2>
+
+    <p>Use a <strong>Beast Taming Talisman</strong> on a wild creature from the roster whose health has fallen to <code>Tame-Max-Health-Percent</code> (30%) or less. Wound it first, then bind it.</p>
+
+    <p>Your chance is the species' own <code>TameChance</code>, plus:</p>
+
+    <ul><li><code>Tame-Chance-Bonus-Per-Realm</code> (+0.05) per realm you have reached, and</li><li><code>Tame-Chance-Element-Match-Bonus</code> (+0.25) if the beast's element matches your chosen dao - a cultivator's dao calls to beasts of like nature, and they yield far more readily to it.</li></ul>
+
+    <p>The result is capped at <code>Tame-Chance-Max</code> (0.95). With <code>Tame-Consume-Talisman-On-Failure</code> true (the default) a failed attempt still costs you the talisman, and the beast is left standing where it was.</p>
+
+    <h2>Hatching</h2>
+
+    <p><strong>Spirit Beast Eggs</strong> drop from creature kills at <code>Egg-Kill-Drop-Chance</code> (1.5%). Use one to break it open and whatever sleeps inside bonds itself to you, chosen at random weighted by each species' <code>EggWeight</code>. A species with an egg weight of 0 never hatches and must be tamed in the wild. An egg respects <code>MinRealm</code> the same way taming does, and hatching while you already keep a beast is refused.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Roster</h2>
+
+    <p><code>MinRealm</code> is a realm index - 0 is Body Refinement, 1 Qi Condensation, 2 Foundation Establishment, 3 Golden Core Formation, 4 Nascent Soul.</p>
+
+    <table>
+    <thead><tr><th>Species</th><th>Kind</th><th>Element</th><th>Tame Chance</th><th>Min Realm</th><th>Power</th><th>Egg Weight</th></tr></thead>
+    <tbody><tr><td>Wolf_Black</td><td>Guardian</td><td>Void</td><td>35%</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>Wolf_White</td><td>Guardian</td><td>Ice</td><td>35%</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>Emberwulf</td><td>Guardian</td><td>Fire</td><td>20%</td><td>3</td><td>1.4</td><td>0.4</td></tr><tr><td>Leopard_Snow</td><td>Guardian</td><td>Ice</td><td>28%</td><td>2</td><td>1.2</td><td>0.7</td></tr><tr><td>Tiger_Sabertooth</td><td>Guardian</td><td>Metal</td><td>22%</td><td>3</td><td>1.4</td><td>0.5</td></tr><tr><td>Fen_Stalker</td><td>Guardian</td><td>Water</td><td>25%</td><td>2</td><td>1.2</td><td>0.6</td></tr><tr><td>Raptor_Cave</td><td>Guardian</td><td>Wind</td><td>30%</td><td>2</td><td>1.1</td><td>0.8</td></tr><tr><td>Rex_Cave</td><td>Guardian</td><td>Metal</td><td>15%</td><td>4</td><td>1.6</td><td>0.2</td></tr><tr><td>Hyena</td><td>Guardian</td><td>Poison</td><td>35%</td><td>1</td><td>0.9</td><td>1.0</td></tr><tr><td>Bear_Grizzly</td><td>Warden</td><td>Earth</td><td>28%</td><td>2</td><td>1.2</td><td>0.8</td></tr><tr><td>Bear_Polar</td><td>Warden</td><td>Ice</td><td>26%</td><td>2</td><td>1.25</td><td>0.7</td></tr><tr><td>Yeti</td><td>Warden</td><td>Ice</td><td>18%</td><td>4</td><td>1.5</td><td>0.3</td></tr><tr><td>Tortoise</td><td>Warden</td><td>Earth</td><td>50%</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>Toad_Rhino</td><td>Warden</td><td>Poison</td><td>40%</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>Toad_Rhino_Magma</td><td>Warden</td><td>Fire</td><td>25%</td><td>3</td><td>1.3</td><td>0.5</td></tr><tr><td>Armadillo</td><td>Warden</td><td>Metal</td><td>50%</td><td>0</td><td>0.85</td><td>1.2</td></tr><tr><td>Moose_Bull</td><td>Warden</td><td>Earth</td><td>32%</td><td>1</td><td>1.1</td><td>0.9</td></tr><tr><td>Spark_Living</td><td>Gatherer</td><td>Lightning</td><td>20%</td><td>3</td><td>1.5</td><td>0.4</td></tr><tr><td>Snapdragon</td><td>Gatherer</td><td>Wood</td><td>30%</td><td>2</td><td>1.2</td><td>0.7</td></tr><tr><td>Cactee</td><td>Gatherer</td><td>Wood</td><td>40%</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>Trillodon</td><td>Gatherer</td><td>Wood</td><td>22%</td><td>3</td><td>1.35</td><td>0.5</td></tr><tr><td>Fox</td><td>Gatherer</td><td>Wind</td><td>45%</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>Deer_Stag</td><td>Gatherer</td><td>Wood</td><td>45%</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>Antelope</td><td>Gatherer</td><td>Wind</td><td>45%</td><td>0</td><td>0.85</td><td>1.2</td></tr></tbody>
+    </table>
+
+    <p>A beast's element is its <strong>own</strong> nature and has nothing to do with its owner's - matching them is a bonus, not a requirement. Nothing about a species is hardcoded, so a server owner (or another mod) can add creatures to this list.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Raising It</h2>
+
+    <p>A beast advances through the same realms and stages you do, on its own XP pool. Each stage costs <code>Beast-Base-Xp-Requirement</code> (120) x <code>Beast-Xp-Growth-Rate</code> (1.35) ^ level.</p>
+
+    <table>
+    <thead><tr><th>Source</th><th>Default</th></tr></thead>
+    <tbody><tr><td>Your kills</td><td><code>Beast-Xp-Per-Kill</code> 12, multiplied by <code>Beast-Xp-Own-Kill-Multiplier</code> (2) when the beast landed the blow itself.</td></tr><tr><td>Feeding</td><td><code>Beast-Xp-Per-Qi-Item-Point</code> 0.75 per point of Qi in what you feed it.</td></tr><tr><td>Your meditation</td><td><code>Meditation-Qi-Share-Percent</code> 12% of the Qi you draw.</td></tr></tbody>
+    </table>
+
+    <p>The meditation share is a <strong>bonus</strong> by default - you still bank the full amount - unless <code>Meditation-Share-Taken-From-Owner</code> is set, which turns it into a genuine tithe deducted before your own Qi is credited.</p>
+
+    <p><code>Beast-Realm-Capped-By-Owner</code> (true) means a beast can never out-rank its master: it stalls at your realm until you advance.</p>
+
+    <p><strong>Feeding</strong> takes the item in your hand. Cores are worth exactly what you would have absorbed - 30, 80 and 220 for Spirit, Profound and Divine - a Spirit Stone is worth 40, and any of the four <a href="alchemy.html">alchemy pills</a> is worth 25. Anything else, a beast will not eat.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation beast summon</code></td><td>Call your beast to your side. Alias: <code>call</code>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast dismiss</code></td><td>Send it away. Alias: <code>recall</code>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast feed</code></td><td>Feed it the item in your hand.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast info</code></td><td>Its species, kind, element, realm, stage and XP.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation beast release</code></td><td>Release it for good, freeing you to bind another.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>The parent command <code>/cultivation beast</code> also answers to <code>companion</code> and <code>pet</code>.</p>
+
+    <p>Every value on this page, including the whole species roster, lives in the beast config - see <a href="config-arts.html">Config</a> - and the commands are documented in full on the <a href="commands.html">Commands</a> page.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

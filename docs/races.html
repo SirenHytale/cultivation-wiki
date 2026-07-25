@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Races — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Races">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The Path</span><span class="sep">/</span><span>Races</span>
+      <span class="sep">·</span><span class="han-dim">道</span>
+    </div>
+
+    <h1>Races</h1>
+
+    <p class="page-lede">Every player starts as <strong>Human</strong>. Reaching <strong>Golden Core Formation</strong> unlocks a one-time choice to become <strong>Demon</strong> or <strong>Deity</strong> instead (or stay Human), made through a dedicated race menu (<code>/cultivation race</code>) that shows each race's live, config-driven bonuses before you pick. Used your one choice already? An admin can grant more with <code>/cultivation admin grantracechoice</code>.</p>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart TD;
+    Start["Body Refinement&lt;br/&gt;Everyone starts Human"];
+    Start --&gt; GCF["Golden Core Formation&lt;br/&gt;Race choice unlocks"];
+    GCF --&gt; Human["Human&lt;br/&gt;Stay as-is"];
+    GCF --&gt; Demon["Demon&lt;br/&gt;Choose once"];
+    GCF --&gt; Deity["Deity&lt;br/&gt;Choose once"];
+
+    click Human "races.html#human" "View the Human page";
+    click Demon "races.html#demon" "View the Demon page";
+    click Deity "races.html#deity" "View the Deity page";
+</pre>
+    </div>
+
+    <p>Each race grants its own bonuses to max health, damage, Qi gain rate and breakthrough speed, and its own Yin bias on the qi it absorbs. Every value is rebalanceable without recompiling, and the bonuses shown in-game are always the live, current ones.</p>
+
+    <h2>Available Races</h2>
+
+    <table>
+    <thead><tr><th>Race</th><th>Unlock Realm</th><th>Health</th><th>Damage</th><th>Qi Gain</th><th>Breakthrough Speed</th><th>Yin Bias</th></tr></thead>
+    <tbody><tr><td><a href="races.html#human">Human</a></td><td>Body Refinement</td><td>+0%</td><td>+0%</td><td>+10%</td><td>+0%</td><td>0%</td></tr><tr><td><a href="races.html#demon">Demon</a></td><td>Golden Core Formation</td><td>-10%</td><td>+25%</td><td>-10%</td><td>+0%</td><td>+50%</td></tr><tr><td><a href="races.html#deity">Deity</a></td><td>Golden Core Formation</td><td>+20%</td><td>-10%</td><td>+5%</td><td>20% faster</td><td>-30%</td></tr></tbody>
+    </table>
+
+    <p><strong>Yin bias</strong> (<code>Qi-Alignment-Yin-Bias-Percent</code>) skews how meditated qi lands on your Yin-Yang balance: a Demon at +50% turns half of what would have been Yang into Yin instead, a Deity at -30% purifies 30% of would-be Yin into Yang. It is the single largest nudge toward the Devil or Righteous path - see <a href="dao.html">The Dao</a>.</p>
+
+    <p>By default an admin using <code>/cultivation admin setrace</code> (or the admin UI's Set Race action) can bypass a race's unlock-realm requirement entirely - set <code>Race-Admin-Bypasses-Realm-Gate</code> to false to hold admin overrides to the normal gate too.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>An Open Registry</h2>
+
+    <p>Races are no longer a closed list. Another mod can register a brand-new race through <code>CultivationAPI.registerRace</code>, backed by its own config file or a plain constant, and it shows up in the race menu right alongside Human, Demon and Deity - with its own unlock realm, its own bonuses and its own Yin bias. Built-in and third-party races run through exactly the same code path. See <a href="api-registries.html">Registries</a> for how to add one.</p>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/cultivation race</code></td><td>Open the race selection menu.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setrace</code></td><td>Force a player's race.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin grantracechoice</code></td><td>Give a player another race choice.</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>Per-race values live in one config file per race - see <a href="config-race.html">Race Configs</a> - while the cross-race server behaviour sits in <code>Cultivation/RaceSystemConfig.json</code>, on the <a href="config-cultivation.html">Cultivation Configs</a> page. The commands above are documented in full on the <a href="commands.html">Commands</a> page.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Human</h2>
+
+    <div class="note">Adaptable and quick to learn. No combat extremes, but Qi flows a little more readily.</div>
+
+    <p>Every player starts as Human, and can choose to stay Human when the race choice unlocks at Golden Core Formation. It is the balanced, generalist option - no combat downsides, and the best raw Qi gain rate of the three built-in races.</p>
+
+    <h3>Bonuses</h3>
+
+    <table>
+    <thead><tr><th>Bonus</th><th>Value</th></tr></thead>
+    <tbody><tr><td>Unlock Realm</td><td>Body Refinement (available from the start)</td></tr><tr><td>Max Health</td><td>+0%</td></tr><tr><td>Outgoing Damage</td><td>+0%</td></tr><tr><td>Qi Gain Rate</td><td>+10%</td></tr><tr><td>Breakthrough Duration</td><td>+0% (no change)</td></tr><tr><td>Qi Alignment Yin Bias</td><td>0% (neutral)</td></tr></tbody>
+    </table>
+
+    <p>A neutral Yin bias means a Human's meditated qi lands on the Yin-Yang balance exactly as the chunk's own alignment dictates, with no racial thumb on the scale. That makes Human the easiest race to hold near a balanced 50/50 split, which is where the balance bonus to all Qi gain and damage lives - see <a href="dao.html">The Dao</a>.</p>
+
+    <p>See the <a href="races.html">Races</a> overview for how these compare to Demon and Deity, and <a href="config-race.html">Config</a> for how to retune them on your own server.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Demon</h2>
+
+    <div class="note">Brutal and battle-hungry. Ferocious in combat, but crude cultivation technique slows their Qi gathering.</div>
+
+    <p>Demon is a combat-focused choice, unlocked once you reach Golden Core Formation. It trades a chunk of max health and a noticeably slower Qi gain rate for the single largest damage bonus of the three built-in races.</p>
+
+    <h3>Bonuses</h3>
+
+    <table>
+    <thead><tr><th>Bonus</th><th>Value</th></tr></thead>
+    <tbody><tr><td>Unlock Realm</td><td>Golden Core Formation</td></tr><tr><td>Max Health</td><td>-10%</td></tr><tr><td>Outgoing Damage</td><td>+25%</td></tr><tr><td>Qi Gain Rate</td><td>-10%</td></tr><tr><td>Breakthrough Duration</td><td>+0% (no change)</td></tr><tr><td>Qi Alignment Yin Bias</td><td>+50%</td></tr></tbody>
+    </table>
+
+    <p>That +50% Yin bias is the real character of the race: half of the Yang a Demon would have absorbed from a good chunk becomes Yin instead, so a Demon drifts toward a deep Yin lean simply by cultivating. Deep Yin unlocks the Yin lean powers (bonus damage and lifedrain) and, past the path threshold, the <strong>Devil Path (魔道)</strong> - which harvests Qi from slain players but attracts <a href="karma.html">karma</a> faster and faces the Heart-Devil Trial instead of ordinary <a href="tribulations.html">tribulation lightning</a>. See <a href="dao.html">The Dao</a> for the whole balance system.</p>
+
+    <p>See the <a href="races.html">Races</a> overview for how these compare to Human and Deity, and <a href="config-race.html">Config</a> for how to retune them on your own server.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Deity</h2>
+
+    <div class="note">Blessed with a heavenly constitution. Sturdy and swift to break through, though less fierce in a fight.</div>
+
+    <p>Deity is a survivability- and progression-focused choice, unlocked once you reach Golden Core Formation. It grants the largest health bonus of the three built-in races and speeds up every ritual, at the cost of some outgoing damage.</p>
+
+    <h3>Bonuses</h3>
+
+    <table>
+    <thead><tr><th>Bonus</th><th>Value</th></tr></thead>
+    <tbody><tr><td>Unlock Realm</td><td>Golden Core Formation</td></tr><tr><td>Max Health</td><td>+20%</td></tr><tr><td>Outgoing Damage</td><td>-10%</td></tr><tr><td>Qi Gain Rate</td><td>+5%</td></tr><tr><td>Breakthrough Duration</td><td>-20% (rituals take 20% less time)</td></tr><tr><td>Qi Alignment Yin Bias</td><td>-30%</td></tr></tbody>
+    </table>
+
+    <p>The duration reduction applies to sub-stage advancements and <a href="refinement.html">weapon refinement</a> as well as realm breakthroughs, and stacks multiplicatively with the skill tree's Ritual Speed and an active Clarity Pill. Reductions are clamped in code so no combination can cut a ritual by more than 90%.</p>
+
+    <p>The -30% Yin bias purifies nearly a third of the Yin a Deity would otherwise absorb into Yang, so a Deity drifts toward a deep Yang lean over time - the Yang lean powers (incoming-damage reduction and stronger received healing) and, past the path threshold, the <strong>Righteous Path (正道)</strong>. See <a href="dao.html">The Dao</a>.</p>
+
+    <p>See the <a href="races.html">Races</a> overview for how these compare to Human and Demon, and <a href="config-race.html">Config</a> for how to retune them on your own server.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
