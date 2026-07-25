@@ -26,6 +26,7 @@ window.SITE = {
     { title: "Getting Started", href: "getting-started/" },
     { title: "Realms",          href: "realms/" },
     { title: "Commands",        href: "commands/" },
+    { title: "Planner",         href: "planner/" },
     { title: "FAQ",             href: "faq/" },
     { title: "API",             href: "api/" }
   ],
@@ -82,6 +83,13 @@ window.SITE = {
         { title: "Cave Abode",       href: "dwelling/" },
         { title: "Duels",            href: "duels/" },
         { title: "Sect Wars",        href: "wars/" }
+      ]
+    },
+    {
+      title: "Tools", han: "器",
+      items: [
+        { title: "Skill Tree Planner", href: "planner/" },
+        { title: "Qi Calculator",      href: "calculator/" }
       ]
     },
     {
