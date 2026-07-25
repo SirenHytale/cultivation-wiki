@@ -26,6 +26,7 @@ window.SITE = {
     { title: "Getting Started", href: "getting-started/" },
     { title: "Realms",          href: "realms/" },
     { title: "Commands",        href: "commands/" },
+    { title: "FAQ",             href: "faq/" },
     { title: "API",             href: "api/" }
   ],
 
@@ -45,7 +46,9 @@ window.SITE = {
         { title: "Home",             href: "./" },
         { title: "Getting Started",  href: "getting-started/" },
         { title: "Commands",         href: "commands/" },
-        { title: "Permissions",      href: "permissions/" }
+        { title: "Permissions",      href: "permissions/" },
+        { title: "FAQ & Troubleshooting", href: "faq/" },
+        { title: "Glossary",         href: "glossary/" }
       ]
     },
     {
@@ -90,7 +93,8 @@ window.SITE = {
         { title: "Arts",             href: "config-arts/" },
         { title: "Society",          href: "config-society/" },
         { title: "Race",             href: "config-race/" },
-        { title: "Data Files",       href: "config-data/" }
+        { title: "Data Files",       href: "config-data/" },
+        { title: "Tuning Presets",   href: "presets/" }
       ]
     },
     {
@@ -99,8 +103,15 @@ window.SITE = {
         { title: "API Overview",     href: "api/" },
         { title: "Reference",        href: "api-reference/" },
         { title: "Events",           href: "api-events/" },
-        { title: "Add-ons",          href: "api-addons/" },
+        { title: "Building Add-ons", href: "api-addons/" },
         { title: "Registries",       href: "api-registries/" }
+      ]
+    },
+    {
+      title: "About", han: "誌",
+      items: [
+        { title: "Changelog",        href: "changelog/" },
+        { title: "Compatible Mods",  href: "addons/" }
       ]
     }
   ]

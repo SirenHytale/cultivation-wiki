@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- Source for assets/img/social-card.png. Render it with tools/make_card.py. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    background: #0E0603;
+    font-family: "Cinzel", Georgia, serif;
+    color: #F6D77B;
+  }
+  .scene { position: absolute; inset: 0; width: 1200px; height: 630px; }
+  .scrim {
+    position: absolute; inset: 0;
+    background: radial-gradient(62% 58% at 34% 50%, rgba(14,6,3,0.80), rgba(14,6,3,0.36) 60%, transparent 100%);
+  }
+  .inner {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; gap: 54px;
+    padding: 0 84px;
+  }
+  .seal { width: 224px; height: 224px; flex: none; filter: drop-shadow(0 0 34px rgba(246,215,123,0.34)); }
+  .text { min-width: 0; }
+  h1 {
+    font-size: 92px; font-weight: 700; letter-spacing: 0.10em; line-height: 1;
+    color: #F6D77B;
+    text-shadow: 0 0 54px rgba(246,215,123,0.32), 0 4px 22px rgba(0,0,0,0.75);
+  }
+  .han {
+    font-family: "Noto Serif SC", serif; font-weight: 600;
+    font-size: 30px; letter-spacing: 0.52em; color: #C9433A;
+    margin: 16px 0 20px; text-indent: 0.52em;
+  }
+  .rule { width: 240px; height: 2px; background: linear-gradient(90deg, #C9A227, rgba(201,162,39,0)); margin-bottom: 20px; }
+  p.lede { font-family: ui-sans-serif, "Segoe UI", sans-serif; font-size: 26px; line-height: 1.45; color: #E4D6B0; max-width: 610px; }
+  .foot {
+    position: absolute; left: 84px; bottom: 46px;
+    display: flex; align-items: center; gap: 16px;
+    font-size: 19px; letter-spacing: 0.20em; text-transform: uppercase; color: #B9A87E;
+  }
+  .foot .dot { color: #8C6B1F; }
+  .badge {
+    position: absolute; right: 66px; bottom: 46px;
+    border: 1px solid #8C6B1F; border-radius: 4px;
+    padding: 9px 20px; font-size: 19px; letter-spacing: 0.16em;
+    color: #F6D77B; background: rgba(92,23,18,0.55);
+  }
+</style>
+</head>
+<body>
+  <svg class="scene" viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0B0503"/><stop offset="50%" stop-color="#1D0D07"/>
+        <stop offset="82%" stop-color="#48160F"/><stop offset="100%" stop-color="#7C241B"/>
+      </linearGradient>
+      <radialGradient id="sun">
+        <stop offset="0%" stop-color="#FFF0C4" stop-opacity="0.95"/>
+        <stop offset="26%" stop-color="#F6D77B" stop-opacity="0.52"/>
+        <stop offset="60%" stop-color="#C9A227" stop-opacity="0.16"/>
+        <stop offset="100%" stop-color="#7C241B" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#F6D77B" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#F6D77B" stop-opacity="0.11"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="630" fill="url(#sky)"/>
+    <circle cx="1044" cy="146" r="250" fill="url(#sun)"/>
+    <circle cx="1044" cy="146" r="52" fill="#FFF3D2" opacity="0.50"/>
+    <circle cx="1044" cy="146" r="52" fill="none" stroke="#F6D77B" stroke-width="1.5" opacity="0.40"/>
+    <path fill="#2A1109" opacity="0.45" d="M0 470 L110 392 L200 438 L320 340 L420 424 L548 356 L648 430 L778 372 L888 446 L1018 368 L1120 440 L1200 400 L1200 630 L0 630 Z"/>
+    <ellipse fill="#E4D6B0" opacity="0.07" cx="300" cy="408" rx="240" ry="15"/>
+    <ellipse fill="#F6D77B" opacity="0.05" cx="900" cy="444" rx="260" ry="16"/>
+    <path fill="#1C0B05" opacity="0.9" d="M0 528 L96 458 L190 506 L300 420 L410 500 L520 440 L640 512 L742 436 L860 508 L980 448 L1096 520 L1200 466 L1200 630 L0 630 Z"/>
+    <g fill="#120704" transform="translate(300,420)">
+      <rect x="-1.5" y="-30" width="3" height="30"/>
+      <path d="M-22 0 L22 0 L14 -9 L-14 -9 Z"/>
+      <rect x="-11" y="0" width="22" height="13"/>
+      <path d="M-26 15 L26 15 L16 6 L-16 6 Z"/>
+      <rect x="-13" y="15" width="26" height="16"/>
+      <path d="M-30 33 L30 33 L19 22 L-19 22 Z"/>
+    </g>
+    <path fill="#120704" d="M0 596 L130 534 L250 590 L370 520 L500 588 L620 528 L760 596 L880 530 L1010 592 L1140 534 L1200 578 L1200 630 L0 630 Z"/>
+    <rect y="466" width="1200" height="164" fill="url(#haze)"/>
+    <g stroke="#E4D6B0" stroke-width="1.8" fill="none" opacity="0.36" stroke-linecap="round">
+      <path d="M700 250 q9 -7 18 0 q9 -7 18 0"/>
+      <path d="M762 224 q7 -5.5 14 0 q7 -5.5 14 0"/>
+    </g>
+  </svg>
+  <div class="scrim"></div>
+
+  <div class="inner">
+    <img class="seal" src="../assets/img/seal.svg" alt="">
+    <div class="text">
+      <h1>CULTIVATION</h1>
+      <div class="han">修仙之路</div>
+      <div class="rule"></div>
+      <p class="lede">
+        Seven realms, spirit veins and tribulation lightning.<br>
+        The complete wiki for the Hytale Xianxia mod.
+      </p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Hytale Mod Wiki</span><span class="dot">&bull;</span><span>Realms</span>
+    <span class="dot">&bull;</span><span>Sects</span><span class="dot">&bull;</span><span>The Dao</span>
+  </div>
+  <div class="badge">v0.5.0</div>
+</body>
+</html>
