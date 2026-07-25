@@ -155,7 +155,8 @@
           '<div class="footer-seal">' +
             '<div class="big han">道法自然</div>' +
             "<div>Cultivation " + esc(SITE.version) + " &middot; a Hytale mod</div>" +
-            "<div>Wiki content © its authors.</div>" +
+            "<div>&copy; " + new Date().getFullYear() + " " + esc(SITE.owner || "Siren") +
+              ". All rights reserved.</div>" +
           "</div>" +
         "</div>" +
       "</footer>"

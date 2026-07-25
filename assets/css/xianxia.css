@@ -353,11 +353,14 @@ pre code { background: none; border: 0; padding: 0; color: var(--text); font-siz
   border-right: 1px solid var(--rule);
   font-size: 0.875rem;
 }
-.sidebar::-webkit-scrollbar, .toc::-webkit-scrollbar, .search-results::-webkit-scrollbar { width: 8px; }
-.sidebar::-webkit-scrollbar-thumb, .toc::-webkit-scrollbar-thumb, .search-results::-webkit-scrollbar-thumb {
-  background: var(--rule-strong); border-radius: 4px;
-}
-.sidebar::-webkit-scrollbar-track, .toc::-webkit-scrollbar-track { background: transparent; }
+/* The nav rails still scroll — the scrollbar is just hidden. It sat right on
+   the gold divider rule and read as a UI seam. The search results keep theirs,
+   since a modal list genuinely needs the "there is more" affordance. */
+.sidebar, .toc { scrollbar-width: none; -ms-overflow-style: none; }
+.sidebar::-webkit-scrollbar, .toc::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.search-results::-webkit-scrollbar { width: 8px; }
+.search-results::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 4px; }
+.search-results::-webkit-scrollbar-track { background: transparent; }
 
 .side-group { margin-bottom: 22px; }
 .side-title {
@@ -397,7 +400,9 @@ pre code { background: none; border: 0; padding: 0; color: var(--text); font-siz
 .content {
   min-width: 0;
   padding: 40px 46px 100px;
-  max-width: calc(var(--measure) + 92px);
+  /* Fill the grid track up to the TOC rail. The old `--measure` cap was far
+     narrower than the track and left a dead gap on the right. */
+  max-width: none;
 }
 .content > *:first-child { margin-top: 0; }
 
