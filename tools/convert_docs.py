@@ -502,6 +502,13 @@ def main() -> None:
         sys.exit(f"source docs not found: {SRC}")
     OUT.mkdir(parents=True, exist_ok=True)
 
+    # Pages live at the repo root, so a slug that matches an asset directory
+    # would shadow it and silently break the whole site. Refuse up front.
+    RESERVED = {"assets", "data", "tools", ".git", ".github", "node_modules"}
+    clashes = sorted({e[1][:-5] for e in PAGES if e[1][:-5] in RESERVED})
+    if clashes:
+        sys.exit(f"slug collides with a reserved directory, aborting: {clashes}")
+
     written = 0
     for entry in PAGES:
         src_rel, out_name, group = entry[0], entry[1], entry[2]
