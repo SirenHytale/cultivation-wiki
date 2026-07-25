@@ -24,11 +24,11 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT.parent / "mermaids.dev" / "cultivation"
-OUT = ROOT / "docs"
+OUT = ROOT   # pages live at the repo root: <slug>/index.html
 
 # Pages are written as <slug>/index.html so they serve at a clean, extensionless
-# URL (/docs/realms/). That puts every page two directories below the repo root.
-ASSETS = "../../"
+# URL (/realms/). That puts every page exactly one directory below the repo root.
+ASSETS = "../"
 
 # Pages that are hand-authored in this repo and must never be overwritten.
 PROTECTED = {"realms", "qi-gathering", "getting-started"}
@@ -134,8 +134,8 @@ HAN = {  # decorative glyph for the page eyebrow, by group
 def resolve_link(url: str) -> str:
     """Map an old permalink to a relative, extensionless URL for this site.
 
-    Pages live at docs/<slug>/index.html, so a sibling page is "../<slug>/" and
-    the site root is "../../".
+    Pages live at <slug>/index.html, so a sibling page is "../<slug>/" and the
+    site root is "../".
     """
     url = url.strip()
     if url in LINKS:
@@ -143,7 +143,7 @@ def resolve_link(url: str) -> str:
         if target.startswith("http"):
             return target
         if target == "":
-            return "../../"
+            return "../"
         slug, _, anchor = target.partition("#")
         return f"../{slug}/" + (f"#{anchor}" if anchor else "")
     if url.startswith(("http://", "https://", "#", "mailto:")):
@@ -425,17 +425,17 @@ def parse_list(lines: list[str], i: int, refs: dict[str, str]) -> tuple[str, int
 # Page shell
 # ---------------------------------------------------------------------------
 SHELL = """<!doctype html>
-<html lang="en" data-root="../../" data-theme="dark">
+<html lang="en" data-root="../" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} — Cultivation Wiki</title>
 <meta name="description" content="{desc}">
-<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/xianxia.css">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -459,10 +459,10 @@ SHELL = """<!doctype html>
 
 <div id="site-footer"></div>
 
-<script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script src="../../assets/js/site.js"></script>
+<script src="../assets/js/site.js"></script>
 </body>
 </html>
 """
@@ -540,7 +540,7 @@ def main() -> None:
             (OUT / slug).mkdir(parents=True, exist_ok=True)
             (OUT / slug / "index.html").write_text(page, encoding="utf-8")
         written += 1
-        print(f"  {src_rel:28s} -> docs/{slug + '/':27s} ({len(body):>6,} bytes)")
+        print(f"  {src_rel:28s} -> {slug + '/':31s} ({len(body):>6,} bytes)")
 
     print(f"\n{written} pages {'would be ' if args.dry_run else ''}written")
     if UNMAPPED:

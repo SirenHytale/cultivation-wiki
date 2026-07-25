@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Addons — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - replacing the progression ladder, the wording, and adding admin settings">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>For Developers</span><span class="sep">/</span><span>API Addons</span>
+      <span class="sep">·</span><span class="han-dim">匠</span>
+    </div>
+
+    <h1>API Addons</h1>
+
+    <p class="page-lede">New in Cultivation <strong>0.5.0</strong>.</p>
+
+    <p><a href="../api-events/">Events</a> let you reshape what Cultivation does. <a href="../api-registries/">Registries</a> let you add content it treats as its own. The three hooks on this page go further: they let another mod <strong>take over</strong> a whole layer of Cultivation and keep everything else running on top.</p>
+
+    <table>
+    <thead><tr><th>Hook</th><th>Replaces</th></tr></thead>
+    <tbody><tr><td><a href="#progressionprovider"><code>ProgressionProvider</code></a></td><td>The entire realm / stage / Qi ladder.</td></tr><tr><td><a href="#cultivationtheme"><code>CultivationTheme</code></a></td><td>Every word the mod shows a player.</td></tr><tr><td><a href="#adminconfigsection"><code>AdminConfigSection</code></a></td><td>Nothing -- it <em>adds</em> your own settings to Cultivation's admin menus.</td></tr></tbody>
+    </table>
+
+    <p>All three are installed from your plugin's <code>setup()</code>, in any load order relative to Cultivation's own. Nothing reads them until a player meditates, opens a menu, or trips a realm gate, which is long after every plugin has loaded.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>ProgressionProvider</h2>
+
+    <pre><code class="language-java">CultivationAPI.setProgressionProvider(@Nullable ProgressionProvider provider)
+CultivationAPI.getProgressionProvider()</code></pre>
+
+    <p>Hands your mod the realm/stage/Qi ladder. From the moment one is installed, every command, UI page, HUD line and gameplay gate in Cultivation reads its numbers from you instead of from the player's <code>CultivationComponent</code>: <code>/cultivation</code> shows your rank names, the HUD shows your XP bar, the meditation ritual runs your rank-ups.</p>
+
+    <p><strong>Everything else in the mod keeps working.</strong> <a href="../sects/">Sects</a>, <a href="../dao/">the Dao</a>, <a href="../techniques/">techniques</a>, <a href="../beasts/">spirit beasts</a>, <a href="../formations/">formations</a>, <a href="../dwelling/">cave abodes</a>, <a href="../duels/">duels</a>, <a href="../alchemy/">alchemy</a>, <a href="../refinement/">refinement</a> and the <a href="../skilltree/">skill tree</a> all sit on top of whatever ladder is installed.</p>
+
+    <h3>Realm gates</h3>
+
+    <p>Dozens of gates across the mod are written against <code>CultivationRealm</code> -- a technique's unlock realm, a race's, a spirit beast species' minimum realm, refinement tiers, abode quality, the Dao unlock. Rather than rewrite them, Cultivation asks your provider which realm the player <strong>counts as</strong>:</p>
+
+    <pre><code class="language-java">@Nonnull CultivationRealm getEquivalentRealm(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref);</code></pre>
+
+    <p>Map your own levels onto the seven realms however you like, and every existing gate understands your progression for free.</p>
+
+    <h3>Two kinds of rank-up</h3>
+
+    <p>Cultivation drives rank-ups through its timed meditation ritual and offers two flavours. Map your progression onto them however suits:</p>
+
+    <table>
+    <thead><tr><th>Flavour</th><th>Ritual</th></tr></thead>
+    <tbody><tr><td><strong>Advancement</strong></td><td>The routine step. Shorter, lower Spirit Vein requirement, no <a href="../tribulations/">tribulation</a> lightning by default.</td></tr><tr><td><strong>Breakthrough</strong></td><td>The milestone step. Longer, higher vein requirement, tribulation lightning -- or the Heart-Devil Trial for a deeply-leaned cultivator.</td></tr></tbody>
+    </table>
+
+    <p>Only one may be ready at a time; <code>isReadyForBreakthrough</code> is tested first. Returning true from neither simply means meditation does its ordinary thing that tick. You also supply the ritual durations yourself through <code>getBreakthroughDurationSeconds</code> and <code>getAdvancementDurationSeconds</code>, so the <a href="../realms/">built-in timings</a> do not apply to your ladder.</p>
+
+    <h3>What you store</h3>
+
+    <p>The interface is deliberately <strong>stateless</strong> -- every method is handed the accessor and ref of the player being asked about, so your own persisted component stays the single source of truth. The player's <code>CultivationComponent</code> still exists and is left completely alone, which is what lets a server uninstall your addon and get its original realms back untouched.</p>
+
+    <div class="note"><strong>Threading.</strong> Every method is called on that player's world thread, and the accessor may be a <code>CommandBuffer</code> rather than a <code>Store</code>. Component <strong>creation</strong> must go through the accessor, not <code>ref.getStore().putComponent</code> -- the latter throws <em>"Store is currently processing!"</em> and takes the world down. Reads are fine either way.</div>
+
+    <p>Only one provider can be installed at a time. The last to register wins, and a warning naming both is logged, since two mods each believing they own progression is a misconfiguration rather than something to silently pick a winner for. Pass <code>null</code> to hand progression back to the built-in system.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>CultivationTheme</h2>
+
+    <pre><code class="language-java">CultivationAPI.setTheme(@Nullable CultivationTheme theme)
+CultivationAPI.getTheme()</code></pre>
+
+    <p>Re-words the mod's entire player-facing vocabulary without touching its behaviour, so a setting with soul masters and academies rather than cultivators and sects reads as its own game instead of a re-skin. Every string Cultivation shows a player -- chat, commands, HUD, menus, item names, tooltips -- is routed through your <code>translate</code> first, and whatever you return is used verbatim.</p>
+
+    <pre><code class="language-java">@Nullable Message translate(@Nonnull String key);</code></pre>
+
+    <p>Return <code>null</code> for any key you do not re-word and Cultivation's own wording is used, so a theme may cover as much or as little as it likes.</p>
+
+    <h3>Why a hook and not a language file</h3>
+
+    <p>Because the engine will not let you do it with one. Language files from every asset pack are merged into a single catalog, and that merge is <strong>first-writer-wins</strong> -- a duplicate key from a later pack is discarded and logged as <code>'x' has multiple definitions</code>. Cultivation's own pack loads before any addon that depends on it, so an addon shipping <code>server.cultivation.playerMsg.breakthrough</code> in its own <code>server.lang</code> would be silently ignored, and even winning that race would only mean winning it on that particular boot.</p>
+
+    <p>So a theme keeps its strings under <strong>its own keys</strong> -- which collide with nothing -- and maps Cultivation's keys onto them.</p>
+
+    <div class="note">Return a <code>Message.translation(...)</code> of your own key rather than <code>Message.raw(...)</code> wherever you can. Raw text is identical in every language, and Cultivation is translated.</div>
+
+    <p><code>translate</code> is called on whatever thread is building the message, often several times per rendered line, so it must be fast, thread-safe and free of side effects -- a lookup in an immutable map is the intended shape. Any <code>.param(...)</code> placeholders Cultivation fills in are applied to whatever you return, so a replacement must keep the same placeholder names; drop one and it renders empty.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>AdminConfigSection</h2>
+
+    <pre><code class="language-java">CultivationAPI.registerAdminConfigSection(@Nonnull AdminConfigSection section)
+CultivationAPI.unregisterAdminConfigSection(@Nonnull String sectionKey)
+CultivationAPI.getAdminConfigSections()
+CultivationAPI.newAdminConfigField(String key, Message label, ...)</code></pre>
+
+    <p>Adds a group of tunable numbers to Cultivation's admin menu, where it appears as its own section button on the Config tab of <code>/cultivation admin</code> beside Cultivation's own nine -- with the same rows, the same editing, and the same single Save. The same settings also appear in a <strong>Mod Settings</strong> block at the bottom of the ordinary Cultivation settings menu, visible to admins only.</p>
+
+    <p>One section per config file is the shape Cultivation uses for itself and the one that reads best.</p>
+
+    <table>
+    <thead><tr><th>Member</th><th>Purpose</th></tr></thead>
+    <tbody><tr><td><code>getKey()</code></td><td>A stable id, unique across every registered section. Namespace it (<code>"SoulRings:spiritPower"</code>). What a click on the button sends back, so it is deliberately independent of list order.</td></tr><tr><td><code>getLabel()</code></td><td>The section button and heading. Use a <code>Message.translation(...)</code> so it localizes.</td></tr><tr><td><code>getHint()</code></td><td>One line explaining what the section tunes -- the button tooltip and the text under the heading.</td></tr><tr><td><code>getFields()</code></td><td>The rows, in display order. Build them with <code>newAdminConfigField</code> rather than implementing <code>AdminConfigField</code> yourself.</td></tr><tr><td><code>save()</code></td><td>Persists the section after an admin presses Save.</td></tr></tbody>
+    </table>
+
+    <p>Only <strong>numbers</strong> are supported, because the row widget behind it is a number input. Express a boolean as a 0/1 field with a label saying so, and keep anything list-shaped in the config file -- Cultivation makes the same call for its own booleans and its Qi-absorption item table.</p>
+
+    <p>Both host pages are gated on <code>cultivation.admin</code>, and the gate is re-checked server-side on save rather than trusted from the menu, so a section may safely expose real balance numbers.</p>
+
+    <div class="note">Return a <strong>stable</strong> field list. The page matches an admin's in-flight edits to fields by key, so a list that changes shape between render and save silently drops those edits. Clamp out-of-range values in the field's <code>set</code> -- the page re-displays whatever <code>get</code> returns afterwards, so a coerced value is shown back to the admin rather than silently disagreeing with what they typed.</div>
+
+    <p>Registering the same section key twice replaces the first, so this is safe across a reload of your plugin.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Reading a player under any ladder</h2>
+
+    <p>Three facade methods report a cultivator's standing under whichever system happens to be live, so your code does not need to know whether a provider is installed:</p>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th></tr></thead>
+    <tbody><tr><td><code>CultivationAPI.getGlobalLevel(accessor, ref)</code></td><td>The installed provider's level, or the built-in realm/stage flattened into one ever-increasing number.</td></tr><tr><td><code>CultivationAPI.getQi(accessor, ref)</code></td><td>Banked progress toward the next rank-up -- the provider's progress if one is installed, else banked Qi.</td></tr><tr><td><code>CultivationAPI.refreshProgression(accessor, ref)</code></td><td>Re-reads the provider's view of a player, after your own mod changes their level outside a rank-up.</td></tr></tbody>
+    </table>
+
+    <p><code>CultivationAPI.getRealm(accessor, ref)</code> returns the <strong>effective</strong> realm, which is the provider's equivalent realm while one is installed -- this is what every gate in the mod tests against. <code>CultivationAPI.getStage(accessor, ref)</code> is always <code>null</code> under a provider, since a replacement ladder has no sub-stages -- it has only its own <code>getSubRankLabel</code>. Prefer <code>getGlobalLevel</code> for anything numeric.</p>
+
+    <p>The <a href="../realms/">rankings</a> and <code>/cultivation top</code> sort on that flattened level, so a replacement progression ranks correctly against itself. For the built-in ladder the ordering is exactly what realm-then-stage always produced.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

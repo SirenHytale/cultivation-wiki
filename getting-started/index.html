@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started — Cultivation Wiki</title>
+<meta name="description" content="Install Cultivation for Hytale on a client or server, then walk through your first hour: the HUD, meditation, your first cores, and reaching Qi Condensation.">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>Start Here</span><span class="sep">/</span><span>Getting Started</span>
+      <span class="sep">·</span><span class="han-dim">入門</span>
+    </div>
+
+    <h1>Getting Started</h1>
+    <p class="page-lede">
+      Install the mod, then spend your first hour learning the loop that carries you all the way
+      to Void Refinement: gather Qi, sit down, break through.
+    </p>
+
+    <h2>Installation</h2>
+
+    <div class="grid cols-2">
+      <div class="card">
+        <span class="card-han">客</span>
+        <h4>Client / Singleplayer</h4>
+        <p>Drop <code>Cultivation.jar</code> into:</p>
+        <pre><code>%appdata%\Hytale\UserData\Mods\</code></pre>
+      </div>
+      <div class="card">
+        <span class="card-han">服</span>
+        <h4>Server</h4>
+        <p>Drop <code>Cultivation.jar</code> into your server's:</p>
+        <pre><code>mods\</code></pre>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-title">Delete the old jar first</span>
+      Remove any previous version of <code>Cultivation.jar</code> before adding a new one.
+      Two copies on the classpath will conflict and the server will refuse to boot cleanly.
+    </div>
+
+    <p>
+      Cultivation works in <strong>singleplayer and multiplayer</strong>. On a server, only the server
+      needs the jar for the systems to run — but players without it will not see the custom menus.
+    </p>
+
+    <h2>Your First Hour</h2>
+
+    <div class="mermaid-wrap">
+<pre class="mermaid">
+timeline
+    title From mortal to Qi Condensation
+    First minutes : Join the world : Run /cultivation : Toggle the HUD
+    Early hunting : Kill creatures : Collect Spirit Cores : Find a talisman
+    Settling down : Check the vein : Sit and meditate : Absorb cores mid-session
+    The first climb : Early to Middle : Middle to Late : Late to Peak
+    Breakthrough : Bank the Qi : Find a 750+ vein : Survive the lightning
+</pre>
+      <span class="mermaid-cap">The opening loop, start to first breakthrough</span>
+    </div>
+
+    <h3>1. Turn on the HUD</h3>
+    <p>
+      Run <code>/cultivation hud</code>. You get a persistent corner panel showing your realm, stage,
+      Qi progress and any active ritual progress. You can move it to any of the four corners from
+      <code>/cultivation settings</code>.
+    </p>
+    <p>
+      <code>/cultivation</code> on its own opens the full stats page; <code>/cultivation info</code>
+      prints the same numbers to chat if you would rather not open a menu.
+    </p>
+
+    <h3>2. Earn your first Qi</h3>
+    <p>
+      Two sources, covered in full on <a href="../qi-gathering/">Qi Gathering</a>:
+    </p>
+    <ul>
+      <li><strong>Kill creatures</strong> for a chance at a Spirit, Profound or Divine Core. Right-click a core to absorb it instantly.</li>
+      <li><strong>Meditate</strong> with <code>/cultivation meditate</code> to draw ambient Qi out of the chunk you are sitting in.</li>
+    </ul>
+
+    <div class="note tip">
+      <span class="note-title">Do both at once</span>
+      Absorbing a core while you are already meditating pays a bonus on top of the core's normal value.
+      Hoard your cores and cash them in during a meditation session.
+    </div>
+
+    <h3>3. Advance through the stages</h3>
+    <p>
+      Sub-stage advancements (Early → Middle → Late → Peak) are short rituals — 8 seconds at the
+      bottom of the ladder — and they need only <strong>200</strong> Qi in the chunk's vein.
+      They happen as soon as you have banked enough Qi and sat down.
+    </p>
+
+    <h3>4. Survive your first breakthrough</h3>
+    <p>
+      Going from Peak of one realm into the next is a different animal. You need a chunk vein holding
+      <strong>750+</strong> Qi, a 24-second uninterrupted ritual, and the nerve to sit still while
+      tribulation lightning comes down on you.
+    </p>
+
+    <div class="note warn">
+      <span class="note-title">Do not stand up</span>
+      Moving away from where you sat down — or cancelling manually — <strong>demotes you a sub-stage</strong>
+      and wipes your banked Qi. Breakthrough lightning is also genuinely lethal. Go in at full health,
+      and read <a href="../realms/">Realms &amp; Stages</a> before you try.
+    </div>
+
+    <h2>What Opens Up Next</h2>
+    <p>
+      The realm ladder is only the spine. Each of these unlocks as you climb:
+    </p>
+
+    <table>
+      <thead><tr><th>Unlocks at</th><th>System</th><th>What it gives you</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="chip">Golden Core</span></td>
+          <td>Races</td>
+          <td>A one-time choice of Human, Demon or Deity, each with its own stat profile</td>
+        </tr>
+        <tr>
+          <td>Every rank-up</td>
+          <td>Skill Tree</td>
+          <td>Points to spend across nine branches, +1 per advancement and +3 per breakthrough</td>
+        </tr>
+        <tr>
+          <td>Configurable</td>
+          <td>The Dao</td>
+          <td>An element on the Wu Xing ring, a drifting Yin-Yang balance, and a Devil/Righteous path</td>
+        </tr>
+        <tr>
+          <td>Any realm</td>
+          <td>Life-Bound Treasures</td>
+          <td><code>/cultivation bind</code> ties a weapon or armour piece to you so it levels from use</td>
+        </tr>
+        <tr>
+          <td>Any realm</td>
+          <td>Sects</td>
+          <td>Found a guild, claim a hall on a dragon vein, and eventually go to war over one</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>For Server Owners</h2>
+    <p>
+      Every number in the mod lives in a themed JSON config file — nothing is hardcoded — and the ones
+      you are most likely to touch can be edited <strong>live in-game</strong> through
+      <code>/cultivation admin</code>, with no file editing and no restart.
+    </p>
+
+    <div class="panel">
+      <div class="panel-head">Config Files</div>
+      <table>
+        <thead><tr><th>File</th><th>Covers</th></tr></thead>
+        <tbody>
+          <tr><td><code>Config.json</code></td><td>Core Qi curve and per-level stat bonuses</td></tr>
+          <tr><td><code>SpiritCoreConfig.json</code></td><td>Core drop chances and Qi values</td></tr>
+          <tr><td><code>SpiritVeinConfig.json</code></td><td>Spirit Vein tuning, meditation timing, the talisman</td></tr>
+          <tr><td><code>BreakthroughConfig.json</code></td><td>Ritual requirements, durations, tribulation toggles</td></tr>
+          <tr><td><code>LifeBoundConfig.json</code></td><td>Life-Bound XP curve and combat bonuses</td></tr>
+          <tr><td><code>RaceSystemConfig.json</code></td><td>Cross-race server behaviour and admin overrides</td></tr>
+          <tr><td><code>Race/*.json</code></td><td>Each race's own bonuses and flavour text</td></tr>
+        </tbody>
+      </table>
+      <p style="margin:14px 0 0; font-size:0.9rem; color:var(--text-mut)">
+        Config files carry human-readable descriptions next to the less obvious settings.
+      </p>
+    </div>
+
+    <h2>Permissions</h2>
+    <table>
+      <thead><tr><th>Permission</th><th>Grants</th></tr></thead>
+      <tbody>
+        <tr><td><code>cultivation</code></td><td>The base command and every player-facing subcommand</td></tr>
+        <tr><td><code>cultivation.admin</code></td><td>All <code>/cultivation admin</code> subcommands and the admin menu</td></tr>
+        <tr><td><code>cultivation.debug</code></td><td>The debug command group</td></tr>
+        <tr><td><code>cultivation.debug.vein</code></td><td><code>/cultivation debug vein</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <span class="note-title">Languages</span>
+      Cultivation is fully localised in <strong>English</strong> and <strong>Simplified Chinese</strong>
+      (with proper Xianxia terminology throughout), plus partial translations for Portuguese (Brazil),
+      Russian and Ukrainian.
+    </div>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

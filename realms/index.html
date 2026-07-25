@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Realms &amp; Stages — Cultivation Wiki</title>
+<meta name="description" content="The seven cultivation realms and their four sub-stages, how advancements differ from breakthroughs, and what failing a ritual costs you.">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The Path</span><span class="sep">/</span><span>Realms</span>
+      <span class="sep">·</span><span class="han-dim">境界</span>
+    </div>
+
+    <h1>Realms &amp; Stages</h1>
+    <p class="page-lede">
+      Every player starts at <strong>Body Refinement, Early-Stage</strong> and climbs toward immortality
+      through <strong>seven realms</strong>, each split into <strong>four sub-stages</strong>:
+      Early, Middle, Late and Peak. Twenty-eight rungs in all.
+    </p>
+
+    <div class="mermaid-wrap">
+<pre class="mermaid">
+flowchart LR
+    R1["Body&lt;br/&gt;Refinement"] --&gt; R2["Qi&lt;br/&gt;Condensation"]
+    R2 --&gt; R3["Foundation&lt;br/&gt;Establishment"]
+    R3 --&gt; R4["Golden Core&lt;br/&gt;Formation"]
+    R4 --&gt; R5["Nascent&lt;br/&gt;Soul"]
+    R5 --&gt; R6["Soul&lt;br/&gt;Formation"]
+    R6 --&gt; R7["Void&lt;br/&gt;Refinement"]
+</pre>
+      <span class="mermaid-cap">The seven realms, in order</span>
+    </div>
+
+    <h2>The Ladder</h2>
+    <p>
+      Within each realm you advance <strong>Early → Middle → Late → Peak</strong>, then
+      <strong>break through</strong> into the next realm's Early-Stage. Higher realms and stages grant
+      additive max health and a percentage damage bonus, both tuned in <code>Config.json</code>.
+    </p>
+
+    <div class="realm-track">
+      <div class="realm-row" style="--realm:#9E8B78">
+        <div class="realm-medal">體</div>
+        <div>
+          <div class="realm-name">Body Refinement</div>
+          <div class="realm-sub">Tempering flesh and sinew before a single wisp of energy will hold.</div>
+        </div>
+        <div class="realm-tier">REALM I</div>
+      </div>
+      <div class="realm-row" style="--realm:#7EA8D9">
+        <div class="realm-medal">氣</div>
+        <div>
+          <div class="realm-name">Qi Condensation</div>
+          <div class="realm-sub">Ambient spirit energy finally gathers and stays inside the body.</div>
+        </div>
+        <div class="realm-tier">REALM II</div>
+      </div>
+      <div class="realm-row" style="--realm:#6FBF9B">
+        <div class="realm-medal">築</div>
+        <div>
+          <div class="realm-name">Foundation Establishment</div>
+          <div class="realm-sub">The base is laid. From here the climb is steep but no longer fragile.</div>
+        </div>
+        <div class="realm-tier">REALM III</div>
+      </div>
+      <div class="realm-row" style="--realm:#E0B44C">
+        <div class="realm-medal">丹</div>
+        <div>
+          <div class="realm-name">Golden Core Formation</div>
+          <div class="realm-sub">A core forms in the dantian — and your one-time race choice unlocks.</div>
+        </div>
+        <div class="realm-tier">REALM IV</div>
+      </div>
+      <div class="realm-row" style="--realm:#A98BD1">
+        <div class="realm-medal">嬰</div>
+        <div>
+          <div class="realm-name">Nascent Soul</div>
+          <div class="realm-sub">The soul takes an infant form and can act briefly apart from the body.</div>
+        </div>
+        <div class="realm-tier">REALM V</div>
+      </div>
+      <div class="realm-row" style="--realm:#D97E7E">
+        <div class="realm-medal">神</div>
+        <div>
+          <div class="realm-name">Soul Formation</div>
+          <div class="realm-sub">Soul and body fuse into something the mortal world no longer recognises.</div>
+        </div>
+        <div class="realm-tier">REALM VI</div>
+      </div>
+      <div class="realm-row" style="--realm:#F6D77B">
+        <div class="realm-medal">虛</div>
+        <div>
+          <div class="realm-name">Void Refinement</div>
+          <div class="realm-sub">The last realm the mod ships — and the last one the world can hold.</div>
+        </div>
+        <div class="realm-tier">REALM VII</div>
+      </div>
+    </div>
+
+    <h2>Advancements vs. Breakthroughs</h2>
+    <p>
+      Both are real, timed meditation rituals. Bank enough
+      <a href="../qi-gathering/">Qi</a>, sit down in a chunk whose Spirit Vein holds enough energy,
+      and the ritual progresses for as long as you keep meditating.
+    </p>
+    <p>
+      The chunk-Qi requirement is a <strong>presence check, not a drain</strong> — the vein is not consumed
+      by the ritual — but a vein that falls below the bar will pause the ritual until it regenerates.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th></th><th>Sub-Stage Advancement</th><th>Realm Breakthrough</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>When</strong></td>
+          <td>Early → Middle → Late → Peak</td>
+          <td>Peak → next realm's Early-Stage</td>
+        </tr>
+        <tr>
+          <td><strong>Minimum chunk Qi</strong></td>
+          <td>200 <code>Advancement-Min-Chunk-Qi</code></td>
+          <td>750 <code>Breakthrough-Min-Chunk-Qi</code></td>
+        </tr>
+        <tr>
+          <td><strong>Base duration</strong></td>
+          <td>8s <code>Advancement-Base-Seconds</code></td>
+          <td>24s <code>Breakthrough-Base-Seconds</code></td>
+        </tr>
+        <tr>
+          <td><strong>Duration scaling</strong></td>
+          <td>×1.3 per realm reached</td>
+          <td>×1.35 per realm reached</td>
+        </tr>
+        <tr>
+          <td><strong>Tribulation lightning</strong></td>
+          <td><span class="chip jade">off by default</span></td>
+          <td><span class="chip crimson">on, and lethal</span></td>
+        </tr>
+        <tr>
+          <td><strong>Skill points</strong></td>
+          <td>+1 <code>Points-Per-Advancement</code></td>
+          <td>+1, plus 2 more <code>Points-Per-Breakthrough</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note warn">
+      <span class="note-title">Failure costs you</span>
+      Cancelling a ritual — by drifting away from where you sat down, or by standing up manually —
+      <strong>demotes you one sub-stage</strong>, wipes your banked Qi, and revokes the skill points that
+      stage originally granted. You are never demoted below Early-Stage of your <em>current</em> realm,
+      so a failed breakthrough can never cost you a whole realm.
+    </div>
+
+    <h2>Ritual Flow</h2>
+
+    <div class="mermaid-wrap">
+<pre class="mermaid">
+flowchart TD
+    S["Peak stage reached&lt;br/&gt;Qi requirement banked"]
+    S --&gt; M{"Sit in a chunk with&lt;br/&gt;750+ vein Qi?"}
+    M --&gt;|no| W["Ritual will not start"]
+    M --&gt;|yes| R["Breakthrough ritual&lt;br/&gt;24s × 1.35 per realm"]
+    R --&gt; X{"Stayed seated&lt;br/&gt;the whole time?"}
+    X --&gt;|"moved / stood up"| F["FAILURE&lt;br/&gt;demote one stage&lt;br/&gt;lose banked Qi"]
+    X --&gt;|yes| T["Tribulation lightning&lt;br/&gt;or Heart-Devil Trial"]
+    T --&gt; D{"Survived?"}
+    D --&gt;|no| F
+    D --&gt;|yes| G["New realm&lt;br/&gt;+3 skill points"]
+</pre>
+      <span class="mermaid-cap">What a breakthrough attempt actually runs through</span>
+    </div>
+
+    <div class="note">
+      <span class="note-title">The heavens are watching</span>
+      Breakthrough lightning is genuinely lethal — it can kill you outright at low health.
+      A cultivator who has leaned far enough into Yin or Yang faces the
+      <strong>Heart-Devil Trial</strong> instead, which tests composure rather than hit points.
+      Both are tunable, and advancement tribulations are off by default.
+    </div>
+
+    <h2>Tuning the Curve</h2>
+    <p>
+      Nothing here is hardcoded. The realm/stage curve and its stat rewards live in
+      <code>Config.json</code>; the ritual requirements above live in <code>BreakthroughConfig.json</code>.
+      Both can be edited live in-game through <code>/cultivation admin</code> without touching a file
+      or restarting the server.
+    </p>
+
+    <div class="panel">
+      <div class="panel-head">Related Commands</div>
+      <table>
+        <thead><tr><th>Command</th><th>Does</th></tr></thead>
+        <tbody>
+          <tr><td><code>/cultivation</code></td><td>Open the stats page — realm, stage, Qi progress</td></tr>
+          <tr><td><code>/cultivation info</code></td><td>Print the same readout to chat</td></tr>
+          <tr><td><code>/cultivation meditate</code></td><td>Begin the ritual (alias <code>/cultivation cultivate</code>)</td></tr>
+          <tr><td><code>/cultivation admin setrealm &lt;player&gt; &lt;realm&gt;</code></td><td>Set a realm directly <span class="chip crimson">admin</span></td></tr>
+          <tr><td><code>/cultivation admin setstage &lt;player&gt; &lt;stage&gt;</code></td><td>Set a sub-stage directly <span class="chip crimson">admin</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

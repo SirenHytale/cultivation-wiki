@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sect Wars — Cultivation Wiki</title>
+<meta name="description" content="Cultivation Mod - Declaring war and taking a rival sect&#x27;s hall by siege">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The World</span><span class="sep">/</span><span>Sect Wars</span>
+      <span class="sep">·</span><span class="han-dim">界</span>
+    </div>
+
+    <h1>Sect Wars</h1>
+
+    <p class="page-lede">A <strong>sect war</strong> is one thing only: a siege of a rival <a href="../sects/">Sect</a>'s claimed hall. There is no score, no kill count and no capture points - an attacking sect simply has to stand on the contested chunk long enough, uncontested, before the window runs out. Win and the hall changes hands.</p>
+
+    <p>The whole system is gated behind <code>Wars-Enabled</code> (default <code>true</code>).</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Declaring War</h2>
+
+    <p><code>/sect war &lt;sect&gt;</code> declares a siege on that sect's hall. Only your sect's <strong>leader</strong> may declare. The declaration is refused if:</p>
+
+    <table>
+    <thead><tr><th>Refusal</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>Same sect</td><td>You cannot besiege yourself.</td></tr><tr><td>Target holds no hall</td><td>There is nothing to take. See <a href="../sects/">Sects</a> for how halls are claimed.</td></tr><tr><td>Target is already besieged</td><td>One siege per defender at a time.</td></tr><tr><td>You are already attacking</td><td>One siege per attacker at a time.</td></tr><tr><td>Target is on cooldown</td><td>They finished a war too recently - see below.</td></tr><tr><td>Nobody online in the target sect</td><td>Offline protection, <code>War-Requires-Defender-Online</code> (default <code>true</code>).</td></tr></tbody>
+    </table>
+
+    <p>Any siege whose window has already run out is swept and failed before these checks, so a forgotten siege can never lock either side out of declaring.</p>
+
+    <p>On success, both sects are told at once - the attackers that the siege is open, the defenders that their mountain is under threat.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>The Siege</h2>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart TD;
+    Declare["/sect war rival&lt;br/&gt;Window opens: 600s"];
+    Stand["An attacker stands&lt;br/&gt;on the hall chunk"];
+    Hold["Hold accrues&lt;br/&gt;toward 120s"];
+    Contest["A defender is seen&lt;br/&gt;Accrual pauses 8s"];
+    Capture["Hall captured&lt;br/&gt;Transfers to the attacker"];
+    Fail["Window lapses&lt;br/&gt;Defender holds"];
+    Cool["Defender immune&lt;br/&gt;for 24 hours"];
+
+    Declare --&gt; Stand;
+    Stand --&gt; Hold;
+    Stand --&gt; Contest;
+    Contest --&gt; Stand;
+    Hold --&gt; Capture;
+    Declare --&gt; Fail;
+    Capture --&gt; Cool;
+    Fail --&gt; Cool;
+
+    click Declare "../sects/" "View the Sects page";
+</pre>
+    </div>
+
+    <p>The rules behind that, all config-driven:</p>
+
+    <ul><li>The siege stays open for <strong>600 seconds</strong> from declaration (<code>War-Window-Seconds</code>). Reaching the required hold inside that window captures the hall; the window lapsing fails the siege.</li><li><strong>120 seconds</strong> of accrued hold captures it (<code>War-Required-Hold-Seconds</code>).</li><li>Presence is sampled every 2 seconds. Hold only accrues while a member of the <strong>attacking</strong> sect is standing on the hall's own chunk, and no more than 5 seconds of real time may be credited from any single sample - so a gap with nobody there never counts retroactively.</li><li>A member of the <strong>defending</strong> sect seen on that chunk stalls accrual for <strong>8 seconds</strong> afterwards (<code>War-Defender-Grace-Seconds</code>). Defenders do not have to kill anyone; simply being there is enough to hold the line.</li><li>Both sides fight under whatever the world's normal PvP rules are. The defenders' own <a href="../formations/">Formations</a> help here: a Mountain-Guarding array chokes an outsider's Qi regen on their ground and an Immortal-Binding array roots and wounds intruders outright.</li></ul>
+
+    <p>Sieges are persisted. A restart mid-siege resumes it with the time it had left rather than handing the defender a free win, and hold progress is flushed to disk at least every 15 seconds. A siege whose window ran out while the server was down is treated as having run its course - the defender gets their post-war immunity anyway.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Cooldowns</h2>
+
+    <p>However a siege ends - captured, lapsed, or the defender's hall gone before the hold completed - the <strong>defending sect</strong> becomes immune to being besieged again for <strong>24 real-world hours</strong> (<code>War-Cooldown-Hours</code>). The attacker takes no cooldown of their own, but they cannot declare a second siege while their first is still live.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2><code>/sect war status</code></h2>
+
+    <p>Bare <code>/sect war</code> and <code>/sect war status</code> both report - and <strong>any</strong> member may ask, not just the leader:</p>
+
+    <ul><li>Whether your sect is attacking or defending, and against whom.</li><li>Hold accrued so far against the required hold.</li><li>Seconds left in the window.</li><li>Whether defenders are currently contesting the chunk, so attackers know why their hold has stopped moving.</li></ul>
+
+    <p>With no siege in flight it says so, and adds the hours and minutes left on your sect's own war cooldown if it has one. Asking for status also reaps a siege whose window has quietly run out.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>What the Winner Takes</h2>
+
+    <p>When the hold completes, the defender's hall - the exact chunk and its vein tier - transfers to the attacking sect, and the defender is left hall-less. That single transfer carries a lot with it:</p>
+
+    <ul><li>The <strong>sect Qi bonus</strong> the hall paid (+5% on a rich vein, +8% on a dragon vein) moves to the victors. The losers lose theirs entirely until they claim somewhere new.</li><li>The hall's shared <strong>Spirit Spring</strong>, including everything it had banked, follows the ground to the victor on the next sweep. See <a href="../dwelling/">Cave Abodes</a>.</li><li>The loser's <strong>hall inscription</strong> goes dark. The art it taught is revoked from every one of their members the moment the hall is gone. The inscription is not captured - it stays recorded on the losing sect and starts teaching again if they ever claim a new hall, and the victor's own inscription is untouched.</li><li><a href="../formations/">Formations</a> do <strong>not</strong> change hands. They are controlled by the sect that placed them, wherever they sit.</li></ul>
+
+    <p>If the defending sect disbanded or gave up its hall before the hold completed, there is nothing to capture: the siege fails instead, so the attacker is at least told it is over.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Commands</h2>
+
+    <table>
+    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+    <tbody><tr><td><code>/sect war &lt;sect&gt;</code></td><td>Declares a siege on that sect's hall (leader only).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war status</code></td><td>Reports the siege your sect is in, or your war cooldown.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims or moves your hall - what a siege is fought over.</td><td><code>cultivation.sect</code></td></tr></tbody>
+    </table>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <p><code>Wars-Enabled</code>, <code>War-Required-Hold-Seconds</code>, <code>War-Window-Seconds</code>, <code>War-Defender-Grace-Seconds</code>, <code>War-Cooldown-Hours</code> and <code>War-Requires-Defender-Online</code> all live in the society config - see <a href="../config-society/">Society Config</a> for the full reference, and <a href="../commands/">Commands</a> for every command in the mod.</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

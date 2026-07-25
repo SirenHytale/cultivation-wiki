@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" data-root="../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qi Gathering — Cultivation Wiki</title>
+<meta name="description" content="How to earn Qi in Cultivation: meditation and Spirit Veins, vein tiers, cultivation cores, the Qi Gathering Talisman, and weather resonance.">
+<link rel="icon" href="../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>The Path</span><span class="sep">/</span><span>Qi Gathering</span>
+      <span class="sep">·</span><span class="han-dim">聚氣</span>
+    </div>
+
+    <h1>Qi Gathering</h1>
+    <p class="page-lede">
+      Qi is the currency of the whole mod — it buys every advancement and every breakthrough.
+      There are two ways to earn it, and they are deliberately better together than apart.
+    </p>
+
+    <div class="mermaid-wrap">
+<pre class="mermaid">
+flowchart TD
+    subgraph W["The World"]
+      V["Chunk Spirit Vein&lt;br/&gt;a finite, regenerating pool"]
+      C["Creature drops&lt;br/&gt;Spirit · Profound · Divine Cores"]
+      WX["Active weather&lt;br/&gt;resonance multiplier"]
+    end
+    V --&gt;|"meditate"| Q(["Your banked Qi"])
+    C --&gt;|"right-click to absorb"| Q
+    WX -.-&gt;|"×1.15 – ×1.5"| Q
+    T["Qi Gathering Talisman&lt;br/&gt;held in the hotbar"] -.-&gt;|"boosts vein rate"| Q
+    Q --&gt; A["Advancement&lt;br/&gt;or Breakthrough"]
+</pre>
+      <span class="mermaid-cap">Everything that feeds your Qi pool</span>
+    </div>
+
+    <h2>Meditation &amp; Spirit Veins</h2>
+    <p>
+      <code>/cultivation meditate</code> sits your character cross-legged and slowly draws ambient energy
+      from the <strong>Spirit Vein</strong> of the chunk you are standing in. A Spirit Vein is a real
+      per-chunk energy pool: it has a capacity, it depletes as you draw from it, and it regenerates
+      over time. Camp on one chunk long enough and it will run dry, and your Qi-per-second falls
+      with it until it recovers.
+    </p>
+
+    <div class="note tip">
+      <span class="note-title">Move around</span>
+      Because veins deplete locally and regenerate on their own clock, the fastest way to gather is
+      to rotate between a few good chunks rather than sit on one forever. Use
+      <code>/cultivation debug vein</code> to read the current chunk's remaining Qi.
+    </div>
+
+    <h3>Vein Tiers</h3>
+    <p>
+      Not every chunk is equal. Most are ordinary, but some roll richer, and a rare few sit on a
+      dragon vein — the chunks worth fighting a sect war over.
+    </p>
+
+    <div class="grid cols-3">
+      <div class="card">
+        <span class="card-han">凡</span>
+        <h4>Common Vein</h4>
+        <p>The baseline. Regenerates at the standard rate.</p>
+        <div class="qi-meter"><i style="width:34%"></i></div>
+      </div>
+      <div class="card">
+        <span class="card-han">靈</span>
+        <h4>Rich Vein</h4>
+        <p>A noticeably faster regeneration multiplier — worth returning to.</p>
+        <div class="qi-meter"><i style="width:64%"></i></div>
+      </div>
+      <div class="card">
+        <span class="card-han">龍</span>
+        <h4>Dragon Vein</h4>
+        <p>The best land in the world. Sect halls and cave abodes are claimed on these.</p>
+        <div class="qi-meter"><i style="width:100%"></i></div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="note-title">Server owners: the drain rule</span>
+      A vein's regeneration multiplied by its tier bonus must stay <strong>below</strong> the meditation
+      drain rate. If regen × multiplier ever exceeds drain, that chunk becomes an infinite Qi fountain
+      and the entire progression curve stops mattering.
+    </div>
+
+    <h3>The Qi Gathering Talisman</h3>
+    <p>
+      Hold a <strong>Qi Gathering Talisman</strong> anywhere in your hotbar while meditating and your
+      Spirit Vein absorption rate goes up. It does not need to be in your hand — carrying it is enough.
+      Rate and behaviour are set in <code>SpiritVeinConfig.json</code>.
+    </p>
+
+    <h2>Cultivation Cores</h2>
+    <p>
+      Killing creatures has a chance to drop a cultivation core. Right-click one to absorb it for an
+      instant chunk of Qi — no meditation required, which makes cores the answer when you want to
+      progress while doing something else.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Core</th><th>Rarity</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chip jade">Spirit Core</span></td>
+          <td>Common</td>
+          <td>The everyday drop. Small, steady Qi.</td>
+        </tr>
+        <tr>
+          <td><span class="chip">Profound Core</span></td>
+          <td>Uncommon</td>
+          <td>A meaningful jump — worth saving for a ritual.</td>
+        </tr>
+        <tr>
+          <td><span class="chip crimson">Divine Core</span></td>
+          <td>Rare</td>
+          <td>Large enough to carry a stubborn breakthrough on its own.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note tip">
+      <span class="note-title">Stack the two sources</span>
+      Absorbing a core <em>while you are already meditating</em> grants a bonus on top of the core's
+      normal Qi value. Save your cores for a meditation session rather than absorbing them on sight.
+    </div>
+
+    <p>
+      Drop chances and Qi values for all three cores live in <code>SpiritCoreConfig.json</code>.
+    </p>
+
+    <h2>Weather Resonance</h2>
+    <p>
+      The sky matters. Meditating during active weather grants a Qi multiplier, and the multiplier is
+      larger when the weather matches the element of the Dao you walk.
+    </p>
+
+    <table>
+      <thead><tr><th>Condition</th><th>Multiplier</th></tr></thead>
+      <tbody>
+        <tr><td>Weather matching your chosen dao element</td><td><strong>×1.5</strong></td></tr>
+        <tr><td>Any other active weather</td><td><strong>×1.15</strong></td></tr>
+        <tr><td>Clear skies</td><td>×1.0</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      Which weather maps to which element is itself configurable, by keyword, in
+      <code>DaoConfig.json</code> — so a server using custom weather assets can wire them in
+      without any code.
+    </p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Putting It Together</h2>
+    <p>An efficient early loop looks like this:</p>
+    <ol>
+      <li>Hunt until you have a handful of cores and a Qi Gathering Talisman.</li>
+      <li>Find a rich chunk with <code>/cultivation debug vein</code> and sit down.</li>
+      <li>Meditate through the weather if there is any — rain pays better than clear sky.</li>
+      <li>Absorb your saved cores <em>during</em> the session for the stacking bonus.</li>
+      <li>When the vein thins out, move a few chunks over and repeat.</li>
+    </ol>
+
+    <div class="panel">
+      <div class="panel-head">Related Config</div>
+      <table>
+        <thead><tr><th>File</th><th>Covers</th></tr></thead>
+        <tbody>
+          <tr><td><code>SpiritVeinConfig.json</code></td><td>Vein capacity, regeneration, tiers, meditation timing, talisman</td></tr>
+          <tr><td><code>SpiritCoreConfig.json</code></td><td>Core drop chances and Qi values</td></tr>
+          <tr><td><code>DaoConfig.json</code></td><td>Weather → element keyword mapping and resonance multipliers</td></tr>
+          <tr><td><code>Config.json</code></td><td>The Qi curve every one of these feeds into</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../data/nav.js"></script>
+<script src="../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

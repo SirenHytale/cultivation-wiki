@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Preview the wiki locally at http://localhost:8000
 
-Pages are served at clean, extensionless URLs (docs/realms/index.html is reached
-as /docs/realms/), and only a real HTTP server resolves those — opening
+Pages are served at clean, extensionless URLs (realms/index.html is reached as
+/realms/), and only a real HTTP server resolves those — opening
 index.html from disk gives you a file:// directory listing instead of the page.
 So use this rather than double-clicking.
 

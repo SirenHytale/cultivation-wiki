@@ -8,8 +8,8 @@ Emitted as a .js file assigning a global rather than .json: it loads with a
 plain <script> tag, so there is no fetch, no CORS and no MIME configuration to
 get wrong on a static host.
 
-Record URLs are the clean, served paths (docs/realms/, not
-docs/realms/index.html), matching the links in data/nav.js.
+Record URLs are the clean, served paths (realms/, not realms/index.html),
+matching the links in data/nav.js.
 
 Usage (from the repo root):
     python tools/build_index.py
