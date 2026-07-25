@@ -140,6 +140,16 @@ class PageParser(HTMLParser):
             self.buf.append(data)
 
 
+def lang_of(url: str) -> str:
+    """Which language a served URL belongs to. zh/ mirrors the en tree."""
+    return "zh" if url == "zh/" or url.startswith("zh/") else "en"
+
+
+def strip_lang(url: str) -> str:
+    """The language-neutral slug, for looking a page up in nav.js."""
+    return url[3:] if url.startswith("zh/") else ("./" if url == "zh/" else url)
+
+
 def clean_url(rel: str) -> str:
     """Repo path -> the URL it is actually served at (no .html, no index.html)."""
     if rel == "index.html":
@@ -155,26 +165,32 @@ def clean_title(raw: str) -> str:
     return re.split(r"\s+[—|·]\s+", t)[0].strip() or t
 
 
-def section_for(rel: str, nav_map: dict[str, str]) -> str:
-    return nav_map.get(rel.replace("\\", "/"), "Wiki")
+def section_for(rel: str, nav_map: dict, lang: str = "en") -> str:
+    entry = nav_map.get(rel.replace("\\", "/"))
+    if not entry:
+        return "百科" if lang == "zh" else "Wiki"
+    return entry[1] if (lang == "zh" and entry[1]) else entry[0]
 
 
-def load_nav_map() -> dict[str, str]:
-    """Best-effort read of data/nav.js so hits show their sidebar group."""
+def load_nav_map() -> dict:
+    """Best-effort read of data/nav.js so hits show their sidebar group.
+
+    Maps href -> (english group name, chinese group name).
+    """
     nav = ROOT / "data" / "nav.js"
-    out: dict[str, str] = {}
+    out: dict = {}
     if not nav.exists():
         return out
     text = nav.read_text(encoding="utf-8")
-    # Grab each `title: "X", han:` group header, then the hrefs that follow it.
+    # Each group header is `title: "X", zh: "Y", han: "Z"`; capture both names.
     for block in re.split(r'\{\s*\n\s*title:\s*"', text)[1:]:
-        m = re.match(r'([^"]+)",\s*han:', block)
+        m = re.match(r'([^"]+)",\s*(?:zh:\s*"([^"]*)",\s*)?han:', block)
         if not m:
             continue
-        group = m.group(1)
+        names = (m.group(1), m.group(2) or "")
         body = block.split("]")[0]
         for href in re.findall(r'href:\s*"([^"]+)"', body):
-            out.setdefault(href, group)
+            out.setdefault(href, names)
     return out
 
 
@@ -198,7 +214,8 @@ def build() -> list[dict]:
         parser.close()
 
         title = clean_title(parser.title) or rel
-        group = section_for(url, nav_map)
+        lang = lang_of(url)
+        group = section_for(strip_lang(url) or "./", nav_map, lang)
 
         for head, text in parser.sections:
             text = text.strip()
@@ -210,6 +227,7 @@ def build() -> list[dict]:
                 "s": f"{group} › {title}" if head else group,
                 "h": title if head else "",
                 "x": text[:1400],
+                "l": lang,
             })
         print(f"  {url}: {len(parser.sections)} sections")
 

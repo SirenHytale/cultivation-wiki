@@ -46,11 +46,28 @@ def tag(name: str, content: str, prop: bool = True) -> str:
     return f'<meta {attr}="{name}" content="{html.escape(content, quote=True)}">'
 
 
-def block(title: str, desc: str, url: str, noindex: bool) -> str:
+def alternates(rel: str) -> list[str]:
+    """hreflang pair, but only when the counterpart page actually exists."""
+    zh_rel = rel if rel.startswith("zh/") else ("zh/" + ("" if rel == "index.html" else rel))
+    en_rel = rel[3:] if rel.startswith("zh/") else rel
+    if en_rel in ("", "index.html"):
+        en_rel = "index.html"
+    if not (ROOT / zh_rel).exists() or not (ROOT / en_rel).exists():
+        return []
+    return [
+        f'<link rel="alternate" hreflang="en" href="{page_url(en_rel)}">',
+        f'<link rel="alternate" hreflang="zh-Hans" href="{page_url(zh_rel)}">',
+        f'<link rel="alternate" hreflang="x-default" href="{page_url(en_rel)}">',
+    ]
+
+
+def block(title: str, desc: str, url: str, noindex: bool, rel: str = "") -> str:
     lines = [BEGIN, f'<link rel="canonical" href="{html.escape(url, quote=True)}">']
+    lines += alternates(rel)
     if noindex:
         lines.append('<meta name="robots" content="noindex">')
     lines += [
+        tag("og:locale", "zh_CN" if rel.startswith("zh/") else "en_US"),
         tag("og:site_name", SITE_NAME),
         tag("og:type", "website"),
         tag("og:url", url),
@@ -90,7 +107,7 @@ def main() -> None:
 
         # 404 already carries its own noindex; don't advertise it socially either.
         noindex = path.name == "404.html" and "/" not in rel
-        new = block(title, desc, page_url(rel), noindex)
+        new = block(title, desc, page_url(rel), noindex, rel)
 
         # Strip any previous block, then any stray hand-written social tags, then
         # insert fresh. Doing it in that order keeps the script idempotent and

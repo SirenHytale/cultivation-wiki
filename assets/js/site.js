@@ -11,9 +11,38 @@
 (function () {
   "use strict";
 
-  var SITE = window.SITE || { sections: [], primary: [], external: [] };
+  var SITE = window.SITE || { sections: [], primary: [], external: [], ui: {} };
   var ROOT = document.documentElement.getAttribute("data-root") || "";
   var STORE_KEY = "cultivation-wiki-theme";
+
+  /* Language. Chinese pages declare lang="zh-CN" and live under zh/, so every
+     nav href (which is language-neutral) gains a "zh/" prefix there. */
+  var LANG = (document.documentElement.lang || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+  var T = (SITE.ui && SITE.ui[LANG]) || (SITE.ui && SITE.ui.en) || {};
+  function t(k) { return T[k] !== undefined ? T[k] : k; }
+  function label(item) { return (LANG === "zh" && item.zh) ? item.zh : item.title; }
+  /* A page exists in Chinese only when nav.js says so; otherwise fall back to
+     the English page rather than linking somewhere that 404s. */
+  function hasZh(item) { return LANG !== "zh" || !!item.zhPage; }
+  function itemHrefRaw(item) {
+    return (LANG === "zh" && item.zhPage) ? ("zh/" + (item.href === "./" ? "" : item.href)) : item.href;
+  }
+  function itemHref(item) { return url(itemHrefRaw(item)); }
+
+  /* The other language's URL for the page you are on. Falls back to that
+     language's home page when this page has no counterpart. */
+  function langHref() {
+    var p = location.pathname.replace(/index\.html$/, "");
+    if (p.charAt(0) !== "/") p = "/" + p;
+    if (LANG === "zh") return p.replace(/^\/zh(\/|$)/, "/");
+    var slug = p.replace(/^\//, "");
+    var key = slug === "" ? "./" : slug;
+    var found = null;
+    SITE.sections.forEach(function (sec) {
+      sec.items.forEach(function (i) { if (i.href === key) found = i; });
+    });
+    return (found && found.zhPage) ? "/zh/" + (slug === "" ? "" : slug) : "/zh/";
+  }
 
   function url(href) {
     return /^https?:/i.test(href) ? href : ROOT + href;
@@ -51,26 +80,29 @@
     if (!mount) return;
 
     var primary = SITE.primary.map(function (it) {
-      return '<a class="nav-link' + (samePage(it.href) ? " is-active" : "") + '" href="' + url(it.href) + '">' + esc(it.title) + "</a>";
+      return '<a class="nav-link' + (samePage(itemHrefRaw(it)) ? " is-active" : "") + '" href="' +
+             itemHref(it) + '">' + esc(label(it)) + "</a>";
     }).join("");
 
     var header = el(
       '<header class="site-header">' +
         '<button class="icon-btn menu-toggle" aria-label="Open navigation" aria-expanded="false">' + ICON.menu + "</button>" +
-        '<a class="brand" href="' + url("index.html") + '">' +
+        '<a class="brand" href="' + url(LANG === "zh" ? "zh/" : "index.html") + '">' +
           '<img src="' + url("assets/img/logo.png") + '" alt="" width="34" height="34">' +
           '<span class="brand-text">' +
-            '<span class="brand-name">' + esc(SITE.title) + "</span>" +
+            '<span class="brand-name">' + esc(LANG === "zh" ? (SITE.zhTitle || SITE.title) : SITE.title) + "</span>" +
             '<span class="brand-sub han">' + esc(SITE.han) + "</span>" +
           "</span>" +
         "</a>" +
         '<nav class="nav-main" aria-label="Primary">' + primary + "</nav>" +
         '<div class="header-tools">' +
-          '<button class="search-trigger" aria-label="Search the wiki">' +
+          '<button class="search-trigger" aria-label="' + esc(t("searchAria")) + '">' +
             ICON.search +
-            '<span class="label">Search the wiki…</span>' +
+            '<span class="label">' + esc(t("search")) + "</span>" +
             '<span class="kbd kbd-hint">Ctrl K</span>' +
           "</button>" +
+          '<a class="icon-btn lang-toggle" href="' + langHref() + '" title="' + esc(t("langSwitch")) +
+            '" aria-label="' + esc(t("langSwitch")) + '">' + esc(t("langName")) + "</a>" +
           '<button class="icon-btn theme-toggle" aria-label="Toggle day / night theme" title="Yin / Yang">' + ICON.taiji + "</button>" +
         "</div>" +
       "</header>"
@@ -85,16 +117,18 @@
 
     var groups = SITE.sections.map(function (sec) {
       var items = sec.items.map(function (it) {
-        if (it.soon) {
-          return '<li><a class="is-soon" aria-disabled="true" title="Not written yet">' +
-                 esc(it.title) + '<span class="soon">soon</span></a></li>';
-        }
-        return '<li><a href="' + url(it.href) + '"' + (samePage(it.href) ? ' class="is-current" aria-current="page"' : "") + ">" +
-               esc(it.title) + "</a></li>";
+        var cur = samePage(itemHrefRaw(it));
+        /* On the Chinese site, a page with no translation yet still appears in
+           the sidebar (so the structure is complete) but links to English and
+           says so. */
+        var mark = hasZh(it) ? "" :
+          '<span class="soon" title="' + esc(t("untranslatedTitle")) + '">' + esc(t("untranslated")) + "</span>";
+        return '<li><a href="' + itemHref(it) + '"' + (cur ? ' class="is-current" aria-current="page"' : "") + ">" +
+               esc(label(it)) + mark + "</a></li>";
       }).join("");
 
       return '<div class="side-group">' +
-               '<h4 class="side-title">' + esc(sec.title) +
+               '<h4 class="side-title">' + esc(LANG === "zh" && sec.zh ? sec.zh : sec.title) +
                  '<span class="han-dim">' + esc(sec.han || "") + "</span>" +
                "</h4>" +
                '<ul class="side-list">' + items + "</ul>" +
@@ -111,13 +145,21 @@
       a.addEventListener("click", function (e) { e.preventDefault(); });
     });
 
-    /* Mobile drawer */
+    /* Mobile drawer.
+       The scrim MUST live in the same stacking context as the sidebar. .layout
+       is `position: relative; z-index: 1`, which creates one — so a scrim on
+       <body> (root context, z-index 70) paints over the whole layout including
+       the drawer, swallowing every tap and scroll aimed at the nav. Appending
+       it here puts both in .layout's context, where 70 < 80 behaves. It is
+       position:fixed, so it still covers the viewport. */
     var scrim = el('<div class="scrim"></div>');
-    document.body.appendChild(scrim);
+    aside.parentNode.insertBefore(scrim, aside);
     var toggle = document.querySelector(".menu-toggle");
     function setOpen(open) {
       aside.classList.toggle("is-open", open);
       scrim.classList.toggle("is-open", open);
+      /* Stop the page behind the drawer from scrolling with it. */
+      document.body.classList.toggle("nav-open", open);
       if (toggle) toggle.setAttribute("aria-expanded", String(open));
     }
     if (toggle) toggle.addEventListener("click", function () { setOpen(!aside.classList.contains("is-open")); });
@@ -137,10 +179,11 @@
     if (!mount) return;
 
     var cols = SITE.sections.slice(0, 3).map(function (sec) {
-      var links = sec.items.filter(function (i) { return !i.soon; }).slice(0, 5).map(function (i) {
-        return '<li><a href="' + url(i.href) + '">' + esc(i.title) + "</a></li>";
+      var links = sec.items.slice(0, 5).map(function (i) {
+        return '<li><a href="' + itemHref(i) + '">' + esc(label(i)) + "</a></li>";
       }).join("");
-      return '<div class="footer-col"><h5>' + esc(sec.title).toUpperCase() + "</h5><ul>" + links + "</ul></div>";
+      var head = LANG === "zh" && sec.zh ? sec.zh : sec.title.toUpperCase();
+      return '<div class="footer-col"><h5>' + esc(head) + "</h5><ul>" + links + "</ul></div>";
     }).join("");
 
     var ext = (SITE.external || []).map(function (i) {
@@ -151,12 +194,12 @@
       '<footer class="site-footer">' +
         '<div class="footer-inner">' +
           cols +
-          '<div class="footer-col"><h5>ELSEWHERE</h5><ul>' + ext + "</ul></div>" +
+          '<div class="footer-col"><h5>' + esc(t("elsewhere")) + '</h5><ul>' + ext + "</ul></div>" +
           '<div class="footer-seal">' +
             '<div class="big han">道法自然</div>' +
-            "<div>Cultivation " + esc(SITE.version) + " &middot; a Hytale mod</div>" +
+            "<div>Cultivation " + esc(SITE.version) + " &middot; " + esc(t("aHytaleMod")) + "</div>" +
             "<div>&copy; " + new Date().getFullYear() + " " + esc(SITE.owner || "Siren") +
-              ". All rights reserved.</div>" +
+              " " + esc(t("rights")) + "</div>" +
           "</div>" +
         "</div>" +
       "</footer>"
@@ -195,7 +238,7 @@
     }).join("");
 
     var toc = el('<nav class="toc" aria-label="On this page">' +
-                   '<div class="toc-title">On this page</div><ul>' + items + "</ul></nav>");
+                   '<div class="toc-title">' + esc(t("onThisPage")) + '</div><ul>' + items + "</ul></nav>");
     mount.replaceWith(toc);
 
     var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
@@ -236,19 +279,22 @@
 
   /* ---------- Search ----------------------------------------------------- */
   function initSearch() {
-    var index = window.SEARCH_INDEX || [];
+    /* Only ever search the language you are reading. */
+    var index = (window.SEARCH_INDEX || []).filter(function (e) {
+      return (e.l || "en") === LANG;
+    });
 
     var overlay = el(
       '<div class="search-overlay" role="dialog" aria-modal="true" aria-label="Search the wiki">' +
         '<div class="search-box">' +
           '<div class="search-field">' + ICON.search +
-            '<input type="search" placeholder="Search realms, Qi, commands…" autocomplete="off" spellcheck="false" aria-label="Search query">' +
+            '<input type="search" placeholder="' + esc(t("searchPlaceholder")) + '" autocomplete="off" spellcheck="false" aria-label="Search query">' +
           "</div>" +
           '<div class="search-results" role="listbox"></div>' +
           '<div class="search-foot">' +
-            '<span><span class="kbd">↑</span><span class="kbd">↓</span> navigate</span>' +
-            '<span><span class="kbd">↵</span> open</span>' +
-            '<span><span class="kbd">Esc</span> close</span>' +
+            '<span><span class="kbd">↑</span><span class="kbd">↓</span> ' + esc(t("navigate")) + '</span>' +
+            '<span><span class="kbd">↵</span> ' + esc(t("openHit")) + '</span>' +
+            '<span><span class="kbd">Esc</span> ' + esc(t("closeHit")) + '</span>' +
           "</div>" +
         "</div>" +
       "</div>"
@@ -306,7 +352,7 @@
         hits = [];
         results.innerHTML =
           '<div class="search-empty"><span class="han">尋</span>' +
-          "Search across every page of the wiki.</div>";
+          esc(t("searchEmpty")) + "</div>";
         return;
       }
       hits = index.map(function (e) { return { e: e, s: score(e, terms) }; })
@@ -317,7 +363,7 @@
       if (!hits.length) {
         results.innerHTML =
           '<div class="search-empty"><span class="han">無</span>' +
-          "No results for <strong>" + esc(q) + "</strong>.</div>";
+          esc(t("noResults")) + " <strong>" + esc(q) + "</strong></div>";
         return;
       }
       sel = 0;
@@ -502,14 +548,14 @@
     SITE.sections.forEach(function (s) {
       s.items.forEach(function (i) { if (!i.soon && !flat.some(function (f) { return f.href === i.href; })) flat.push(i); });
     });
-    var idx = flat.findIndex(function (i) { return samePage(i.href); });
+    var idx = flat.findIndex(function (i) { return samePage(itemHrefRaw(i)); });
     if (idx < 0) return;
     var prev = flat[idx - 1], next = flat[idx + 1];
     if (!prev && !next) return;
 
     var html = '<nav class="page-nav" aria-label="Page navigation">';
-    if (prev) html += '<a class="prev" href="' + url(prev.href) + '"><span class="dir">← Previous</span><span class="ttl">' + esc(prev.title) + "</span></a>";
-    if (next) html += '<a class="next" href="' + url(next.href) + '"><span class="dir">Next →</span><span class="ttl">' + esc(next.title) + "</span></a>";
+    if (prev) html += '<a class="prev" href="' + itemHref(prev) + '"><span class="dir">' + esc(t("prev")) + '</span><span class="ttl">' + esc(label(prev)) + "</span></a>";
+    if (next) html += '<a class="next" href="' + itemHref(next) + '"><span class="dir">' + esc(t("next")) + '</span><span class="ttl">' + esc(label(next)) + "</span></a>";
     main.appendChild(el(html + "</nav>"));
   }
 
