@@ -28,6 +28,15 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT.parent / "mermaids.dev" / "cultivation"
 OUT = ROOT   # pages live at the repo root: <slug>/index.html
 
+# Chinese sources live in this repo (the English ones live in mermaids.dev).
+# Each zh-src/<slug>.md builds to zh/<slug>/index.html through the same
+# converter, so the Chinese pages get identical tables, diagrams and theme
+# components — and a content change flows to both languages the same way.
+ZH_SRC = ROOT / "zh-src"
+ZH_OUT = ROOT / "zh"
+# Chinese pages written by hand as HTML; never generated over.
+ZH_PROTECTED = {"realms", "qi-gathering", "getting-started", "glossary", "index"}
+
 # Pages are written as <slug>/index.html so they serve at a clean, extensionless
 # URL (/realms/). That puts every page exactly one directory below the repo root.
 ASSETS = "../"
@@ -125,6 +134,12 @@ LINKS: dict[str, str] = {
     "/cultivation/hstats/": "https://hstats.dev/mods/828f65ac-8c45-4510-893b-cc90cd9734aa",
     "/cultivation/modifold/": "https://modifold.com/mod/cultivation",
     "/cultivation/source/": "https://github.com/meFroggy/Cultivation",
+}
+
+ZH_GROUP = {
+    "Start Here": "由此开始", "The Path": "修炼之道", "Arts & Treasures": "功法与法宝",
+    "The World": "红尘世间", "Configuration": "配置", "For Developers": "开发者",
+    "About": "关于", "Tools": "工具",
 }
 
 HAN = {  # decorative glyph for the page eyebrow, by group
@@ -470,6 +485,46 @@ SHELL = """<!doctype html>
 """
 
 
+ZH_SHELL = SHELL.replace('<html lang="en" data-root="../"',
+                         '<html lang="zh-CN" data-root="../"')                 .replace("{title} — Cultivation Wiki", "{title} — 修真百科")                 .replace('href="#main">Skip to content<', 'href="#main">跳到正文<')
+
+
+def build_zh() -> int:
+    """Convert every zh-src/<slug>.md into zh/<slug>/index.html."""
+    if not ZH_SRC.exists():
+        return 0
+    written = 0
+    for src in sorted(ZH_SRC.glob("*.md")):
+        slug = src.stem
+        if slug in ZH_PROTECTED:
+            print(f"  -- skipped (hand-authored): zh/{slug}/")
+            continue
+        meta, body = convert(src.read_text(encoding="utf-8"))
+        body = enhance.enhance(slug, body)
+        title = meta.get("title", slug)
+        group = meta.get("group", "")
+        h1 = re.search(r"<h1>(.*?)</h1>", body, re.S)
+        crumb = re.sub(r"<[^>]+>", "", h1.group(1)).strip() if h1 else title
+        page = ZH_SHELL.format(
+            title=html.escape(title, quote=True),
+            crumb=html.escape(crumb, quote=True),
+            desc=html.escape(meta.get("description", title), quote=True),
+            group=html.escape(group, quote=True),
+            han=meta.get("han", ""),
+            body=indent_body(body),
+        )
+        # zh/<slug>/ is one level deeper than <slug>/, so re-base every asset
+        # reference the shared shell and body emitted for the English depth.
+        page = (page.replace('data-root="../"', 'data-root="../../"')
+                    .replace('"../assets/', '"../../assets/')
+                    .replace('"../data/', '"../../data/'))
+        (ZH_OUT / slug).mkdir(parents=True, exist_ok=True)
+        (ZH_OUT / slug / "index.html").write_text(page, encoding="utf-8")
+        written += 1
+        print(f"  zh-src/{src.name:26s} -> zh/{slug + '/':25s} ({len(body):>6,} bytes)")
+    return written
+
+
 def indent_body(body: str) -> str:
     """Indent for readability — but never inside <pre>, where whitespace is content.
 
@@ -498,8 +553,14 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    if not SRC.exists():
-        sys.exit(f"source docs not found: {SRC}")
+    # The English Markdown that lived in mermaids.dev/cultivation was removed
+    # when that site became a redirect, so the English pass has no input and
+    # the generated pages already in this repo are now the only copy. Skip it
+    # quietly; the Chinese pass below has its own in-repo source.
+    english_available = (SRC / "commands.md").exists()
+    if not english_available:
+        print(f"English source not present ({SRC}) - skipping the English pass.")
+        print("Generated English pages in this repo are left untouched.")
     OUT.mkdir(parents=True, exist_ok=True)
 
     # Pages live at the repo root, so a slug that matches an asset directory
@@ -510,7 +571,7 @@ def main() -> None:
         sys.exit(f"slug collides with a reserved directory, aborting: {clashes}")
 
     written = 0
-    for entry in PAGES:
+    for entry in (PAGES if english_available else []):
         src_rel, out_name, group = entry[0], entry[1], entry[2]
         merges = entry[3] if len(entry) > 3 else []
         src = SRC / src_rel
@@ -553,7 +614,13 @@ def main() -> None:
         written += 1
         print(f"  {src_rel:28s} -> {slug + '/':31s} ({len(body):>6,} bytes)")
 
-    print(f"\n{written} pages {'would be ' if args.dry_run else ''}written")
+    if not args.dry_run:
+        zh_written = build_zh()
+        if zh_written:
+            print(f"\n{zh_written} Chinese pages generated from zh-src/")
+
+    if english_available:
+        print(f"\n{written} English pages written")
     if UNMAPPED:
         print("\nUNMAPPED site-absolute links (these would 404):")
         for u in sorted(UNMAPPED):

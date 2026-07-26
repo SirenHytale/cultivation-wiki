@@ -104,11 +104,11 @@ window.SITE = {
       items: [
         { title: "Realms & Stages",  zh: "境界与阶段", href: "realms/",       zhPage: true },
         { title: "Qi Gathering",     zh: "聚灵采气",   href: "qi-gathering/", zhPage: true },
-        { title: "Tribulations",     zh: "天劫",       href: "tribulations/" },
+        { title: "Tribulations",     zh: "天劫",       href: "tribulations/", zhPage: true },
         { title: "Races",            zh: "种族",       href: "races/" },
         { title: "Skill Tree",       zh: "天赋树",     href: "skilltree/" },
         { title: "The Dao",          zh: "大道",       href: "dao/" },
-        { title: "Karma",            zh: "业力",       href: "karma/" }
+        { title: "Karma",            zh: "业力",       href: "karma/", zhPage: true }
       ]
     },
     {
