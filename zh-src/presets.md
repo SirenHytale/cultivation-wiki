@@ -1,0 +1,110 @@
+---
+title: 调参预设
+description: Cultivation 模组的五套服务器调参预设：宽松、默认、硬核、PvP 宗战与单人小队，外加一条不可打破的铁律。
+group: 配置
+han: 配
+---
+
+### 服务器调参预设
+
+Cultivation 提供了一百多个可调数值，对一台新开的服务器而言，这实在有些扑面而来。以下是五个各有主张的起点 —— 之后你尽可随意改动。下列每一个键都是真实存在的；未列出者一律保持默认。
+
+**如何套用这些预设。** 你可以编辑 `mods/Siren_Cultivation/` 之下的 JSON，也可以经由 `/cultivation admin` 在游戏中实时设定同样的值，无需重启。**文件**一列会告诉你各个键位于何处 —— 完整参考见[配置总览](/cultivation/config/)。
+
+#### 宽松
+
+适合小而友善的服务器，或初次接触此类题材的玩家。进境更快，天道尚可挺过，你所拥有的一切也不会因疏于打理而失去。
+
+| 键 | 值 | 默认 | 文件 |
+|:---|:---|:---|:---|
+| `Base-Qi-Requirement` | 120.0 | 175.0 | `Config.json` |
+| `Substage-Growth-Rate` | 1.45 | 1.55 | `Config.json` |
+| `Realm-Base-Multiplier` | 3.5 | 4.25 | `Config.json` |
+| `Tribulation-Lethal` | false | true | `BreakthroughConfig` |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 10.0 | 15.0 | `BreakthroughConfig` |
+| `Spirit-Core-Drop-Chance` | 0.18 | 0.12 | `SpiritCoreConfig` |
+| `Profound-Core-Drop-Chance` | 0.06 | 0.035 | `SpiritCoreConfig` |
+| `Upkeep-Enabled` | false | true | `DwellingConfig` |
+| `Spring-Qi-Per-Hour` | 90.0 | 60.0 | `DwellingConfig` |
+
+**留住那份声势。** 即便在此处，也请让 `Tribulation-Enabled` 保持开启。关掉致死性，雷霆、声光与那份紧张感尽数留存，同时又保证每道雷至少给人留一丝生机。
+
+#### 默认
+
+出厂的平衡，列在此处是为了让你看清自己正从何处离开 —— 以及如何回来。第一次突破是一桩真正的大事，失败一次要折损一个子阶段，而土地值得为之一战。
+
+| 键 | 值 | 所设定的 |
+|:---|:---|:---|
+| `Base-Qi-Requirement` | 175.0 | 最初一级所需的灵气 |
+| `Substage-Growth-Rate` | 1.55 | 每个子阶段的消耗增长 |
+| `Realm-Base-Multiplier` | 4.25 | 每入新境界的消耗跃迁 |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 15.0 | 每道落雷的伤害 |
+| `Spirit-Vein-Regen-Per-Second` | 1.5 | 灵脉恢复 |
+| `Spirit-Vein-Drain-Per-Second` | 2.75 | 打坐汲取 |
+
+#### 硬核
+
+一条漫长而严酷的攀爬，炼虚期是一桩服务器级的大事，而非一个周末的成果。晋阶同样变得凶险，灵气也真正稀缺。
+
+| 键 | 值 | 默认 | 文件 |
+|:---|:---|:---|:---|
+| `Base-Qi-Requirement` | 260.0 | 175.0 | `Config.json` |
+| `Substage-Growth-Rate` | 1.70 | 1.55 | `Config.json` |
+| `Realm-Base-Multiplier` | 5.0 | 4.25 | `Config.json` |
+| `Advancement-Tribulation-Enabled` | true | false | `BreakthroughConfig` |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 20.0 | 15.0 | `BreakthroughConfig` |
+| `Tribulation-Damage-Realm-Multiplier` | 1.18 | 1.12 | `BreakthroughConfig` |
+| `HeartDevil-Composure-Drain-Per-Pulse` | 45.0 | 34.0 | `BreakthroughConfig` |
+| `Spirit-Core-Drop-Chance` | 0.07 | 0.12 | `SpiritCoreConfig` |
+| `Spirit-Vein-Regen-Per-Second` | 1.0 | 1.5 | `SpiritVeinConfig` |
+| `Spirit-Vein-Rich-Chance` | 0.02 | 0.03 | `SpiritVeinConfig` |
+
+**开启晋阶天劫请慎重。** 将 `Advancement-Tribulation-Enabled` 设为 `true` 后，全部 28 级每一级都会引雷，而不再只是那七次突破。每道雷取最大生命的 6%，尚可挺过 —— 但与 `Tribulation-Lethal` 相结合，就意味着一个粗心的残血玩家可能死在一次寻常的进境上。
+
+#### PvP 与宗门攻伐
+
+适合那种「冲突本身就是重点」的服务器。战事频仍，宗门大到足以拉出一支队伍，而据守地界是真会让擅闯者吃苦头的。
+
+| 键 | 值 | 默认 | 文件 |
+|:---|:---|:---|:---|
+| `Sect-Max-Members` | 20 | 12 | `SectConfig` |
+| `War-Cooldown-Hours` | 6.0 | 24.0 | `WarConfig` |
+| `War-Required-Hold-Seconds` | 90.0 | 120.0 | `WarConfig` |
+| `War-Window-Seconds` | 900.0 | 600.0 | `WarConfig` |
+| `Trapping-Lethal` | true | false | `FormationConfig` |
+| `Trapping-Damage-Percent-Of-Max-Health` | 6.0 | 4.0 | `FormationConfig` |
+| `Duel-Max-Wager` | 2000 | 0（无上限） | `DuelConfig` |
+| `Sect-Hall-Min-Vein-Tier` | 2 | 1 | `SectConfig` |
+
+**别去动 `War-Requires-Defender-Online`。** 它默认为 `true` 自有其道理。设为 `false` 就等于允许一个宗门在无人在线时，失去他们花了数周勘察才占下的大殿 —— 那是流失玩家群最快的路子。改为缩短 `War-Cooldown-Hours` 吧 —— 那能带来更多的交锋，而不会制造出睡梦中的受害者。
+
+将 `Sect-Hall-Min-Vein-Tier` 提到 `2`，会把大殿限制在龙脉之上 —— 约占区块的 0.3%。这让大殿真正稀有，因而值得一场围攻；但在小地图上，这可能意味着可选之地寥寥无几，所以请先查看你的世界。
+
+#### 单人与小队合作
+
+单人游戏，或两三位好友。多人系统在关闭时会客气地回绝，因此把它们调低，等于移除了那些本来永远用不上的菜单。
+
+| 键 | 值 | 默认 | 文件 |
+|:---|:---|:---|:---|
+| `Wars-Enabled` | false | true | `WarConfig` |
+| `Duels-Enabled` | false | true | `DuelConfig` |
+| `Upkeep-Enabled` | false | true | `DwellingConfig` |
+| `Sect-Hall-Min-Vein-Tier` | 1 | 1 | `SectConfig` |
+| `Spring-Qi-Per-Hour` | 100.0 | 60.0 | `DwellingConfig` |
+| `Seclusion-Qi-Per-Hour` | 40.0 | 25.0 | `DwellingConfig` |
+| `Spirit-Vein-Rich-Chance` | 0.05 | 0.03 | `SpiritVeinConfig` |
+
+即便单人游戏，让 `Sects-Enabled` 保持开启也是有意为之 —— 一人之宗照样能占下大殿，照样能拿到全宗灵气加成，而那是进阶中相当可观的一块，关掉可惜。
+
+#### 唯一不可打破的铁律
+
+**灵脉恢复必须低于汲取。** `Spirit-Vein-Regen-Per-Second` 乘以最高阶的倍率（`Spirit-Vein-Dragon-Regen-Multiplier`，默认 `1.6`），必须始终**低于** `Spirit-Vein-Drain-Per-Second`。按默认值计算：`1.5 × 1.6 = 2.4`，稳稳低于 `2.75` 的汲取。这个乘积一旦超过汲取，龙脉区块的恢复就会快过玩家的消耗，从而变成一眼无尽的灵气泉，整条进阶曲线也就此不再有任何意义 —— 无论你把灵气需求设得多高。
+
+#### 调整一台运行中的服务器
+
+- **曲线改动是追溯性的。** 提高 `Base-Qi-Requirement` 或那些倍率，会为现有玩家余下的每一级重新定价。没有人会被降级，但他们下一次升级可能骤然贵上许多。
+- **灵脉设置每区块只播种一次**，且由世界种子确定。改动丰灵脉或龙脉的概率，只影响尚无人到访的区块 —— 已播种的区块保留它当初摇出的结果。
+- **禁用一套系统会保留其数据。** 将 `Sects-Enabled` 设为 `false` 会停掉那些指令与加成，但磁盘上每一个宗门都完好无损，因此你重新启用时不会丢失任何东西。
+- **切勿编辑 `ConfigVersion`** —— 迁移是自动的，把它改小只会让迁移再跑一遍。
+
+**这些是起点，而非官方平衡。** 上面的数值是围绕出厂默认值搭起来的建议，并非经过检验的竞技调参。一次只改一组，然后看你的玩家实际是怎么进境的。

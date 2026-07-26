@@ -17,9 +17,43 @@
 (function () {
   "use strict";
 
-  var REALMS = ["Body Refinement", "Qi Condensation", "Foundation Establishment",
-                "Golden Core Formation", "Nascent Soul", "Soul Formation", "Void Refinement"];
-  var STAGES = ["Early", "Middle", "Late", "Peak"];
+  /* Language, detected the same way site.js does it. */
+  var LANG = (document.documentElement.lang || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+
+  var L = {
+    en: {
+      realms: ["Body Refinement", "Qi Condensation", "Foundation Establishment",
+               "Golden Core Formation", "Nascent Soul", "Soul Formation", "Void Refinement"],
+      stages: ["Early", "Middle", "Late", "Peak"],
+      perHour: "Qi per hour", meditation: "meditation ", cores: " &middot; cores ",
+      totalTo: "Total Qi to ", banked: "banked across every rung",
+      timeTo: "Time to ", including: "including ", ofRituals: " min of rituals",
+      at: "At ", hPerDay: " h/day", days: " days", realDays: "real-world days of play",
+      thRankUp: "Rank-up", thQi: "Qi required", thTime: "Time",
+      thCumQi: "Cumulative Qi", thCumTime: "Cumulative time",
+      breakthrough: "breakthrough", min: " min", hr: " h", qi: " Qi", comma: ", "
+    },
+    zh: {
+      realms: ["炼体期", "炼气期", "筑基期", "金丹期", "元婴期", "化神期", "炼虚期"],
+      stages: ["初期", "中期", "后期", "圆满"],
+      perHour: "每小时灵气", meditation: "打坐 ", cores: " &middot; 修行之核 ",
+      totalTo: "至", banked: "逐级累计所需",
+      timeTo: "耗时至", including: "含 ", ofRituals: " 分钟仪式",
+      at: "每日 ", hPerDay: " 小时", days: " 天", realDays: "真实游玩天数",
+      thRankUp: "升级", thQi: "所需灵气", thTime: "耗时",
+      thCumQi: "累计灵气", thCumTime: "累计耗时",
+      breakthrough: "突破", min: " 分钟", hr: " 小时", qi: " 灵气", comma: "·"
+    }
+  }[LANG];
+
+  var REALMS = L.realms;
+  var STAGES = L.stages;
+
+  /* "Total Qi to Golden Core Formation" reads the other way round in Chinese:
+     "至金丹期的总灵气". Both halves are in L, so the joins differ, not the text. */
+  function toRealm(prefix, realm, suffix) {
+    return LANG === "zh" ? prefix + realm + suffix : prefix + realm;
+  }
 
   var f = {};
   function num(id) { var v = parseFloat(f[id].value); return isNaN(v) ? 0 : v; }
@@ -59,9 +93,9 @@
 
   function fmtHours(h) {
     if (!isFinite(h) || h <= 0) return "—";
-    if (h < 1) return Math.round(h * 60) + " min";
-    if (h < 100) return (Math.round(h * 10) / 10) + " h";
-    return Math.round(h).toLocaleString() + " h";
+    if (h < 1) return Math.round(h * 60) + L.min;
+    if (h < 100) return (Math.round(h * 10) / 10) + L.hr;
+    return Math.round(h).toLocaleString() + L.hr;
   }
   function fmtQi(q) {
     if (q >= 1e6) return (q / 1e6).toFixed(2) + "M";
@@ -97,32 +131,32 @@
     var perDay = num("perDay");
     var days = targetHours && perDay > 0 ? targetHours / perDay : null;
     f.out.innerHTML =
-      tile("Qi per hour", fmtQi(r.perHour), "meditation " + fmtQi(r.medPerHour) +
-           " &middot; cores " + fmtQi(r.corePerHour)) +
-      tile("Total Qi to " + REALMS[target], targetQi ? fmtQi(targetQi) : "—",
-           "banked across every rung") +
-      tile("Time to " + REALMS[target], fmtHours(targetHours),
-           "including " + Math.round(cumRitual / 60) + " min of rituals") +
-      tile("At " + perDay + " h/day", days ? (Math.round(days * 10) / 10) + " days" : "—",
-           "real-world days of play");
+      tile(L.perHour, fmtQi(r.perHour), L.meditation + fmtQi(r.medPerHour) +
+           L.cores + fmtQi(r.corePerHour)) +
+      tile(toRealm(L.totalTo, REALMS[target], "的总灵气"), targetQi ? fmtQi(targetQi) : "—",
+           L.banked) +
+      tile(toRealm(L.timeTo, REALMS[target], ""), fmtHours(targetHours),
+           L.including + Math.round(cumRitual / 60) + L.ofRituals) +
+      tile(L.at + perDay + L.hPerDay, days ? (Math.round(days * 10) / 10) + L.days : "—",
+           L.realDays);
 
     /* Per-rung table */
-    var html = "<thead><tr><th>Rank-up</th><th>Qi required</th><th>Time</th>" +
-               "<th>Cumulative Qi</th><th>Cumulative time</th></tr></thead><tbody>";
+    var html = "<thead><tr><th>" + L.thRankUp + "</th><th>" + L.thQi + "</th><th>" + L.thTime +
+               "</th><th>" + L.thCumQi + "</th><th>" + L.thCumTime + "</th></tr></thead><tbody>";
     rows.forEach(function (x) {
       var next = x.isBreak
-        ? REALMS[x.realm + 1] + ", Early"
-        : REALMS[x.realm] + ", " + STAGES[x.stage + 1];
+        ? REALMS[x.realm + 1] + L.comma + STAGES[0]
+        : REALMS[x.realm] + L.comma + STAGES[x.stage + 1];
       html += "<tr" + (x.isBreak ? ' style="background:var(--accent-soft)"' : "") + ">" +
-              "<td>" + REALMS[x.realm] + ", " + STAGES[x.stage] +
+              "<td>" + REALMS[x.realm] + L.comma + STAGES[x.stage] +
                 ' <span style="color:var(--text-mut)">→ ' + next + "</span>" +
-                (x.isBreak ? ' <span class="chip crimson">breakthrough</span>' : "") + "</td>" +
+                (x.isBreak ? ' <span class="chip crimson">' + L.breakthrough + "</span>" : "") + "</td>" +
               "<td>" + fmtQi(x.q) + "</td><td>" + fmtHours(x.hrs) + "</td>" +
               "<td>" + fmtQi(x.cumQi) + "</td><td>" + fmtHours(x.cumHours) + "</td></tr>";
     });
     f.table.innerHTML = html + "</tbody>";
 
-    f.perKill.textContent = (Math.round(r.perKill * 100) / 100) + " Qi";
+    f.perKill.textContent = (Math.round(r.perKill * 100) / 100) + L.qi;
     f.gainMult.textContent = "×" + (Math.round(r.gain * 1000) / 1000);
   }
 

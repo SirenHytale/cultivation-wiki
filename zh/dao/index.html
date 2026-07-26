@@ -86,14 +86,20 @@ flowchart LR;
 
     <p>一旦踏上某道，你的近战输出便会转化为该元素的伤害类型，并作如下调整：</p>
 
-    <table>
+    <div class="panel">
+          <div class="panel-head">大道伤害数值</div>
+          <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
     <tbody><tr><td><code>Dao-Damage-Bonus-Percent</code></td><td>10</td><td>任何已转化攻击的固定加成。</td></tr><tr><td><code>Dao-Counter-Bonus-Percent</code></td><td>15</td><td>对元素被你克制的目标，额外伤害。</td></tr><tr><td><code>Dao-Counter-Penalty-Percent</code></td><td>10</td><td>对克制你的元素，伤害降低。</td></tr><tr><td><code>Dao-Wood-Heal-Percent-Of-Damage</code></td><td>20</td><td>木之道用以替代固定加成的效果。</td></tr></tbody>
     </table>
+        </div>
 
-    <p><strong>木是疗愈之道。</strong> 它完全没有固定伤害加成 —— 取而代之的是，你所造成伤害的 20% 会转化为对自身的治疗。相克加成仍照常生效。</p>
+    <div class="note tip">
+          <span class="note-title">木是疗愈之道</span>
+          它完全没有固定伤害加成 —— 取而代之的是，你所造成伤害的 20% 会转化为对自身的治疗。相克加成仍照常生效。
+        </div>
 
-    <p>尚未择道的修士也并未被冷落：一件<a href="../../refinement/">炼制过的兵器</a>会自行提供元素以参与转化与相克；而当该元素与持有者自身的道相合时，还会额外附加一层共鸣加成。造成伤害的<a href="../../techniques/">功法</a>同样流经这一层过滤，因此剑气斩与九天雷掌会免费染上你的道之色彩。</p>
+    <p>尚未择道的修士也并未被冷落：一件<a href="../refinement/">炼制过的兵器</a>会自行提供元素以参与转化与相克；而当该元素与持有者自身的道相合时，还会额外附加一层共鸣加成。造成伤害的<a href="../techniques/">功法</a>同样流经这一层过滤，因此剑气斩与九天雷掌会免费染上你的道之色彩。</p>
 
     <h2>换道与偏移</h2>
 
@@ -116,10 +122,11 @@ flowchart LR;
 
     <p>你在这条标尺上的位置决定你所得为何：</p>
 
-    <table>
-    <thead><tr><th>状态</th><th>效果</th></tr></thead>
-    <tbody><tr><td>平衡 —— 处于 50/50 中位的 <code>Balance-Window-Percent</code>（15%）以内</td><td>对<strong>所有</strong>灵气获取与伤害提供 <code>Balance-Bonus-Percent</code>（10%）加成，并向窗口边缘线性衰减。</td></tr><tr><td>深阴 —— 阴占比越过 <code>Lean-Threshold-Percent</code>（70%）</td><td><code>Yin-Power-Damage-Percent</code>（+10%）伤害，以及 <code>Yin-Lifedrain-Percent</code>（5%）的伤害转化为生命。</td></tr><tr><td>深阳 —— 阳占比越过同一阈值</td><td><code>Yang-Defense-Percent</code>（10%）受伤减免，以及 <code>Yang-Heal-Bonus-Percent</code>（+25%）的受治疗增幅（含木之攻击）。</td></tr></tbody>
-    </table>
+    <div class="grid cols-3">
+          <div class="card"><span class="card-han">☯</span><h4>平衡</h4><p><em>处于 50/50 中位的 <code>Balance-Window-Percent</code>（15%）以内</em><br><strong>效果:</strong> 对<strong>所有</strong>灵气获取与伤害提供 <code>Balance-Bonus-Percent</code>（10%）加成，并向窗口边缘线性衰减。</p></div>
+          <div class="card"><span class="card-han">陰</span><h4>深阴</h4><p><em>阴占比越过 <code>Lean-Threshold-Percent</code>（70%）</em><br><strong>效果:</strong> <code>Yin-Power-Damage-Percent</code>（+10%）伤害，以及 <code>Yin-Lifedrain-Percent</code>（5%）的伤害转化为生命。</p></div>
+          <div class="card"><span class="card-han">陽</span><h4>深阳</h4><p><em>阳占比越过同一阈值</em><br><strong>效果:</strong> <code>Yang-Defense-Percent</code>（10%）受伤减免，以及 <code>Yang-Heal-Bonus-Percent</code>（+25%）的受治疗增幅（含木之攻击）。</p></div>
+        </div>
 
     <p>平衡与偏执在构造上互斥：你不可能既完美居中，又深度偏向一端。<strong>在两者之间取舍，才是这套体系真正的抉择。</strong></p>
 
@@ -129,12 +136,16 @@ flowchart LR;
 
     <p>偏得足够深，阴阳之衡便不再只是一项属性，而成为一条<strong>道途</strong>。道途从不由你选择 —— 它追随你的作为，也随之回摆。你的大道页面会显示当前所行之途，变更时亦会在聊天栏告知。</p>
 
-    <table>
-    <thead><tr><th>道途</th><th>触发条件</th><th>增益</th></tr></thead>
-    <tbody><tr><td><strong>魔道</strong></td><td>阴偏比例达到 <code>Path-Lean-Fraction-Threshold</code>（0.5）</td><td>对正道修士 <code>Path-Devil-Damage-Vs-Righteous-Percent</code>（+15%）伤害；斩杀任意玩家掠夺 <code>Path-Devil-PK-Qi-Reward</code>（100）点灵气。</td></tr><tr><td><strong>正道</strong></td><td>阳偏比例达到同一阈值</td><td>对魔道修士 <code>Path-Righteous-Damage-Vs-Devil-Percent</code>（+15%）伤害，并 <code>Path-Righteous-Defense-Vs-Devil-Percent</code>（15%）减免其伤害。</td></tr><tr><td><strong>无属</strong></td><td>未越过阈值的一切情形</td><td>凡尘中道 —— 没有道途增益，但平衡加成在此最易维持。</td></tr></tbody>
-    </table>
+    <div class="grid cols-3">
+          <div class="card"><span class="card-han">魔</span><h4>魔道</h4><p><strong>触发条件:</strong> 阴偏比例达到 <code>Path-Lean-Fraction-Threshold</code>（0.5）<br><strong>增益:</strong> 对正道修士 <code>Path-Devil-Damage-Vs-Righteous-Percent</code>（+15%）伤害；斩杀任意玩家掠夺 <code>Path-Devil-PK-Qi-Reward</code>（100）点灵气。</p></div>
+          <div class="card"><span class="card-han">正</span><h4>正道</h4><p><strong>触发条件:</strong> 阳偏比例达到同一阈值<br><strong>增益:</strong> 对魔道修士 <code>Path-Righteous-Damage-Vs-Devil-Percent</code>（+15%）伤害，并 <code>Path-Righteous-Defense-Vs-Devil-Percent</code>（15%）减免其伤害。</p></div>
+          <div class="card"><span class="card-han">中</span><h4>无属</h4><p><strong>触发条件:</strong> 未越过阈值的一切情形<br><strong>增益:</strong> 凡尘中道 —— 没有道途增益，但平衡加成在此最易维持。</p></div>
+        </div>
 
-    <p>魔道的灵气掠夺设有防刷限制：在 <code>Pk-Same-Victim-Cooldown-Seconds</code>（900 秒）内重复斩杀同一人分文不得，斩杀境界序号低于 <code>Pk-Min-Victim-Realm</code>（1）者亦然。这两道闸门同样覆盖大道功过与<a href="../manuals/">秘籍</a>掉落判定，而不只是灵气。寻常 PvP 不受影响 —— 被限制的只是修炼上的战利品。</p>
+    <div class="note warn">
+          <span class="note-title">刷杀无功</span>
+          魔道的灵气掠夺设有防刷限制：在 <code>Pk-Same-Victim-Cooldown-Seconds</code>（900 秒）内重复斩杀同一人分文不得，斩杀境界序号低于 <code>Pk-Min-Victim-Realm</code>（1）者亦然。这两道闸门同样覆盖大道功过与<a href="../manuals/">秘籍</a>掉落判定，而不只是灵气。寻常 PvP 不受影响 —— 被限制的只是修炼上的战利品。
+        </div>
 
     <p>一次刷杀不仅毫无回报：它所记下的<a href="../karma/">业力</a>比一次光明磊落的斩杀更重，而魔道修士积业本就快于常人。天道会在你下一次<a href="../tribulations/">渡劫</a>时前来清算。</p>
 
@@ -148,7 +159,7 @@ flowchart LR;
     </table>
         </div>
 
-    <p>本页所有数值均位于大道配置之中 —— 详见<a href="../../config-arts/">功法配置</a>。</p>
+    <p>本页所有数值均位于大道配置之中 —— 详见<a href="../config-arts/">功法配置</a>。</p>
 
   </main>
 

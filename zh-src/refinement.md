@@ -1,0 +1,61 @@
+---
+title: 炼器
+description: Cultivation 模组的兵器淬炼：以天劫雷火烙下道之属性，九炼之阶与失败的代价。
+group: 功法与法宝
+han: 術
+---
+
+### 炼器
+
+**炼器**是以天劫雷火淬炼兵刃，直至其烙上[大道](/cultivation/dao/)属性的技艺。手持兵器运行 `/cultivation refine {属性}`（别名 `temper`），你便会盘膝坐下，进入一场与突破颇为相似的仪式 —— 而雷，是落在**你**身上，不是落在刃上。
+
+此术于**炼气**期解锁（`Refinement-Unlock-Realm`），默认启用。
+
+不带属性运行 `/cultivation refine`，即可查看手中兵器现下的炼器情况，以及再淬一炼需付出什么、耗时多久、冒多大的险。
+
+#### 仪式
+
+- 你所坐的区块中，灵脉灵气须不低于 `Refinement-Min-Chunk-Qi`（40）—— 这道门槛远低于突破，因为炼器本就该在任何说得过去的地方都能进行。
+- 存蓄灵气是在仪式**开始时**预先扣除的，而非成功后才付。这与放弃突破要折损一个阶段的道理一脉相承，也堵死了「灵脉一干就站起来」、反复白嫖仪式的路子。
+- 同一时刻只能进行一场仪式。炼器无法叠加在已经开始的突破或晋阶之上。
+- 天劫之雷会按惯常的 `Tribulation-Strike-Interval-Seconds` 落在你身上，每道造成你最大生命 `Refinement-Tribulation-Damage-Percent-Of-Max-Health`（10%）的伤害，且仍随境界缩放；若 `Tribulation-Lethal` 为开，它仍是致命的。淬一把刀，是真能把自己淬死的。
+
+| 配置项 | 默认值 | 说明 |
+|:---|:---|:---|
+| `Refinement-Base-Qi-Cost` | 200 | 一炼的尝试消耗。 |
+| `Refinement-Qi-Cost-Tier-Multiplier` | 1.6 | 一炼之后每提升一炼所乘的倍率。 |
+| `Refinement-Base-Duration-Seconds` | 45 | 一炼仪式的时长。 |
+| `Refinement-Duration-Seconds-Per-Tier` | 15 | 一炼之后每提升一炼所加的秒数。 |
+| `Refinement-Max-Tier` | 9 | 上限 —— 炼数以 I 至 IX 表示。 |
+
+#### 成、败与风险
+
+| 配置项 | 默认值 | 说明 |
+|:---|:---|:---|
+| `Refinement-Base-Success-Chance` | 0.95 | 一炼时的成功率。 |
+| `Refinement-Success-Chance-Loss-Per-Tier` | 0.08 | 一炼之后每提升一炼所减的成功率。 |
+| `Refinement-Min-Success-Chance` | 0.15 | 下限 —— 再渺茫的尝试也不会低于此数。 |
+| `Refinement-Demote-On-Fail-From-Tier` | 4 | 目标炼数达到或超过此值时，失败还会折损一炼。 |
+| `Refinement-Destroy-On-Fail` | false | 若为 true，会折损炼数的那种失败将直接毁去兵器。 |
+
+按默认值算下来，一炼时是 95%，到高炼数时滑落至 15% 的下限。四炼以下，失败只是白费存蓄的灵气；四炼往上，失败还要把兵器打落一炼 —— 而从一炼被打落的兵器，就此变回一件寻常兵刃。
+
+凡是带有折损风险的尝试，指令都会先行警示。
+
+#### 淬炼之兵有何用
+
+| 配置项 | 默认值 | 说明 |
+|:---|:---|:---|
+| `Refinement-Damage-Bonus-Percent-Per-Tier` | 4 | 每一炼所增的输出伤害 —— 九炼时 +36%。 |
+| `Refinement-Resonance-Bonus-Percent` | 15 | 兵器属性与持有者自身之道相合时追加。 |
+
+对于自身尚无大道的持有者，一件淬炼之兵还会为战斗系统**供给其属性**：伤害转为该属性，并完整参与五行相克之环，加成与惩罚一并承受。这正是炼器之于尚未筑基、或从未择定属性的修士的意义所在。而当兵器属性确与你的道相合时，共鸣加成会叠在这一切之上。
+
+炼数与属性存于物品自身的元数据之中，并显示在其提示框内。以**不同**属性重淬一件已经炼过的兵器，会让新属性从一炼重新算起 —— 因此给一件成器改换属性，等于把先前倾注的一切尽数丢弃。
+
+| 指令 | 说明 | 权限 |
+|:---|:---|:---|
+| `/cultivation refine` | 查看手中兵器的炼器情况，以及下一炼所需。别名：`temper`。 | `cultivation` |
+| `/cultivation refine {属性}` | 以该大道属性开始一场淬炼仪式。 | `cultivation` |
+
+本页每一个数值皆位于炼器配置之中 —— 详见[配置](/cultivation/config/arts/) —— 指令则见[指令](/cultivation/commands/)页。

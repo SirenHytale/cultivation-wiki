@@ -72,10 +72,10 @@ window.SITE = {
     { title: "Home",            zh: "首页",     href: "./",               zhPage: true },
     { title: "Getting Started", zh: "入门",     href: "getting-started/", zhPage: true },
     { title: "Realms",          zh: "境界",     href: "realms/",          zhPage: true },
-    { title: "Commands",        zh: "指令",     href: "commands/" },
-    { title: "Planner",         zh: "加点模拟", href: "planner/" },
-    { title: "FAQ",             zh: "常见问题", href: "faq/" },
-    { title: "API",             zh: "接口",     href: "api/" }
+    { title: "Commands",        zh: "指令",     href: "commands/",        zhPage: true },
+    { title: "Planner",         zh: "加点模拟", href: "planner/",         zhPage: true },
+    { title: "FAQ",             zh: "常见问题", href: "faq/",             zhPage: true },
+    { title: "API",             zh: "接口",     href: "api/",             zhPage: true }
   ],
 
   /* External links (rendered in the footer) */
@@ -92,9 +92,9 @@ window.SITE = {
       items: [
         { title: "Home",                  zh: "首页",           href: "./",               zhPage: true },
         { title: "Getting Started",       zh: "入门指南",       href: "getting-started/", zhPage: true },
-        { title: "Commands",              zh: "指令",           href: "commands/" },
-        { title: "Permissions",           zh: "权限",           href: "permissions/" },
-        { title: "FAQ & Troubleshooting", zh: "常见问题与排错", href: "faq/" },
+        { title: "Commands",              zh: "指令",           href: "commands/",        zhPage: true },
+        { title: "Permissions",           zh: "权限",           href: "permissions/",     zhPage: true },
+        { title: "FAQ & Troubleshooting", zh: "常见问题与排错", href: "faq/",             zhPage: true },
         { title: "Glossary",              zh: "术语表",         href: "glossary/",        zhPage: true }
       ]
     },
@@ -104,68 +104,68 @@ window.SITE = {
         { title: "Realms & Stages",  zh: "境界与阶段", href: "realms/",       zhPage: true },
         { title: "Qi Gathering",     zh: "聚灵采气",   href: "qi-gathering/", zhPage: true },
         { title: "Tribulations",     zh: "天劫",       href: "tribulations/", zhPage: true },
-        { title: "Races",            zh: "种族",       href: "races/", zhPage: true },
-        { title: "Skill Tree",       zh: "天赋树",     href: "skilltree/", zhPage: true },
-        { title: "The Dao",          zh: "大道",       href: "dao/", zhPage: true },
-        { title: "Karma",            zh: "业力",       href: "karma/", zhPage: true }
+        { title: "Races",            zh: "种族",       href: "races/",        zhPage: true },
+        { title: "Skill Tree",       zh: "天赋树",     href: "skilltree/",    zhPage: true },
+        { title: "The Dao",          zh: "大道",       href: "dao/",          zhPage: true },
+        { title: "Karma",            zh: "业力",       href: "karma/",        zhPage: true }
       ]
     },
     {
       title: "Arts & Treasures", zh: "功法与法宝", han: "術",
       items: [
-        { title: "Techniques",        zh: "功法",     href: "techniques/" },
-        { title: "Manuals",           zh: "秘籍",     href: "manuals/", zhPage: true },
-        { title: "Alchemy",           zh: "炼丹",     href: "alchemy/" },
-        { title: "Weapon Refinement", zh: "炼器",     href: "refinement/" },
-        { title: "Life-Bound",        zh: "本命法宝", href: "lifebound/", zhPage: true },
-        { title: "Spirit Beasts",     zh: "灵兽",     href: "beasts/" }
+        { title: "Techniques",        zh: "功法",     href: "techniques/", zhPage: true },
+        { title: "Manuals",           zh: "秘籍",     href: "manuals/",    zhPage: true },
+        { title: "Alchemy",           zh: "炼丹",     href: "alchemy/",    zhPage: true },
+        { title: "Weapon Refinement", zh: "炼器",     href: "refinement/", zhPage: true },
+        { title: "Life-Bound",        zh: "本命法宝", href: "lifebound/",  zhPage: true },
+        { title: "Spirit Beasts",     zh: "灵兽",     href: "beasts/",     zhPage: true }
       ]
     },
     {
       title: "The World", zh: "红尘世间", han: "界",
       items: [
-        { title: "Sects",      zh: "宗门",     href: "sects/" },
-        { title: "Formations", zh: "阵法",     href: "formations/" },
-        { title: "Cave Abode", zh: "洞府",     href: "dwelling/" },
-        { title: "Duels",      zh: "斗法",     href: "duels/" },
-        { title: "Sect Wars",  zh: "宗门攻伐", href: "wars/" }
+        { title: "Sects",      zh: "宗门",     href: "sects/",      zhPage: true },
+        { title: "Formations", zh: "阵法",     href: "formations/", zhPage: true },
+        { title: "Cave Abode", zh: "洞府",     href: "dwelling/",   zhPage: true },
+        { title: "Duels",      zh: "斗法",     href: "duels/",      zhPage: true },
+        { title: "Sect Wars",  zh: "宗门攻伐", href: "wars/",       zhPage: true }
       ]
     },
     {
       title: "Tools", zh: "工具", han: "器",
       items: [
-        { title: "Skill Tree Planner", zh: "天赋加点模拟", href: "planner/" },
-        { title: "Qi Calculator",      zh: "灵气计算器",   href: "calculator/" }
+        { title: "Skill Tree Planner", zh: "天赋加点模拟", href: "planner/",    zhPage: true },
+        { title: "Qi Calculator",      zh: "灵气计算器",   href: "calculator/", zhPage: true }
       ]
     },
     {
       title: "Configuration", zh: "配置", han: "配",
       items: [
-        { title: "Overview",       zh: "总览",     href: "config/" },
-        { title: "Core Config",    zh: "核心配置", href: "config-core/" },
-        { title: "Cultivation",    zh: "修炼配置", href: "config-cultivation/" },
-        { title: "Arts",           zh: "功法配置", href: "config-arts/" },
-        { title: "Society",        zh: "宗门社群", href: "config-society/" },
-        { title: "Race",           zh: "种族配置", href: "config-race/" },
-        { title: "Data Files",     zh: "存档文件", href: "config-data/" },
-        { title: "Tuning Presets", zh: "调参预设", href: "presets/" }
+        { title: "Overview",       zh: "总览",     href: "config/",             zhPage: true },
+        { title: "Core Config",    zh: "核心配置", href: "config-core/",        zhPage: true },
+        { title: "Cultivation",    zh: "修炼配置", href: "config-cultivation/", zhPage: true },
+        { title: "Arts",           zh: "功法配置", href: "config-arts/",        zhPage: true },
+        { title: "Society",        zh: "宗门社群", href: "config-society/",     zhPage: true },
+        { title: "Race",           zh: "种族配置", href: "config-race/",        zhPage: true },
+        { title: "Data Files",     zh: "存档文件", href: "config-data/",        zhPage: true },
+        { title: "Tuning Presets", zh: "调参预设", href: "presets/",            zhPage: true }
       ]
     },
     {
       title: "For Developers", zh: "开发者", han: "匠",
       items: [
-        { title: "API Overview",     zh: "接口总览", href: "api/" },
-        { title: "Reference",        zh: "接口参考", href: "api-reference/" },
-        { title: "Events",           zh: "事件",     href: "api-events/" },
-        { title: "Building Add-ons", zh: "编写扩展", href: "api-addons/" },
-        { title: "Registries",       zh: "注册表",   href: "api-registries/" }
+        { title: "API Overview",     zh: "接口总览", href: "api/",            zhPage: true },
+        { title: "Reference",        zh: "接口参考", href: "api-reference/",  zhPage: true },
+        { title: "Events",           zh: "事件",     href: "api-events/",     zhPage: true },
+        { title: "Building Add-ons", zh: "编写扩展", href: "api-addons/",     zhPage: true },
+        { title: "Registries",       zh: "注册表",   href: "api-registries/", zhPage: true }
       ]
     },
     {
       title: "About", zh: "关于", han: "誌",
       items: [
-        { title: "Changelog",       zh: "更新日志", href: "changelog/" },
-        { title: "Compatible Mods", zh: "兼容模组", href: "addons/" }
+        { title: "Changelog",       zh: "更新日志", href: "changelog/", zhPage: true },
+        { title: "Compatible Mods", zh: "兼容模组", href: "addons/",    zhPage: true }
       ]
     }
   ]

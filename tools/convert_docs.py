@@ -35,7 +35,11 @@ OUT = ROOT   # pages live at the repo root: <slug>/index.html
 ZH_SRC = ROOT / "zh-src"
 ZH_OUT = ROOT / "zh"
 # Chinese pages written by hand as HTML; never generated over.
-ZH_PROTECTED = {"realms", "qi-gathering", "getting-started", "glossary", "index"}
+ZH_PROTECTED = {"realms", "qi-gathering", "getting-started", "glossary", "index",
+                # The two interactive tools: their markup is form controls whose
+                # ids the JS binds to, so they are hand-authored per language
+                # rather than converted from Markdown.
+                "planner", "calculator"}
 # Set while the Chinese pass runs: which slugs actually have a zh/ page. A link
 # to anything else must drop back to the English page (../../<slug>/) instead of
 # pointing at a zh/ URL that does not exist.
@@ -128,6 +132,15 @@ LINKS: dict[str, str] = {
     "/cultivation/config/society/": "config-society",
     "/cultivation/config/race/": "config-race",
     "/cultivation/config/data/": "config-data",
+    # Pages hand-authored in this repo rather than converted from Markdown.
+    # They still need an entry here so a translated page can link to them.
+    "/cultivation/config/presets/": "presets",
+    "/cultivation/faq/": "faq",
+    "/cultivation/glossary/": "glossary",
+    "/cultivation/changelog/": "changelog",
+    "/cultivation/addons/": "addons",
+    "/cultivation/planner/": "planner",
+    "/cultivation/calculator/": "calculator",
     "/cultivation/api/": "api",
     "/cultivation/api/reference/": "api-reference",
     "/cultivation/api/events/": "api-events",
@@ -514,7 +527,7 @@ def build_zh() -> int:
             print(f"  -- skipped (hand-authored): zh/{slug}/")
             continue
         meta, body = convert(src.read_text(encoding="utf-8"))
-        body = enhance.enhance(slug, body)
+        body = enhance.enhance(slug, body, "zh")
         title = meta.get("title", slug)
         group = meta.get("group", "")
         h1 = re.search(r"<h1>(.*?)</h1>", body, re.S)
@@ -609,7 +622,7 @@ def main() -> None:
                      'alt="" width="340" height="24">\n\n') + sub
         title = meta.get("title", out_name.replace(".html", "").title())
         desc = meta.get("description", f"Cultivation mod documentation — {title}")
-        body = enhance.enhance(slug, body, "zh")
+        body = enhance.enhance(slug, body, "en")
 
         # Breadcrumb tracks the visible <h1>, not the front matter, so the two
         # never disagree on screen (e.g. "Main Config" vs "Config").
@@ -640,6 +653,13 @@ def main() -> None:
         print("\nUNMAPPED site-absolute links (these would 404):")
         for u in sorted(UNMAPPED):
             print("  -", u)
+
+    # An enhance rule that stops matching means the wording it keyed off has
+    # changed and that page has quietly lost a theme component. Say so.
+    if enhance.WARNINGS:
+        print("\nENHANCE rules that did not match (wording may have changed):")
+        for w in enhance.WARNINGS:
+            print("  -", w)
 
 
 if __name__ == "__main__":

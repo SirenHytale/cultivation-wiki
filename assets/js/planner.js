@@ -14,6 +14,52 @@
   var DATA = window.SKILL_TREE;
   if (!DATA) { console.error("[planner] data/skilltree.js not loaded"); return; }
 
+  /* ---------- language --------------------------------------------------
+     Same detection site.js uses. Branch and stat names are NOT translated in
+     data/skilltree.js: that file is generated straight from the mod's English
+     registry by tools/make_skilltree_data.py, so a re-run would wipe anything
+     added there. The Chinese names live here instead, keyed by the registry's
+     own keys, and fall back to the English label when a key is missing. */
+  var LANG = (document.documentElement.lang || "en").toLowerCase().indexOf("zh") === 0 ? "zh" : "en";
+
+  var ZH_BRANCH = {
+    VITALITY: "体魄", RESILIENCE: "韧性", MIGHT: "力道", WARDING: "护体",
+    INSIGHT: "悟性", HARMONY: "和合", SWIFTNESS: "疾行", ENDURANCE: "耐力",
+    SPIRIT: "灵识"
+  };
+  var ZH_STAT = {
+    HEALTH: "生命上限", MANA: "法力", STAMINA: "体力", BREATH: "屏息",
+    MOVE_SPEED_PERCENT: "移动速度", DAMAGE_PERCENT: "伤害",
+    QI_GAIN_PERCENT: "灵气获取", RITUAL_SPEED_PERCENT: "仪式速度",
+    DAMAGE_REDUCTION_PERCENT: "减伤", QI_COST_REDUCTION_PERCENT: "灵气消耗降低",
+    LIFEBOUND_XP_GAIN_PERCENT: "本命法宝经验", VEIN_DRAIN_RADIUS: "灵脉汲取半径"
+  };
+  var STR = {
+    en: {
+      planner: "Skill tree build planner", points: "POINTS",
+      noPrereq: "prerequisite not taken", noPoints: "not enough points",
+      removeFirst: "remove later nodes first",
+      tier: "Tier", point: " point", pointsSuffix: " points",
+      dual: " &middot; dual prerequisite",
+      empty: "No nodes allocated yet — click a tier-1 node on any branch to begin."
+    },
+    zh: {
+      planner: "天赋树加点模拟", points: "点数",
+      noPrereq: "前置节点未点", noPoints: "天赋点不足",
+      removeFirst: "请先移除其后的节点",
+      tier: "第", point: " 点", pointsSuffix: " 点",
+      dual: " &middot; 双前置",
+      empty: "尚未分配任何节点 —— 点击任一分支的第 1 层节点即可开始。"
+    }
+  }[LANG];
+
+  function branchLabel(b) { return (LANG === "zh" && ZH_BRANCH[b.key]) || b.label; }
+  function statLabel(k) {
+    return (LANG === "zh" && ZH_STAT[k]) || DATA.statLabels[k] || k;
+  }
+  /* "Tier 5" in English, "第 5 层" in Chinese — the ordinal sits differently. */
+  function tierLabel(t) { return LANG === "zh" ? STR.tier + " " + t + " 层" : STR.tier + " " + t; }
+
   var NODES = DATA.nodes;
   var BY_ID = {};
   NODES.forEach(function (n, i) { n._i = i; BY_ID[n.id] = n; });
@@ -53,8 +99,8 @@
   }
   function canSelect(n) {
     if (selected[n.id]) return false;
-    if (!prereqsMet(n)) return "prerequisite not taken";
-    if (spent() + n.cost > budget()) return "not enough points";
+    if (!prereqsMet(n)) return STR.noPrereq;
+    if (spent() + n.cost > budget()) return STR.noPoints;
     return true;
   }
 
@@ -129,7 +175,7 @@
 
   function buildSvg() {
     var svg = el("svg", { viewBox: "0 0 " + SIZE + " " + SIZE, role: "application",
-                          "aria-label": "Skill tree build planner" });
+                          "aria-label": STR.planner });
 
     var gEdges = el("g", {}), gNodes = el("g", {});
     svg.appendChild(gEdges); svg.appendChild(gNodes);
@@ -142,7 +188,7 @@
     svg.appendChild(hub);
     var hubSub = el("text", { x: CX, y: CY + 16, class: "hub", "font-size": "11",
                               fill: "var(--text-mut)", "letter-spacing": "2" });
-    hubSub.textContent = "POINTS";
+    hubSub.textContent = STR.points;
     svg.appendChild(hubSub);
     els.hub = hub;
 
@@ -155,7 +201,7 @@
       var l = el("text", { x: p.x, y: p.y + 20, class: "spoke-label", fill: "var(--text-mut)",
                            "font-size": "10", "font-family": "var(--font-display)",
                            "letter-spacing": "1.5" });
-      l.textContent = b.label.toUpperCase();
+      l.textContent = LANG === "zh" ? branchLabel(b) : b.label.toUpperCase();
       svg.appendChild(l);
     });
 
@@ -190,7 +236,7 @@
 
   function label(b) {
     var v = (Math.round(b.amount * 10) / 10);
-    return (b.pct ? "+" + v + "%" : "+" + v) + " " + (DATA.statLabels[b.stat] || b.stat);
+    return (b.pct ? "+" + v + "%" : "+" + v) + " " + statLabel(b.stat);
   }
 
   function render() {
@@ -231,10 +277,10 @@
       ? keys.map(function (k) {
           var pct = DATA.percentStats.indexOf(k) > -1;
           var v = Math.round(totals[k] * 10) / 10;
-          return '<div class="stat"><span class="k">' + (DATA.statLabels[k] || k) +
+          return '<div class="stat"><span class="k">' + statLabel(k) +
                  '</span><span class="v">' + (pct ? "+" + v + "%" : "+" + v) + "</span></div>";
         }).join("")
-      : '<p style="color:var(--text-mut);margin:0">No nodes allocated yet — click a tier-1 node on any branch to begin.</p>';
+      : '<p style="color:var(--text-mut);margin:0">' + STR.empty + '</p>';
 
     /* per-branch spend */
     var per = {};
@@ -242,7 +288,7 @@
     els.branches.innerHTML = DATA.branches.map(function (b) {
       var v = per[b.key] || 0;
       return '<div class="bar-row" style="--fill:' + b.color + '">' +
-             "<span>" + b.label + '</span><span class="bar"><i style="width:' +
+             "<span>" + branchLabel(b) + '</span><span class="bar"><i style="width:' +
              (v / 28 * 100) + '%"></i></span><span>' + v + "/28</span></div>";
     }).join("");
   }
@@ -256,11 +302,11 @@
       var why = canSelect(n);
       if (why !== true) state = '<span class="t-warn">' + why + "</span>";
     } else if (dependents(n.id).length) {
-      state = '<span class="t-warn">remove later nodes first</span>';
+      state = '<span class="t-warn">' + STR.removeFirst + "</span>";
     }
-    return '<span class="t-name">' + b.label + " &middot; Tier " + n.tier + "</span>" +
-           '<span class="t-meta">' + n.cost + (n.cost === 1 ? " point" : " points") +
-           (n.prereq2 ? " &middot; dual prerequisite" : "") + "</span>" +
+    return '<span class="t-name">' + branchLabel(b) + " &middot; " + tierLabel(n.tier) + "</span>" +
+           '<span class="t-meta">' + n.cost + (n.cost === 1 ? STR.point : STR.pointsSuffix) +
+           (n.prereq2 ? STR.dual : "") + "</span>" +
            "<div>" + lines.join("<br>") + "</div>" + (state ? "<div>" + state + "</div>" : "");
   }
 

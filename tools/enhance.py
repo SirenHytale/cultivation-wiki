@@ -74,7 +74,7 @@ def note(slug: str, body: str, contains: str, kind: str = "", title: str = "") -
             inner = m.group(1)
             # A leading "<strong>Lead-in.</strong>" becomes the callout's title.
             lead = re.match(r"\s*<strong>(.*?)</strong>\s*", inner, re.S)
-            cap = title or (_strip(lead.group(1)).rstrip(".") if lead else "")
+            cap = title or (_strip(lead.group(1)).rstrip(".。") if lead else "")
             if lead and not title:
                 inner = inner[lead.end():]
             cls = f"note {kind}".strip()
@@ -99,7 +99,9 @@ def list_to_cards(slug: str, body: str, heading: str, cols: int = 3,
 
     cards = []
     for i, item in enumerate(items):
-        lead = re.match(r"\s*(?:<strong>(.*?)</strong>|<code>(.*?)</code>)\s*[-–—.]?\s*", item, re.S)
+        # The separator is [-–—.]* rather than a single character because the
+        # Chinese pages use a doubled em dash (——) after the lead-in.
+        lead = re.match(r"\s*(?:<strong>(.*?)</strong>|<code>(.*?)</code>)\s*[-–—.]*\s*", item, re.S)
         if lead:
             title = _strip(lead.group(1) or "") or f"<code>{lead.group(2)}</code>"
             rest = item[lead.end():]
@@ -134,7 +136,10 @@ def table_to_cards(slug: str, body: str, heading: str, cols: int = 3,
         # "Balanced - within `X`" -> title "Balanced", the rest joins the body.
         # Split the RAW cell so the tail keeps its markup: stripping tags here
         # used to silently drop <code> from config keys in the first column.
-        parts = re.split(r"\s+[-–—]\s+", title_raw, maxsplit=1)
+        # [-–—]+ rather than a single dash so the Chinese doubled em dash (——)
+        # splits too - left unsplit, the whole cell became the <h4> and lost
+        # its <code> spans to _strip.
+        parts = re.split(r"\s+[-–—]+\s+", title_raw, maxsplit=1)
         title = _strip(parts[0])
         tail = parts[1].strip() if len(parts) > 1 else ""
         bits = []
@@ -202,49 +207,169 @@ def panel_command_tables(body: str) -> str:
 # ---------------------------------------------------------------------------
 # Per-page recipes
 # ---------------------------------------------------------------------------
-def _dao(slug: str, b: str) -> str:
-    b = panel(slug, b, "Damage Conversion", "Dao Damage Values")
-    b = note(slug, b, "Wood is the healing path", "tip")
-    b = table_to_cards(slug, b, "Yin-Yang Balance", 3, ("☯", "陰", "陽"))
-    b = table_to_cards(slug, b, "Devil and Righteous Paths", 3, ("魔", "正", "中"))
-    b = note(slug, b, "Devil Path's Qi harvest is rate-limited", "warn", "Farming is gated")
+def _dao(slug: str, b: str, s: dict) -> str:
+    b = panel(slug, b, s["conversion"], s["conversion_title"])
+    b = note(slug, b, s["wood"], "tip")
+    b = table_to_cards(slug, b, s["yinyang"], 3, ("☯", "陰", "陽"))
+    b = table_to_cards(slug, b, s["paths"], 3, ("魔", "正", "中"))
+    b = note(slug, b, s["harvest"], "warn", s["harvest_title"])
     return b
 
 
-def _techniques(slug: str, b: str) -> str:
-    b = list_to_cards(slug, b, "Performing One", 2, ("令", "器"))
-    b = panel(slug, b, "The Gates", "Activation Order — first failure is what you are told", "ol")
-    b = panel(slug, b, "The Built-In Arts", "The Nine Arts")
-    b = note(slug, b, "stack in a defined order", "tip", "Stacking Qi Barrier and Iron Body")
+def _techniques(slug: str, b: str, s: dict) -> str:
+    b = list_to_cards(slug, b, s["performing"], 2, ("令", "器"))
+    b = panel(slug, b, s["gates"], s["gates_title"], "ol")
+    b = panel(slug, b, s["builtin"], s["builtin_title"])
+    b = note(slug, b, s["stacking"], "tip", s["stacking_title"])
     return b
 
 
-def _sects(slug: str, b: str) -> str:
-    b = list_to_cards(slug, b, "The Sect Menu", 3, ("宗", "覽", "榜"))
-    b = panel(slug, b, "The Sect Hall", "Claiming a Hall", "ul")
-    b = note(slug, b, "scours the hall clean", "warn", "Inscribing empty-handed")
-    b = note(slug, b, "Elders (长老) are the middle rank", "", "Ranks")
+def _presets(slug: str, b: str, s: dict) -> str:
+    # No explicit titles: each of these paragraphs opens with a bold lead-in,
+    # which note() lifts into the callout heading and removes from the body.
+    b = note(slug, b, s["apply"])
+    b = note(slug, b, s["spectacle"], "tip")
+    b = note(slug, b, s["adv_trib"], "warn")
+    b = note(slug, b, s["defender"], "warn")
+    b = note(slug, b, s["vein_rule"], "warn")
+    b = note(slug, b, s["not_official"])
     return b
 
+
+def _changelog(slug: str, b: str, s: dict) -> str:
+    b = note(slug, b, s["upgrading"])
+    b = note(slug, b, s["why"], "tip")
+    b = note(slug, b, s["watch"])
+    return b
+
+
+def _addons(slug: str, b: str, s: dict) -> str:
+    b = list_to_cards(slug, b, s["how"], 2, ("梯", "言", "族", "術"))
+    b = note(slug, b, s["guarantee"], "tip")
+    b = note(slug, b, s["running"])
+    b = note(slug, b, s["made"])
+    return b
+
+
+def _faq(slug: str, b: str, s: dict) -> str:
+    b = note(slug, b, s["why"], "tip")
+    b = note(slug, b, s["vein_rule"], "warn")
+    b = note(slug, b, s["stuck"])
+    return b
+
+
+def _api_addons(slug: str, b: str, s: dict) -> str:
+    b = note(slug, b, s["threading"], "warn")
+    b = note(slug, b, s["raw_text"])
+    b = note(slug, b, s["stable_fields"], "warn")
+    return b
+
+
+def _sects(slug: str, b: str, s: dict) -> str:
+    b = list_to_cards(slug, b, s["menu"], 3, ("宗", "覽", "榜"))
+    b = panel(slug, b, s["hall"], s["hall_title"], "ul")
+    b = note(slug, b, s["scour"], "warn", s["scour_title"])
+    b = note(slug, b, s["ranks"], "", s["ranks_title"])
+    return b
+
+
+# Match strings, per recipe and per language. Kept beside the recipes rather
+# than inlined so a page can be enhanced identically in both languages; the
+# strings are still deliberately brittle, and an unmatched one warns.
+STRINGS: dict[str, dict[str, dict[str, str]]] = {
+    "dao": {
+        "en": dict(conversion="Damage Conversion", conversion_title="Dao Damage Values",
+                   wood="Wood is the healing path",
+                   yinyang="Yin-Yang Balance", paths="Devil and Righteous Paths",
+                   harvest="Devil Path's Qi harvest is rate-limited",
+                   harvest_title="Farming is gated"),
+        "zh": dict(conversion="伤害转化与相克", conversion_title="大道伤害数值",
+                   wood="木是疗愈之道",
+                   yinyang="阴阳之衡", paths="正魔两途",
+                   harvest="魔道的灵气掠夺设有防刷限制",
+                   harvest_title="刷杀无功"),
+    },
+    "techniques": {
+        "en": dict(performing="Performing One",
+                   gates="The Gates",
+                   gates_title="Activation Order — first failure is what you are told",
+                   builtin="The Built-In Arts", builtin_title="The Nine Arts",
+                   stacking="stack in a defined order",
+                   stacking_title="Stacking Qi Barrier and Iron Body"),
+        "zh": dict(performing="如何施展",
+                   gates="层层关卡",
+                   gates_title="施展顺序 —— 第一个未通过的关卡即是所告之因",
+                   builtin="内置九法", builtin_title="内置九法",
+                   stacking="叠加时有明确的先后",
+                   stacking_title="护体真气与金刚不坏的叠加"),
+    },
+    "changelog": {
+        "zh": dict(upgrading="升级须知",
+                   why="这个版本为何存在",
+                   watch="去哪里关注新版本"),
+    },
+    "addons": {
+        "zh": dict(how="兼容是如何做到的",
+                   guarantee="那条要紧的保证",
+                   running="运行一个扩展",
+                   made="做了什么东西"),
+    },
+    "faq": {
+        "zh": dict(why="为何会这样",
+                   vein_rule="服主请注意：真正要紧的那条规矩",
+                   stuck="还是没辙"),
+    },
+    "api-addons": {
+        "zh": dict(threading="组件的创建必须走 accessor",
+                   raw_text="原始文本在每种语言下都长得一模一样",
+                   stable_fields="页面是按键把管理员正在编辑的内容与字段对应起来的"),
+    },
+    # The English presets page is hand-authored HTML with its callouts already
+    # in place, so only the Chinese build needs a recipe here.
+    "presets": {
+        "zh": dict(apply="如何套用这些预设",
+                   spectacle="留住那份声势",
+                   adv_trib="开启晋阶天劫请慎重",
+                   defender="别去动 War-Requires-Defender-Online",
+                   vein_rule="灵脉恢复必须低于汲取",
+                   not_official="这些是起点，而非官方平衡"),
+    },
+    "sects": {
+        "en": dict(menu="The Sect Menu",
+                   hall="The Sect Hall", hall_title="Claiming a Hall",
+                   scour="scours the hall clean", scour_title="Inscribing empty-handed",
+                   ranks="Elders (长老) are the middle rank", ranks_title="Ranks"),
+        "zh": dict(menu="宗门菜单",
+                   hall="宗门大殿", hall_title="设立大殿",
+                   scour="尽数抹去", scour_title="空手镌刻",
+                   ranks="长老是居中的职位", ranks_title="职位"),
+    },
+}
 
 RECIPES = {
     "dao": _dao,
     "techniques": _techniques,
     "sects": _sects,
+    "presets": _presets,
+    "api-addons": _api_addons,
+    "faq": _faq,
+    "addons": _addons,
+    "changelog": _changelog,
 }
 
 
 def enhance(slug: str, body: str, lang: str = "en") -> str:
     """Apply the global rules, then this page's recipe if it has one.
 
-    Recipes match on English heading text, so they are skipped for other
-    languages - running them there would only produce false "did not match"
-    warnings. The global command/permission panel rule is bilingual and always
-    applies.
+    Recipes match on heading text and prose, which differs per language, so
+    every match string is looked up in STRINGS[slug][lang]. A page with no
+    strings for this language is left plain rather than warned about - the
+    translation simply does not exist yet. The global command/permission panel
+    rule is bilingual and always applies.
     """
     body = panel_command_tables(body)
-    if lang == "en":
-        recipe = RECIPES.get(slug)
-        if recipe:
-            body = recipe(slug, body)
+    recipe = RECIPES.get(slug)
+    strings = STRINGS.get(slug, {}).get(lang)
+    if recipe and strings:
+        body = recipe(slug, body, strings)
     return body

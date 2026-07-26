@@ -74,7 +74,7 @@ flowchart TD;
 
     <h2>开放的注册表</h2>
 
-    <p>种族已不再是一份封闭的名单。其他模组可通过 <code>CultivationAPI.registerRace</code> 注册一个全新的种族，其数据可来自自己的配置文件或一个普通常量，注册后便会与人族、魔族、神族并列出现在种族菜单中 —— 拥有各自的解锁境界、加成与阴气偏向。内置种族与第三方种族走的是完全相同的代码路径。具体做法见<a href="../../api-registries/">注册表</a>。</p>
+    <p>种族已不再是一份封闭的名单。其他模组可通过 <code>CultivationAPI.registerRace</code> 注册一个全新的种族，其数据可来自自己的配置文件或一个普通常量，注册后便会与人族、魔族、神族并列出现在种族菜单中 —— 拥有各自的解锁境界、加成与阴气偏向。内置种族与第三方种族走的是完全相同的代码路径。具体做法见<a href="../api-registries/">注册表</a>。</p>
 
     <div class="panel">
           <div class="panel-head">指令</div>
@@ -84,7 +84,7 @@ flowchart TD;
     </table>
         </div>
 
-    <p>各族自身的数值分别存放于一族一个的配置文件中 —— 见<a href="../../config-race/">种族配置</a> —— 而跨种族的服务端行为位于 <code>Cultivation/RaceSystemConfig.json</code>，说明见<a href="../../config-cultivation/">修炼配置</a>页面。</p>
+    <p>各族自身的数值分别存放于一族一个的配置文件中 —— 见<a href="../config-race/">种族配置</a> —— 而跨种族的服务端行为位于 <code>Cultivation/RaceSystemConfig.json</code>，说明见<a href="../config-cultivation/">修炼配置</a>页面。</p>
 
     <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -131,7 +131,7 @@ flowchart TD;
     <tbody><tr><td>解锁境界</td><td>金丹</td></tr><tr><td>生命上限</td><td>+20%</td></tr><tr><td>输出伤害</td><td>-10%</td></tr><tr><td>灵气获取速度</td><td>+5%</td></tr><tr><td>突破时长</td><td>-20%（仪式耗时减少两成）</td></tr><tr><td>阴气偏向</td><td>-30%</td></tr></tbody>
     </table>
 
-    <p>时长减免同样作用于阶段晋阶与<a href="../../refinement/">炼器</a>，并与天赋树的仪式速度、生效中的清心丹<strong>以乘算叠加</strong>。代码中对减免设有上限，任何组合都无法将一场仪式缩短超过 90%。</p>
+    <p>时长减免同样作用于阶段晋阶与<a href="../refinement/">炼器</a>，并与天赋树的仪式速度、生效中的清心丹<strong>以乘算叠加</strong>。代码中对减免设有上限，任何组合都无法将一场仪式缩短超过 90%。</p>
 
     <p>-30% 的阴气偏向会把神族本应吸收的阴气涤去近三分之一化为阳，因此神族会随时间推移滑向深度阳偏 —— 阳之力（受伤减免与治疗增幅）与<strong>正道</strong>便在那一端等着。</p>
 
