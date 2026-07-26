@@ -138,7 +138,9 @@ LINKS: dict[str, str] = {
     "/cultivation/download/": "https://www.curseforge.com/hytale/mods/cultivation/download",
     "/cultivation/hstats/": "https://hstats.dev/mods/828f65ac-8c45-4510-893b-cc90cd9734aa",
     "/cultivation/modifold/": "https://modifold.com/mod/cultivation",
-    "/cultivation/source/": "https://github.com/meFroggy/Cultivation",
+    # The mod repository is private, so the old "source" permalink now
+    # resolves to the public download page instead.
+    "/cultivation/source/": "https://www.curseforge.com/hytale/mods/cultivation/",
 }
 
 ZH_GROUP = {

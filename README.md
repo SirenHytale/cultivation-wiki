@@ -210,5 +210,4 @@ deploy.
 ## Licence
 
 Wiki content © Siren. The Cultivation mod is available on
-[CurseForge](https://www.curseforge.com/hytale/mods/cultivation/), with source on
-[GitHub](https://github.com/meFroggy/Cultivation).
+[CurseForge](https://www.curseforge.com/hytale/mods/cultivation/).

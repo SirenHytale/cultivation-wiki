@@ -82,7 +82,6 @@ window.SITE = {
   external: [
     { title: "CurseForge", href: "https://www.curseforge.com/hytale/mods/cultivation/" },
     { title: "Download",   href: "https://www.curseforge.com/hytale/mods/cultivation/download" },
-    { title: "Source",     href: "https://github.com/meFroggy/Cultivation" },
     { title: "HStats",     href: "https://hstats.dev/mods/828f65ac-8c45-4510-893b-cc90cd9734aa" }
   ],
 
