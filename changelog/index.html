@@ -43,7 +43,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.5.0</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.5.1</strong>, the current
       release.
     </p>
 
@@ -53,6 +53,61 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.5.1 — What the Vein Will Bear</h2>
+    <p>
+      Sitting down on ground that could never carry your breakthrough used to look exactly like
+      sitting down on ground that could. The ritual simply never moved, and nothing told you why.
+      This release gives the land a voice — and gives the HUD real meters to watch while you sit.
+    </p>
+
+    <h3>The vein now tells you</h3>
+    <ul>
+      <li>A ritual that cannot start because the Spirit Vein beneath you is inadequate now
+        <strong>says so in chat</strong>, instead of quietly refusing to progress.</li>
+      <li>It distinguishes the two cases, because they call for opposite responses:
+        <ul>
+          <li><strong>Too shallow</strong> — the vein's <em>full</em> capacity is below what the
+            ritual demands. No amount of waiting helps; you are told to seek a rich or dragon vein.</li>
+          <li><strong>Drawn too low</strong> — the vein could hold enough but has been meditated
+            down. You are told <em>how much of the requirement remains</em>, so you can judge
+            whether to wait or move on.</li>
+        </ul>
+      </li>
+      <li>Covers all three rituals that read the vein: <strong>realm breakthroughs</strong>,
+        <strong>sub-stage advancements</strong> and <strong>weapon refinement</strong>.</li>
+      <li>The warning fires <strong>once per distinct reason</strong> rather than on every
+        meditation tick, and <strong>re-arms whenever you sit down somewhere new</strong> — so
+        relocating always gets you a fresh reading on the new ground.</li>
+    </ul>
+
+    <h3>The HUD grew meters</h3>
+    <ul>
+      <li>Ritual progress is now a real <strong>progress bar</strong> rather than a percentage
+        buried in a line of text — and its label names whichever ritual is running:
+        <strong>breakthrough</strong>, <strong>advancement</strong> or <strong>refinement</strong>.</li>
+      <li>During a <a href="../tribulations/">Heart-Devil Trial</a>, a second bar tracks your
+        <strong>composure</strong> as the inner demon wears it down, so you can see how many more
+        pulses you can bear rather than guessing.</li>
+      <li>Both meters appear <strong>only while they are relevant</strong>, and the panel resizes to
+        fit. A bottom-anchored HUD now sits flush against the edge of the screen while nothing is
+        running, instead of floating above a fixed-height box.</li>
+      <li>All three ritual labels are translated in every language the mod ships.</li>
+    </ul>
+
+    <h3>Also</h3>
+    <ul>
+      <li>The mod's own Website link now points at this wiki.</li>
+    </ul>
+
+    <div class="note tip">
+      <span class="note-title">Why this release exists</span>
+      It is aimed squarely at the most common piece of confusion this mod produces — "why won't my
+      breakthrough start?" — which is also the top entry on the
+      <a href="../faq/">FAQ</a>. Now the ground answers instead of the wiki having to.
+    </div>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>v0.5.0 — Another Road Up the Mountain</h2>
     <p>

@@ -25,7 +25,7 @@ window.SITE = {
   title: "Cultivation",
   tagline: "Hytale Mod Wiki",
   han: "修仙",
-  version: "v0.5.0",
+  version: "v0.5.1",
   owner: "Siren",          // shown in the footer copyright line
 
   zhTitle: "修真",
