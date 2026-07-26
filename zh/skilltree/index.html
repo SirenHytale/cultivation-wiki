@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>天赋树 — 修真百科</title>
+<meta name="description" content="Cultivation 模组的九分支环形天赋树：天赋点来源、节点层级与前置、第八层超脱节点，以及洗点规则。">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>修炼之道</span><span class="sep">/</span><span>天赋树</span>
+      <span class="sep">·</span><span class="han-dim">道</span>
+    </div>
+
+    <h1>天赋树</h1>
+
+    <p class="page-lede">用 <code>/cultivation skilltree</code>（别名 <code>skills</code>）打开。天赋树是一张环形图：九条分支自中央徽记向外辐射，彼此相隔 40 度，每解锁一个节点，其所在的辐条便会亮起。画布可双向滚动，因此你能一路拖到最外环再拖回来。</p>
+
+    <h2>天赋点</h2>
+
+    <p>天赋点来自<strong>境界提升</strong>，而非反复刷怪：</p>
+
+    <table>
+    <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
+    <tbody><tr><td><code>Points-Per-Advancement</code></td><td>1</td><td>每次阶段晋阶所授。</td></tr><tr><td><code>Points-Per-Breakthrough</code></td><td>2</td><td>突破至新境界时，在上一项之外<strong>额外</strong>再授。</td></tr></tbody>
+    </table>
+
+    <p>一次失败的仪式会使你跌落一阶，并收回该阶段所授予的天赋点。若你已经花掉了它们，这笔欠账会一直背到你重新赚回为止。管理员可用 <code>/cultivation admin grantskillpoints</code> 直接发放。</p>
+
+    <h2>九条分支</h2>
+
+    <p>每条分支专精一项属性。枚举顺序即为环上顺序，且<strong>相邻关系至关重要</strong>：混合节点会向紧挨着它的分支借取属性。</p>
+
+    <table>
+    <thead><tr><th>分支</th><th>属性</th><th>数值类型</th></tr></thead>
+    <tbody><tr><td>体魄</td><td>生命上限</td><td>定值</td></tr><tr><td>韧性</td><td>屏息</td><td>定值</td></tr><tr><td>力道</td><td>伤害 %</td><td>百分比</td></tr><tr><td>护体</td><td>减伤 %</td><td>百分比</td></tr><tr><td>悟性</td><td>灵气获取 %</td><td>百分比（独立档）</td></tr><tr><td>和合</td><td>仪式速度 %</td><td>百分比</td></tr><tr><td>疾行</td><td>移动速度 %</td><td>百分比</td></tr><tr><td>耐力</td><td>体力</td><td>定值</td></tr><tr><td>灵识</td><td>法力</td><td>定值</td></tr></tbody>
+    </table>
+
+    <p>生命、法力、体力与屏息是通过实体属性表施加的<strong>定值加算</strong>。百分比类属性则在其之外结算：伤害 % 与境界、种族一同叠入你的伤害倍率；灵气获取 % 作用于每一个灵气来源；仪式速度 % 进入晋阶／突破／炼器的时长公式；减伤 % 与本命护甲一同作用于受到的伤害；移动速度 % 则直接加在你的基础移速上。</p>
+
+    <h2>节点层级与前置</h2>
+
+    <p>每个节点都需先解锁其父节点。一条分支自中心笔直延伸至第 4 层，在第 5 层一分为二，第 7 层再度分叉，最终于唯一的第 8 层超脱节点重新汇合。</p>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart LR;
+    T1["第1-4层&lt;br/&gt;本分支辐条"] --&gt; F["第5层&lt;br/&gt;分叉 A / B"];
+    F --&gt; T6["第6层&lt;br/&gt;延续各自配对"];
+    T6 --&gt; T7["第7层&lt;br/&gt;再度分叉"];
+    T7 --&gt; T8["第8层 超脱&lt;br/&gt;双前置"];
+</pre>
+    </div>
+
+    <p>第 1 至 4 层各携带<strong>一项</strong>加成，即本分支自身的属性。第 5、6、7 层为<strong>混合节点</strong>，各携带两项：本分支属性取较大值，外加相邻分支属性的一份较小值。分叉 A 向逆时针方向的相邻分支借取，分叉 B 向顺时针方向借取；第 6、7 层则以更大的数值延续其父节点的完全相同的配对。</p>
+
+    <table>
+    <thead><tr><th>层级</th><th>消耗</th><th>定值 主/次</th><th>百分比 主/次</th></tr></thead>
+    <tbody><tr><td>1 - 4</td><td>各 1 点</td><td>10 / 20 / 35 / 55</td><td>3 / 5 / 8 / 12（悟性：4 / 7 / 10 / 14）</td></tr><tr><td>5（分叉）</td><td>2</td><td>55 / 30</td><td>7 / 4</td></tr><tr><td>6</td><td>2</td><td>80 / 45</td><td>10 / 6</td></tr><tr><td>7</td><td>3</td><td>110 / 60</td><td>12 / 7</td></tr><tr><td>8（超脱）</td><td>4</td><td>见下</td><td>见下</td></tr></tbody>
+    </table>
+
+    <p>某个数值取定值列还是百分比列，取决于<strong>属性本身</strong>而非分支 —— 一个体魄节点借取屏息时，两半都用定值；而它借取力道时，被借的那一半便用百分比。</p>
+
+    <p>一条完整分支为 <strong>13 个节点、28 点</strong>，因此九条分支尽数点满即为 <strong>117 个节点、252 点</strong>。深度专精是一项真正的取舍，而非水到渠成。</p>
+
+    <h2>第八层 · 超脱</h2>
+
+    <p>每条分支只以<strong>一个</strong>第 8 层节点收束，位置回到本分支自身的辐条上。它们是全树<strong>仅有的双前置节点</strong>：你必须同时持有辐条两侧的第 7 层节点（A2 与 B1），也就是说必须在分叉的两条支路上都下足投入，而不能只挑一边一路走到底。</p>
+
+    <p>每个超脱节点授予三种辅助属性之一，沿环轮转，因此每种属性各由三条分支承载：</p>
+
+    <table>
+    <thead><tr><th>超脱属性</th><th>数值</th><th>所属分支</th></tr></thead>
+    <tbody><tr><td>灵气消耗降低 %</td><td>各 +8%</td><td>体魄、护体、疾行</td></tr><tr><td>本命法宝经验 %</td><td>各 +25%</td><td>韧性、悟性、耐力</td></tr><tr><td>灵脉汲取半径</td><td>各 +1 圈区块</td><td>力道、和合、灵识</td></tr></tbody>
+    </table>
+
+    <p><strong>灵气消耗降低</strong>会按比例削减每次晋阶与突破所需的灵气，总量受 <code>Qi-Cost-Reduction-Cap-Percent</code>（默认 40%）钳制，以免境界提升的代价彻底崩塌。<strong>本命法宝经验</strong>倍增你所绑定装备获取的经验。<strong>灵脉汲取半径</strong>则在 <code>Spirit-Vein-Drain-Radius-Chunks</code> 之上，进一步扩大打坐可汲取的相邻区块圈数。</p>
+
+    <h2>洗点</h2>
+
+    <p><code>/cultivation respec</code>（别名 <code>resetskillpoints</code>、<code>resetskills</code>）会清空你的天赋树，并退还所有已花费的点数。此功能默认开启，可用 <code>Respec-Enabled</code> 关闭，使流派成为永久抉择。</p>
+
+    <p>由<strong>秘籍</strong>传授的节点不消耗天赋点，因此不在退还之列，也会在洗点后原样保留 —— 读秘籍无法凭空造出天赋点，洗点也不会毁掉你已经消耗过的秘籍。</p>
+
+    <table>
+    <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
+    <tbody><tr><td><code>/cultivation skilltree</code></td><td>打开环形天赋树。别名：<code>skills</code>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation respec</code></td><td>退还全部已花费点数并清空天赋树。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>列出当前作用于你的全部加成，含天赋树。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin grantskillpoints</code></td><td>为某玩家发放天赋点。</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>天赋点发放、灵气消耗上限与洗点开关位于 <code>Cultivation/SkillTreeConfig.json</code> —— 详见<a href="../../config-cultivation/">修炼配置</a>。</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

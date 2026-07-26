@@ -36,6 +36,11 @@ ZH_SRC = ROOT / "zh-src"
 ZH_OUT = ROOT / "zh"
 # Chinese pages written by hand as HTML; never generated over.
 ZH_PROTECTED = {"realms", "qi-gathering", "getting-started", "glossary", "index"}
+# Set while the Chinese pass runs: which slugs actually have a zh/ page. A link
+# to anything else must drop back to the English page (../../<slug>/) instead of
+# pointing at a zh/ URL that does not exist.
+ZH_MODE = False
+ZH_AVAILABLE: set[str] = set()
 
 # Pages are written as <slug>/index.html so they serve at a clean, extensionless
 # URL (/realms/). That puts every page exactly one directory below the repo root.
@@ -160,9 +165,13 @@ def resolve_link(url: str) -> str:
         if target.startswith("http"):
             return target
         if target == "":
-            return "../"
+            return "../" if not ZH_MODE else "../"
         slug, _, anchor = target.partition("#")
-        return f"../{slug}/" + (f"#{anchor}" if anchor else "")
+        frag = f"#{anchor}" if anchor else ""
+        if ZH_MODE and slug not in ZH_AVAILABLE:
+            # No Chinese counterpart yet - link to the English page one level up.
+            return f"../../{slug}/" + frag
+        return f"../{slug}/" + frag
     if url.startswith(("http://", "https://", "#", "mailto:")):
         return url
     # An unmapped site-absolute link would 404 silently; surface it instead.
@@ -493,6 +502,9 @@ def build_zh() -> int:
     """Convert every zh-src/<slug>.md into zh/<slug>/index.html."""
     if not ZH_SRC.exists():
         return 0
+    global ZH_MODE, ZH_AVAILABLE
+    ZH_AVAILABLE = {f.stem for f in ZH_SRC.glob("*.md")} | ZH_PROTECTED
+    ZH_MODE = True
     written = 0
     for src in sorted(ZH_SRC.glob("*.md")):
         slug = src.stem
@@ -522,6 +534,7 @@ def build_zh() -> int:
         (ZH_OUT / slug / "index.html").write_text(page, encoding="utf-8")
         written += 1
         print(f"  zh-src/{src.name:26s} -> zh/{slug + '/':25s} ({len(body):>6,} bytes)")
+    ZH_MODE = False
     return written
 
 

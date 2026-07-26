@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN" data-root="../../" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大道 — 修真百科</title>
+<meta name="description" content="Cultivation 模组的大道体系：十种元素之道与五行相克、伤害转化、阴阳之衡，以及正魔两途。">
+<link rel="icon" href="../../assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/xianxia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到正文</a>
+<div id="site-header"></div>
+
+<div class="layout">
+  <div id="site-sidebar"></div>
+
+  <main class="content" id="main">
+    <div class="page-eyebrow">
+      <span>修炼之道</span><span class="sep">/</span><span>大道</span>
+      <span class="sep">·</span><span class="han-dim">道</span>
+    </div>
+
+    <h1>大道</h1>
+
+    <p class="page-lede">用 <code>/cultivation dao</code> 打开你的大道页面。其中并行着两条轨迹：由你<strong>主动择定</strong>的元素之道（五行道），以及由你的行止<strong>悄然写就</strong>的阴阳之衡。</p>
+
+    <p>元素这一半在<strong>筑基</strong>期解锁（<code>Dao-Unlock-Realm</code>），首次选择免费。阴阳这一半自始便已生效，除非服务端开启了 <code>YinYang-Endgame-Only</code> —— 那会将其隐藏并暂停，直到 <code>YinYang-Unlock-Realm</code>（元婴期）。</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>十种元素</h2>
+
+    <p>五种经典五行构成一环，五种幽暗元素另成一环。每种元素<strong>克制</strong>其所在环中的下一位，循环往复。<strong>跨环相遇则互不克制</strong> —— 火修对毒修并无任何元素上的优劣。</p>
+
+    <div class="mermaid-wrap">
+    <pre class="mermaid">
+flowchart LR;
+    subgraph Classic["五行环"];
+        Wood["木"] --&gt; Earth["土"];
+        Earth --&gt; Water["水"];
+        Water --&gt; Fire["火"];
+        Fire --&gt; Metal["金"];
+        Metal --&gt; Wood;
+    end;
+    subgraph Shadow["暗环"];
+        Ice["冰"] --&gt; Wind["风"];
+        Wind --&gt; Poison["毒"];
+        Poison --&gt; Lightning["雷"];
+        Lightning --&gt; Void["虚"];
+        Void --&gt; Ice;
+    end;
+</pre>
+    </div>
+
+    <p>箭头读作「克」。木克土，土克水，如此绕环一周；冰克风，风克毒，暗环亦然。</p>
+
+    <p>每种元素都对应一种真实的伤害类型。火、冰、毒沿用原版伤害源；木、土、水、金、风、雷、虚则是本模组自带的伤害资产，均继承引擎的元素伤害类别。</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>伤害转化与相克</h2>
+
+    <p>一旦踏上某道，你的近战输出便会转化为该元素的伤害类型，并作如下调整：</p>
+
+    <table>
+    <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
+    <tbody><tr><td><code>Dao-Damage-Bonus-Percent</code></td><td>10</td><td>任何已转化攻击的固定加成。</td></tr><tr><td><code>Dao-Counter-Bonus-Percent</code></td><td>15</td><td>对元素被你克制的目标，额外伤害。</td></tr><tr><td><code>Dao-Counter-Penalty-Percent</code></td><td>10</td><td>对克制你的元素，伤害降低。</td></tr><tr><td><code>Dao-Wood-Heal-Percent-Of-Damage</code></td><td>20</td><td>木之道用以替代固定加成的效果。</td></tr></tbody>
+    </table>
+
+    <p><strong>木是疗愈之道。</strong> 它完全没有固定伤害加成 —— 取而代之的是，你所造成伤害的 20% 会转化为对自身的治疗。相克加成仍照常生效。</p>
+
+    <p>尚未择道的修士也并未被冷落：一件<a href="../../refinement/">炼制过的兵器</a>会自行提供元素以参与转化与相克；而当该元素与持有者自身的道相合时，还会额外附加一层共鸣加成。造成伤害的<a href="../../techniques/">功法</a>同样流经这一层过滤，因此剑气斩与九天雷掌会免费染上你的道之色彩。</p>
+
+    <h2>换道与偏移</h2>
+
+    <p>主动换道需消耗已积攒的灵气，并遵守一段真实时间的冷却：</p>
+
+    <table>
+    <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
+    <tbody><tr><td><code>Dao-Switch-Base-Qi-Cost</code></td><td>500</td><td>换道的基础灵气消耗。</td></tr><tr><td><code>Dao-Switch-Qi-Cost-Realm-Multiplier</code></td><td>1.6</td><td>每提升一重境界的倍率。</td></tr><tr><td><code>Dao-Switch-Cooldown-Hours</code></td><td>24</td><td>两次主动换道之间的真实小时数。</td></tr></tbody>
+    </table>
+
+    <p>你的道也可能<strong>自行偏移</strong>。每一次元素击杀都会为致命一击所属元素的隐藏亲和度累加 <code>Dao-Affinity-Per-Elemental-Kill</code>（1），你的种族倾向亦会为其添砖加瓦。当另一种元素的亲和度超出你所择之道 <code>Dao-Drift-Margin</code>（25）时，你会收到警告；若继续增长至该阈值的两倍，你的道便会自行转换 —— 不耗灵气，也无冷却。将 <code>Dao-Drift-Enabled</code> 设为 false 可将道固定为纯粹的主动抉择。</p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>阴阳之衡</h2>
+
+    <p>每位修士都背负着一条随行止而动的阴阳之衡：</p>
+
+    <ul><li><strong>打坐</strong>每个汲取周期使其偏移 <code>Meditation-Alignment-Shift-Per-Tick</code>（0.2）—— 在良善区块偏向阳，在邪秽区块偏向阴。约 5% 的区块（<code>Chunk-Evil-Qi-Chance</code>）承载着邪气。</li><li><strong>你的种族</strong>会以自身的 <code>Qi-Alignment-Yin-Bias-Percent</code> 扭曲这一偏移 —— 魔族的 +50% 连良善之气也会染黑，神族的 -30% 则涤净暗气。详见<a href="../races/">种族</a>。</li><li><strong>杀戮</strong>每次增加 <code>Kill-Yin-Amount</code>（1）点阴；当世界处于夜晚阶段时，再乘以 <code>Night-Kill-Yin-Multiplier</code>（2）。<strong>暗夜屠戮，染得最深。</strong></li></ul>
+
+    <p>你在这条标尺上的位置决定你所得为何：</p>
+
+    <table>
+    <thead><tr><th>状态</th><th>效果</th></tr></thead>
+    <tbody><tr><td>平衡 —— 处于 50/50 中位的 <code>Balance-Window-Percent</code>（15%）以内</td><td>对<strong>所有</strong>灵气获取与伤害提供 <code>Balance-Bonus-Percent</code>（10%）加成，并向窗口边缘线性衰减。</td></tr><tr><td>深阴 —— 阴占比越过 <code>Lean-Threshold-Percent</code>（70%）</td><td><code>Yin-Power-Damage-Percent</code>（+10%）伤害，以及 <code>Yin-Lifedrain-Percent</code>（5%）的伤害转化为生命。</td></tr><tr><td>深阳 —— 阳占比越过同一阈值</td><td><code>Yang-Defense-Percent</code>（10%）受伤减免，以及 <code>Yang-Heal-Bonus-Percent</code>（+25%）的受治疗增幅（含木之攻击）。</td></tr></tbody>
+    </table>
+
+    <p>平衡与偏执在构造上互斥：你不可能既完美居中，又深度偏向一端。<strong>在两者之间取舍，才是这套体系真正的抉择。</strong></p>
+
+    <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>正魔两途</h2>
+
+    <p>偏得足够深，阴阳之衡便不再只是一项属性，而成为一条<strong>道途</strong>。道途从不由你选择 —— 它追随你的作为，也随之回摆。你的大道页面会显示当前所行之途，变更时亦会在聊天栏告知。</p>
+
+    <table>
+    <thead><tr><th>道途</th><th>触发条件</th><th>增益</th></tr></thead>
+    <tbody><tr><td><strong>魔道</strong></td><td>阴偏比例达到 <code>Path-Lean-Fraction-Threshold</code>（0.5）</td><td>对正道修士 <code>Path-Devil-Damage-Vs-Righteous-Percent</code>（+15%）伤害；斩杀任意玩家掠夺 <code>Path-Devil-PK-Qi-Reward</code>（100）点灵气。</td></tr><tr><td><strong>正道</strong></td><td>阳偏比例达到同一阈值</td><td>对魔道修士 <code>Path-Righteous-Damage-Vs-Devil-Percent</code>（+15%）伤害，并 <code>Path-Righteous-Defense-Vs-Devil-Percent</code>（15%）减免其伤害。</td></tr><tr><td><strong>无属</strong></td><td>未越过阈值的一切情形</td><td>凡尘中道 —— 没有道途增益，但平衡加成在此最易维持。</td></tr></tbody>
+    </table>
+
+    <p>魔道的灵气掠夺设有防刷限制：在 <code>Pk-Same-Victim-Cooldown-Seconds</code>（900 秒）内重复斩杀同一人分文不得，斩杀境界序号低于 <code>Pk-Min-Victim-Realm</code>（1）者亦然。这两道闸门同样覆盖大道功过与<a href="../../manuals/">秘籍</a>掉落判定，而不只是灵气。寻常 PvP 不受影响 —— 被限制的只是修炼上的战利品。</p>
+
+    <p>一次刷杀不仅毫无回报：它所记下的<a href="../karma/">业力</a>比一次光明磊落的斩杀更重，而魔道修士积业本就快于常人。天道会在你下一次<a href="../tribulations/">渡劫</a>时前来清算。</p>
+
+    <p>任一方向的深度偏执，也会改变突破的模样：一旦越过 <code>HeartDevil-Lean-Threshold</code>（0.5），你所要面对的将是<strong>心魔劫</strong>，而非天劫雷击。</p>
+
+    <table>
+    <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
+    <tbody><tr><td><code>/cultivation dao</code></td><td>打开大道页面 —— 元素、亲和度、阴阳、道途与业力。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>当前作用于你的全部加成，含大道。</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>本页所有数值均位于大道配置之中 —— 详见<a href="../../config-arts/">功法配置</a>。</p>
+
+  </main>
+
+  <div id="site-toc"></div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../../data/nav.js"></script>
+<script src="../../data/search-index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="../../assets/js/site.js"></script>
+</body>
+</html>

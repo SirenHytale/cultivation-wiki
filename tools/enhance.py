@@ -131,12 +131,15 @@ def table_to_cards(slug: str, body: str, heading: str, cols: int = 3,
         if not cs:
             continue
         title_raw = cs[0]
-        # "Balanced - within X" -> title "Balanced", the rest joins the body.
-        parts = re.split(r"\s+[-–—]\s+", _strip(title_raw), maxsplit=1)
-        title, tail = parts[0], (parts[1] if len(parts) > 1 else "")
+        # "Balanced - within `X`" -> title "Balanced", the rest joins the body.
+        # Split the RAW cell so the tail keeps its markup: stripping tags here
+        # used to silently drop <code> from config keys in the first column.
+        parts = re.split(r"\s+[-–—]\s+", title_raw, maxsplit=1)
+        title = _strip(parts[0])
+        tail = parts[1].strip() if len(parts) > 1 else ""
         bits = []
         if tail:
-            bits.append(f"<em>{H.escape(tail)}</em>")
+            bits.append(f"<em>{tail}</em>")
         for j, cell in enumerate(cs[1:], start=1):
             label = f"<strong>{H.escape(heads[j])}:</strong> " if j < len(heads) and heads[j] else ""
             bits.append(label + cell)
