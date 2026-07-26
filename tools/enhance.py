@@ -178,8 +178,9 @@ def panel_command_tables(body: str) -> str:
         th = re.search(r"<th>(.*?)</th>", table, re.S)
         if not th:
             return None
-        return {"command": "Commands", "permission": "Permissions"}.get(
-            _strip(th.group(1)).lower())
+        # Both languages: the Chinese pages head these columns 指令 / 权限.
+        return {"command": "Commands", "permission": "Permissions",
+                "指令": "指令", "权限": "权限"}.get(_strip(th.group(1)).lower())
 
     matches = [m for m in re.finditer(r"<table>.*?</table>", body, re.S) if kind(m.group(0))]
     if not matches or len(matches) > 2:
@@ -233,10 +234,17 @@ RECIPES = {
 }
 
 
-def enhance(slug: str, body: str) -> str:
-    """Apply the global rules, then this page's recipe if it has one."""
+def enhance(slug: str, body: str, lang: str = "en") -> str:
+    """Apply the global rules, then this page's recipe if it has one.
+
+    Recipes match on English heading text, so they are skipped for other
+    languages - running them there would only produce false "did not match"
+    warnings. The global command/permission panel rule is bilingual and always
+    applies.
+    """
     body = panel_command_tables(body)
-    recipe = RECIPES.get(slug)
-    if recipe:
-        body = recipe(slug, body)
+    if lang == "en":
+        recipe = RECIPES.get(slug)
+        if recipe:
+            body = recipe(slug, body)
     return body

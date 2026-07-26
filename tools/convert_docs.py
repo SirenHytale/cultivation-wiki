@@ -607,7 +607,7 @@ def main() -> None:
                      'alt="" width="340" height="24">\n\n') + sub
         title = meta.get("title", out_name.replace(".html", "").title())
         desc = meta.get("description", f"Cultivation mod documentation — {title}")
-        body = enhance.enhance(slug, body)
+        body = enhance.enhance(slug, body, "zh")
 
         # Breadcrumb tracks the visible <h1>, not the front matter, so the two
         # never disagree on screen (e.g. "Main Config" vs "Config").

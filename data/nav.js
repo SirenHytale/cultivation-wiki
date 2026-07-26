@@ -115,10 +115,10 @@ window.SITE = {
       title: "Arts & Treasures", zh: "功法与法宝", han: "術",
       items: [
         { title: "Techniques",        zh: "功法",     href: "techniques/" },
-        { title: "Manuals",           zh: "秘籍",     href: "manuals/" },
+        { title: "Manuals",           zh: "秘籍",     href: "manuals/", zhPage: true },
         { title: "Alchemy",           zh: "炼丹",     href: "alchemy/" },
         { title: "Weapon Refinement", zh: "炼器",     href: "refinement/" },
-        { title: "Life-Bound",        zh: "本命法宝", href: "lifebound/" },
+        { title: "Life-Bound",        zh: "本命法宝", href: "lifebound/", zhPage: true },
         { title: "Spirit Beasts",     zh: "灵兽",     href: "beasts/" }
       ]
     },
