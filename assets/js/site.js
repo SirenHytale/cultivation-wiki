@@ -213,7 +213,10 @@
     var main = document.querySelector("main.content");
     if (!mount || !main) return;
 
-    var heads = Array.prototype.slice.call(main.querySelectorAll("h2, h3"));
+    /* A page can narrow what the TOC indexes with data-toc — the changelog
+       sets "h2" so eight releases don't produce a forty-entry rail. */
+    var sel = main.getAttribute("data-toc") || "h2, h3";
+    var heads = Array.prototype.slice.call(main.querySelectorAll(sel));
     heads.forEach(function (h, i) {
       if (!h.id) {
         h.id = (h.textContent || "s")

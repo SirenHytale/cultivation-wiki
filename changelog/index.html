@@ -35,7 +35,7 @@
 <div class="layout">
   <div id="site-sidebar"></div>
 
-  <main class="content" id="main">
+  <main class="content" id="main" data-toc="h2">
     <div class="page-eyebrow">
       <span>About</span><span class="sep">/</span><span>Changelog</span>
       <span class="sep">·</span><span class="han-dim">誌</span>
@@ -197,24 +197,300 @@
       over — no reset needed, and your config files are left exactly as they are.
     </div>
 
-    <h2>Earlier Releases</h2>
-    <p>
-      Release notes before v0.5.0 are not kept in this wiki. The full file history, with the notes
-      published for each build, lives on CurseForge:
-    </p>
-    <p>
-      <a class="btn" href="https://www.curseforge.com/hytale/mods/cultivation/files" rel="noopener">All files on CurseForge</a>
-    </p>
-    <p>
-      For reference, <strong>v0.4.2</strong> introduced the nine built-in sections of the
-      <code>/cultivation admin</code> config editor that v0.5.0 opened up to other mods.
-    </p>
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.4.2 — Steadier Ground</h2>
+    <p>A short, sharp-edged release. On a fresh world, a cultivator's <strong>very first kill could take the whole world down with it</strong> — that is fixed, and it is the reason to take this update. The admin config editor also stops being one endless scroll, and the English menus stop borrowing from the Chinese ones.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Existing worlds, player progress, sects and abodes all carry over — no reset needed, and your config files are left exactly as they are.
+    </div>
+    <h3>FIXED — The First Kill Crash</h3>
+    <ul>
+      <li>On a new world, a cultivator who had <strong>not yet meditated</strong> (and had never opened the Dao menu) could <strong>crash the entire world</strong> by killing anything at all — a mob, a spirit beast, another player, it made no difference.</li>
+      <li>The cause: crediting that kill to your Dao tried to <em>create</em> your Dao record from inside the engine's own entity loop, which the engine forbids outright. That record is created the moment you first meditate, which is exactly why the crash only ever struck brand-new characters — and why it looked so random.</li>
+      <li>Everything a kill credits — <strong>elemental affinity and Dao drift, the Yin a night kill stains you with, karma, and the Devil Path's Qi harvest</strong> — now goes through the engine's proper deferred path instead, and all of it shares one Dao record rather than quietly overwriting each other's work.</li>
+      <li>Nothing was rewritten or corrupted by this — the world thread simply stopped. If you have been hit by it, updating is all that is needed.</li>
+      <li><strong>Every earlier version of Cultivation is affected</strong>, so any server with a new player on it was one mob kill away from a crash. This is a strongly recommended update for live servers.</li>
+    </ul>
+    <h3>The Admin Config Editor, Now in Sections</h3>
+    <ul>
+      <li>The Config tab of <strong><code>/cultivation admin</code></strong> was a single scroll of sixty-odd settings with nothing to break it up — finding the one number you came for meant reading past all the others.</li>
+      <li>It is now split into <strong>nine sections, one per config file</strong>, listed down the left: Cultivation, Spirit Cores, Spirit Veins, Breakthrough, Skill Tree, The Dao, Alchemy, Life-Bound Gear and Sects. Pick one and only its settings are on screen.</li>
+      <li>Each section carries a <strong>one-line summary</strong> of what it governs, above the fields and on the button itself, so you can tell where a setting lives before you go hunting for it.</li>
+      <li>Edits <strong>follow you between sections</strong>. Change a value, wander off to another section, come back — your typed value is still sitting there, and one Save still writes every section at once, exactly as before.</li>
+    </ul>
+    <h3>English Menus, in English</h3>
+    <ul>
+      <li>A few Chinese characters had been left sitting inside the <em>English</em> menu text — the Dao page's title, the Five Phases ring, and the karma tooltip. They are gone, and the English UI now reads as English throughout.</li>
+      <li>The <strong>Simplified Chinese localization is untouched</strong>, and still uses proper Xianxia terminology throughout.</li>
+    </ul>
+    <h3>Under the Hood</h3>
+    <ul>
+      <li>The mod now reports its version straight from its own manifest, so the version in the logs, in the metrics and in the API can no longer disagree with the build you actually installed.</li>
+    </ul>
+    <p>A small release, but the first item on it is worth updating for on its own. Feedback welcome!</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.4.1 — Karma, Sect Governance &amp; the Modding API</h2>
+    <p>The heavens start keeping accounts. Every cultivator you cut down writes <strong>karma</strong> onto a ledger your next tribulation collects — in harder bolts, and more of them. Sects grow a real chain of command, with elders, join policies, and an art carved into the hall for every disciple to wield. And under the hood, almost everything Cultivation does can now be watched, vetoed, or re-tuned by other mods.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Existing worlds, player progress, sects and abodes all carry over — no reset needed. Unlike v0.4.0, this update does <em>not</em> reset your config files; the new karma and sect settings are simply added with sane defaults.
+    </div>
+    <h3>NEW — Karma (业力) &amp; Heavenly Retribution</h3>
+    <ul>
+      <li>Slaying another cultivator now stains your <strong>ledger</strong>. Karma costs you nothing on the day — the heavens simply remember, and collect at your next tribulation.</li>
+      <li>A karma-laden cultivator's tribulation is genuinely worse: <strong>every bolt bites deeper</strong>, and <strong>more bolts fall</strong> — compressed into the ritual's existing duration rather than lengthening it, so a heavy ledger isn't punished twice.</li>
+      <li>Cutting down the <em>same</em> victim over and over is the fastest way to ruin yourself: a farmed kill yields <strong>no Qi at all</strong> and costs <strong>more</strong> karma than an honest one. The anti-farm rule is now a deterrent rather than merely a wall.</li>
+      <li>Walking the <strong>Devil Path</strong> multiplies every karma charge — power taken by slaughter is written down heavier.</li>
+      <li>Two ways to clear it: <strong>endure a tribulation strike</strong> and the lightning burns your ledger down fast, or keep your blade sheathed and let it <strong>fade on its own</strong> — which ticks in real time, whether you are logged in or not.</li>
+      <li>Your karma reads in the Dao menu, and you are warned as it crosses into each new severity band rather than on every kill.</li>
+      <li>Entirely optional and fully tunable: kill cost, farmed-kill cost, devil multiplier, decay rate, ceiling, how much extra tribulation damage and how many extra bolts it buys, and how much one survived strike burns off. Set <code>Karma-Enabled</code> to false to switch the whole ledger off.</li>
+    </ul>
+    <h3>NEW — Sect Governance</h3>
+    <ul>
+      <li><strong>Elders (长老).</strong> A sect leader can raise disciples to elder and demote them again. Elders may invite and remove plain members and approve newcomers — but only the leader may remove an elder, and nobody removes the leader.</li>
+      <li><strong>Join policies.</strong> Every sect chooses how outsiders get in: <strong>Invite</strong> (invitation only), <strong>By Request</strong> (applicants queue for a manager to approve or deny), or <strong>Open</strong> (walk straight in).</li>
+      <li>Pending join requests are listed right in the sect menu, with approve and deny where the leadership can actually see them.</li>
+      <li>Sects can now set a <strong>motto</strong> and <strong>rename</strong> themselves. A rename carries everything keyed to the old name with it — your formations, your hall's spirit spring, and any invites still pending — so nothing is stranded.</li>
+      <li>Leaving a sect now properly strips your rank, so rejoining an open sect no longer quietly restores an elder's authority.</li>
+      <li>The sect menu was rebuilt around all of it: roster with ranks, policy, motto, power score and pending requests in one place.</li>
+    </ul>
+    <h3>NEW — Hall Inscriptions (碑文)</h3>
+    <ul>
+      <li>A sect leader can carve a <strong>technique manual into the sect hall</strong> with <code> /sect</code> inscribe, and <em>every disciple in the sect can wield that art</em> — without ever finding a manual of their own.</li>
+      <li>The inscription lives in the <strong>hall</strong>, not in your members' memories. Lose the hall to a siege and the art passes from the whole sect at once, instantly, for everyone. Take a rival's hall and you take what is carved in it.</li>
+      <li>Requires a claimed hall, consumes the manual, and replaces whatever was carved there before. Run <code> /sect</code> inscribe empty-handed to scour it away.</li>
+      <li>Server owners who would rather sects did not share arts can switch it off with <code>Sect-Inscription-Enabled</code>.</li>
+    </ul>
+    <h3>Rankings That Survive a Restart</h3>
+    <ul>
+      <li>The realm rankings behind <code>/cultivation top</code>, the Rankings page and sect power scores are now <strong>saved to disk</strong> instead of living only in memory.</li>
+      <li>This fixes <strong><code> /sect</code> top</strong>, which previously counted only members who had logged in since the last restart — so sects ranked by who happened to be online rather than by their actual roster, and the whole board reset every time the server came back up.</li>
+      <li>(Your own progress was never at risk — it has always lived on your character. Only this cross-player index was volatile.)</li>
+    </ul>
+    <h3>Combat Fixes</h3>
+    <ul>
+      <li>Cultivation's damage layers — Dao element conversion and the Wu Xing counters, Yin lifedrain, refinement bonuses, Life-Bound armor and XP, technique buffs and spirit beast bonuses — <strong>no longer apply to a hit that was already cancelled</strong>. Damage blocked by the world, by spawn protection, or by another mod now stays blocked instead of being quietly revived, converted, or credited.</li>
+      <li>The duel system's ability to override a world's PvP setting now has its own toggle (<code>Duel-Overrides-World-Pvp</code>) — set it to false and a PvP-disabled world stays absolutely final, duel or no duel.</li>
+    </ul>
+    <h3>NEW — For Modders: the Full Event API</h3>
+    <ul>
+      <li>Cultivation's public API grew from 7 events to roughly <strong>135</strong>, covering every system in the mod: Qi and meditation, rituals, breakthroughs, tribulations, the Heart-Devil Trial, races, the skill tree, the Dao, karma, techniques, sword flight, manuals, refinement, pills, drops, spirit beasts, sects, wars, duels, formations and cave abodes.</li>
+      <li>Almost everything is exposed <strong>twice</strong>: a cancellable event fired <em>before</em> the change, and a notification once it is committed.</li>
+      <li>Those "before" events do not just say no — they hand you the <strong>numbers</strong>. An addon can halve a breakthrough's Qi cost, zero a technique's cooldown, soften a tribulation bolt, re-weigh a taming roll, re-price a dao switch, or make sect halls unstealable, all without touching a config file.</li>
+      <li>Nothing changes for players, and existing addons keep working — the original seven events are untouched.</li>
+    </ul>
+    <p>Karma is the big new dial on this release and it is deliberately gentle out of the box — if it feels too light or too cruel on your server, every number is live-editable from the in-game admin editor. Feedback welcome!</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.4.0 — Techniques, Spirit Beasts &amp; the Devil's Path</h2>
+    <p>Cultivation stops being something you only grow and becomes something you <em>wield</em>. Learn nine cultivation arts from manuals scattered across the world, ride a flying sword through the clouds, bind a spirit beast to your soul, carve out a cave abode with its own spirit spring, temper your blade in tribulation lightning, and walk the Devil Path or the Righteous Path to its end.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Existing worlds and player progress carry over — no player-data reset needed — but note that almost every config value has been reset to its new default for this update, so if you had the mod retuned for your server you'll want to re-apply your changes.
+    </div>
+    <h3>NEW — Cultivation Techniques (功法)</h3>
+    <ul>
+      <li>Nine active <strong>arts</strong>, each with its own unlock realm, Qi cost, and cooldown — performed with <code>/cultivation technique</code>, or bound to a reusable technique scroll you hold and use.</li>
+      <li><strong>Sword Flying</strong> — take to the sky and soar freely for as long as your Qi holds out, faster the higher your realm. Run dry mid-flight and you fall. A <strong>rideable flying sword</strong> comes with it: summon the blade and ride it through the clouds.</li>
+      <li><strong>One Step, a Thousand Li</strong> — fold the distance before you and cross it in a single step, farther with every realm and stage. It reads the terrain as it goes, so it never drops you into a wall, off a cliff, or into the void.</li>
+      <li>Seven more combat and utility arts: <strong>Sword Qi Slash</strong> (sweeping arc), <strong>Nine Heavens Thunder Palm</strong> (heavy AoE lightning), <strong>Iron Body</strong> (damage reduction), <strong>Cloud Step</strong> (burst of speed), <strong>Healing Pulse</strong>, <strong>Qi Barrier</strong> (absorbs damage), and <strong>Qi Infusion</strong> (empowered strikes). Every one of them scales with your realm and routes through your Dao's element and counters.</li>
+      <li>Every technique is fully config-driven — realm, cost, cooldown, element, damage type, and its own numbers — and other mods can register their own arts through the public API.</li>
+    </ul>
+    <h3>NEW — Cultivation Manuals (秘籍)</h3>
+    <ul>
+      <li>Arts and insights are no longer simply handed to you — they're written in <strong>manuals</strong> you have to find. Read one and its technique settles into your memory permanently.</li>
+      <li>Manuals fall from surviving a Heavenly Tribulation, from the remains of slain cultivator NPCs, and from the robes of players you cut down.</li>
+      <li>Five <strong>skill manuals</strong> — Iron Sinew, the Hidden Edge, the Clear Spring, the Unmoving Mountain, and the Windchaser's Stride — unlock the first node of a skill-tree branch outright, no skill points spent.</li>
+      <li>Whether a technique requires its manual is a per-technique config toggle, so servers can keep the old always-known behavior if they prefer.</li>
+    </ul>
+    <h3>NEW — Spirit Beasts (灵兽)</h3>
+    <ul>
+      <li>Wound a creature badly, then use a <strong>Beast Taming Talisman</strong> on it to bind its spirit — or crack open a <strong>Spirit Beast Egg</strong> and let what sleeps inside bond to you. 24 tameable species, each with its own elemental nature.</li>
+      <li>Your beast <strong>cultivates alongside you</strong>, with its own realm and stages, capped at your own realm — advance yourself and it can follow. Feed it cultivation cores, pills, or spirit stones to speed it along.</li>
+      <li>Three kinds, each lending you something while it stands at your side: a <strong>Guardian</strong> fights with you and grants bonus damage, a <strong>Warden</strong> cuts the damage you take, a <code>Spirit-Gatherer</code> deepens your meditation Qi.</li>
+      <li><strong>Dao resonance:</strong> a beast whose nature matches your element yields far more readily to the talisman — and everything it lends you afterwards runs deeper.</li>
+      <li>Summon, dismiss, feed, and inspect it with <code>/cultivation beast</code>. Release it and everything it cultivated goes with it.</li>
+    </ul>
+    <h3>NEW — Cave Abodes (洞府) &amp; Spirit Stones</h3>
+    <ul>
+      <li>Claim a <strong>Cave Abode</strong> anywhere in the world with <code>/cultivation abode claim</code>. Inside it you meditate faster and outsiders meditate slower, and nobody else can inscribe a formation on your ground.</li>
+      <li>Every abode holds a <strong>Spirit Spring</strong> that gathers Qi every real-world hour <em>whether you are online or not</em> — richer on a rich or dragon vein, with a pool cap that grows with your realm. Come home and drink it.</li>
+      <li>Abodes need <strong>upkeep</strong>: offer Spirit Stones, pills, or cultivation cores to sustain the claim. Let it lapse and the spring stops; leave it long enough and the ground is released. (Upkeep is one config toggle away from off.)</li>
+      <li>The new <strong>Spirit Stone</strong> — the coin of cultivators — crystallizes from slain creatures and from tribulation lightning.</li>
+      <li>Sect halls have their own shared spring, tended by the whole sect and never lost to lapsed upkeep.</li>
+    </ul>
+    <h3>NEW — Formations (阵法)</h3>
+    <ul>
+      <li>Inscribe chunk-anchored <strong>spirit arrays</strong> with formation flags, controlled by your sect if you're in one and by you alone if you aren't. Use the flag again on the same ground to disperse it.</li>
+      <li><strong>Spirit-Gathering Array (聚灵阵)</strong> — amplifies meditation Qi regen for you and your sect across its radius.</li>
+      <li><strong>Mountain-Guarding Array (护山大阵)</strong> — chokes the Qi regen of outsiders who meditate on your ground, and bars them from inscribing formations or claiming abodes there.</li>
+      <li><strong>Immortal-Binding Array (困仙阵)</strong> — roots and wounds any intruder who trespasses within its bounds.</li>
+    </ul>
+    <h3>NEW — The Devil Path, Duels &amp; Sect Wars</h3>
+    <ul>
+      <li>Lean deep enough into Yin or Yang and your deeds formally set your feet upon a <strong>path</strong>. A <strong>Devil (魔道)</strong> strikes harder against the righteous and <em>harvests the dispersing Qi</em> of every player they slay; a <strong>Righteous (正道)</strong> cultivator both hits and endures better against devils. Your path follows your balance, so it shifts as you do.</li>
+      <li><strong>Qi-wager duels:</strong> challenge another cultivator with <code>/cultivation duel</code>, stake banked Qi on the outcome, and settle it by blade — or yield. Duels work even on worlds with PvP switched off.</li>
+      <li><strong>Sect vein wars:</strong> a sect leader can lay siege to a rival sect's hall with <code> /sect</code> war. Hold their hall chunk long enough and the hall — and its Spirit Vein — becomes yours. Defenders standing on the chunk stall the capture. Sieges have a window, a post-war cooldown, and won't start against a sect with nobody online.</li>
+    </ul>
+    <h3>NEW — Weapon Refinement (炼器) &amp; the Heart-Devil Trial (心魔劫)</h3>
+    <ul>
+      <li>Raise a weapon to the heavens with <code>/cultivation refine</code> and <strong>temper it in tribulation lightning</strong>. Success grants it a Dao element and a refinement tier (I through IX) carrying bonus damage — your strikes now carry that element into the counter cycle.</li>
+      <li>Tempering is a real gamble: it costs banked Qi, it takes time under the lightning, and it can fail. Deep tiers risk knocking the blade back down a tier, stripping its element entirely, or shattering it into spirit dust.</li>
+      <li>The <strong>Heart-Devil Trial</strong> is a new tribulation variant for cultivators who have leaned deeply into Yin or Yang — instead of lightning, your own inner demons rise to bar your path. Hold your <strong>composure (道心)</strong> through the ritual, now shown on the HUD, or your composure shatters into <strong>Qi Deviation</strong> and scatters your banked Qi.</li>
+      <li>The new <strong>Clear-Mind Pill</strong> banks a stillness that carries you unharmed through one pulse of the trial.</li>
+    </ul>
+    <h3>Weather, Interface &amp; Fixes</h3>
+    <ul>
+      <li><strong>The weather now resonates with your Dao.</strong> Meditate under weather matching your element and the Qi pours into you; any active weather gives a smaller ambient boost. Which weather maps to which element is fully configurable.</li>
+      <li>Your path (Devil / Righteous / the Mortal Road) now shows in the Dao menu alongside your element and balance.</li>
+      <li>All item tooltips — Life-Bound Treasures, refinement tiers, manuals, talismans — now flow through one composer, so a refined Life-Bound weapon reads cleanly instead of fighting over its own name.</li>
+      <li>Fixed duel damage being swallowed on worlds with PvP disabled — duels resolve properly everywhere now.</li>
+      <li>Sect sieges now persist across restarts, and <code>  /sect</code> war status reports the siege you're in (or the cooldown you're under).</li>
+      <li>Closed two Cave Abode upkeep exploits, including abandoning and re-claiming to dwell for free.</li>
+      <li>Six new config files (techniques, manuals, refinement, beasts, dwellings, duels/wars) — every number in all of it is editable, live, from the in-game admin editor.</li>
+      <li>Almost every config value across the mod has been reset to a new default for this release, and the config files are now sorted into Cultivation, Arts, and Society folders. Server owners with custom tuning will need to re-apply it.</li>
+      <li>All new content is localized in English and Simplified Chinese with proper Xianxia terminology. Portuguese, Russian, and Ukrainian remain from earlier versions and will catch up in a later pass.</li>
+    </ul>
+    <p>Technique costs, beast bonuses, refinement odds, abode upkeep, and war pacing are all brand-new numbers — feedback from real multiplayer play shapes the next pass!</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.3.0 — Sects, The Dao &amp; Alchemy</h2>
+    <p>The biggest update in the mod's history. Found a sect and claim a dragon vein with your disciples, choose your elemental Dao and balance Yin against Yang, brew spirit pills, awaken your Life-Bound Treasures, and transcend into the skill tree's eighth tier.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Future updates may require resetting player progress/data as core systems get reworked. I'll do my best to support upgrading from older versions so your data isn't lost, but at this stage it isn't guaranteed.
+    </div>
+    <h3>NEW — Sects (宗门)</h3>
+    <ul>
+      <li>Found a sect, gather disciples, and claim a <strong>sect hall</strong> on a rich or dragon Spirit Vein — while your sect holds a hall, every member gains bonus Qi from all sources, server-wide, scaled by the vein's quality. High-quality veins are now territory worth competing over.</li>
+      <li>A full jade-themed sect menu (open with <code>/sect</code>): manage your roster, approve join requests, invite players, set your motto and join policy (Invite Only / By Request / Open), promote Elders, browse and petition every sect on the server, and climb the sect rankings.</li>
+      <li>Two leadership ranks: the Leader runs the sect; Elders can invite, approve requests, and discipline disciples. Everything persists across restarts, and the whole system sits behind a single config toggle.</li>
+    </ul>
+    <h3>NEW — The Dao (道)</h3>
+    <ul>
+      <li>Choose your <strong>Elemental Dao</strong> from ten paths — Fire, Ice, Poison, Water, Lightning, Void, Earth, Wind, Metal, and Wood — seven of them brand-new damage types this mod adds to the game. Your strikes convert to your element with a damage bonus.</li>
+      <li>The classic Wu Xing cycle governs the five phases (Wood &gt; Earth &gt; Water &gt; Fire &gt; Metal), a shadow ring governs the rest (Ice &gt; Wind &gt; Poison &gt; Lightning &gt; Void) — fight the element you overcome for bonus damage, beware the one that overcomes you. Wood walks the healer's path: it converts damage dealt into self-healing instead.</li>
+      <li>Your first choice is free at the Dao realm; switching later costs realm-scaled Qi on a cooldown. And your <strong>deeds pull at your Dao</strong> — fight persistently with another element and it will warn you, then convert on its own.</li>
+      <li>The <strong>Yin-Yang Dao</strong>: chunks now hold good or evil qi (evil is rare — and evil dragon veins exist). Meditating shifts your balance, night kills stain you with Yin, and your race colors what you absorb — a Demon darkens even good qi. Stay balanced for a blessing to all Qi and damage, or lean deep: Yin grants dark power (damage + lifedrain), Yang grants light power (defense + amplified healing).</li>
+    </ul>
+    <h3>NEW — Alchemy, Awakening &amp; Transcendence</h3>
+    <ul>
+      <li>Three craftable <strong>spirit pills</strong> give your cores a purpose: the Qi Gathering Pill (all Qi x1.5 for 5 minutes), the Clarity Pill (rituals 25% faster), and the rare Tribulation Ward Pill — a ward that fully absorbs one bolt of tribulation lightning.</li>
+      <li>A Life-Bound Treasure that reaches max level now <strong>AWAKENS</strong>: a new ★ Awakened name, bonus power beyond the normal caps, and spirit-energy flares on its strikes.</li>
+      <li>The skill tree gained a <strong>tier-8 Transcendence capstone</strong> per branch — the tree's only dual-prerequisite nodes — carrying three new stats: Qi Cost Reduction, Life-Bound XP Gain, and Vein Drain Radius.</li>
+      <li>Skill nodes now show <strong>hover tooltips</strong> (tier, cost, bonuses), and <code>/cultivation respec</code> refunds every spent point to re-choose your build (config-gated).</li>
+    </ul>
+    <h3>Rankings &amp; Interface</h3>
+    <ul>
+      <li>New <strong>Rankings</strong> menu page and <code>/cultivation top</code> — the server's mightiest cultivators, ranked by realm, stage, and Qi — plus sect rankings in the sect menu and <code> /sect</code> top.</li>
+      <li>Every menu (except the skill tree) is wider, and all buttons now size themselves to their text — no more clipped labels in any language.</li>
+      <li>The admin config editor gained ~30 new live-editable values covering veins, tribulations, alchemy, sects, and the Dao.</li>
+      <li>All new content fully localized: English, Portuguese (Brazil), Russian, Ukrainian, and Simplified Chinese.</li>
+    </ul>
+    <h3>Fixes &amp; Balance</h3>
+    <ul>
+      <li>Fixed tribulation lightning being invisible to the cultivator it strikes — bolts now fall as a ring of five around you, impossible to miss.</li>
+      <li>Fixed dragon veins regenerating faster than they could be drained (an accidental infinite Qi source) — special vein regen now always trails the drain rate, and rich/dragon veins are rarer overall.</li>
+      <li>Config files migrate automatically, and the three race files gained a Qi-alignment nature for the Yin-Yang system.</li>
+    </ul>
+    <p>Sect bonuses, Dao numbers, pill effects, and Yin-Yang pacing are all brand-new — feedback from real multiplayer play shapes the next pass!</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.2.0 — Heavenly Tribulations, Skill Tree &amp; Dragon Veins</h2>
+    <p>The heavens have taken notice. This update adds the mod's biggest systems yet — a full radial skill tree, tribulation lightning during breakthroughs, and legendary dragon veins — plus a ground-up visual retheme and a long list of fixes.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Future updates may require resetting player progress/data as core systems get reworked. I'll do my best to support upgrading from older versions so your data isn't lost, but at this stage it isn't guaranteed. No player progress should be lost in this update.
+    </div>
+    <h3>NEW — Skill Tree</h3>
+    <ul>
+      <li>A massive radial skill tree with 9 branches and 108 nodes across 7 tiers — Health, Breath, Damage, Damage Reduction, Qi Gain, Ritual Speed, Movement Speed, Stamina, and Mana, each radiating outward from a central medallion showing your unspent points.</li>
+      <li>Earn skill points from every sub-stage advancement and realm breakthrough, then spend them your way: outer tiers fork into hybrid nodes that blend neighboring branches' stats, ending in powerful capstones that close the tree into a full ring.</li>
+      <li>Deeper nodes cost more — tiers 1-4 cost 1 point, the fork tiers 2, and the outer capstones 3 — so going deep in one branch is a real build commitment.</li>
+      <li>Every node is framed in its branch's color, with gold marking what you can afford and jade marking what you own. The tree is bigger than the screen on purpose — scroll down and across to explore all of it.</li>
+    </ul>
+    <h3>NEW — Heavenly Tribulations</h3>
+    <ul>
+      <li>Realm breakthroughs now call down tribulation lightning! While your breakthrough ritual progresses, lightning strikes you at regular intervals — each bolt dealing a percentage of your max health, scaling harsher with every realm you've reached.</li>
+      <li>Strikes are lethal by default — prepare before you defy the heavens. Armor, Life-Bound gear, and the skill tree's Damage Reduction all soften the bolts, so tanky cultivators genuinely endure tribulations better.</li>
+      <li>Everything is server-tunable in <code>BreakthroughConfig.json</code>: strike interval, damage, realm scaling, and a non-lethal mode that always leaves you a sliver of health. Servers that want every ritual to carry risk can also enable a milder tribulation on sub-stage advancements (off by default).</li>
+    </ul>
+    <h3>NEW — Spirit Vein Quality Tiers</h3>
+    <ul>
+      <li>Rare chunks now hide something greater than a rich vein: <strong>dragon veins</strong> — vast pools of Spirit Qi that regenerate three times faster than normal. Find one, and you've found a home worth settling (or fighting over).</li>
+      <li>Rich veins also regenerate faster now (1.5x), making high-quality meditation spots matter long-term, not just on first arrival.</li>
+      <li>You'll be told the moment your meditation taps a rich or dragon vein, and <code>/cultivation debug vein</code> now reports a vein's quality tier.</li>
+    </ul>
+    <h3>Visual Overhaul &amp; Interface</h3>
+    <ul>
+      <li>Every menu got a ground-up Xianxia retheme: gold-rimmed lacquer panels, deep crimson title bars, warm ink backgrounds, and crimson-and-gold buttons — the current page/selection now reads as an engraved gold plaque at a glance.</li>
+      <li>Admin Player menu: set a player's banked Qi directly from the menu, and Reset Player now requires a confirmation click before it wipes anything.</li>
+      <li>All new content is fully localized in English, Portuguese (Brazil), Russian, Ukrainian, and Simplified Chinese.</li>
+    </ul>
+    <h3>For Mod Developers</h3>
+    <ul>
+      <li>The public API gained a full event system (CultivationEvents): listen for breakthroughs, advancements, race changes, skill unlocks, tribulation strikes, and Life-Bound level-ups from your own mod with one line of registration.</li>
+    </ul>
+    <h3>Fixes &amp; Balance</h3>
+    <ul>
+      <li>Fixed the admin config editor never actually saving edited values, and the admin Player tab's dropdowns not applying the selected player/realm/stage/race.</li>
+      <li>Fixed the Settings menu's HUD toggle, which silently did nothing.</li>
+      <li>Fixed several menus getting stuck on a loading state after clicking buttons.</li>
+      <li>Skill tree balance: the Qi Gain branch was toned down to stop it dwarfing every other stat, and hybrid/capstone values were retuned around the new point costs.</li>
+      <li>Combat performance: the Life-Bound damage path does a fraction of the item-data work per hit that it used to.</li>
+      <li>Config files migrate automatically (BreakthroughConfig v3, SpiritVeinConfig v4) — new fields appear with sensible defaults on first run.</li>
+    </ul>
+    <p>Tribulation difficulty, skill tree balance, and vein rarity are all fresh numbers — feedback on how they feel in real play is especially welcome this update!</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>v0.1.0 — Initial Release</h2>
+    <p>The first release of Cultivation! A full Xianxia realm-and-Qi progression system, built from the ground up.</p>
+    <div class="note warn">
+      <span class="note-title">Beta disclaimer</span>
+      This mod is still in beta. Future updates may require resetting player progress/data as core systems get reworked. I'll do my best to support upgrading from older versions so your data isn't lost, but at this stage it isn't guaranteed.
+    </div>
+    <h3>Progression</h3>
+    <ul>
+      <li>7 realms — Body Refinement, Qi Condensation, Foundation Establishment, Golden Core Formation, Nascent Soul, Soul Formation, and Void Refinement — each with 4 sub-stages (Early, Middle, Late, Peak).</li>
+      <li>Both sub-stage advancements and realm breakthroughs are real, timed meditation rituals — meditate in a Spirit-Qi-rich chunk to complete one, and cancelling early costs you a stage. Realm breakthroughs are the bigger, higher-stakes ritual of the two.</li>
+      <li>Meditate to pull ambient Qi from your chunk's Spirit Vein — a real per-chunk energy pool that depletes and regenerates over time. Rare "rich" veins hold far more Qi than average, giving you a reason to go looking for a good meditation spot.</li>
+      <li>Hunt creatures for a chance at Spirit, Profound, or Divine Cores — absorb them instantly, or absorb one mid-meditation for a bonus. Consuming a core is automatically blocked (and never wastes the core) while you're mid-ritual.</li>
+    </ul>
+    <h3>Races &amp; Life-Bound Treasures</h3>
+    <ul>
+      <li>Choose a race — Human, Demon, or Deity — once you reach Golden Core Formation, each with its own server-tunable bonuses to health, damage, Qi gain, and breakthrough speed.</li>
+      <li>Bind any weapon or armor piece into a Life-Bound Treasure that levels up from combat — its level shows right in the item's name, and its tooltip tells you exactly how much benefit it's granting.</li>
+    </ul>
+    <h3>Interface</h3>
+    <ul>
+      <li>A full set of Xianxia-themed menus — Overview, Settings, Race, and (admin-only) Admin — all linked together with an in-menu navigation bar.</li>
+      <li>Persistent, toggleable HUD showing your realm, stage, Qi, and ritual progress at a glance — pick which corner of the screen it sits in from the Settings menu.</li>
+      <li>Live in-game admin config editor — retune the entire mod without ever opening a JSON file — plus admin commands to directly set or reset any player's realm, stage, race, or Life-Bound gear.</li>
+      <li>Fully localized interface: English, Portuguese (Brazil), Russian, Ukrainian, and Simplified Chinese, with proper Xianxia terminology throughout — menus, HUD, and chat messages all translate with your client language.</li>
+    </ul>
+    <h3>Under the Hood</h3>
+    <ul>
+      <li>Every number in the mod lives in a themed config file — nothing is hardcoded.</li>
+      <li>Works in Singleplayer and Multiplayer.</li>
+      <li>Collects anonymous, opt-out usage analytics (server count, player count) via HStats and Modifold to help guide future development — no personal data, and you can disable it at any time by editing the generated <code>hstats-server-uuid.txt</code> / <code>modifold-analytics-server-uuid.txt</code> files in your server folder.</li>
+    </ul>
+    <p>This is an early release — progression numbers, race balance, and Life-Bound bonuses are still being tuned based on feedback. Found a bug or have a balance suggestion? Please report it so it can get fixed!</p>
 
     <div class="note tip">
       <span class="note-title">Where to watch for new releases</span>
       New builds are published to
       <a href="https://www.curseforge.com/hytale/mods/cultivation/" rel="noopener">CurseForge</a>,
       with source on <a href="https://github.com/meFroggy/Cultivation" rel="noopener">GitHub</a>.
+      Every build listed above, current and past, can be downloaded from the
+      <a href="https://www.curseforge.com/hytale/mods/cultivation/files" rel="noopener">CurseForge files page</a>.
     </div>
 
   </main>
