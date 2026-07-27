@@ -84,6 +84,15 @@
     <tbody><tr><td>"ConfigName"</td><td>"War Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Wars-Enabled"</td><td>true</td><td>宗门攻伐的总开关。</td></tr><tr><td>"War-Required-Hold-Seconds"</td><td>120.0</td><td>攻方须在战期内无人争夺地占据争议大殿区块共计多少秒，方可夺取。</td></tr><tr><td>"War-Window-Seconds"</td><td>600.0</td><td>自宣战起围攻开启多久。若未能及时达到所需占据，围攻失败。</td></tr><tr><td>"War-Defender-Grace-Seconds"</td><td>8.0</td><td>大殿处见到守方门人后，占据累积停滞多久。</td></tr><tr><td>"War-Cooldown-Hours"</td><td>24.0</td><td>一场战事之后，守方宗门免受再次围攻多少小时真实时间，无论胜负。</td></tr><tr><td>"War-Requires-Defender-Online"</td><td>true</td><td>离线保护 —— 无人在线的宗门不可被围攻。</td></tr><tr><td>"Description-Wars"</td><td>一段解释上述数值的长字符串。</td><td>完整的围攻循环：宣战、开启的战期、无守方在场时的占据累积、夺取时大殿的移交、战期终了时的失败，以及无论结果如何的冷却。并指出守方自家的护山与困仙阵天然会阻滞攻方。</td></tr></tbody>
     </table>
 
+    <h2>双修配置</h2>
+
+    <p>结为道侣的修士之间的双修，位于路径 <code>mods/Siren_Cultivation/Society/PartnerConfig.json</code>。需要 Marriage 模组 —— 见<a href="../partnered-cultivation/">双修</a>。</p>
+
+    <table>
+    <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
+    <tbody><tr><td>"ConfigName"</td><td>"Partner Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Partnered-Cultivation-Enabled"</td><td>true</td><td>总开关。未安装 Marriage 模组时本就无效。</td></tr><tr><td>"Partner-Radius-Blocks"</td><td>8.0</td><td>两名道侣须坐得多近，双修方能结成。</td></tr><tr><td>"Partner-Qi-Multiplier"</td><td>1.25</td><td>各自汲取灵气的倍率。与地脉品级、天候共鸣、阵法、洞府及采集型灵兽相乘，故为层层叠乘而非取而代之。</td></tr><tr><td>"Partner-Unlock-Realm"</td><td>"BODY_REFINEMENT"</td><td>双修所需的境界。默认实际等于不设门槛。</td></tr><tr><td>"Partner-Convergence-Enabled"</td><td>true</td><td>双方的阴阳之衡是否相互牵引。</td></tr><tr><td>"Partner-Convergence-Shift-Per-Tick"</td><td>0.2</td><td>每 tick 双方各自被拉向对方的力度。与大道配置中打坐时的阴阳偏移同一量级。</td></tr><tr><td>"Partner-Convergence-Deadzone-Percent"</td><td>1.0</td><td>阴之百分比的差距低于此值时双方都不再偏移，稳定下来的一对便不会来回震荡。</td></tr><tr><td>"Description-Partner"</td><td>一段解释上述数值的长字符串。</td><td>整套功能：它需要 Marriage 模组、结成双修的四项条件、该倍率与什么相乘，以及牵引如何运作。</td></tr></tbody>
+    </table>
+
     <h2>斗法配置</h2>
 
     <p>修士之间押上灵气的赌斗，位于路径 <code>mods/Siren_Cultivation/Society/DuelConfig.json</code>。</p>

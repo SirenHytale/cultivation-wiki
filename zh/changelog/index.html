@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>更新日志 — 修真百科</title>
-<meta name="description" content="Cultivation 各版本的更新说明，自 v0.5.1 回溯至 v0.1.0 首发。">
+<meta name="description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +19,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/changelog/">
 <meta property="og:title" content="更新日志 — 修真百科">
-<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.5.1 回溯至 v0.1.0 首发。">
+<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="更新日志 — 修真百科">
-<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.5.1 回溯至 v0.1.0 首发。">
+<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../../assets/css/xianxia.css">
@@ -46,12 +46,36 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.5.1</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.0</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.6.0 —— 修士之所知</h2>
+
+    <p>这个模组所做的一切，从前都是无声的。定你境界的那些数字锁在一份你打不开的配置里，脚下的灵气看不见，而每一门功法都得敲一行指令。这个版本讲的是<strong>感知</strong>。</p>
+
+    <h3>典籍</h3>
+
+    <ul><li>一部<a href="../codex/">游戏内的参考书</a>：<strong>二十四篇记载</strong>，分属修行之路、己身、天地与炼制。</li><li>每一篇都是<strong>针对你的服务器</strong>而非默认值所写 —— 它列出本服真正在跑的数值，以及*你本人*实际修到了何处。这正是百科做不到的事。</li><li>配方<strong>实时取自物品自身的资产文件</strong>，改了配方，典籍随之更新，别处一字不必动。</li><li>以典籍物品、导航栏，或 <code>/cultivation codex</code> 打开。</li></ul>
+
+    <h3>灵气感知</h3>
+
+    <ul><li><a href="../spirit-sense/">灵气感知</a>把四周的地脉灵气显形 —— 微光自你所坐的地面浮起，而灵脉或龙脉之上有<strong>光柱</strong>远隔山川而立。</li><li><strong>分两阶按境界解锁</strong>：起初你只能感到灵气是*厚是薄*；确切数值要等神识更为敏锐。先言辞，后数字。</li><li>感应范围<strong>随境界而广</strong> —— 筑基时仅及自身所在区块，炼虚时可及身周 9×9。</li><li>以 <code>/cultivation sense</code> 开关。</li></ul>
+
+    <h3>快捷键与配置组</h3>
+
+    <ul><li>功法可由<a href="../keybinds/">一次按键</a>施展：在新的快捷键页上，把四门功法绑到 <strong>ALT</strong>、<strong>CTRL</strong> 或 <strong>SHIFT</strong> 加 <strong>1</strong>–<strong>9</strong> 上。</li><li>可保存<strong>八套具名配置组</strong>并一键循环，战斗一套、赶路一套，不必手动重绑。</li><li>菜单页同样可绑 —— 默认 <strong>ALT+3</strong> 打开灵气总览，<strong>ALT+4</strong> 打开典籍。</li><li>唯有你确实绑定过的组合才会被拦截；且修饰键是由<strong>按下</strong>触发，而非按住。</li><li>*予服主：*Q、E、R 可以绑定，但<strong>默认关闭</strong>（<code>Technique-Hotkeys-Q-E-R-Enabled</code>）—— 夺走它们的代价，是玩家丢不了物品、开不了背包，或切不了快捷栏方块组。</li></ul>
+
+    <h3>双修</h3>
+
+    <ul><li>两名<strong>结为道侣</strong>的修士同坐共修，各自<a href="../partnered-cultivation/">从地脉汲取更多灵气</a>。</li><li>双方的<strong>阴阳之衡相互牵引</strong>，把深偏的一方从<a href="../tribulations/">心魔劫</a>边上拉回来。</li><li>无需指令 —— 在道侣身旁坐下，二人同时打坐，双修自成。<strong>需要 Marriage 模组</strong>；没有它则整套功能保持关闭。</li></ul>
+
+    <h3>菜单、状态栏与接口</h3>
+
+    <ul><li>共用的导航栏现在可<strong>横向滚动</strong>，正因如此才腾得出位置容纳快捷键与典籍，而不必挤掉任何一项。</li><li>状态栏新增实时的<strong>灵气流速</strong>与<strong>可突破提示</strong>两行，各自可单独开关，整块面板也可朝任一角落微调。</li><li>菜单栏与典籍都是<strong>开放注册表</strong> —— <code>registerMenuPage</code> 与 <code>registerCodexEntry</code> 见<a href="../api-registries/">注册表</a>。</li></ul>
 
     <h2>v0.5.1 —— 灵脉所能承载者</h2>
 

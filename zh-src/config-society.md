@@ -109,6 +109,23 @@ han: 配
 | "War-Requires-Defender-Online" | true | 离线保护 —— 无人在线的宗门不可被围攻。 |
 | "Description-Wars" | 一段解释上述数值的长字符串。 | 完整的围攻循环：宣战、开启的战期、无守方在场时的占据累积、夺取时大殿的移交、战期终了时的失败，以及无论结果如何的冷却。并指出守方自家的护山与困仙阵天然会阻滞攻方。 |
 
+#### 双修配置
+
+结为道侣的修士之间的双修，位于路径 `mods/Siren_Cultivation/Society/PartnerConfig.json`。需要 Marriage 模组 —— 见[双修](/cultivation/partnered-cultivation/)。
+
+| 配置项 | 默认值 | 说明 |
+|:---|:---|:---|
+| "ConfigName" | "Partner Config" | 此配置文件的名称。 |
+| "ConfigVersion" | 1 | 你为此插件加载时的当前版本。 |
+| "Partnered-Cultivation-Enabled" | true | 总开关。未安装 Marriage 模组时本就无效。 |
+| "Partner-Radius-Blocks" | 8.0 | 两名道侣须坐得多近，双修方能结成。 |
+| "Partner-Qi-Multiplier" | 1.25 | 各自汲取灵气的倍率。与地脉品级、天候共鸣、阵法、洞府及采集型灵兽相乘，故为层层叠乘而非取而代之。 |
+| "Partner-Unlock-Realm" | "BODY_REFINEMENT" | 双修所需的境界。默认实际等于不设门槛。 |
+| "Partner-Convergence-Enabled" | true | 双方的阴阳之衡是否相互牵引。 |
+| "Partner-Convergence-Shift-Per-Tick" | 0.2 | 每 tick 双方各自被拉向对方的力度。与大道配置中打坐时的阴阳偏移同一量级。 |
+| "Partner-Convergence-Deadzone-Percent" | 1.0 | 阴之百分比的差距低于此值时双方都不再偏移，稳定下来的一对便不会来回震荡。 |
+| "Description-Partner" | 一段解释上述数值的长字符串。 | 整套功能：它需要 Marriage 模组、结成双修的四项条件、该倍率与什么相乘，以及牵引如何运作。 |
+
 #### 斗法配置
 
 修士之间押上灵气的赌斗，位于路径 `mods/Siren_Cultivation/Society/DuelConfig.json`。

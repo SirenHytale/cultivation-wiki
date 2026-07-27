@@ -91,6 +91,9 @@ han: 配
 | "Techniques-Enabled" | true | 整套功法系统的总开关。为 false 则一次性禁用每一门功法，与各自的规则无关。 |
 | "Description-Techniques" | 一段解释上述数值的长字符串。 | 重述此开关凌驾于下方 Techniques 数组中的每一条之上。 |
 | "Techniques" | 一个含九条内置规则的数组（见下）。 | 每门功法一条。每条的 `Id` 须匹配某个功法 id，管理器才会将其作为覆写施加。 |
+| "Technique-Hotkeys-Enabled" | true | 修士能否以[快捷键](/cultivation/keybinds/)（修饰键加主键）施展功法，而不必只靠 `/cultivation technique`。与 "Techniques-Enabled" 相互独立。 |
+| "Technique-Hotkeys-Q-E-R-Enabled" | false | Q、E、R 是否可被绑定。默认关闭，因为夺走其中任一个的代价，是玩家丢不了物品、开不了背包，或切不了快捷栏方块组 —— 而数字键的代价仅是一次快捷栏切换，且模组会立刻还原。 |
+| "Description-Technique-Hotkeys" | 一段解释上述数值的长字符串。 | 哪些键与修饰键可绑定、为何只有这些，没有 0 键这回事，默认绑定，以及修饰键是自按下起半秒内有效而非按住有效。 |
 | "Description-Technique-Rules" | 一段解释上述数组的长字符串。 | 记载功法规则的每一个字段，以及「一步千里」的距离参数。 |
 
 `Techniques` 数组中的每一条采用如下结构。

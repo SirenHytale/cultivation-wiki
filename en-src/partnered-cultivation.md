@@ -1,0 +1,65 @@
+---
+title: Partnered Cultivation
+description: Cultivation Mod - married cultivators meditating together for more Qi and a steadier Yin-Yang balance
+group: The World
+han: 侣
+---
+
+### Partnered Cultivation
+
+**Partnered Cultivation (双修)** lets two **married** cultivators cultivate together. Sit and meditate beside your spouse and you each draw more Qi from the vein than either would alone — and your Yin-Yang balances pull toward one another as you sit. New in v0.6.0.
+
+There is **no command to start it**. Sit down near your partner, both meditate, and it begins.
+
+> **Requires the Marriage mod.** Without `Siren:Marriage` installed there is nothing to define a partner, and the whole feature stays switched off no matter what the config says. Cultivation itself runs perfectly well without it.
+
+* * *
+
+#### Beginning a Session
+
+Four conditions, all of which must hold:
+
+| Condition | Notes |
+|:---|:---|
+| **Married to each other** | Read from the Marriage mod. Not "both married" — married to *each other*. |
+| **Both meditating** | Either partner standing up ends the session. |
+| **Same world** | A partner in another world is not sitting with you. |
+| **Within `Partner-Radius-Blocks`** | 8 blocks by default. |
+
+When it takes, you are both told so. When it ends, the partner still seated is told — the one who stood up already knows.
+
+Check where you stand with `/cultivation partner`. It reports which condition you are failing, so a session that will not start is never a mystery: not married, partner offline, different world, too far apart, or the feature disabled.
+
+* * *
+
+#### What It Does
+
+**More Qi.** Each partner draws `Partner-Qi-Multiplier` times as much from the [spirit vein](/cultivation/qi-gathering/) while the session lasts — 1.25× by default.
+
+That figure **multiplies with everything else**: the vein's own tier, weather resonance, a [Qi-Gathering formation](/cultivation/formations/), your [cave abode](/cultivation/dwelling/), and a Gatherer [spirit beast](/cultivation/beasts/). A couple sitting on a dragon vein inside their own abode compounds all of it, which is why the default multiplier is deliberately modest.
+
+**A steadier balance.** Each partner's [Yin-Yang balance](/cultivation/dao/) drifts toward the other's while they sit. A cultivator who has leaned dangerously far toward Yin, sitting with a Yang-leaning spouse, is drawn back toward center — and away from the [Heart-Devil Trial](/cultivation/tribulations/) that a deep lean invites.
+
+Neither partner shifts while their balances are already within `Partner-Convergence-Deadzone-Percent` of each other, so a settled couple does not oscillate. The pull also **never overshoots**: it closes the gap and stops rather than sending the pair swapping leans.
+
+Your race's own Yin bias still applies, so a Yin-natured race resists being pulled toward Yang — it converges more slowly rather than not at all.
+
+* * *
+
+#### Settings
+
+All in `Society/PartnerConfig.json`.
+
+| Variable Name | Default Value | Description |
+|:---|:---|:---|
+| `Partnered-Cultivation-Enabled` | true | The whole feature. Inert anyway without the Marriage mod. |
+| `Partner-Radius-Blocks` | 8 | How close the two must sit. |
+| `Partner-Qi-Multiplier` | 1.25 | Qi multiplier for each partner. Compounds with every other multiplier. |
+| `Partner-Unlock-Realm` | `BODY_REFINEMENT` | Realm required to partner at all. No gate by default. |
+| `Partner-Convergence-Enabled` | true | Whether Yin-Yang balances converge. |
+| `Partner-Convergence-Shift-Per-Tick` | 0.2 | How hard each partner is pulled per tick. Matches the vein's own alignment shift. |
+| `Partner-Convergence-Deadzone-Percent` | 1 | Gap below which neither shifts. |
+
+There is deliberately no gate by default. Partnered Cultivation is a reward for playing together rather than a milestone to earn, and gating it would only punish a couple who started at the same time.
+
+See the [Society config page](/cultivation/config/society/) for the rest.

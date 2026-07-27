@@ -114,6 +114,11 @@ LINKS: dict[str, str] = {
     "/cultivation/skilltree/": "skilltree",
     "/cultivation/dao/": "dao",
     "/cultivation/karma/": "karma",
+    # v0.6.0
+    "/cultivation/codex/": "codex",
+    "/cultivation/spirit-sense/": "spirit-sense",
+    "/cultivation/keybinds/": "keybinds",
+    "/cultivation/partnered-cultivation/": "partnered-cultivation",
     "/cultivation/techniques/": "techniques",
     "/cultivation/manuals/": "manuals",
     "/cultivation/alchemy/": "alchemy",

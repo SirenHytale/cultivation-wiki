@@ -1,0 +1,87 @@
+---
+title: Keybinds & Loadouts
+description: Cultivation Mod - firing techniques from a keypress, and keeping several loadouts
+group: Arts & Treasures
+han: 键
+---
+
+### Keybinds & Loadouts
+
+Techniques no longer need a typed command. Bind one to a **modifier plus a key** and it fires from the keyboard. New in v0.6.0, and switched on by default (`Technique-Hotkeys-Enabled`).
+
+Set them up on the **快捷键 / Keybinds** page of any Cultivation menu, or check what you have with `/cultivation debug hotkeys`.
+
+* * *
+
+#### How the Server Sees a Keypress
+
+Worth understanding, because it explains every limitation below: **Hytale's protocol carries no keyboard input at all.** The server is never told which key you pressed — only the consequence.
+
+So a key is bindable only when pressing it does something the server can observe:
+
+| Key | What the server actually sees |
+|:---|:---|
+| **1** – **9** | A hotbar slot swap |
+| **Q** | A request to drop the held stack |
+| **E** | A request to open the inventory |
+| **R** | A request to switch hotbar block set |
+
+There is **no 0**. The hotbar has nine slots, so pressing 0 switches to nothing and the server never learns it happened.
+
+Modifiers are read the same way — through the movement state each one drives:
+
+| Modifier | Movement state |
+|:---|:---|
+| **ALT** | Walking |
+| **CTRL** | Crouching |
+| **SHIFT** | Sprinting |
+
+#### Press It, Don't Hold It
+
+This is the one thing that trips people up. A modifier is armed by its **press**, not by being held down: the window opens the moment you press it and closes **half a second later**, whether or not the key is still down.
+
+*   Tap **ALT**, then **6** within half a second — fires.
+*   Hold **ALT** while you hunt for the key, press it a second later — the latch has closed, and 6 just switches hotbar slot.
+
+The same rule catches sustained modifiers: if you are **already sprinting**, SHIFT was never re-pressed, so a SHIFT binding will not fire until you stop and start sprinting again. That is deliberate — sampling the held state instead would make every bound key fire for as long as you sprint.
+
+There is also a **600 ms debounce** between activations, so a mistimed double-tap cannot double-spend your Qi.
+
+* * *
+
+#### What You Can Bind
+
+| Slots | Default | Binds to |
+|:---|:---|:---|
+| **4 technique binds** | ALT+6, ALT+7, ALT+8, ALT+9 | Any [technique](/cultivation/techniques/) you can perform |
+| **4 menu binds** | ALT+3 → Qi overview, ALT+4 → [Codex](/cultivation/codex/) | Any Cultivation menu page |
+| **1 loadout switch** | ALT+5 | Cycles your loadouts |
+
+Only combinations you have **actually bound** are ever intercepted. Every other key does its normal job, whether or not a modifier is held — an unbound 6 still switches hotbar slot, and an unmodified Q still drops your item.
+
+#### Loadouts
+
+Keep up to **eight named loadouts**, each holding its own set of four technique binds, and cycle them with a single key. A combat set and a travelling set no longer have to be re-bound by hand.
+
+* * *
+
+#### Server Owners
+
+| Variable Name | Default Value | Description |
+|:---|:---|:---|
+| `Technique-Hotkeys-Enabled` | true | The whole feature. Off leaves techniques perfectly usable via `/cultivation technique`. |
+| `Technique-Hotkeys-Q-E-R-Enabled` | **false** | Whether Q, E and R may be bound at all. |
+
+**Q, E and R ship switched off.** They are the intrusive half: taking one over costs the player dropping an item, the inventory, or their hotbar block set — whereas a modified number key only costs a hotbar switch, which the mod immediately undoes. Turn them on only if your players ask for them.
+
+Both live in `Arts/TechniqueConfig.json`; see the [Arts config page](/cultivation/config/arts/).
+
+#### Troubleshooting
+
+Bindings that never fire are almost always one of three things:
+
+1.  **Nothing is bound to that key.** Q, E and R in particular are bound to nothing by default *and* are disabled by default.
+2.  **The modifier was held, not pressed.** See above — it is a half-second window from the press.
+3.  **The technique itself is gated.** A binding cannot bypass a realm requirement, a Qi cost, a cooldown, or a [manual](/cultivation/manuals/) you have not read.
+
+`/cultivation debug hotkeys` turns on server-side tracing and prints your current bindings, which separates "the server never saw the modifier" from "it saw it but the window had closed".

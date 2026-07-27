@@ -46,7 +46,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.5.1</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.6.0</strong>, the current
       release.
     </p>
 
@@ -56,6 +56,75 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.6.0 — What the Cultivator Knows</h2>
+    <p>
+      Everything this mod does, it did silently. The numbers driving your realm sat in a config file
+      you could not open, the Qi under your feet was invisible, and every technique needed a typed
+      command. This release is about <strong>perception</strong>.
+    </p>
+
+    <h3>The Codex</h3>
+    <ul>
+      <li>An <a href="../codex/">in-game reference book</a>: <strong>24 articles</strong> across
+        The Path, The Self, The World and The Craft.</li>
+      <li>Every article is written <strong>against your server, not the defaults</strong> — it
+        states the numbers this server actually runs and what <em>you</em> have actually reached.
+        The one thing a wiki cannot do.</li>
+      <li>Recipes resolve <strong>live from the item's own asset</strong>, so an edited recipe is
+        correct in the Codex with nothing else to update.</li>
+      <li>Open it with the Codex item, from the menu bar, or with <code>/cultivation codex</code>.</li>
+    </ul>
+
+    <h3>Spirit Sense</h3>
+    <ul>
+      <li><a href="../spirit-sense/">Spirit Sense (灵气感知)</a> renders the ambient Qi around you —
+        motes off the ground you sit on, and a <strong>beacon over a rich or dragon vein</strong>
+        from across the landscape.</li>
+      <li><strong>Realm-gated in two steps:</strong> at first you feel only whether the Qi runs
+        <em>deep or thin</em>; exact numbers wait on a keener perception. Words before numbers.</li>
+      <li>Your sensing radius <strong>grows with your realm</strong> — one chunk at Foundation
+        Establishment, a 9×9 area at Void Refinement.</li>
+      <li>Toggle with <code>/cultivation sense</code>.</li>
+    </ul>
+
+    <h3>Keybinds and loadouts</h3>
+    <ul>
+      <li>Techniques fire from <a href="../keybinds/">a keypress</a>: bind four to
+        <strong>ALT</strong>, <strong>CTRL</strong> or <strong>SHIFT</strong> plus
+        <strong>1</strong>–<strong>9</strong> on the new Keybinds page.</li>
+      <li>Keep <strong>eight named loadouts</strong> and cycle them with a key, so a combat set and
+        a travelling set need not be re-bound by hand.</li>
+      <li>Menu pages bind too — <strong>ALT+3</strong> opens your Qi overview and
+        <strong>ALT+4</strong> the Codex out of the box.</li>
+      <li>Only combinations you actually bound are ever intercepted, and the modifier arms on the
+        <strong>press</strong> rather than being held.</li>
+      <li><em>Server owners:</em> Q, E and R are bindable but ship <strong>switched off</strong>
+        (<code>Technique-Hotkeys-Q-E-R-Enabled</code>) — taking them over costs a player dropping,
+        the inventory, or their hotbar block set.</li>
+    </ul>
+
+    <h3>Partnered Cultivation</h3>
+    <ul>
+      <li>Two <strong>married</strong> cultivators meditating together each draw
+        <a href="../partnered-cultivation/">more Qi from the vein</a> than either would alone.</li>
+      <li>Their <strong>Yin-Yang balances pull toward one another</strong>, dragging a
+        dangerously-leaned cultivator back from the
+        <a href="../tribulations/">Heart-Devil Trial</a>.</li>
+      <li>No command — sit near your spouse, both meditate, and it begins.
+        <strong>Requires the Marriage mod</strong>; without it the feature stays entirely off.</li>
+    </ul>
+
+    <h3>Menus, HUD and the API</h3>
+    <ul>
+      <li>The shared nav bar <strong>scrolls horizontally</strong>, which is what made room for
+        Keybinds and the Codex without crowding anything out.</li>
+      <li>The HUD gained a live <strong>Qi-flow line</strong> and a <strong>readiness line</strong>,
+        each switchable individually, and the panel nudges toward any corner.</li>
+      <li>The menu bar and the Codex are <strong>open registries</strong> — see
+        <a href="../api-registries/">Registries</a> for
+        <code>registerMenuPage</code> and <code>registerCodexEntry</code>.</li>
+    </ul>
 
     <h2>v0.5.1 — What the Vein Will Bear</h2>
     <p>

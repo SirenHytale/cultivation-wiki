@@ -32,6 +32,9 @@ han: 起
 |:---|:---|:---|
 | `/cultivation skilltree (skills)` | 打开[天赋树](/cultivation/skilltree/)。 | `cultivation` |
 | `/cultivation dao` | 打开[大道](/cultivation/dao/)页 —— 你的属性、道途与阴阳平衡。 | `cultivation` |
+| `/cultivation codex` | 打开游戏内[典籍](/cultivation/codex/) —— 二十四篇记载，写的是本服的真实数值与你自己的进度。 | `cultivation` |
+| `/cultivation sense` | 开关[灵气感知](/cultivation/spirit-sense/) —— 感应四周天地灵气，并在灵脉、龙脉之上显出光柱。 | `cultivation` |
+| `/cultivation partner` | 查看你与道侣的[双修](/cultivation/partnered-cultivation/)状态，以及是哪一条挡住了双修。需要 Marriage 模组。 | `cultivation` |
 | `/cultivation technique (tech) [名称]` | 不填名称时，列出每一门[功法](/cultivation/techniques/)及其解锁境界、灵气消耗与当前可用状态。填了名称则施展该功法。 | `cultivation` |
 | `/cultivation refine (temper) [属性]` | 不填属性时，回报手中兵器当前的炼器情况，以及下一炼要付出什么、冒什么险。填了属性则预先扣除灵气，并让你坐入[炼器](/cultivation/refinement/)仪式。 | `cultivation` |
 | `/cultivation respec (resetskillpoints, resetskills)` | 返还你付费购得的每一点天赋点并清空这些节点。由[秘籍](/cultivation/manuals/)所授的节点不耗天赋点，因此既不退还也不清除。需要 `Respec-Enabled`。 | `cultivation` |

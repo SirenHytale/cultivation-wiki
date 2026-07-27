@@ -58,6 +58,16 @@ han: 配
 | "Description-Meditation-Movement-Cancel-Threshold" | 一段解释上述数值的长字符串。 | 重述漂移距离，以及超出即自动中断打坐。 |
 | "Meditation-Movement-Check-Interval-Seconds" | 0.25 | 每隔多少秒检查一次打坐玩家的移动与落座状态。 |
 | "Qi-Absorption-Item-Modifiers" | `[{"ItemId": "Cultivation_QiGatheringTalisman", "Multiplier": 1.5}]` | 一个「物品 id／倍率」对的数组。打坐时若快捷栏当前槽位持有匹配的物品，你的灵脉吸收速率即乘以该倍率。 |
+| "Spirit-Sense-Enabled" | true | [灵气感知](/cultivation/spirit-sense/)的总开关。感知只读取，因此关掉它，聚灵采气分毫不受影响。 |
+| "Spirit-Sense-Min-Realm" | 2 | 解锁感知所需的境界序号（从 0 起算，2 ＝筑基）。未及此境则毫无所感。 |
+| "Spirit-Sense-Precise-Min-Realm" | 4 | 显示确切灵气数值所需的境界序号（4 ＝元婴）。未及此境则只以言辞相告 —— 枯竭、稀薄、平和、充盈、磅礴。 |
+| "Spirit-Sense-Radius-Per-Realm" | 1 | 超出解锁境界后，每高一境所增的区块数。 |
+| "Spirit-Sense-Max-Radius-Chunks" | 4 | 该范围的上限。按默认值，筑基修士仅及自身区块，炼虚修士可及 9×9。 |
+| "Spirit-Sense-Tick-Interval-Seconds" | 2.5 | 感知重读世界并再次脉动粒子的间隔。粒子资产的时长正好铺满一个间隔，故调大会变稀、调小会变密 —— 也更耗封包。 |
+| "Spirit-Sense-Mote-Budget" | 10 | 每次脉动、每名玩家最多生成的灵光微粒数。主要的开销旋钮；要省开销请先调低它，再考虑调大间隔。 |
+| "Spirit-Sense-Beacon-Min-Tier" | 1 | 立起光柱所需的最低地脉品级。0＝所有区块，1＝灵脉及以上，2＝仅龙脉，3＝永不。 |
+| "Description-Spirit-Sense" | 一段解释上述数值的长字符串。 | 两阶境界门槛、范围如何随境界扩展，以及未及精微之境时所用的言辞分级。 |
+| "Description-Spirit-Sense-Visuals" | 一段解释上述数值的长字符串。 | 粒子开销的两个旋钮，以及光柱品级各值的含义。 |
 | "Description-Qi-Absorption-Item-Modifiers" | 一段解释上述数组的长字符串。 | 只影响灵脉吸收，绝不影响修行之核的灵气值；其他模组可经由 [Cultivation 接口](/cultivation/api/)在 Java 中注册更多条目。 |
 
 #### 突破配置
