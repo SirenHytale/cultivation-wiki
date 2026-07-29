@@ -46,7 +46,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.6.0</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.6.1</strong>, the current
       release.
     </p>
 
@@ -56,6 +56,95 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.6.1 — Good Company</h2>
+    <p>
+      The land itself is the headline. <strong>Spirit Veins now rise and fall like terrain</strong>
+      instead of rolling a fresh number every chunk, and a new Spirit Sense panel lays that
+      landscape out in front of you. Alongside it, a release about <strong>getting along</strong> —
+      with Endless Leveling, with PlaceholderAPI, and with itself.
+    </p>
+
+    <h3>The Land Has Shape</h3>
+    <ul>
+      <li>A <a href="../qi-gathering/">Spirit Vein's</a> strength used to be rolled independently
+        per chunk, so walking in a straight line gave <code>417 → 175 → 216 → 324</code> — a
+        different number every sixteen blocks, with no ridges to follow.</li>
+      <li>It is <strong>terrain</strong> now: <code>459 → 432 → 445 → 428 → 409 → 369</code>, with
+        rises and hollows over roughly eight chunks. <strong>Follow the Qi uphill and you arrive
+        somewhere.</strong></li>
+      <li>Rich and dragon veins <strong>gather into spirit-rich regions</strong> rather than being
+        sprinkled evenly. Their rarity is unchanged — still exactly the odds your config asks for,
+        only redistributed toward potent ground.</li>
+      <li>Tunable with <code>Spirit-Vein-Terrain-Jitter-Percent</code>. Existing worlds
+        <strong>keep the veins they already have</strong>; only ground nobody has visited is laid
+        out the new way.</li>
+    </ul>
+
+    <h3>Drawing From The Ground</h3>
+    <ul>
+      <li>Meditation now draws <strong>half from the chunk beneath you and an eighth from each of
+        the four around it</strong>, instead of taking greedily from wherever held the most.</li>
+      <li>Your rate is unchanged — only <em>where</em> it comes from. A favourite spot no longer
+        hollows out one square while its neighbours sit full.</li>
+      <li>A share the ground cannot supply is simply not drawn. Sit where four exhausted chunks meet
+        and you draw only the centre's half — <strong>a reason to move on</strong>.</li>
+      <li>The <a href="../skilltree/">Vein Drain Radius</a> skill now lets each of the four arms
+        reach further for its share, so a high cultivator keeps their full rate in worked-over
+        land.</li>
+    </ul>
+
+    <h3>Seeing What You Sense</h3>
+    <ul>
+      <li><a href="../spirit-sense/">Spirit Sense</a> gained a <strong>panel of its own</strong>:
+        the chunks around you as a grid, each tile <strong>tinted with that ground's real colour,
+        taken from Hytale's own world map</strong>.</li>
+      <li>A gold wash marks a rich vein, jade a dragon vein, and the chunk you stand on is ringed.
+        <strong>Ground you have never explored stays veiled</strong> — you feel its Qi through the
+        earth, but you have not laid eyes on the land.</li>
+      <li>Rich and dragon veins now also appear as <strong>markers on the world map you already
+        use</strong>.</li>
+      <li>Both obey the perception you already had — the same radius, and the same deep-or-thin
+        before exact numbers.</li>
+    </ul>
+
+    <h3>Endless Leveling</h3>
+    <ul>
+      <li>Both mods raise max health and outgoing damage, and left alone the two
+        <strong>multiplied</strong>. Cultivation now hands those two to Endless Leveling so the
+        progressions <strong>add</strong> instead. See <a href="../compatibility/">Compatibility</a>.</li>
+      <li>Automatic — nothing to install or configure, and on a server without Endless Leveling
+        nothing changes at all.</li>
+    </ul>
+
+    <h3>PlaceholderAPI</h3>
+    <ul>
+      <li>Around <strong>60 <a href="../placeholders/">placeholders</a></strong> for chat formats,
+        scoreboards, tab lists, holograms and signs — realm, Qi, sect, Dao, spirit beast, and the
+        vein under your feet.</li>
+      <li>The rankings work with <strong>no player at all</strong>, which is what makes a
+        leaderboard sign possible. Relational placeholders too.</li>
+    </ul>
+
+    <h3>Admin &amp; API</h3>
+    <ul>
+      <li><strong>19 sections and 109 settings</strong> in the admin menu, up from 9 and 59 — with
+        <strong>real checkboxes</strong>, so 14 master switches that were config-file-only are now
+        in-game toggles.</li>
+      <li>Every config file is now readable and writable from the
+        <a href="../api/">API</a>, progression can be driven rather than only watched, and
+        Cultivation's own admin settings are ordinary API registrations an add-on can reorder, hide
+        or replace.</li>
+    </ul>
+
+    <h3>Fixes</h3>
+    <ul>
+      <li>A failed ritual at Early-Stage <strong>cost nothing at all</strong> — the stage cannot
+        fall below Early, but the banked Qi is now properly scattered. Early-Stage is where every
+        cultivator lands after a breakthrough, so this was not rare.</li>
+      <li><code>/cultivation partner</code> now says when your cultivation is too shallow to partner
+        at all, instead of claiming you were ready.</li>
+    </ul>
 
     <h2>v0.6.0 — What the Cultivator Knows</h2>
     <p>

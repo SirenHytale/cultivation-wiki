@@ -83,9 +83,40 @@ flowchart TD
       <code>/cultivation debug vein</code> to read the current chunk's remaining Qi.
     </div>
 
+    <h3>The Land Has Shape</h3>
+    <p>
+      A vein's strength is not rolled fresh for each chunk. It is laid out as a
+      <strong>landscape</strong>: the Qi rises and falls across the world like terrain, so
+      neighbouring chunks form slopes and ridges over roughly eight chunks at a time. Walk one way
+      and it climbs; walk back and it falls.
+    </p>
+    <p>
+      That is what makes the ground worth reading. A run of chunks looks like
+      <code>459 → 432 → 445 → 428 → 409 → 369</code> — a slope you can follow — rather than the
+      <code>417 → 175 → 216 → 324</code> of an independent roll per chunk, where the only strategy
+      was to keep hopping and hope.
+    </p>
+
+    <div class="note">
+      <span class="note-title">Follow the Qi uphill and you arrive somewhere</span>
+      Rich and dragon veins <strong>gather into spirit-rich regions</strong> rather than being
+      sprinkled evenly, so finding one is a reason to search the surrounding land. Their rarity is
+      unchanged — still exactly the odds the config asks for, only redistributed toward potent
+      ground. <a href="../spirit-sense/">Spirit Sense</a> is how you read the slope without walking
+      it.
+    </div>
+
+    <p>
+      Server owners: <code>Spirit-Vein-Terrain-Jitter-Percent</code> (default 6) is how far one
+      chunk may stray from that surface, as a percent of its band. A few percent keeps the numbers
+      from looking mathematical; a large value brings back the old spiky field. Existing worlds
+      <strong>keep the veins they already seeded</strong> — only ground no cultivator has visited is
+      laid out the new way.
+    </p>
+
     <h3>Vein Tiers</h3>
     <p>
-      Not every chunk is equal. Most are ordinary, but some roll richer, and a rare few sit on a
+      Not every chunk is equal. Most are ordinary, but some are richer, and a rare few sit on a
       dragon vein — the chunks worth fighting a sect war over.
     </p>
 
@@ -116,6 +147,44 @@ flowchart TD
       drain rate. If regen × multiplier ever exceeds drain, that chunk becomes an infinite Qi fountain
       and the entire progression curve stops mattering.
     </div>
+
+    <h3>Where the Qi Comes From</h3>
+    <p>
+      Meditating does not empty the square you are sitting on. The draw is <strong>split across five
+      chunks</strong>: half from the one beneath you, and an eighth from each of the four around it.
+    </p>
+
+    <div class="grid cols-3">
+      <div class="card">
+        <span class="card-han">中</span>
+        <h4>50% — Beneath you</h4>
+        <p>The chunk you are sitting in carries half the draw on its own.</p>
+      </div>
+      <div class="card">
+        <span class="card-han">四</span>
+        <h4>12.5% each — The four around</h4>
+        <p>North, south, east and west each give an eighth.</p>
+      </div>
+      <div class="card">
+        <span class="card-han">移</span>
+        <h4>A reason to move on</h4>
+        <p>A share the ground cannot supply is simply not drawn — it does not spill into the others.</p>
+      </div>
+    </div>
+
+    <p>
+      Your <em>rate</em> is unchanged by this — only where it comes from. But a favourite spot no
+      longer hollows out one square while its neighbours sit full, and what a place yields now
+      depends on the whole neighbourhood rather than on a single chunk. Sit where four exhausted
+      chunks meet and you draw only the centre's half.
+    </p>
+
+    <p>
+      The <a href="../skilltree/">Vein Drain Radius</a> skill lengthens each of the four arms, so an
+      arm whose nearest chunk is spent reaches further out for <em>its own</em> share. It is not a
+      way to draw more — it is what keeps a high cultivator at their full rate in land that has
+      already been worked over.
+    </p>
 
     <h3>The Qi Gathering Talisman</h3>
     <p>

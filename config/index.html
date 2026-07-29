@@ -46,13 +46,15 @@
 
     <h1>Config</h1>
 
-    <p class="page-lede">Everything the Cultivation mod can be tuned with lives under <code>mods/Siren_Cultivation/</code>, updated here for <strong>Cultivation v0.5.1</strong>. Rather than one enormous file, the settings are split into themed files and grouped into folders - the progression core in <code>Cultivation/</code>, everything a cultivator practices in <code>Arts/</code>, everything that only matters because other cultivators exist in <code>Society/</code>, one file per playable race in <code>Race/</code>, and the server's own runtime save state in <code>Data/</code>.</p>
+    <p class="page-lede">Everything the Cultivation mod can be tuned with lives under <code>mods/Siren_Cultivation/</code>, updated here for <strong>Cultivation v0.6.1</strong>. Rather than one enormous file, the settings are split into themed files and grouped into folders - the progression core in <code>Cultivation/</code>, everything a cultivator practices in <code>Arts/</code>, everything that only matters because other cultivators exist in <code>Society/</code>, one file per playable race in <code>Race/</code>, and the server's own runtime save state in <code>Data/</code>.</p>
 
     <p>Every settings file carries its own <code>ConfigName</code> and <code>ConfigVersion</code>. The version increases automatically whenever that file's layout or balance changes, and your existing settings are migrated for you - you never need to edit <code>ConfigVersion</code> by hand, and setting it backwards only causes the migration to run again. Files also contain <code>Description-*</code> string fields, which are documentation rather than settings: the mod rewrites them to their current text on load, so editing one does nothing.</p>
 
     <p>Every value on these pages can also be changed live, in game, with <code>/cultivation admin</code> instead of touching JSON at all. See the <a href="../commands/">Commands</a> and <a href="../permissions/">Permissions</a> pages for how to reach it.</p>
 
-    <p>As of 0.5.0, other mods can add <strong>their own</strong> sections to that editor, appearing beside Cultivation's own nine on the Config tab and in an admin-only block of the settings menu. Anything you see there that is not documented on these pages belongs to another mod - see <a href="../api-addons/">API Addons</a>.</p>
+    <p>As of 0.5.0, other mods can add <strong>their own</strong> sections to that editor, appearing beside Cultivation's own on the Config tab and in an admin-only block of the settings menu. Anything you see there that is not documented on these pages belongs to another mod - see <a href="../api-addons/">API Addons</a>.</p>
+
+    <p>As of 0.6.1 the editor covers <strong>19 sections and 109 settings</strong>, and rows can be checkboxes, whole numbers, dropdowns or text rather than only decimals - so the master switches that used to be JSON-only (sects, the dao, techniques, beasts, formations, abodes, duels, wars, refinement, manuals, respec, Spirit Sense, tribulation and the Heart-Devil Trial) are now in-game toggles. Cultivation's own sections are ordinary API registrations, which is what lets an add-on reorder, hide or replace one - see <a href="../api-registries/">Registries</a>.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -60,7 +62,7 @@
 
     <table>
     <thead><tr><th>Group</th><th>Files</th><th>Covers</th></tr></thead>
-    <tbody><tr><td><a href="../config-core/">Core Config</a></td><td><code>Config.json</code></td><td>The Qi curve and the per-level health/damage bonuses.</td></tr><tr><td><a href="../config-cultivation/">Cultivation Configs</a></td><td><code>SpiritCoreConfig</code>, <code>SpiritVeinConfig</code>, <code>BreakthroughConfig</code>, <code>RaceSystemConfig</code>, <code>SkillTreeConfig</code></td><td>Where Qi comes from, what advancing costs, and what a rank-up pays out.</td></tr><tr><td><a href="../config-arts/">Arts Configs</a></td><td><code>DaoConfig</code>, <code>TechniqueConfig</code>, <code>ManualConfig</code>, <code>AlchemyConfig</code>, <code>RefinementConfig</code>, <code>LifeBoundConfig</code>, <code>BeastConfig</code></td><td>What a cultivator practices, crafts, tempers, and binds to themselves.</td></tr><tr><td><a href="../config-society/">Society Configs</a></td><td><code>SectConfig</code>, <code>FormationConfig</code>, <code>DwellingConfig</code>, <code>WarConfig</code>, <code>DuelConfig</code></td><td>Sects, the ground they hold, the homes they build, and the fights they pick.</td></tr><tr><td><a href="../config-race/">Race Configs</a></td><td><code>Human.json</code>, <code>Demon.json</code>, <code>Deity.json</code></td><td>One independent stat file per playable race.</td></tr><tr><td><a href="../config-data/">Data Files</a></td><td><code>SectsData</code>, <code>FormationsData</code>, <code>WarsData</code>, <code>DwellingsData</code>, <code>LeaderboardData</code></td><td>Runtime save state. Not settings - do not hand-edit these.</td></tr></tbody>
+    <tbody><tr><td><a href="../config-core/">Core Config</a></td><td><code>Config.json</code></td><td>The Qi curve and the per-level health/damage bonuses.</td></tr><tr><td><a href="../config-cultivation/">Cultivation Configs</a></td><td><code>SpiritCoreConfig</code>, <code>SpiritVeinConfig</code>, <code>BreakthroughConfig</code>, <code>RaceSystemConfig</code>, <code>SkillTreeConfig</code></td><td>Where Qi comes from, what advancing costs, and what a rank-up pays out.</td></tr><tr><td><a href="../config-arts/">Arts Configs</a></td><td><code>DaoConfig</code>, <code>TechniqueConfig</code>, <code>ManualConfig</code>, <code>AlchemyConfig</code>, <code>RefinementConfig</code>, <code>LifeBoundConfig</code>, <code>BeastConfig</code></td><td>What a cultivator practices, crafts, tempers, and binds to themselves.</td></tr><tr><td><a href="../config-society/">Society Configs</a></td><td><code>SectConfig</code>, <code>FormationConfig</code>, <code>DwellingConfig</code>, <code>WarConfig</code>, <code>DuelConfig</code>, <code>PartnerConfig</code></td><td>Sects, the ground they hold, the homes they build, and the fights they pick.</td></tr><tr><td><a href="../compatibility/">Compatibility</a></td><td><code>EndlessLevelingConfig</code></td><td>How Cultivation shares the stats it raises with other mods. Inert unless that mod is installed.</td></tr><tr><td><a href="../config-race/">Race Configs</a></td><td><code>Human.json</code>, <code>Demon.json</code>, <code>Deity.json</code></td><td>One independent stat file per playable race.</td></tr><tr><td><a href="../config-data/">Data Files</a></td><td><code>SectsData</code>, <code>FormationsData</code>, <code>WarsData</code>, <code>DwellingsData</code>, <code>LeaderboardData</code></td><td>Runtime save state. Not settings - do not hand-edit these.</td></tr></tbody>
     </table>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
@@ -88,7 +90,10 @@
 │   ├── FormationConfig.json
 │   ├── DwellingConfig.json
 │   ├── WarConfig.json
-│   └── DuelConfig.json
+│   ├── DuelConfig.json
+│   └── PartnerConfig.json
+├── Compatibility/
+│   └── EndlessLevelingConfig.json
 ├── Race/
 │   ├── Human.json
 │   ├── Demon.json

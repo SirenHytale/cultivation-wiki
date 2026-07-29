@@ -45,6 +45,14 @@ With the defaults a Foundation Establishment cultivator senses **only their own 
 
 **Vein beacons** are the reason to turn it on while travelling. A column of light stands over any chunk whose vein is good enough to bother sitting on, so hunting for a breakthrough site is something you *look* for rather than something you stumble onto.
 
+**The Spirit Sense panel** is the close view, on the menu bar beside the Codex. It lays the chunks around you out as a grid, each tile tinted with **that ground's real colour, taken from Hytale's own world map** — so it reads as terrain rather than as a table of numbers. A gold wash marks a rich vein, jade a dragon vein, and the chunk you are standing on is ringed.
+
+Ground you have never explored **stays veiled**. You still feel its Qi through the earth — the reading is there — but you have not laid eyes on the land, and the panel says so rather than inventing a colour for it.
+
+**Map markers** are the wide view. Rich and dragon veins within your perception appear as pins on the world map you already use, terrain and all, with no custom screen involved. They arrive after your first sense pulse and disappear if you walk into another world.
+
+All three obey **the same perception**: the same radius, and the same deep-or-thin before exact numbers. Nothing here shows you more than your sense already granted.
+
 | Variable Name | Default Value | Description |
 |:---|:---|:---|
 | `Spirit-Sense-Tick-Interval-Seconds` | 2.5 | How often the sense re-reads the world and re-pulses. The particles are sized to finish inside one interval, so raising it thins the effect and lowering it thickens it — and costs more packets. |

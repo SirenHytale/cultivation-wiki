@@ -169,8 +169,10 @@ window.SITE = {
     {
       title: "About", zh: "关于", han: "誌",
       items: [
-        { title: "Changelog",       zh: "更新日志", href: "changelog/", zhPage: true },
-        { title: "Compatible Mods", zh: "兼容模组", href: "addons/",    zhPage: true }
+        { title: "Changelog",       zh: "更新日志", href: "changelog/",     zhPage: true },
+        { title: "Compatibility",   zh: "模组兼容", href: "compatibility/", zhPage: true },
+        { title: "Placeholders",    zh: "占位符",   href: "placeholders/",  zhPage: true },
+        { title: "Compatible Mods", zh: "兼容模组", href: "addons/",        zhPage: true }
       ]
     }
   ]

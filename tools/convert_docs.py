@@ -144,6 +144,8 @@ LINKS: dict[str, str] = {
     "/cultivation/glossary/": "glossary",
     "/cultivation/changelog/": "changelog",
     "/cultivation/addons/": "addons",
+    "/cultivation/compatibility/": "compatibility",
+    "/cultivation/placeholders/": "placeholders",
     "/cultivation/planner/": "planner",
     "/cultivation/calculator/": "calculator",
     "/cultivation/api/": "api",

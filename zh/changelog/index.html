@@ -46,12 +46,44 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.0</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.1</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.6.1 —— 良伴</h2>
+
+    <p>这一版的主角是大地本身。<strong>灵脉如山峦般起伏</strong>，不再每个区块各掷一次，而全新的灵气感知面板把这片地势铺展在你眼前。与之同来的，是一个关于<strong>相处</strong>的版本 —— 与 Endless Leveling，与 PlaceholderAPI，也与它自己。</p>
+
+    <h3>大地有了形状</h3>
+
+    <ul><li>从前<a href="../qi-gathering/">灵脉</a>的强弱是每区块独立掷出的，直行一路便得 <code>417 → 175 → 216 → 324</code> —— 每十六格一个全新数字，无脉络可循。</li><li>如今它是<strong>山川</strong>：<code>459 → 432 → 445 → 428 → 409 → 369</code>，约每八个区块起伏一回。<strong>顺着灵气上行，你终会抵达某处。</strong></li><li>灵脉与龙脉<strong>聚成灵秀之地</strong>，而非均匀散落。稀有度未变 —— 仍是配置所定的几率，只是重新分布到了灵气充沛之处。</li><li>以 <code>Spirit-Vein-Terrain-Jitter-Percent</code> 调节。已有的世界<strong>保留既已生成的灵脉</strong>，只有无人踏足之地才按新法铺陈。</li></ul>
+
+    <h3>汲取之法</h3>
+
+    <ul><li>打坐如今<strong>自脚下区块汲取一半，四周各汲八分之一</strong>，而不再从灵气最多处一味索取。</li><li>速率不变 —— 变的只是来处。常坐之地不再把脚下一格掏空而四邻满盈，一处所得，取决于整片邻域。</li><li>供不足的那一份不会转嫁他处。若四周皆已枯竭，你便只得中间那一半 —— <strong>该挪个地方了</strong>。</li><li><a href="../skilltree/">灵脉汲取范围</a>天赋如今让四条脉络各自向外探得更远，故高阶修士在被采尽的地界仍能维持全速。</li></ul>
+
+    <h3>所感即所见</h3>
+
+    <ul><li><a href="../spirit-sense/">灵气感知</a>有了<strong>自己的面板</strong>：周身区块铺作棋盘，每格以<strong>取自 Hytale 世界地图的真实地貌之色</strong>着染。</li><li>金晕示灵脉，碧晕示龙脉，你所立之处以环相标。<strong>未曾探索之地隐而不显</strong> —— 你能透过大地感到灵气，却不曾亲眼见过那片土地。</li><li>灵脉与龙脉也会作为<strong>标记出现在你惯用的世界地图</strong>上。</li><li>二者皆遵循你既有的感知 —— 同样的范围，同样是先辨厚薄、后读实数。</li></ul>
+
+    <h3>Endless Leveling</h3>
+
+    <ul><li>两个模组都会提升生命上限与输出伤害，各行其是时二者<strong>相乘</strong>。修真模组如今将这两项交予 Endless Leveling，使其<strong>相加</strong>。详见<a href="../compatibility/">模组兼容</a>。</li><li>全自动 —— 无需安装或配置任何东西；未装 Endless Leveling 的服务器则一切照旧。</li></ul>
+
+    <h3>PlaceholderAPI</h3>
+
+    <ul><li>约 <strong>60 个<a href="../placeholders/">占位符</a></strong>，可用于聊天格式、计分板、玩家列表、悬浮字与告示牌 —— 境界、灵气、宗门、道、灵兽，以及脚下的灵脉。</li><li>排行榜<strong>完全不需要玩家</strong>，故可用于排行告示牌。另有关系型占位符。</li></ul>
+
+    <h3>管理与接口</h3>
+
+    <ul><li>管理菜单增至 <strong>19 节、109 项设置</strong>（原为 9 节 59 项），并支持<strong>真正的复选框</strong>，故 14 个原本只能改 JSON 的总开关如今可在游戏内切换。</li><li>每一个配置文件都可经<a href="../api/">接口</a>读写，修为进程可被驱动而不止于旁观；修真模组自身的管理设置也成了普通的接口注册项，扩展可重排、隐藏或替换它们。</li></ul>
+
+    <h3>修正</h3>
+
+    <ul><li>Early-Stage 时仪式失败<strong>毫无代价</strong> —— 境界不会跌破 Early，但所蓄灵气如今会如实冲散。每次突破入新境后皆落于 Early，故此事并不罕见。</li><li><code>/cultivation partner</code> 如今会在你修为过浅、根本无法双修时如实相告，而非声称你已准备就绪。</li></ul>
 
     <h2>v0.6.0 —— 修士之所知</h2>
 

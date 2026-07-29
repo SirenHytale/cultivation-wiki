@@ -208,9 +208,53 @@ public final class MyTechniques {
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2>Registering admin settings</h2>
+
+    <p><span class="tag">v0.6.1</span> An add-on can put its own tunable values into Cultivation's admin menu, where they sit on the section rail beside Cultivation's own and are edited and saved exactly the same way. Both host pages are gated on <code>cultivation.admin</code>, so a section may expose real balance numbers.</p>
+
+    <pre><code>CultivationAPI.registerAdminConfigSection(
+    CultivationAPI.newAdminConfigSection("MyMod:power",
+            "server.mymod.admin.power", "server.mymod.admin.powerHint",
+            AdminConfigSection.SORT_LAST, config::save,
+            List.of(
+                CultivationAPI.newAdminConfigField("MyMod:BaseXp",
+                        Message.translation("server.mymod.admin.baseXp"),
+                        () -&gt; config.get().getBaseXp(),
+                        value -&gt; config.get().setBaseXp((float) value)),
+                CultivationAPI.newAdminBooleanField("MyMod:Enabled",
+                        Message.translation("server.mymod.admin.enabled"),
+                        () -&gt; config.get().isEnabled(),
+                        config.get()::setEnabled))));</code></pre>
+
+    <p>Five kinds of row are available, each backed by the vanilla widget of that shape:</p>
+
+    <table>
+    <thead><tr><th>Factory</th><th>Widget</th></tr></thead>
+    <tbody>
+    <tr><td><code>newAdminConfigField</code></td><td>A decimal number field. The default, and what every pre-0.6.1 field is.</td></tr>
+    <tr><td><code>newAdminIntField</code></td><td>A whole-number field - for a count, a level cap or a tier, where two decimal places are noise.</td></tr>
+    <tr><td><code>newAdminBooleanField</code></td><td>A real checkbox. Before this, a master switch had to masquerade as a 0/1 number, which is why so many of Cultivation's own were config-file only.</td></tr>
+    <tr><td><code>newAdminChoiceField</code></td><td>A dropdown over <code>AdminConfigChoice</code>s - the right shape for anything enum-valued, where a text field would let an admin type something that resolves to nothing.</td></tr>
+    <tr><td><code>newAdminTextField</code></td><td>Free-form text.</td></tr>
+    </tbody>
+    </table>
+
+    <p><code>withTooltip(field, String)</code> adds a one-line explanation to any of them.</p>
+
+    <div class="note">
+      <span class="note-title">Read through the supplier, never a captured config</span>
+      Every getter and setter above reaches the config through its holder at the moment it is called. A reload replaces the instance behind the holder, and a captured config object would then be a discarded copy whose edits go nowhere. This is the same rule <a href="../api-reference/">CultivationConfigs</a> documents.
+    </div>
+
+    <p>A tooltip is a plain <code>String</code> and therefore <strong>cannot be translated</strong> - the underlying property is a string client-side, and a rich message pushed at it disconnects the player. Put anything that must be readable in every language in the field's <em>label</em>, which does take a <code>Message</code>.</p>
+
+    <p><span class="tag">v0.6.1</span> Cultivation's own nineteen sections are ordinary registrations in this same registry, so an add-on can <strong>reorder, hide or replace any of them</strong> — registering under an existing key replaces it. Sections also carry <code>getSortOrder()</code> (Cultivation's own claim <code>SORT_BUILTIN_FIRST</code> upward in steps of 100) and <code>isVisible()</code>, which is how the Endless Leveling section hides itself when that mod is not installed.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
     <h2>What is not registrable</h2>
 
-    <p>Not every extension point is a Java registry. As of 0.4.1, <code>CultivationAPI</code> exposes <code>register*</code> methods for races, techniques and Qi absorption items only. Skill tree nodes, manuals and spirit beast species are declared in Cultivation's own JSON config instead - see the <a href="../config/">Config</a> page - and are not registrable from code. You can still reach all three through events: node unlocks through <code>CultivationEvents.PreSkillUnlockEvent</code>, manuals through <code>ItemEvents.PreManualReadEvent</code>, and beast species through the <code>species()</code> getter on every <code>BeastEvents</code> event.</p>
+    <p>Not every extension point is a Java registry. <code>CultivationAPI</code> exposes <code>register*</code> methods for races, techniques, Qi absorption items, admin config sections, menu pages and codex entries. Skill tree nodes, manuals and spirit beast species are declared in Cultivation's own JSON config instead - see the <a href="../config/">Config</a> page - and are not registrable from code. You can still reach all three through events: node unlocks through <code>CultivationEvents.PreSkillUnlockEvent</code>, manuals through <code>ItemEvents.PreManualReadEvent</code>, and beast species through the <code>species()</code> getter on every <code>BeastEvents</code> event.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
