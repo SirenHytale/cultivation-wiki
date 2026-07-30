@@ -20,7 +20,7 @@ han: 界
 - 你身在某宗门时，无法另立门户。
 - 一个宗门连宗主在内最多容纳 12 人（`Sect-Max-Members`）。
 
-`/sect info`（别名 `i`）会列出你的门人名录、大殿、殿上碑文与本宗战力。`/sect leave` 是抽身而去 —— 长老之位也一并卸下，因此重新入门并不会不声不响地把权柄还给你。宗主不得一走了之；他只能 `/sect disband`，这会解散宗门、驱散该宗掌控的每一座阵法、作废其未决的邀约，并让大殿灵泉任人采撷。
+`/sect info`（别名 `i`）会列出你的门人名录、大殿、殿上碑文与本宗战力。`/sect leave` 是抽身而去 —— 长老之位也一并卸下，因此重新入门并不会不声不响地把权柄还给你。宗主不得一走了之；他只能 `/sect disband`，这会解散宗门、驱散该宗掌控的每一座阵法、作废其未决的邀约，并让大殿灵泉任人采撷。不过单敲 `/sect disband` 只是示警：它会道出宗门之名，并点清即将被逐出山门的弟子人数。唯有 `/sect disband confirm` 才真正落刀，且此事一成，其余门人当场便会收到讯息，而不必等到下次翻开宗门菜单才发觉山门已空。
 
 #### 职位：宗主、长老、弟子
 
@@ -52,6 +52,8 @@ flowchart TD;
 | 解散宗门 | 可 | 否 | 否 |
 
 无人能逐出宗主，长老欲逐另一名长老亦会被回绝。被逐或自行离去，都会清空你的职位与你手上任何未决的入门申请。
+
+`/sect kick` 是照着宗门名录点名的，因此**不在线的门人一样逐得动** —— 而那往往正是你真想清出去的那一位。只要名字对得上名录即可，此人无须眼下就在服务器里。
 
 #### 入门规矩
 
@@ -142,14 +144,14 @@ flowchart TD;
 | `/sect invite <玩家>` | 邀请一名玩家（宗主或长老）。 | `cultivation.sect` |
 | `/sect join <宗门>` | 接受该宗门尚在有效期内的邀约。 | `cultivation.sect` |
 | `/sect leave` | 离开宗门（宗主不可）。 | `cultivation.sect` |
-| `/sect kick <玩家>` | 移除一名门人（宗主或长老）。 | `cultivation.sect` |
+| `/sect kick <玩家>` | 移除一名门人，在线与否皆可（宗主或长老）。 | `cultivation.sect` |
 | `/sect claim` | 将你所立的区块占为大殿（宗主）。 | `cultivation.sect` |
 | `/sect inscribe` | 将手中的功法秘籍镌于殿上，或空手将其抹去（宗主）。 | `cultivation.sect` |
 | `/sect war <宗门>` | 发起围攻；写作 `/sect war status` 则查看本宗当前战况。见[宗门攻伐](/cultivation/wars/)。 | `cultivation.sect` |
 | `/sect info` | 列出本宗的门人、大殿、碑文与战力。 | `cultivation.sect` |
 | `/sect top` | 列出战力前 10 的宗门。 | `cultivation.sect` |
 | `/sect menu` | 打开宗门菜单。 | `cultivation.sect` |
-| `/sect disband` | 解散你的宗门（宗主）。 | `cultivation.sect` |
+| `/sect disband [confirm]` | 先行示警；加 `confirm` 方才解散宗门（宗主）。 | `cultivation.sect` |
 
 `cultivation.sect` 默认对所有人开放；职位的核查发生在宗门内部，而非权限系统之中。
 

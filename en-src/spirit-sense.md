@@ -45,11 +45,11 @@ With the defaults a Foundation Establishment cultivator senses **only their own 
 
 **Vein beacons** are the reason to turn it on while travelling. A column of light stands over any chunk whose vein is good enough to bother sitting on, so hunting for a breakthrough site is something you *look* for rather than something you stumble onto.
 
-**The Spirit Sense panel** is the close view, on the menu bar beside the Codex. It lays the chunks around you out as a grid, each tile tinted with **that ground's real colour, taken from Hytale's own world map** — so it reads as terrain rather than as a table of numbers. A gold wash marks a rich vein, jade a dragon vein, and the chunk you are standing on is ringed.
+**The Spirit Sense panel** is the close view, on the menu bar beside the Codex. It lays the chunks around you out as a grid, each tile tinted with **that ground's real colour, taken from Hytale's own world map** — so it reads as terrain rather than as a table of numbers. A gold wash marks a rich vein, jade a dragon vein, and the chunk you are standing on is ringed. Once your perception reads exactly, each tile carries **the Qi its vein actually holds**, with how full that vein is running beneath it — because 300 Qi is a brimming common vein or a spent dragon, and the amount alone cannot tell you which.
 
 Ground you have never explored **stays veiled**. You still feel its Qi through the earth — the reading is there — but you have not laid eyes on the land, and the panel says so rather than inventing a colour for it.
 
-**Map markers** are the wide view. Rich and dragon veins within your perception appear as pins on the world map you already use, terrain and all, with no custom screen involved. They arrive after your first sense pulse and disappear if you walk into another world.
+**Map markers** are the wide view. Rich and dragon veins within your perception appear as pins on the world map you already use, terrain and all, with no custom screen involved. They arrive after your first sense pulse and disappear if you walk into another world. They are a *reading*, not a record — switch Spirit Sense off, or log out, and the pins are cleared rather than left standing over wherever you last sensed from.
 
 All three obey **the same perception**: the same radius, and the same deep-or-thin before exact numbers. Nothing here shows you more than your sense already granted.
 

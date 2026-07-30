@@ -50,7 +50,7 @@
 
     <h2>绑定一件器物</h2>
 
-    <p>手持该物品执行 <code>/cultivation bind</code> 即可与之相系。对<strong>你自己已绑定</strong>的物品再次执行该指令，会将其重置回 1 级。</p>
+    <p>手持该物品执行 <code>/cultivation bind</code> 即可与之相系。对<strong>你自己已绑定</strong>的物品再次执行该指令，会将其重置回 1 级 —— 因此若该物已升过 1 级，单敲此令只会示警，并点明你即将失去的等级。唯有 <code>/cultivation bind confirm</code> 才真正落刀。仍停在 1 级的法宝本无可失，重炼时便不再多问。</p>
 
     <ul><li><strong>兵器</strong>在每一次命中时获取经验（击中任何生物即可，不必击杀），升级后造成更高伤害。</li><li><strong>护甲</strong>在挺过攻击时获取经验，升级后减免更多受到的伤害。</li><li>物品的等级直接显示在其名称中，工具提示会写明它当前究竟提供了多少加成 —— 没有任何隐藏数值。</li></ul>
 
@@ -94,7 +94,7 @@
           <div class="panel-head">指令</div>
           <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation bind</code></td><td>绑定手持物品，或将你自己已绑定的物品重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setlifebound {player} {level} [xp]</code></td><td>强制设定手持本命法宝的等级（可选经验）。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation bind [confirm]</code></td><td>绑定手持物品。对自己 1 级以上的法宝只会示警；加 <code>confirm</code> 才将其重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setlifebound {player} {level} [xp]</code></td><td>强制设定手持本命法宝的等级（可选经验）。</td><td><code>cultivation</code></td></tr></tbody>
     </table>
         </div>
 

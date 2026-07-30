@@ -50,7 +50,7 @@
 
     <h2>Binding an Item</h2>
 
-    <p>Run <code>/cultivation bind</code> while holding the item to personalize it. Running the command again on your own already-bound item resets it back to level 1.</p>
+    <p>Run <code>/cultivation bind</code> while holding the item to personalize it. Running the command again on your own already-bound item resets it back to level 1 - so if that item has grown past level 1, the bare command only warns you, naming the level you are about to throw away. It takes <code>/cultivation bind confirm</code> to go through with it. A treasure still sitting at level 1 has nothing to lose, so it re-binds without asking.</p>
 
     <ul><li><strong>Weapons</strong> gain XP from every hit that lands (any creature, not just kills), and level up to deal more damage.</li><li><strong>Armor</strong> gains XP from surviving hits, and levels up to reduce incoming damage.</li><li>The item's level shows in its name, and its tooltip states exactly how much benefit it is currently granting - no hidden numbers.</li></ul>
 
@@ -102,7 +102,7 @@
           <div class="panel-head">Commands</div>
           <table>
     <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
-    <tbody><tr><td><code>/cultivation bind</code></td><td>Bind the held item, or reset your own bound item to level 1.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setlifebound {player} {level} [xp]</code></td><td>Force the level (and optionally XP) of a held Life-Bound item.</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation bind [confirm]</code></td><td>Bind the held item. On your own treasure above level 1 it warns; <code>confirm</code> resets it to level 1.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation admin setlifebound {player} {level} [xp]</code></td><td>Force the level (and optionally XP) of a held Life-Bound item.</td><td><code>cultivation</code></td></tr></tbody>
     </table>
         </div>
 

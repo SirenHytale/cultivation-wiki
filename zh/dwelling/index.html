@@ -56,7 +56,7 @@
 
     <ul><li>洞府向<strong>四方各覆盖 1 个区块</strong>（<code>Dwelling-Radius-Chunks</code>），即 3×3 的一方地界。</li><li><strong>一名修士一座洞府。</strong> 再次开辟只是把它迁走，而迁移会保留你已蓄的灵泉与已付的供奉 —— 搬个家，不该让你丢掉存在里面的东西。</li><li>你无法在已被另一座洞府、或某座宗门大殿灵泉所覆盖的地上开辟，连自家宗门的也不行 —— 大殿已在那里汲取，再叠一眼私泉便是在同一区块上重复取用。</li><li>你无法在被他人护山<a href="../formations/">阵法</a>设防、拒你于外的地上开辟。</li><li>任何阶位的灵脉皆可，但你所占之地下的灵脉，决定了灵泉蓄积的快慢。</li></ul>
 
-    <p><code>/cultivation abode abandon</code> 会直接舍弃这处地界 —— 所蓄的灵泉随之立刻尽失，且没有任何二次确认。</p>
+    <p><code>/cultivation abode abandon</code> 会舍弃这处地界 —— 所蓄的灵泉随之尽失。单敲此令并不会真的舍弃什么：它会告知灵泉此刻蓄了多少灵气，好让你先去 <code>collect</code> 一趟。唯有 <code>/cultivation abode abandon confirm</code> 才真正拂袖而去。</p>
 
     <p>洞府在<strong>供奉未断</strong>（供奉已付）期间，会改变其地界上的打坐：</p>
 
@@ -116,7 +116,7 @@
           <div class="panel-head">指令</div>
           <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation abode</code></td><td>列出你洞府的状况，若有宗门则接着列出山门灵泉。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>在你所立的区块开辟或迁移洞府。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect</code></td><td>饮尽你所处的灵泉，将其灵气入账。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit</code></td><td>献上手中的一整叠物品作为供奉。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>与裸写 <code>/cultivation abode</code> 相同的状况一览。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon</code></td><td>舍弃你的地界；所蓄灵泉尽失。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation abode</code></td><td>列出你洞府的状况，若有宗门则接着列出山门灵泉。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>在你所立的区块开辟或迁移洞府。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect</code></td><td>饮尽你所处的灵泉，将其灵气入账。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit</code></td><td>献上手中的一整叠物品作为供奉。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>与裸写 <code>/cultivation abode</code> 相同的状况一览。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon [confirm]</code></td><td>先告知灵泉现蓄多少；加 <code>confirm</code> 才舍弃地界，并连同它一并尽失。</td><td><code>cultivation</code></td></tr></tbody>
     </table>
         </div>
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>更新日志 — 修真百科</title>
-<meta name="description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
+<meta name="description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +19,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/changelog/">
 <meta property="og:title" content="更新日志 — 修真百科">
-<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
+<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="更新日志 — 修真百科">
-<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.6.0 回溯至 v0.1.0 首发。">
+<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../../assets/css/xianxia.css">
@@ -46,12 +46,36 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.1</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.2</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.6.2 —— 稳固道途</h2>
+
+    <p>没有新系统 —— 这一版回头走了一遍既有的诸般机关，把那些悄然出错之处一一扶正。宗主偏偏踢不动那位从不在线的门人。自定的宗训从未真正显示过。赌斗押注敲错一字便悄悄化作 <code>0</code>，而不是被驳回。三条会毁掉东西的指令如今都会<strong>先问一句</strong>，灵气感知也长出了一个实数，与它的粗略断语并列。</p>
+
+    <h3>落刀之前，先问一句</h3>
+
+    <ul><li><code>/sect disband</code> 如今须敲 <a href="../commands/"><code>/sect disband confirm</code></a>；在宗主落刀之前，它会道出宗门之名与门人之数 —— 且此事一成，其余门人<strong>当场便收到讯息</strong>，不必等到下次翻开<a href="../sects/">宗门</a>菜单才发觉山门已空。</li><li><code>/cultivation bind</code> 从前不论你是在炼化一件全新的<a href="../lifebound/">本命法宝</a>，还是把自己辛苦升上来的那件悄悄打回 1 级，报的都是同一句成功。如今 1 级以上的重炼须敲 <code>/cultivation bind confirm</code>，并点明你即将失去的等级。</li><li><code>/cultivation abode abandon</code> 从前会毫无预警地散尽灵泉所蓄。如今它须敲 <code>/cultivation abode abandon confirm</code>，并先告知<a href="../dwelling/">灵泉</a>里究竟蓄着多少灵气。</li></ul>
+
+    <h3>灵气感知，读得更深</h3>
+
+    <ul><li>精微<a href="../spirit-sense/">读数</a>从前只是一个百分数。如今它单起一行示出该脉<strong>实蓄之灵气</strong>（逾万则简作 <code>12.4k</code>），其下以暗色小字承以盈亏几何。三百灵气的灵脉（三成），不再与三百灵气的凡脉（十成）看来一模一样。</li><li>关闭灵气感知或断线之后，如今会真正<strong>抹去它画在世界地图上的地脉标记</strong>。从前它们会永远钉在你上次感应之处。</li></ul>
+
+    <h3>宗门诸修</h3>
+
+    <ul><li><code>/sect kick</code> <strong>根本逐不动不在线的门人</strong> —— 而那恰是你真会用到它的时候 —— 只回一句此人不在线。如今它照着名录点名，在线与否皆可。</li><li>宗门的<strong>自定宗训</strong>走的是一条客户端会默默忽略的路子，故从未显示过。如今显示了。</li><li>尚无一宗立派的服务器从前只给你一片空白卷轴，教人无从猜起。如今它会如实相告。</li><li>逐出、解散与驳回入门申请如今改用<strong>朱红的凶险按钮</strong>，而非寻常的碧色宗门按钮 —— 会毁东西的一按，就该有会毁东西的样子。</li></ul>
+
+    <h3>日常琐修</h3>
+
+    <ul><li>HUD 的<strong>上移／下移</strong>按钮在两个下方锚定的角落里推反了方向，<strong>内移／外移</strong>更是连正负号都反了。二者皆已扶正；HUD 底色也更为厚实（0.55 → 0.72），免得笺色与碧色的字在雪地或亮天下糊成一片。</li><li><code>/cultivation duel challenge</code> 的<a href="../duels/">押注</a>从前敲错一字（把 <code>100</code> 敲成 <code>1O0</code>）便悄悄化作 <code>0</code>，而不是被驳回。如今交由引擎自己的数字解析处理，负数押注亦一律拒绝。</li><li><code>/cultivation refine</code>、<code>/cultivation respec</code> 与 <code>/sect inscribe</code> 从前会把过错推给服务器自己的设定（“炼器未启用”“洗点已禁用”），而真正的缘由是某个<a href="../addons/">扩展模组</a>否决了这一次尝试。三者如今一律改口作<strong>眼下有什么在阻拦此事</strong>，不再指错了人。</li><li>那七条 <a href="../commands/"><code>/cultivation admin set-*</code> 与 <code>grant-*</code></a> 指令，从前若目标从未进过本世界，便什么也不做、什么也不说。如今它会告诉你。</li><li><code>/cultivation top</code> 上你自己那一行如今坐在一块独立的牌面上，长长一列里也能一眼找到自己。</li><li><code>/cultivation debug vein</code> 与 <code>/cultivation info</code> 里还剩最后两句硬写的英文。二者皆已翻译。</li><li>HUD 与属性页上的文字，在简体中文客户端上会在首次刷新前闪现一帧英文。如今它们起初留白，填入时便已是译文。</li></ul>
+
+    <h3>底层修缮</h3>
+
+    <ul><li><a href="../techniques/">御剑</a>飞行每刻的校正从前会把整套起飞仪轨走一遍 —— 包括朝每一个在听的扩展模组抛出公开的“飞行开始”<a href="../api-events/">事件</a> —— 整段飞行里每秒一次。如今它先行查验，唯有原版坐骑交互确实把状态改回去了，才重新落定。</li><li>修掉两处小的内存泄漏：结仇冷却账簿与灵气感知快照，各自会为每名玩家永久留一条记录。二者如今都在下线时清除。</li><li>启动时的遥测上报不再与服务器自己的任务调度共用一处，故迟缓的统计端点再也拖不住其他无关的服务器任务。</li></ul>
 
     <h2>v0.6.1 —— 良伴</h2>
 

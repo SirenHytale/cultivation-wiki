@@ -11,7 +11,7 @@ han: 術
 
 #### 绑定一件器物
 
-手持该物品执行 `/cultivation bind` 即可与之相系。对**你自己已绑定**的物品再次执行该指令，会将其重置回 1 级。
+手持该物品执行 `/cultivation bind` 即可与之相系。对**你自己已绑定**的物品再次执行该指令，会将其重置回 1 级 —— 因此若该物已升过 1 级，单敲此令只会示警，并点明你即将失去的等级。唯有 `/cultivation bind confirm` 才真正落刀。仍停在 1 级的法宝本无可失，重炼时便不再多问。
 
 - **兵器**在每一次命中时获取经验（击中任何生物即可，不必击杀），升级后造成更高伤害。
 - **护甲**在挺过攻击时获取经验，升级后减免更多受到的伤害。
@@ -61,7 +61,7 @@ han: 術
 
 | 指令 | 说明 | 权限 |
 |:---|:---|:---|
-| `/cultivation bind` | 绑定手持物品，或将你自己已绑定的物品重置为 1 级。 | `cultivation` |
+| `/cultivation bind [confirm]` | 绑定手持物品。对自己 1 级以上的法宝只会示警；加 `confirm` 才将其重置为 1 级。 | `cultivation` |
 | `/cultivation admin setlifebound {player} {level} [xp]` | 强制设定手持本命法宝的等级（可选经验）。 | `cultivation` |
 
 本页所有数值均位于 `Arts/LifeBoundConfig.json` —— 详见[功法配置](/cultivation/config/arts/)。

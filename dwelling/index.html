@@ -58,7 +58,7 @@
 
     <ul><li>The abode covers <strong>1 chunk in every direction</strong> (<code>Dwelling-Radius-Chunks</code>), a 3x3 pocket of chunks.</li><li><strong>One abode per cultivator.</strong> Claiming again simply moves it, and moving keeps your banked spring and paid upkeep - relocating a home should not cost you what you stored in it.</li><li>You cannot claim ground already covered by another abode or by a sect hall's spring, including your own sect's - a hall already gathers there, and stacking a personal spring on it would double-dip the same chunk.</li><li>You cannot claim ground warded against you by someone else's Mountain-Guarding <a href="../formations/">Formation</a>.</li><li>Any Spirit Vein tier will do, but the vein under your claim decides how fast the spring fills.</li></ul>
 
-    <p><code>/cultivation abode abandon</code> gives the claim up outright - and the banked spring is lost with it, immediately, with no confirmation step.</p>
+    <p><code>/cultivation abode abandon</code> gives the claim up outright - and the banked spring is lost with it. Run on its own it does not abandon anything: it tells you how much Qi the spring is currently holding, so you can go and <code>collect</code> it first. Only <code>/cultivation abode abandon confirm</code> actually walks away.</p>
 
     <p>While an abode is <strong>sustained</strong> (its upkeep is paid), it changes meditation on its ground:</p>
 
@@ -130,7 +130,7 @@
           <div class="panel-head">Commands</div>
           <table>
     <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
-    <tbody><tr><td><code>/cultivation abode</code></td><td>Prints your abode's status, then your sect hall's spring if you have one.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>Claims or moves your abode to the chunk you stand in.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect</code></td><td>Drinks the spring you are standing in, banking its Qi.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit</code></td><td>Offers the whole stack in your hand as upkeep.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>The same status readout as bare <code>/cultivation abode</code>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon</code></td><td>Gives up your claim; the banked spring is lost.</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation abode</code></td><td>Prints your abode's status, then your sect hall's spring if you have one.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>Claims or moves your abode to the chunk you stand in.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect</code></td><td>Drinks the spring you are standing in, banking its Qi.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit</code></td><td>Offers the whole stack in your hand as upkeep.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>The same status readout as bare <code>/cultivation abode</code>.</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon [confirm]</code></td><td>Reports what the spring holds; <code>confirm</code> gives up the claim and loses it.</td><td><code>cultivation</code></td></tr></tbody>
     </table>
         </div>
 

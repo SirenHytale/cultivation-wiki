@@ -60,6 +60,11 @@
 
     <p><code>/sect info</code> (alias <code>i</code>) prints your roster, your hall, your hall's inscription and your sect's score. <code>/sect leave</code> walks away - and drops your elder rank with you, so rejoining does not silently restore your authority. A leader may not leave; they must <code>/sect disband</code>, which dissolves the sect, disperses every formation the sect controlled, drops its pending invites, and lets its hall spring be reaped.</p>
 
+    <div class="note">
+      <span class="note-title">Disbanding asks first</span>
+      <code>/sect disband</code> on its own only warns you - it names the sect and counts the disciples about to be cast out. It takes <code>/sect disband confirm</code> to actually do it, and every other member is messaged the moment it happens rather than discovering an empty menu later.
+    </div>
+
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>Ranks: Leader, Elder, Disciple</h2>
@@ -87,6 +92,8 @@ flowchart TD;
     </table>
 
     <p>Nobody can kick the leader, and an elder who tries to kick another elder is refused. Being kicked or leaving clears your rank and any pending join request you had.</p>
+
+    <p><code>/sect kick</code> matches against the sect's own roster, so <strong>a member who is offline can still be removed</strong> - which is usually the member you actually wanted gone. The name has to match the roster; it does not have to belong to anyone currently on the server.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -177,7 +184,7 @@ flowchart TD;
           <div class="panel-head">Commands</div>
           <table>
     <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>`/sect war [sect\</code></td><td>status]`</td><td>Declares a siege, or reports your current one. See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband</code></td><td>Dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member, online or offline (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>`/sect war [sect\</code></td><td>status]`</td><td>Declares a siege, or reports your current one. See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>Warns; <code>confirm</code> dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
         </div>
 

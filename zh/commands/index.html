@@ -56,7 +56,7 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation</code></td><td>打开你的修炼状态页。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation info (i)</code></td><td>将你的境界、阶段与灵气进度打印至聊天栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation meditate (med, cultivate)</code></td><td>切换打坐，从你落座区块的灵脉中汲取灵气。仪式中途起身即告作废 —— 见<a href="../qi-gathering/">聚灵采气</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bind</code></td><td>将你手中的物品炼化为<a href="../lifebound/">本命法宝</a>。对自己已认主之物再次运行，会将其重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation race</code></td><td>打开种族菜单，查看各族天赋，并在条件具备时择定你的<a href="../races/">种族</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation hud</code></td><td>开启或关闭常驻的修炼状态栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation settings (options)</code></td><td>打开玩家设置菜单。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>打开生效加成页，列出当前作用于你的每一项修正。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation</code></td><td>打开你的修炼状态页。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation info (i)</code></td><td>将你的境界、阶段与灵气进度打印至聊天栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation meditate (med, cultivate)</code></td><td>切换打坐，从你落座区块的灵脉中汲取灵气。仪式中途起身即告作废 —— 见<a href="../qi-gathering/">聚灵采气</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bind [confirm]</code></td><td>将你手中的物品炼化为<a href="../lifebound/">本命法宝</a>。对自己已升过级的法宝再次运行只会示警；加 <code>confirm</code> 才重炼，并将其重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation race</code></td><td>打开种族菜单，查看各族天赋，并在条件具备时择定你的<a href="../races/">种族</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation hud</code></td><td>开启或关闭常驻的修炼状态栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation settings (options)</code></td><td>打开玩家设置菜单。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>打开生效加成页，列出当前作用于你的每一项修正。</td><td><code>cultivation</code></td></tr></tbody>
     </table>
 
     <h2>修炼功法</h2>
@@ -79,7 +79,7 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation abode (dwelling, cave)</code></td><td>在任何地方回报你的<a href="../dwelling/">洞府</a>，若有宗门则连同山门灵泉一并回报。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>在你所立的区块开辟（或迁移）洞府。任何地界都容得下洞府，但其下的灵脉决定灵泉蓄积的快慢。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect (drink)</code></td><td>饮尽灵泉，将其所蓄化作你自己的灵气入账。须站在洞府之中或自家宗门山门之内运行。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit (offer)</code></td><td>献上手中的一整叠物品作为供奉，每件物品所值时辰列于 <code>Upkeep-Item-Hours</code>。须在洞府之中运行。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>与裸写 <code>/cultivation abode</code> 相同的一览，以子指令形式呈现。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon</code></td><td>舍弃洞府并腾出地界。灵泉中所蓄的一切随之尽失。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation abode (dwelling, cave)</code></td><td>在任何地方回报你的<a href="../dwelling/">洞府</a>，若有宗门则连同山门灵泉一并回报。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode claim</code></td><td>在你所立的区块开辟（或迁移）洞府。任何地界都容得下洞府，但其下的灵脉决定灵泉蓄积的快慢。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode collect (drink)</code></td><td>饮尽灵泉，将其所蓄化作你自己的灵气入账。须站在洞府之中或自家宗门山门之内运行。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode deposit (offer)</code></td><td>献上手中的一整叠物品作为供奉，每件物品所值时辰列于 <code>Upkeep-Item-Hours</code>。须在洞府之中运行。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode info</code></td><td>与裸写 <code>/cultivation abode</code> 相同的一览，以子指令形式呈现。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation abode abandon [confirm]</code></td><td>舍弃洞府并腾出地界。单敲只会告知灵泉现蓄多少 —— 加 <code>confirm</code> 才连同这些灵气一并舍去。</td><td><code>cultivation</code></td></tr></tbody>
     </table>
 
     <h2>阵法</h2>
@@ -95,7 +95,7 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation duel challenge {玩家} [押注]</code></td><td>押上存蓄灵气，向另一名修士发起赌斗。押注缺失或无法解析时按 0 计。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel accept {玩家}</code></td><td>接受该玩家未决的邀约，赌斗随即开始。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel decline {玩家}</code></td><td>拒绝该玩家未决的邀约。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel yield (forfeit)</code></td><td>认输当前赌斗 —— 押注归对手所有。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation duel challenge {玩家} [押注]</code></td><td>押上存蓄灵气，向另一名修士发起赌斗。省略押注即不带彩头；押注若非整数，会被引擎驳回，负数亦一律拒绝。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel accept {玩家}</code></td><td>接受该玩家未决的邀约，赌斗随即开始。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel decline {玩家}</code></td><td>拒绝该玩家未决的邀约。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation duel yield (forfeit)</code></td><td>认输当前赌斗 —— 押注归对手所有。</td><td><code>cultivation</code></td></tr></tbody>
     </table>
 
     <h2>宗门</h2>
@@ -104,7 +104,7 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单界面。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create {名称}</code></td><td>以该名称创立新宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite {玩家}</code></td><td>邀请一名在线玩家加入你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join {宗门}</code></td><td>按名称加入宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开你当前的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick {玩家}</code></td><td>将一名门人移出你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband</code></td><td>彻底解散你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info (i)</code></td><td>列出本宗的境况 —— 门人、大殿与各项加成。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu (ui)</code></td><td>打开宗门菜单界面，与裸写 <code>/sect</code> 所开的是同一页。</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单界面。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create {名称}</code></td><td>以该名称创立新宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite {玩家}</code></td><td>邀请一名在线玩家加入你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join {宗门}</code></td><td>按名称加入宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开你当前的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick {玩家}</code></td><td>将一名门人移出你的宗门，无论其是否在线。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>先行示警，道出宗门之名与门人之数；加 <code>confirm</code> 方才彻底解散，并知会每一位门人。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info (i)</code></td><td>列出本宗的境况 —— 门人、大殿与各项加成。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu (ui)</code></td><td>打开宗门菜单界面，与裸写 <code>/sect</code> 所开的是同一页。</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
 
     <h2>宗门攻伐</h2>
@@ -122,6 +122,8 @@
     </table>
 
     <h2>管理指令</h2>
+
+    <p>下列凡是带 <code>[玩家]</code> 的指令，都只认服务器确实见过的名字。若指向一个从未进过本世界的人 —— 通常是敲错了字 —— 它会如实相告，而不是一声不响地什么也不做。</p>
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>

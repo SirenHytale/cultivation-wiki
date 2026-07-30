@@ -20,7 +20,7 @@ han: 起
 | `/cultivation` | 打开你的修炼状态页。 | `cultivation` |
 | `/cultivation info (i)` | 将你的境界、阶段与灵气进度打印至聊天栏。 | `cultivation` |
 | `/cultivation meditate (med, cultivate)` | 切换打坐，从你落座区块的灵脉中汲取灵气。仪式中途起身即告作废 —— 见[聚灵采气](/cultivation/qi-gathering/)。 | `cultivation` |
-| `/cultivation bind` | 将你手中的物品炼化为[本命法宝](/cultivation/lifebound/)。对自己已认主之物再次运行，会将其重置为 1 级。 | `cultivation` |
+| `/cultivation bind [confirm]` | 将你手中的物品炼化为[本命法宝](/cultivation/lifebound/)。对自己已升过级的法宝再次运行只会示警；加 `confirm` 才重炼，并将其重置为 1 级。 | `cultivation` |
 | `/cultivation race` | 打开种族菜单，查看各族天赋，并在条件具备时择定你的[种族](/cultivation/races/)。 | `cultivation` |
 | `/cultivation hud` | 开启或关闭常驻的修炼状态栏。 | `cultivation` |
 | `/cultivation settings (options)` | 打开玩家设置菜单。 | `cultivation` |
@@ -61,7 +61,7 @@ han: 起
 | `/cultivation abode collect (drink)` | 饮尽灵泉，将其所蓄化作你自己的灵气入账。须站在洞府之中或自家宗门山门之内运行。 | `cultivation` |
 | `/cultivation abode deposit (offer)` | 献上手中的一整叠物品作为供奉，每件物品所值时辰列于 `Upkeep-Item-Hours`。须在洞府之中运行。 | `cultivation` |
 | `/cultivation abode info` | 与裸写 `/cultivation abode` 相同的一览，以子指令形式呈现。 | `cultivation` |
-| `/cultivation abode abandon` | 舍弃洞府并腾出地界。灵泉中所蓄的一切随之尽失。 | `cultivation` |
+| `/cultivation abode abandon [confirm]` | 舍弃洞府并腾出地界。单敲只会告知灵泉现蓄多少 —— 加 `confirm` 才连同这些灵气一并舍去。 | `cultivation` |
 
 #### 阵法
 
@@ -75,7 +75,7 @@ han: 起
 
 | 指令 | 说明 | 权限 |
 |:---|:---|:---|
-| `/cultivation duel challenge {玩家} [押注]` | 押上存蓄灵气，向另一名修士发起赌斗。押注缺失或无法解析时按 0 计。 | `cultivation` |
+| `/cultivation duel challenge {玩家} [押注]` | 押上存蓄灵气，向另一名修士发起赌斗。省略押注即不带彩头；押注若非整数，会被引擎驳回，负数亦一律拒绝。 | `cultivation` |
 | `/cultivation duel accept {玩家}` | 接受该玩家未决的邀约，赌斗随即开始。 | `cultivation` |
 | `/cultivation duel decline {玩家}` | 拒绝该玩家未决的邀约。 | `cultivation` |
 | `/cultivation duel yield (forfeit)` | 认输当前赌斗 —— 押注归对手所有。 | `cultivation` |
@@ -91,8 +91,8 @@ han: 起
 | `/sect invite {玩家}` | 邀请一名在线玩家加入你的宗门。 | `cultivation.sect` |
 | `/sect join {宗门}` | 按名称加入宗门。 | `cultivation.sect` |
 | `/sect leave` | 离开你当前的宗门。 | `cultivation.sect` |
-| `/sect kick {玩家}` | 将一名门人移出你的宗门。 | `cultivation.sect` |
-| `/sect disband` | 彻底解散你的宗门。 | `cultivation.sect` |
+| `/sect kick {玩家}` | 将一名门人移出你的宗门，无论其是否在线。 | `cultivation.sect` |
+| `/sect disband [confirm]` | 先行示警，道出宗门之名与门人之数；加 `confirm` 方才彻底解散，并知会每一位门人。 | `cultivation.sect` |
 | `/sect claim` | 在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。 | `cultivation.sect` |
 | `/sect inscribe` | 将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。 | `cultivation.sect` |
 | `/sect info (i)` | 列出本宗的境况 —— 门人、大殿与各项加成。 | `cultivation.sect` |
@@ -113,6 +113,8 @@ han: 起
 | `/sect top (leaderboard)` | 列出本服顶尖的 10 个宗门。 | `cultivation.sect` |
 
 #### 管理指令
+
+下列凡是带 `[玩家]` 的指令，都只认服务器确实见过的名字。若指向一个从未进过本世界的人 —— 通常是敲错了字 —— 它会如实相告，而不是一声不响地什么也不做。
 
 | 指令 | 说明 | 权限 |
 |:---|:---|:---|

@@ -70,7 +70,7 @@ flowchart TD;
 </pre>
     </div>
 
-    <ul><li><code>/cultivation duel challenge &lt;玩家&gt; [押注]</code> 押上你相应数额的存蓄灵气，并向对方发起赌斗。省略押注，或填了个不是数字的东西，都按 <strong>0</strong> 处理 —— 那是一场不带彩头的意气之争。</li><li>邀约无人应答时，<strong>60 秒</strong>后失效（<code>Duel-Challenge-Expiry-Seconds</code>）。</li><li><code>Duel-Max-Wager</code> 为押注封顶。它<strong>默认为 0，即不设上限</strong>；任何正值都是一道天花板，超过它的邀约会被回绝。</li><li><code>/cultivation duel accept &lt;玩家&gt;</code> 接受该玩家未决的邀约，赌斗随即开始。双方都会被告知彩头几何。</li><li><code>/cultivation duel decline &lt;玩家&gt;</code> 将邀约丢弃。</li><li>两名玩家都不能身处另一场赌斗之中 —— 双方各自同时只能有一场。</li></ul>
+    <ul><li><code>/cultivation duel challenge &lt;玩家&gt; [押注]</code> 押上你相应数额的存蓄灵气，并向对方发起赌斗。完全省略押注，便是一场<strong>不带彩头的意气之争</strong>。但若填的不是整数，这次挑战会被<strong>直接驳回</strong>，而不再悄悄按 0 处理 —— 于是把 <code>100</code> 敲成 <code>1O0</code> 时它会告诉你，而不是让你以为押了一百灵气。负数押注同样拒绝。</li><li>邀约无人应答时，<strong>60 秒</strong>后失效（<code>Duel-Challenge-Expiry-Seconds</code>）。</li><li><code>Duel-Max-Wager</code> 为押注封顶。它<strong>默认为 0，即不设上限</strong>；任何正值都是一道天花板，超过它的邀约会被回绝。</li><li><code>/cultivation duel accept &lt;玩家&gt;</code> 接受该玩家未决的邀约，赌斗随即开始。双方都会被告知彩头几何。</li><li><code>/cultivation duel decline &lt;玩家&gt;</code> 将邀约丢弃。</li><li>两名玩家都不能身处另一场赌斗之中 —— 双方各自同时只能有一场。</li></ul>
 
     <p>赌斗<strong>绝不存档</strong>。服务器一旦重启，进行中的一切尽数作罢。</p>
 

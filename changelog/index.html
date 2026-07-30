@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog — Cultivation Wiki</title>
-<meta name="description" content="Release notes for the Cultivation mod, including v0.5.0 — the release that opened the progression ladder up to other mods.">
+<meta name="description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +19,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/changelog/">
 <meta property="og:title" content="Changelog — Cultivation Wiki">
-<meta property="og:description" content="Release notes for the Cultivation mod, including v0.5.0 — the release that opened the progression ladder up to other mods.">
+<meta property="og:description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Changelog — Cultivation Wiki">
-<meta name="twitter:description" content="Release notes for the Cultivation mod, including v0.5.0 — the release that opened the progression ladder up to other mods.">
+<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../assets/css/xianxia.css">
@@ -46,7 +46,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.6.1</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.6.2</strong>, the current
       release.
     </p>
 
@@ -56,6 +56,90 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.6.2 — Steadying the Path</h2>
+    <p>
+      No new system — a pass back through the ones already here, fixing the places where they were
+      quietly wrong. A sect leader could not kick the one member who was never online. A custom
+      motto never actually rendered. A typo'd duel wager vanished into a <code>0</code> instead of
+      being rejected. Three commands that destroy something now <strong>ask first</strong>, and
+      Spirit Sense grows a real number to sit beside its band word.
+    </p>
+
+    <h3>Confirm Before You Commit</h3>
+    <ul>
+      <li><code>/sect disband</code> now needs <a href="../commands/"><code>/sect disband
+        confirm</code></a>, stating the sect's name and member count before a leader commits — and
+        every other member is <strong>told the instant it happens</strong> rather than finding out
+        next time they open the <a href="../sects/">sect</a> menu.</li>
+      <li><code>/cultivation bind</code> gave the same success message whether you were binding a
+        fresh <a href="../lifebound/">Life-Bound Treasure</a> or silently resetting your own leveled
+        one to level 1. Re-binding above level 1 now needs <code>/cultivation bind confirm</code>,
+        and names the level you are about to lose.</li>
+      <li><code>/cultivation abode abandon</code> forfeited every banked Spirit Spring point with no
+        warning. It now needs <code>/cultivation abode abandon confirm</code>, and tells you exactly
+        how much Qi is sitting in the <a href="../dwelling/">spring</a> first.</li>
+    </ul>
+
+    <h3>Spirit Sense Reads Deeper</h3>
+    <ul>
+      <li>A precise <a href="../spirit-sense/">reading</a> was a single percentage. It now shows the
+        vein's <strong>actual Qi amount</strong> on its own line (abbreviated past 10,000, e.g.
+        <code>12.4k</code>), with fullness underneath in a dimmer line. A rich vein at 300/900 no
+        longer looks identical to a common vein at 300/300.</li>
+      <li>Turning Spirit Sense off, or disconnecting, now <strong>clears the vein markers</strong>
+        it drew on the world map. They used to stay pinned where you last sensed from, forever.</li>
+    </ul>
+
+    <h3>Sect Fixes</h3>
+    <ul>
+      <li><code>/sect kick</code> <strong>could not remove an offline member at all</strong> — the
+        exact moment you would reach for it — and reported them as not online. It matches against
+        the roster now, online or not.</li>
+      <li>A sect's <strong>custom motto</strong> went through a code path the client silently
+        ignores, so it had never once displayed. It does now.</li>
+      <li>A server with no sects founded yet showed a blank scroll region; it says so instead.</li>
+      <li>Kick, Disband and Deny use a <strong>crimson danger style</strong> rather than the
+        ordinary jade sect button, so a destructive click looks like one.</li>
+    </ul>
+
+    <h3>Everyday Fixes</h3>
+    <ul>
+      <li>The HUD's <strong>Nudge Up/Down</strong> buttons moved the panel the wrong way on both
+        bottom-anchored corners, and <strong>Nudge In/Out</strong> had its sign backwards on top of
+        that. Both corrected, and the HUD background is more opaque (0.55 → 0.72) so parchment and
+        jade text stop washing out against snow or a bright sky.</li>
+      <li><code>/cultivation duel challenge</code>'s <a href="../duels/">wager</a> silently became
+        <code>0</code> on a typo (<code>1O0</code> for <code>100</code>) instead of being rejected.
+        The engine's own number parser handles it now, and a negative wager is refused outright.</li>
+      <li><code>/cultivation refine</code>, <code>/cultivation respec</code> and
+        <code>/sect inscribe</code> blamed the server's own settings ("refinement is not enabled")
+        when the real cause was an <a href="../addons/">add-on</a> vetoing that one attempt. All
+        three now say <strong>something prevents that right now</strong> instead of pointing at the
+        wrong culprit.</li>
+      <li>The seven <a href="../commands/"><code>/cultivation admin set-*</code> and
+        <code>grant-*</code></a> commands did nothing at all, with no message, if the target had
+        never joined the world. They tell you that now.</li>
+      <li>Your own row on <code>/cultivation top</code> sits on a distinct plate, so you can find
+        yourself in a long list at a glance.</li>
+      <li><code>/cultivation debug vein</code> and <code>/cultivation info</code> held the last two
+        hardcoded English strings in the mod. Both are translated.</li>
+      <li>HUD and Stats-page labels flashed <strong>English on a Simplified Chinese client</strong>
+        for one frame before the first refresh. They start blank and fill in translated.</li>
+    </ul>
+
+    <h3>Under the Hood</h3>
+    <ul>
+      <li><a href="../techniques/">Flying-sword</a> flight's per-tick correction ran its full
+        start-up ceremony — including firing the public flight-started
+        <a href="../api-events/">event</a> to every add-on listening — once a second for the
+        <em>entire</em> flight. It checks first now, and only re-asserts when the vanilla mount
+        interaction has actually reverted it.</li>
+      <li>Two small memory leaks fixed: the PK-cooldown ledger and the Spirit Sense snapshot each
+        kept an entry per player forever. Both clear on disconnect.</li>
+      <li>Boot telemetry no longer shares the server's own task scheduler, so a slow metrics
+        endpoint cannot stall unrelated server tasks.</li>
+    </ul>
 
     <h2>v0.6.1 — Good Company</h2>
     <p>

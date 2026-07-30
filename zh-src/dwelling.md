@@ -21,7 +21,7 @@ han: 界
 - 你无法在被他人护山[阵法](/cultivation/formations/)设防、拒你于外的地上开辟。
 - 任何阶位的灵脉皆可，但你所占之地下的灵脉，决定了灵泉蓄积的快慢。
 
-`/cultivation abode abandon` 会直接舍弃这处地界 —— 所蓄的灵泉随之立刻尽失，且没有任何二次确认。
+`/cultivation abode abandon` 会舍弃这处地界 —— 所蓄的灵泉随之尽失。单敲此令并不会真的舍弃什么：它会告知灵泉此刻蓄了多少灵气，好让你先去 `collect` 一趟。唯有 `/cultivation abode abandon confirm` 才真正拂袖而去。
 
 洞府在**供奉未断**（供奉已付）期间，会改变其地界上的打坐：
 
@@ -108,7 +108,7 @@ han: 界
 | `/cultivation abode collect` | 饮尽你所处的灵泉，将其灵气入账。 | `cultivation` |
 | `/cultivation abode deposit` | 献上手中的一整叠物品作为供奉。 | `cultivation` |
 | `/cultivation abode info` | 与裸写 `/cultivation abode` 相同的状况一览。 | `cultivation` |
-| `/cultivation abode abandon` | 舍弃你的地界；所蓄灵泉尽失。 | `cultivation` |
+| `/cultivation abode abandon [confirm]` | 先告知灵泉现蓄多少；加 `confirm` 才舍弃地界，并连同它一并尽失。 | `cultivation` |
 
 `abode` 亦可写作 `dwelling` 或 `cave`。
 
