@@ -7,7 +7,7 @@ han: 配
 
 ### 配置总览
 
-Cultivation 模组一切可调之处，皆位于 `mods/Siren_Cultivation/` 之下，本页对应 **Cultivation v0.5.1**。这些设置并非挤在一个巨大的文件里，而是拆成若干主题文件、再归入文件夹 —— 进阶核心在 `Cultivation/`，修士所修习的一切在 `Arts/`，唯因他人存在才有意义的一切在 `Society/`，每个可选种族一份文件在 `Race/`，服务器自身的运行期存档状态则在 `Data/`。
+Cultivation 模组一切可调之处，皆位于 `mods/Siren_Cultivation/` 之下，本页对应 **Cultivation v0.6.2**。这些设置并非挤在一个巨大的文件里，而是拆成若干主题文件、再归入文件夹 —— 进阶核心在 `Cultivation/`，修士所修习的一切在 `Arts/`，唯因他人存在才有意义的一切在 `Society/`，每个可选种族一份文件在 `Race/`，服务器自身的运行期存档状态则在 `Data/`。
 
 每份设置文件都带有自己的 `ConfigName` 与 `ConfigVersion`。每当该文件的结构或数值平衡发生变化，版本号会自动递增，而你已有的设置会被自动迁移 —— 你从不需要手动编辑 `ConfigVersion`，把它改小也只会让迁移再跑一遍。文件中还含有 `Description-*` 字符串字段，那是文档而非设置：模组会在加载时把它们改写回当前文本，因此编辑它们毫无作用。
 

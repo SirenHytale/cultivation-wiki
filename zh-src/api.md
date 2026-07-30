@@ -29,7 +29,7 @@ Maven `pom.xml`：
     <dependency>
         <groupId>plugin.siren</groupId>
         <artifactId>Cultivation</artifactId>
-        <version>0.5.0</version>
+        <version>0.6.2</version>
         <scope>provided</scope>
         <optional>true</optional>
     </dependency>
