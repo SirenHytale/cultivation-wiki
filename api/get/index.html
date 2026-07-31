@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Read API &mdash; xianxia.dev</title>
+<meta name="description" content="Static read-only JSON endpoints served from xianxia.dev, used by the Cultivation family of mods to check for updates.">
+<link rel="icon" href="/assets/img/logo.png">
+<style>
+  :root{
+    --ink-900:#0E0603; --ink-850:#150904; --ink-800:#1D0D07; --ink-750:#241009;
+    --lacquer:#35100B; --crimson-700:#5C1712; --crimson-600:#7C241B;
+    --gold-100:#FFF0C4; --gold-200:#F6D77B; --gold-300:#E0B44C; --gold-600:#8C6B1F;
+    --parchment:#E4D6B0; --parchment-dim:#B9A87E; --parchment-mut:#8E7F5C;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:3rem 1.25rem 5rem;
+    background:var(--ink-900); color:var(--parchment);
+    font:16px/1.65 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  }
+  .wrap{max-width:52rem;margin:0 auto}
+  a{color:var(--gold-200)}
+  a:hover{color:var(--gold-100)}
+  .home{
+    display:inline-block;margin-bottom:2rem;font-size:.85rem;
+    letter-spacing:.06em;text-transform:uppercase;text-decoration:none;
+    color:var(--parchment-mut);
+  }
+  .home:hover{color:var(--gold-200)}
+  h1{
+    margin:0 0 .35rem;font-size:1.9rem;line-height:1.2;
+    color:var(--gold-200);font-weight:600;
+  }
+  .sub{margin:0 0 2.5rem;color:var(--parchment-dim)}
+  h2{
+    margin:2.5rem 0 .75rem;font-size:1.05rem;color:var(--gold-300);
+    font-weight:600;letter-spacing:.02em;
+  }
+  p{margin:0 0 1rem}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.9em;background:var(--ink-750);color:var(--gold-100);
+    padding:.12em .4em;border-radius:3px;
+  }
+  pre{
+    margin:0 0 1.25rem;padding:1rem 1.15rem;overflow-x:auto;
+    background:var(--ink-850);border:1px solid var(--lacquer);
+    border-left:3px solid var(--crimson-700);border-radius:4px;
+  }
+  pre code{background:none;padding:0;color:var(--parchment)}
+  ul{margin:0 0 1.25rem;padding-left:1.25rem}
+  li{margin:.3rem 0}
+  /* The scroll lives on the wrapper, not the table: display:block on a table
+     stops its rows filling the line box, which left two tables on one page at
+     two different widths. */
+  .tablewrap{overflow-x:auto;margin:0 0 1.5rem}
+  table{width:100%;border-collapse:collapse;font-size:.94rem}
+  th,td{
+    text-align:left;padding:.6rem .8rem;
+    border-bottom:1px solid var(--lacquer);vertical-align:top;
+  }
+  th{color:var(--gold-300);font-weight:600;white-space:nowrap}
+  td:first-child{white-space:nowrap}
+  .note{
+    margin:2rem 0 0;padding:.9rem 1.1rem;border-radius:4px;
+    background:var(--ink-800);border-left:3px solid var(--gold-600);
+    color:var(--parchment-dim);font-size:.93rem;
+  }
+  footer{
+    margin-top:3.5rem;padding-top:1.25rem;border-top:1px solid var(--lacquer);
+    color:var(--parchment-mut);font-size:.86rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="home" href="/">&larr; xianxia.dev</a>
+
+<h1>Read API</h1>
+<p class="sub">Static, read-only JSON served straight from this site. No keys, no rate limits, no write endpoints.</p>
+
+<h2>Version manifests</h2>
+<p>Each mod in the Cultivation family publishes the version it considers current. The mods fetch their own manifest to tell a server owner when an update is out.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Mod</th><th>Endpoint</th></tr></thead>
+  <tbody>
+    <tr><td>Cultivation</td><td><a href="/api/get/version/cultivation.json"><code>/api/get/version/cultivation.json</code></a></td></tr>
+    <tr><td>Cultivation: Jade Slip</td><td><a href="/api/get/version/JadeSlip.json"><code>/api/get/version/JadeSlip.json</code></a></td></tr>
+    <tr><td>Soul Rings</td><td><a href="/api/get/version/SoulRings.json"><code>/api/get/version/SoulRings.json</code></a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Shape</h2>
+<pre><code>{
+  "release": "0.7.1",
+  "ignore": ["0.7.0"]
+}</code></pre>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Field</th><th>Type</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>release</code></td>
+      <td>string</td>
+      <td>The current version. A server running anything older than this has an update available.</td>
+    </tr>
+    <tr>
+      <td><code>ignore</code></td>
+      <td>string[]</td>
+      <td>Installed versions that are never notified, even when they are behind <code>release</code>. Use it to spare a build that should sit where it is &mdash; a beta, or a version whose upgrade path is not ready yet.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>How a mod reads it</h2>
+<ul>
+  <li>Fetches its manifest on a background thread at boot, then on an interval.</li>
+  <li>Stays silent when the installed version equals or exceeds <code>release</code>, when the installed version appears in <code>ignore</code>, or when the request fails for any reason.</li>
+  <li>Otherwise tells server administrators, once, as they join.</li>
+</ul>
+
+<div class="note">
+  Both fields are optional to consume: a missing or unparseable manifest is treated as &ldquo;no update&rdquo;, never as an error a player sees. Version strings compare numerically part by part (<code>0.10.0</code> is newer than <code>0.9.0</code>).
+</div>
+
+<footer>
+  Part of <a href="/">the Cultivation documentation</a>. Served as static files &mdash; if a request fails, the site is down.
+</footer>
+
+</div>
+</body>
+</html>

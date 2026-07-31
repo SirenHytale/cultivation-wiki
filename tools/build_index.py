@@ -26,7 +26,10 @@ from html.parser import HTMLParser
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "search-index.js"
 
-SKIP_DIRS = {".git", "assets", "tools", "data", "node_modules"}
+# "get" is api/get/ - the read-only JSON API. Its index.html is a standalone
+# page (its own inline CSS, no site.js), so a search hit on it would drop the
+# reader onto a page with none of the site's chrome.
+SKIP_DIRS = {".git", "assets", "tools", "data", "node_modules", "get"}
 SKIP_FILES = {"404.html"}
 
 # Tags whose text is chrome or code-noise rather than prose worth indexing.
