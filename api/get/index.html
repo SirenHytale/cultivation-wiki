@@ -83,7 +83,7 @@
 <p class="sub">Static, read-only JSON served straight from this site. No keys, no rate limits, no write endpoints.</p>
 
 <h2>Version manifests</h2>
-<p>Each mod in the Cultivation family publishes the version it considers current. The mods fetch their own manifest to tell a server owner when an update is out.</p>
+<p>Each mod in the Cultivation family publishes the version it considers current. The mods fetch their own manifest to tell a server owner when an update is out. <a href="#builds">Build digests</a> are published alongside them.</p>
 
 <div class="tablewrap">
 <table>
@@ -129,6 +129,34 @@
 
 <div class="note">
   Both fields are optional to consume: a missing or unparseable manifest is treated as &ldquo;no update&rdquo;, never as an error a player sees. Version strings compare numerically part by part (<code>0.10.0</code> is newer than <code>0.9.0</code>).
+</div>
+
+<h2 id="builds">Build digests</h2>
+<p>Each mod also publishes a digest of the compiled code in every official release. A running mod hashes its own jar the same way and compares, which lets it tell the jar that shipped from one that was rebuilt.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Mod</th><th>Endpoint</th></tr></thead>
+  <tbody>
+    <tr><td>Cultivation</td><td><a href="/api/get/build/cultivation.json"><code>/api/get/build/cultivation.json</code></a></td></tr>
+    <tr><td>Cultivation: Jade Slip</td><td><a href="/api/get/build/JadeSlip.json"><code>/api/get/build/JadeSlip.json</code></a></td></tr>
+    <tr><td>Soul Rings</td><td><a href="/api/get/build/SoulRings.json"><code>/api/get/build/SoulRings.json</code></a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code>{
+  "builds": {
+    "0.7.1": ["f1ad9b61...49146cc5"],
+    "0.7.0": ["71bd0e42...9c110a04", "5e9033f1...b7d2e880"]
+  }
+}</code></pre>
+
+<p>Keyed by version, each holding the digests accepted as official for it &mdash; an array, so a version legitimately rebuilt more than once can carry more than one. The digest is SHA-256 over every <code>.class</code> entry in the jar, in name order, each contributed as its name, a <code>NUL</code>, its length as four big-endian bytes, then its bytes. Resources are not included: the question is whether the <em>code</em> was rebuilt, so editing a language file inside a jar does not make it unofficial.</p>
+
+<div class="note">
+  <p style="margin:0 0 .75rem">A version absent from <code>builds</code> leaves that install <strong>unverified</strong>, not condemned &mdash; as does an unreachable endpoint or an unreadable jar. A mod only concludes it is unofficial on a positive mismatch: digests were published for its exact version and its own was not among them.</p>
+  <p style="margin:0"><strong>This is detection, not protection.</strong> Anyone able to rebuild a mod is equally able to remove the check, and no code running on someone else&rsquo;s machine can do better. What it reliably catches is repackaged uploads, redistributed paid addons, and downloads that arrived damaged.</p>
 </div>
 
 <footer>
