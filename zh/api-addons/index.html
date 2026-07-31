@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>编写扩展 — 修真百科</title>
 <meta name="description" content="Cultivation 0.5.0 的三个接管型钩子：ProgressionProvider 替换进阶阶梯、CultivationTheme 替换全部用词、AdminConfigSection 添加你自己的管理设置。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -96,6 +97,22 @@ CultivationAPI.getProgressionProvider()</code></pre>
 
     <p>同一时刻只能安装一个 provider。最后注册者胜出，并会记录一条同时点名双方的警告 —— 因为两个模组各自都认为自己拥有进阶体系，这是一种配置错误，而不是该悄悄挑一个赢家的事。传入 <code>null</code> 即可把进阶体系交还给内置系统。</p>
 
+    <h3>provider 治下的存档</h3>
+
+    <p>&lt;span class="tag"&gt;v0.7.0&lt;/span&gt; 该接口新增了一个 <code>default</code> 方法：</p>
+
+    <pre><code class="language-java">default boolean supportsProfiles(){
+    return false;
+}</code></pre>
+
+    <p>而这个默认值会在你的 provider 安装期间<strong>直接回绝</strong><a href="../profiles/">存档</a>切换 —— 玩家会被告知此处的进阶体系由另一个模组掌管。这是刻意为之：一次切换会在你脚下换掉玩家的 <code>CultivationComponent</code>、种族、大道、天赋树与功法，而一个未曾为此做好准备的 provider，届时描述的将是错误的那名修士 —— 做到一半，比直接回绝更糟。</p>
+
+    <p>要解除这道回绝，请完成以下两件事，随后返回 <code>true</code>：</p>
+
+    <ul><li>处理 <code>ProfileEvents.PreProfileSwitchEvent</code> —— 为即将离开的那份存档保存你自己的状态。</li><li>处理 <code>ProfileEvents.ProfileSwitchEvent</code> —— 为抵达的那份存档载入你的状态。</li></ul>
+
+    <p>存档监听器是整个接口中唯一被允许<strong>直接经由 <code>Store</code> 写入组件</strong>的地方 —— 它们运行在世界线程上，且在任何 tick 系统之外，正是为了让 provider 能做这份记账。完整的 <code>ProfileEvents</code> 表见<a href="../api-events/">事件</a>。这道回绝有一个例外：操作员的<a href="../profiles/">试炼存档沙盒</a>即便在 provider 治下也照样被允许 —— 它不会改变你的扩展对该玩家的看法，指令本身也会如此说明。</p>
+
     <h2>CultivationTheme</h2>
 
     <pre><code class="language-java">CultivationAPI.setTheme(@Nullable CultivationTheme theme)
@@ -166,8 +183,6 @@ CultivationAPI.newAdminConfigField(String key, Message label, ...)</code></pre>
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

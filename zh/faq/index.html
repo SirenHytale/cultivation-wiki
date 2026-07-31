@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>常见问题与排错 — 修真百科</title>
 <meta name="description" content="Cultivation 模组最常被当成 bug 的那些机制：仪式与突破、灵气与灵脉、种族宗门与地界、功法与物品、服务器与兼容性。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -121,6 +122,24 @@
 
     <p>供奉失效了。洞府随时间消耗灵石（<code>Upkeep-Enabled</code>），在地界被释放之前有 <strong>168 小时的宽限期</strong>（<code>Upkeep-Grace-Hours</code>）。你最多可以预蓄 <strong>720 小时</strong>（<code>Upkeep-Max-Banked-Hours</code>）。在轻松向的服务器上，把 <code>Upkeep-Enabled</code> 整个关掉即可。</p>
 
+    <h2>存档与形象</h2>
+
+    <h3>我的宗门会随新存档而来吗？</h3>
+
+    <p>不会。宗门、洞府、阵法与道侣为所有存档共有 —— 仅修为随存档转换。<a href="../profiles/">存档</a>承载的是*你是谁*（境界、灵气、种族、大道、天赋树、功法）；你佩戴的<a href="../titles/">称号</a>与各项设置，同样是账号通用的。</p>
+
+    <h3>为什么我切换不了存档？</h3>
+
+    <p>接管了 Cultivation 修为体系的模组（即 <code>ProgressionProvider</code>），必须声明自己的记录会随你的存档同步。在它声明之前，切换会被<strong>直接拒绝，而非做一半</strong> —— 提示会说明原因。请向该扩展的作者询问 <code>ProgressionProvider.supportsProfiles()</code>，或见<a href="../api-addons/">编写扩展</a>。</p>
+
+    <h3>怎样才能不再看到所有人的气息？</h3>
+
+    <p><strong>设置</strong> → <em>修为气息</em> → <strong>显示其他修士的气息</strong>。若想不再外放，使用 <code>/cultivation aura</code>，或同一分节里的第一个开关。服主则可用 <code>Aura-Enabled</code> 将<a href="../auras/">气息</a>整个关闭。</p>
+
+    <h3>我的称号从名牌上消失了</h3>
+
+    <p>另一个会写头顶名牌的模组 —— 通常是昵称类插件 —— 把它覆盖了；头顶名牌是 Hytale 共享的显示名机制，后写者胜。重新佩戴<a href="../titles/">称号</a>，或者去掉那个模组给该玩家设的昵称。</p>
+
     <h2>功法与物品</h2>
 
     <h3>我知道某门功法，却用不了</h3>
@@ -164,8 +183,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

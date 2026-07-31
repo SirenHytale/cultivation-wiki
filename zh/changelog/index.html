@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>更新日志 — 修真百科</title>
-<meta name="description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
+<meta name="description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/changelog/">
 <meta property="og:title" content="更新日志 — 修真百科">
-<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
+<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="更新日志 — 修真百科">
-<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.6.2 回溯至 v0.1.0 首发。">
+<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../../assets/css/xianxia.css">
@@ -46,12 +47,44 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.6.2</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.7.0</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.7.0 —— 万法诸身</h2>
+
+    <p>在此之前，服务器对你只知一件事：你的境界，写在你自己的 HUD 上，只有你自己看得见。这一版讲的是另一个方向 —— 旁人*能看见什么*。修士外放的灵气隔着原野可读，宗门在山门之上悬起旗帜，要紧的时刻跃上屏幕而不再从聊天栏一滚而过。而在这一切之下：你如今可以保留不止一名修士。</p>
+
+    <h3>修炼存档</h3>
+
+    <ul><li>一个账号最多保留<strong>三名各自独立的修士</strong>，随时自由切换 —— 见新的<a href="../profiles/">修炼存档</a>页。存档承载境界、阶段与灵气、种族、大道、天赋树、已习功法及其键位方案；宗门、洞府、阵法与道侣归于账号，为所有存档共有。</li><li>在设置旁新增的<strong>存档</strong>菜单页管理，或使用 <code>/cultivation profile</code>。重新起步须先确认，菜单上的抹去要点两次，你现在的修士则自动成为存档 1。</li><li>为持有 <code>cultivation.profile.test</code> 权限者提供<strong>试炼存档</strong> —— 一具境界、阶段、灵气、天赋点与种族皆可亲手设定的沙盒之身。它必须设定按真实时间计的时限、到期自行消散，且绝不进入排行、宗门积分与名册，也不占用存档位。</li></ul>
+
+    <h3>修为气息 —— 看得见的灵气</h3>
+
+    <ul><li>每名修士都会外放<a href="../auras/">气息</a>：<strong>境界决定其颜色与浓密</strong> —— 自炼体的土铜色，经玉与金，直至炼虚的虚空靛 —— <strong>阶段决定其大小</strong>，巅峰修士比同境界前期修士站得更「宽」。</li><li>打坐另有一种<strong>向内汇聚</strong>的气息 —— 灵气正自大地被抽向你。坐得越久越深沉，共分三重；脚下灵脉一旦枯竭便不再加深。</li><li>设置里有三个开关 —— 外放气息、显示自己的、显示别人的 —— 另有 <code>/cultivation aura</code> 指令，以及两个服务器配置项（<code>Aura-Enabled</code>、<code>Aura-Pulse-Interval-Seconds</code>）。</li></ul>
+
+    <h3>称号</h3>
+
+    <ul><li>二十三个纯装饰<a href="../titles/">称号</a> —— 每境界一个、每种大道元素一个、正魔两途、宗主与长老，以及登临炼虚巅峰的封顶之号。在新的<strong>称号</strong>页佩戴；它显示在你头顶、聊天栏、排行榜与宗门名册上。</li><li>尚未获得的称号留在列表上作灰色显示，写明解锁条件 —— 而不是藏起来待某天凭空出现。</li></ul>
+
+    <h3>山门 —— 光柱与旗帜</h3>
+
+    <ul><li>已占的山门如今立起一道<strong>任何过路人都看得见的光柱</strong>（<code>Sect-Hall-Beacon-Enabled</code>），宗门还可在其上<a href="../sects/">悬起旗帜</a> —— 青龙、朱雀、白虎、玄武、金庭或玉台 —— 经宗门菜单或 <code>/sect banner</code>（宗主或长老）。</li><li>山门在围攻中易主，灵光便退回灵脉本色；旗帜的选择留在宗门身上，待下一座山门再升。尚无山门的宗门也可先行择旗。</li></ul>
+
+    <h3>世界地图</h3>
+
+    <ul><li>每一座已占的<strong>山门</strong>都钉上了 Hytale 自己的世界地图，任何人可见，以该宗旗帜之色着色，并标注宗名。</li><li>你自己的<a href="../dwelling/">洞府</a>亦有标记，你或你宗掌控的<a href="../formations/">阵法</a>同样 —— 按阵法功用着色，且只有你自己看得见。困仙阵依旧藏得像它该藏的那样。</li></ul>
+
+    <h3>掷地有声的时刻</h3>
+
+    <ul><li>突破新境时一行大字接管屏幕，且<strong>九个区块内的每一名修士都会得知</strong>（<code>Breakthrough-Title-Radius-Chunks</code>；设 0 则为私事）。进阶与倒退各有其题，轻重相称 —— 见新的<a href="../notices/">屏显通告</a>页。</li><li>较小的时刻 —— 解锁天赋节点、本命法宝升级、洗点、仪式开始 —— 改以角落通知送达。每一条仍会在聊天栏说完整句，大字淡去也不失落任何内容。</li><li>入宗与离宗以标题相记，下方附<strong>宗门格言</strong>。HUD 新增<strong>宗门一行</strong>，快捷键页如今会显示你留存的键位方案数与上限。</li></ul>
+
+    <h3>写给扩展作者</h3>
+
+    <ul><li>API 已达 <strong>144 个事件、十一个子系统</strong> —— 新增 <code>ProfileEvents</code>（切换、创建、抹除、到期）与宗门旗帜事件，均配可取消的前置事件（到期除外）。见<a href="../api-events/">接口事件</a>。</li><li>三个新的开放注册表：<code>registerTitle</code>、<code>registerSectBanner</code> 与 <code>registerPalette</code> —— 你自己的称号上选择页、宗门可悬的旗帜、整套菜单与 HUD 的重新配色。见<a href="../api-registries/">接口注册表</a>。</li><li><code>ProgressionProvider.supportsProfiles()</code> 让进度类扩展诚实起来：在它声明支持之前，切换存档会被直接拒绝，而非做一半。</li><li>存档与键位方案的上限均可由扩展提高（<code>registerProfileCap</code>、<code>registerTechniquePresetCap</code>）—— 最高者胜，且上限回落时绝不销毁任何东西。注意键位方案默认上限现为 <strong>3</strong>（v0.6.x 为固定的 8）；你已留存的一切照旧保留。</li></ul>
 
     <h2>v0.6.2 —— 稳固道途</h2>
 
@@ -371,8 +404,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

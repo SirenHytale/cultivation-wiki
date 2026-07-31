@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Keybinds &amp; Loadouts — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - firing techniques from a keypress, and keeping several loadouts">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -95,7 +96,9 @@
 
     <h2>Loadouts</h2>
 
-    <p>Keep up to <strong>eight named loadouts</strong>, each holding its own set of four technique binds, and cycle them with a single key. A combat set and a travelling set no longer have to be re-bound by hand.</p>
+    <p>Keep several <strong>named loadouts</strong>, each holding its own set of four technique binds, and cycle them with a single key. A combat set and a travelling set no longer have to be re-bound by hand.</p>
+
+    <p>Since v0.7.0 you keep <strong>three</strong> loadouts by default, and the Keybinds page shows the count plainly — <code>2 / 3 kept</code>. The cap is not a config key: an add-on raises it through the API (<code>registerTechniquePresetCap</code>), up to a hard ceiling of <strong>eight</strong>. If a cap-raising add-on is later removed, every loadout you filled <strong>survives</strong> — the count turns gold to show you are over the cap, and only <em>adding</em> a new one is refused until you are back under it. (Players who kept more than three under v0.6.x keep them all the same way.)</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -126,8 +129,6 @@
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

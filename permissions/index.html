@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Permissions — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - Permissions">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -46,13 +47,13 @@
 
     <h1>Permissions</h1>
 
-    <p class="page-lede">The mod declares five permission nodes. Every command in the mod sits behind one of them - see <a href="../commands/">Commands</a> for which command needs which.</p>
+    <p class="page-lede">The mod declares seven permission nodes. Every command in the mod sits behind one of them - see <a href="../commands/">Commands</a> for which command needs which.</p>
 
     <div class="panel">
           <div class="panel-head">Permissions</div>
           <table>
     <thead><tr><th>Permission</th><th>Description</th></tr></thead>
-    <tbody><tr><td><code>cultivation</code></td><td>The <code>/cultivation</code> root and every player-facing subcommand under it - info, bind, meditate, hud, settings, race, skilltree, dao, technique, refine, respec, bonuses, formations, abode, beast, duel, top.</td></tr><tr><td><code>cultivation.sect</code></td><td>The <code>/sect</code> root and every sect subcommand, including <code>/sect war</code> and <code>/sect top</code>. The same suite reached through <code>/cultivation sect ...</code> uses this node too.</td></tr><tr><td><code>cultivation.admin</code></td><td>The <code>/cultivation admin</code> config editor UI and all eight of its player-modifying subcommands.</td></tr><tr><td><code>cultivation.debug</code></td><td>The <code>/cultivation debug</code> command group.</td></tr><tr><td><code>cultivation.debug.vein</code></td><td><code>/cultivation debug vein</code>.</td></tr></tbody>
+    <tbody><tr><td><code>cultivation</code></td><td>The <code>/cultivation</code> root and every player-facing subcommand under it - info, bind, meditate, hud, settings, race, skilltree, dao, technique, refine, respec, bonuses, formations, abode, beast, duel, top, profile, aura.</td></tr><tr><td><code>cultivation.sect</code></td><td>The <code>/sect</code> root and every sect subcommand, including <code>/sect war</code>, <code>/sect banner</code> and <code>/sect top</code>. The same suite reached through <code>/cultivation sect ...</code> uses this node too.</td></tr><tr><td><code>cultivation.admin</code></td><td>The <code>/cultivation admin</code> config editor UI and all eight of its player-modifying subcommands.</td></tr><tr><td><code>cultivation.profile.test</code> <span class="tag">v0.7.0</span></td><td>The test-profile sandbox: <code>/cultivation profile test</code> and its realm/stage/qi/points/race/reset branches, plus the Test Profile section of the <a href="../profiles/">Profiles</a> menu page.</td></tr><tr><td><code>cultivation.debug</code></td><td>The <code>/cultivation debug</code> command group.</td></tr><tr><td><code>cultivation.debug.vein</code></td><td><code>/cultivation debug vein</code>.</td></tr><tr><td><code>cultivation.debug.hotkeys</code></td><td><code>/cultivation debug hotkeys</code>.</td></tr></tbody>
     </table>
         </div>
 
@@ -60,15 +61,17 @@
 
     <h2>Hierarchy</h2>
 
-    <p>The node names are dotted, and that dotting mirrors the command tree - <code>cultivation</code> is the root, <code>cultivation.sect</code>, <code>cultivation.admin</code> and <code>cultivation.debug</code> sit under it, and <code>cultivation.debug.vein</code> sits under the debug group. Each command requires its own node explicitly, so holding <code>cultivation</code> does not by itself confer <code>cultivation.admin</code>.</p>
+    <p>The node names are dotted, and that dotting mirrors the command tree - <code>cultivation</code> is the root; <code>cultivation.sect</code>, <code>cultivation.admin</code>, <code>cultivation.profile.test</code> and <code>cultivation.debug</code> sit under it; and <code>cultivation.debug.vein</code> and <code>cultivation.debug.hotkeys</code> sit under the debug group. Each command requires its own node explicitly, so holding <code>cultivation</code> does not by itself confer <code>cultivation.admin</code>.</p>
 
     <div class="mermaid-wrap">
     <pre class="mermaid">
 flowchart TD;
   A["cultivation&lt;br/&gt;granted to everyone"] --&gt; B["cultivation.sect&lt;br/&gt;granted to everyone"];
   A --&gt; C["cultivation.admin&lt;br/&gt;staff only"];
+  A --&gt; F["cultivation.profile.test&lt;br/&gt;staff only"];
   A --&gt; D["cultivation.debug&lt;br/&gt;staff only"];
   D --&gt; E["cultivation.debug.vein&lt;br/&gt;staff only"];
+  D --&gt; G["cultivation.debug.hotkeys&lt;br/&gt;staff only"];
   click A "../commands/" "View the Commands page";
 </pre>
     </div>
@@ -79,7 +82,9 @@ flowchart TD;
 
     <p><code>cultivation</code> and <code>cultivation.sect</code> are both registered to the <code>hytale:None</code> group - the default group every player belongs to - so the whole player-facing experience, cultivating and sects alike, works out of the box with no permission setup.</p>
 
-    <p><code>cultivation.admin</code>, <code>cultivation.debug</code> and <code>cultivation.debug.vein</code> are granted to nobody by default. They are deliberately registered with an empty permission-group list rather than left unset: an unset list falls back to the parent command's groups, which would silently hand the admin menu to every player through <code>hytale:None</code>. Server staff still reach them the normal way, through the wildcard on their own admin group.</p>
+    <p><code>cultivation.admin</code>, <code>cultivation.profile.test</code>, <code>cultivation.debug</code>, <code>cultivation.debug.vein</code> and <code>cultivation.debug.hotkeys</code> are granted to nobody by default. They are deliberately registered with an empty permission-group list rather than left unset: an unset list falls back to the parent command's groups, which would silently hand the admin menu to every player through <code>hytale:None</code>. Server staff still reach them the normal way, through the wildcard on their own admin group.</p>
+
+    <p><code>cultivation.profile.test</code> is worth granting more deliberately than the others: it is not a debug convenience but a player-usable sandbox - anyone holding it can spin up a temporary cultivator with any realm, stage and Qi typed in by hand. A test cultivator is kept out of the rankings, sect scores and sect rosters, so the node is safe to hand to trusted balance-testers - but nothing about it is meant for <code>hytale:None</code>.</p>
 
   </main>
 
@@ -89,8 +94,6 @@ flowchart TD;
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

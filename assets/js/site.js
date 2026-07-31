@@ -281,11 +281,34 @@
   }
 
   /* ---------- Search ----------------------------------------------------- */
+  /* The index is ~650 KB, so it is no longer a <script> tag on every page:
+     it is injected on demand — prefetched when the browser goes idle, and
+     forced on the first open of the search overlay. Pages that still carry
+     the old tag (window.SEARCH_INDEX already set) skip the injection. */
+  var indexLoading = null;
+  function loadSearchIndex(done) {
+    if (window.SEARCH_INDEX) { if (done) done(); return; }
+    if (indexLoading) { if (done) indexLoading.push(done); return; }
+    indexLoading = done ? [done] : [];
+    var s = document.createElement("script");
+    s.src = url("data/search-index.js");
+    s.onload = function () {
+      var cbs = indexLoading; indexLoading = null;
+      (cbs || []).forEach(function (cb) { cb(); });
+    };
+    s.onerror = function () { indexLoading = null; };
+    document.head.appendChild(s);
+  }
+
   function initSearch() {
     /* Only ever search the language you are reading. */
-    var index = (window.SEARCH_INDEX || []).filter(function (e) {
-      return (e.l || "en") === LANG;
-    });
+    var index = [];
+    function applyIndex() {
+      index = (window.SEARCH_INDEX || []).filter(function (e) {
+        return (e.l || "en") === LANG;
+      });
+    }
+    applyIndex();
 
     var overlay = el(
       '<div class="search-overlay" role="dialog" aria-modal="true" aria-label="Search the wiki">' +
@@ -313,6 +336,9 @@
       document.body.style.overflow = "hidden";
       input.value = "";
       render("");
+      /* First open before the idle prefetch finished: pull the index now and
+         re-run whatever the user has typed by the time it lands. */
+      loadSearchIndex(function () { applyIndex(); render(input.value); });
       setTimeout(function () { input.focus(); }, 30);
     }
     function close() {
@@ -411,12 +437,36 @@
     var trig = document.querySelector(".search-trigger");
     if (trig) trig.addEventListener("click", open);
 
-    if (!index.length) {
-      console.warn("[wiki] search index is empty — run: python tools/build_index.py");
-    }
+    /* Warm the cache once the page is settled, so the first Ctrl+K is
+       instant without the index ever competing with the initial render. */
+    var idle = window.requestIdleCallback || function (fn) { setTimeout(fn, 2500); };
+    idle(function () {
+      loadSearchIndex(function () {
+        applyIndex();
+        if (!index.length) {
+          console.warn("[wiki] search index is empty — run: python tools/build_index.py");
+        }
+      });
+    });
   }
 
   /* ---------- Mermaid ---------------------------------------------------- */
+  /* The mermaid bundle is multi-megabyte, so it is no longer a <script> tag on
+     every page: boot() injects it only when the page actually contains a
+     diagram. Pages that still carry the old CDN tag load it the old way and
+     the injection is skipped. */
+  var MERMAID_CDN = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+  var mermaidRequested = false;
+  function loadMermaid() {
+    if (window.mermaid || mermaidRequested) { renderMermaid(); return; }
+    mermaidRequested = true;
+    var s = document.createElement("script");
+    s.src = MERMAID_CDN;
+    s.onload = renderMermaid;
+    s.onerror = function () { console.warn("[wiki] mermaid failed to load from CDN"); };
+    document.head.appendChild(s);
+  }
+
   function mermaidVars() {
     var light = document.documentElement.getAttribute("data-theme") === "light";
     return light ? {
@@ -572,7 +622,7 @@
     initTheme();
     initSearch();
     initMotes();
-    renderMermaid();
+    if (document.querySelector("pre.mermaid")) loadMermaid();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

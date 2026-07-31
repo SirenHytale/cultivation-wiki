@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>指令 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的全部指令：玩家、功法、灵兽、洞府、阵法、赌斗、宗门、攻伐、排行、管理与调试。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -56,7 +57,23 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/cultivation</code></td><td>打开你的修炼状态页。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation info (i)</code></td><td>将你的境界、阶段与灵气进度打印至聊天栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation meditate (med, cultivate)</code></td><td>切换打坐，从你落座区块的灵脉中汲取灵气。仪式中途起身即告作废 —— 见<a href="../qi-gathering/">聚灵采气</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bind [confirm]</code></td><td>将你手中的物品炼化为<a href="../lifebound/">本命法宝</a>。对自己已升过级的法宝再次运行只会示警；加 <code>confirm</code> 才重炼，并将其重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation race</code></td><td>打开种族菜单，查看各族天赋，并在条件具备时择定你的<a href="../races/">种族</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation hud</code></td><td>开启或关闭常驻的修炼状态栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation settings (options)</code></td><td>打开玩家设置菜单。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>打开生效加成页，列出当前作用于你的每一项修正。</td><td><code>cultivation</code></td></tr></tbody>
+    <tbody><tr><td><code>/cultivation</code></td><td>打开你的修炼状态页。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation info (i)</code></td><td>将你的境界、阶段与灵气进度打印至聊天栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation meditate (med, cultivate)</code></td><td>切换打坐，从你落座区块的灵脉中汲取灵气。仪式中途起身即告作废 —— 见<a href="../qi-gathering/">聚灵采气</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bind [confirm]</code></td><td>将你手中的物品炼化为<a href="../lifebound/">本命法宝</a>。对自己已升过级的法宝再次运行只会示警；加 <code>confirm</code> 才重炼，并将其重置为 1 级。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation race</code></td><td>打开种族菜单，查看各族天赋，并在条件具备时择定你的<a href="../races/">种族</a>。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation hud</code></td><td>开启或关闭常驻的修炼状态栏。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation settings (options)</code></td><td>打开玩家设置菜单。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation bonuses</code></td><td>打开生效加成页，列出当前作用于你的每一项修正。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation aura</code></td><td>切换你是否外放修为<a href="../auras/">气息</a>。至于能否*看到*自己的、或他人的气息，则是设置中另外两个独立的开关。</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <h2>存档</h2>
+
+    <p><code>/cultivation profile</code> 管理你的修炼存档 —— 各自独立的进度存档，见<a href="../profiles/">存档</a>。编号对应列表中从 1 起算的槽位；名称匹配不区分大小写。</p>
+
+    <table>
+    <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
+    <tbody><tr><td><code>/cultivation profile [list]</code></td><td>列出你的存档，附境界、阶段与灵气，并标出你当前所在的那份。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation profile new confirm (create)</code></td><td>从炼体期开始一名全新的修士，并将你切换至其上。唯有传入字面的 <code>confirm</code> 一词方会执行。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation profile switch {编号或名称} (use, load)</code></td><td>保存你当前所在的存档，并载入所指的那一份。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation profile rename {名称}</code></td><td>为你当前所在的存档改名。名称上限为 24 个字符。</td><td><code>cultivation</code></td></tr><tr><td><code>/cultivation profile delete {编号或名称} (remove)</code></td><td>将该存档永久抹去。会拒绝你当前所在的存档，以及你仅剩的最后一份存档。存档菜单会先后询问两次方才执行；指令则一敲即成。</td><td><code>cultivation</code></td></tr></tbody>
+    </table>
+
+    <p>试炼存档是挂在同一条指令上、由管理员另行授权的一套独立工具 —— 它能免去你哪些限制，见<a href="../profiles/">存档</a>。下表中除 <code>test</code> 本身外，每个分支都还要求你当前所在的正是这具试炼之身。</p>
+
+    <table>
+    <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
+    <tbody><tr><td><code>/cultivation profile test {时限}</code></td><td>进入（或延长）试炼之身。时限为<strong>必填</strong> —— <code>90s</code>、<code>30m</code>、<code>4h</code>、<code>2d</code>，或不带单位的纯数字分钟数；范围 1 分钟至 30 天。以现实时间计算，下线也不会暂停。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile realm {境界}</code></td><td>按枚举名称设定试炼之身的境界，例如 <code>VOID_REFINEMENT</code>。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile stage {阶段}</code></td><td>设定子阶段：<code>EARLY</code>、<code>MIDDLE</code>、<code>LATE</code> 或 <code>PEAK</code>。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile qi {数量}</code></td><td>设定存蓄的灵气。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile points {数量}</code></td><td>设定（而非增加）可用的天赋点。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile race {种族}</code></td><td>设定试炼之身的种族，绕过境界解锁限制。</td><td><code>cultivation.profile.test</code></td></tr><tr><td><code>/cultivation profile reset</code></td><td>将试炼之身抹回一名全新修士，而不离开它。</td><td><code>cultivation.profile.test</code></td></tr></tbody>
     </table>
 
     <h2>修炼功法</h2>
@@ -104,7 +121,7 @@
 
     <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单界面。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create {名称}</code></td><td>以该名称创立新宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite {玩家}</code></td><td>邀请一名在线玩家加入你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join {宗门}</code></td><td>按名称加入宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开你当前的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick {玩家}</code></td><td>将一名门人移出你的宗门，无论其是否在线。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>先行示警，道出宗门之名与门人之数；加 <code>confirm</code> 方才彻底解散，并知会每一位门人。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info (i)</code></td><td>列出本宗的境况 —— 门人、大殿与各项加成。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu (ui)</code></td><td>打开宗门菜单界面，与裸写 <code>/sect</code> 所开的是同一页。</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单界面。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create {名称}</code></td><td>以该名称创立新宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite {玩家}</code></td><td>邀请一名在线玩家加入你的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join {宗门}</code></td><td>按名称加入宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开你当前的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick {玩家}</code></td><td>将一名门人移出你的宗门，无论其是否在线。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>先行示警，道出宗门之名与门人之数；加 <code>confirm</code> 方才彻底解散，并知会每一位门人。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect banner [旗帜]</code></td><td>不带参数时，列出你的宗门可悬挂的<a href="../sects/">旗帜</a>，并标出当前所悬的那面。带上名称 —— <code>azure</code>，或完整的 <code>cultivation:azure</code> —— 即可将其悬于大殿之上；<code>none</code> 则回归本色灵光。仅限宗主或长老。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info (i)</code></td><td>列出本宗的境况 —— 门人、大殿、旗帜与各项加成。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu (ui)</code></td><td>打开宗门菜单界面，与裸写 <code>/sect</code> 所开的是同一页。</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
 
     <h2>宗门攻伐</h2>
@@ -147,8 +164,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

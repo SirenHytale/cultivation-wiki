@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>修真 —— Hytale 模组百科</title>
 <meta name="description" content="Cultivation（修真）Hytale 模组官方百科：境界、打坐、天劫、宗门、功法，以及完整的开发接口文档。">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -156,8 +157,8 @@
     <div class="hero-meta">
       <span><b>7</b> 重境界 &middot; <b>28</b> 个阶段</span>
       <span><b>9</b> 条天赋分支</span>
-      <span>约 <b>135</b> 个接口事件</span>
-      <span>版本 <b>0.6.2</b></span>
+      <span><b>144</b> 个接口事件</span>
+      <span>版本 <b>0.7.0</b></span>
     </div>
   </div>
 </section>
@@ -206,40 +207,55 @@ flowchart TD
         <h3>聚灵采气</h3>
         <p>打坐以汲取所在区块的灵脉，或猎杀生物以获取灵核、玄核与神核。</p>
       </a>
-      <a class="card" href="../tribulations/">
+      <a class="card" href="tribulations/">
         <span class="card-han">劫</span>
         <h3>天劫</h3>
         <p>每次突破皆有雷劫落下。阴阳若偏执太甚，迎来的便是心魔劫。</p>
       </a>
-      <a class="card" href="../dao/">
+      <a class="card" href="dao/">
         <span class="card-han">道</span>
         <h3>大道</h3>
         <p>十种元素之道，循五行相克之环；阴阳之衡随行止而动，终分正魔两途。</p>
       </a>
-      <a class="card" href="../techniques/">
+      <a class="card" href="techniques/">
         <span class="card-han">術</span>
         <h3>功法</h3>
         <p>自秘籍中习得的主动功法 —— 御剑飞行、一步千里、九天雷掌。</p>
       </a>
-      <a class="card" href="../sects/">
+      <a class="card" href="sects/">
         <span class="card-han">宗</span>
         <h3>宗门与攻伐</h3>
         <p>开宗立派，于龙脉之上设立大殿，布下阵法，再以攻伐夺取敌宗山门。</p>
       </a>
-      <a class="card" href="../alchemy/">
+      <a class="card" href="alchemy/">
         <span class="card-han">丹</span>
         <h3>炼丹</h3>
         <p>炼制丹药以稳固仪式、抵御心魔，或助你越过久攻不下的瓶颈。</p>
       </a>
-      <a class="card" href="../beasts/">
+      <a class="card" href="beasts/">
         <span class="card-han">獸</span>
         <h3>灵兽</h3>
         <p>驯服或孵化伴生灵兽，它们会随你一同修炼，充当守护、聚灵或警戒之职。</p>
       </a>
-      <a class="card" href="../api/">
+      <a class="card" href="profiles/">
+        <span class="card-han">身</span>
+        <h3>修炼存档</h3>
+        <p>一个账号最多保留三名各自独立的修士 —— 从炼体重新起步，不必舍弃你花了一个月修成的元婴。</p>
+      </a>
+      <a class="card" href="auras/">
+        <span class="card-han">芒</span>
+        <h3>修为气息</h3>
+        <p>境界之色的灵气自每名修士周身倾泻 —— 隔着一片原野，开口之前便读出对方的境界与阶段。</p>
+      </a>
+      <a class="card" href="titles/">
+        <span class="card-han">号</span>
+        <h3>称号</h3>
+        <p>凭修行挣来的纯装饰称号，悬于头顶、缀于聊天，也随你登上排行榜与宗门名册。</p>
+      </a>
+      <a class="card" href="api/">
         <span class="card-han">匠</span>
         <h3>开放接口</h3>
-        <p>约 135 个可取消事件、开放注册表，以及可让其他模组彻底替换修炼体系的接口。</p>
+        <p>144 个事件、十一个子系统、开放注册表，以及可让其他模组彻底替换修炼体系的接口。</p>
       </a>
     </div>
 
@@ -305,11 +321,11 @@ flowchart TD
         <h3>灵气究竟如何运作</h3>
         <p>灵脉、脉品、聚气符、灵核掉率，以及为何死守一个区块终将无以为继。</p>
       </a>
-      <a class="card" href="../commands/">
+      <a class="card" href="commands/">
         <h3>全部指令</h3>
         <p>The full <code>/cultivation</code> and <code>/sect</code> trees, their aliases, arguments and permissions.</p>
       </a>
-      <a class="card" href="../config/">
+      <a class="card" href="config/">
         <h3>服务端配置</h3>
         <p>Every tunable value in the mod, grouped by file — and how to edit them live without touching JSON.</p>
       </a>
@@ -338,8 +354,6 @@ flowchart TD
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

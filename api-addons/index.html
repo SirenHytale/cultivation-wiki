@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>API Addons — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - replacing the progression ladder, the wording, and adding admin settings">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -95,6 +96,22 @@ CultivationAPI.getProgressionProvider()</code></pre>
 
     <p>Only one provider can be installed at a time. The last to register wins, and a warning naming both is logged, since two mods each believing they own progression is a misconfiguration rather than something to silently pick a winner for. Pass <code>null</code> to hand progression back to the built-in system.</p>
 
+    <h3>Profiles under a provider</h3>
+
+    <p><span class="tag">v0.7.0</span> The interface gained one <code>default</code> method:</p>
+
+    <pre><code class="language-java">default boolean supportsProfiles(){
+    return false;
+}</code></pre>
+
+    <p>And that default <strong>refuses <a href="../profiles/">profile</a> switching outright</strong> while your provider is installed - the player is told another mod governs progression here. That is deliberate: a switch swaps the player's <code>CultivationComponent</code>, race, dao, skill tree and techniques underneath you, and a provider that has not planned for it would be left describing the wrong cultivator - half-performed is worse than refused.</p>
+
+    <p>To lift the refusal, do both of these and then return <code>true</code>:</p>
+
+    <ul><li>Handle <code>ProfileEvents.PreProfileSwitchEvent</code> - save your own state for the profile being left.</li><li>Handle <code>ProfileEvents.ProfileSwitchEvent</code> - load your state for the arriving one.</li></ul>
+
+    <p>Profile listeners are the one place in the API allowed to <strong>write components directly through the <code>Store</code></strong> - they run on the world thread outside any ticking system, precisely so a provider can do this bookkeeping. See <a href="../api-events/">Events</a> for the full <code>ProfileEvents</code> table. The one exception to the refusal is the operator's <a href="../profiles/">test sandbox</a>, which is allowed even under a provider - it cannot change your addon's view of the player, and the command says so.</p>
+
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>CultivationTheme</h2>
@@ -167,8 +184,6 @@ CultivationAPI.newAdminConfigField(String key, Message label, ...)</code></pre>
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

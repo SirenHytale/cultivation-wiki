@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>宗门 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的宗门体系：开宗立派、职位与入门规矩、大殿与碑文、战力榜与宗门菜单。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -101,7 +102,7 @@ flowchart TD;
 
     <h2>宗训与改名</h2>
 
-    <p>宗主或长老可在菜单中设定<strong>宗训</strong> —— 自由文本，会去除首尾空白并截断至 60 字符。它显示在菜单中宗门名称的下方。</p>
+    <p>宗主或长老可在菜单中设定<strong>宗训</strong> —— 自由文本，会去除首尾空白并截断至 60 字符。它显示在菜单中宗门名称的下方。v0.7.0 新增：宗训会在真正意义重大的那一刻被念出来 —— 玩家加入或离开宗门时看到的<a href="../notices/">屏幕标题</a>下方，会带着这句宗训。（被逐出者则被有意不显示它。）</p>
 
     <p>唯有宗主可为宗门<strong>改名</strong>，而新名字要经过与立派时完全相同的合法性与唯一性校验。改名会把一切以旧名为键的东西一并带走：</p>
 
@@ -126,6 +127,21 @@ flowchart TD;
     <p>没有大殿的宗门分文加成也无。大殿一旦在围攻中失守，全体门人的加成同时中断。</p>
 
     <p>当 <code>Sect-Hall-Spring-Enabled</code> 为开时，大殿还会蓄养宗门共享的<strong>灵泉</strong> —— 灵泉随大殿而动，故迁殿即迁泉，而失殿则将灵泉连同其中所蓄，一并送予胜者。灵泉如何积蓄与采撷，见<a href="../dwelling/">洞府</a>。</p>
+
+    <h2>光柱与旗帜</h2>
+
+    <p>v0.7.0 新增：已占的大殿会立起一道<strong>光柱</strong>，任何路过之人皆可望见，不止门中弟子 —— 大殿从此是天地间一处真实、可争夺的存在，而不再只是宗门自己心知肚明的一笔记录。光柱每隔 <code>Sect-Hall-Beacon-Interval-Seconds</code>（2.5 秒）便重新一现，并可用 <code>Sect-Hall-Beacon-Enabled</code> 在全服范围内关闭 —— 见<a href="../config-society/">宗门社群配置</a>。</p>
+
+    <p>默认情况下，光柱之色与殿下灵脉相符。宗主或长老可改为<strong>升起一面旗帜</strong> —— 或在宗门菜单的<strong>山门旗帜</strong>选择栏中选取，或以 <code>/sect banner &lt;名称&gt;</code> 指定。模组随附六面旗帜：</p>
+
+    <table>
+    <thead><tr><th>旗帜</th><th>Id</th><th>颜色</th><th>分组</th></tr></thead>
+    <tbody><tr><td><strong>青龙</strong></td><td><code>cultivation:azure</code></td><td>青色</td><td>四象</td></tr><tr><td><strong>朱雀</strong></td><td><code>cultivation:vermilion</code></td><td>朱红色</td><td>四象</td></tr><tr><td><strong>白虎</strong></td><td><code>cultivation:white</code></td><td>白色</td><td>四象</td></tr><tr><td><strong>玄武</strong></td><td><code>cultivation:black</code></td><td>深靛蓝色</td><td>四象</td></tr><tr><td><strong>金庭</strong></td><td><code>cultivation:golden</code></td><td>金色</td><td>宗门本色</td></tr><tr><td><strong>玉台</strong></td><td><code>cultivation:jade</code></td><td>玉色</td><td>宗门本色</td></tr></tbody>
+    </table>
+
+    <ul><li><code>/sect banner</code> 不带参数时，会列出本宗可升起的旗帜，并标出当前所悬的那一面。简称（<code>azure</code>）与完整 id 皆可用；<code>/sect banner none</code> 则归回<strong>本色灵光</strong>。</li><li>尚无大殿的宗门也可先行择旗 —— 待大殿一经占取，旗帜便随之升起。</li><li>大殿一旦在围攻中失守，光柱便退回灵脉本色 —— 这便是山谷在任何信使赶到之前，抢先告诉你此地已经易主的方式。旗帜的选择留在宗门身上，故而日后重新占得大殿，同一面旗帜仍会再度升起。</li><li>扩展可经由 <a href="../api-registries/"><code>registerSectBanner</code></a> 注册更多旗帜；内置的这六面皆不受权限节点管辖。</li></ul>
+
+    <p>每一座已占的大殿，也都<strong>钉上了 Hytale 自身的世界地图</strong> —— 无论见者是否本宗门人 —— 以其旗帜之色着色，并标注宗门之名。此标记不受 <code>Sect-Hall-Beacon-Enabled</code> 影响。</p>
 
     <h2>殿上碑文</h2>
 
@@ -155,10 +171,12 @@ flowchart TD;
     <p>裸写 <code>/sect</code>，或 <code>/sect menu</code>（别名 <code>ui</code>），即可打开宗门菜单 —— 本页所有指令的图形化门面。共三页：</p>
 
     <div class="grid cols-3">
-          <div class="card"><span class="card-han">宗</span><h4>本宗</h4><p>你的门人名录，附逐人的逐出与擢升／黜落按钮、未决的入门申请、给管理者的宗训／改名／规矩／邀请控件，以及占殿、离宗与解散诸项。</p></div>
+          <div class="card"><span class="card-han">宗</span><h4>本宗</h4><p>你的门人名录，附逐人的逐出与擢升／黜落按钮、未决的入门申请、给管理者的宗训／改名／规矩／邀请控件、<strong>山门旗帜</strong>选择栏，以及占殿、离宗与解散诸项。</p></div>
           <div class="card"><span class="card-han">覽</span><h4>浏览</h4><p>服务器上的所有宗门，按名称排序，在规矩允许的宗门上附有加入或申请按钮。</p></div>
           <div class="card"><span class="card-han">榜</span><h4>排行</h4><p>战力前 20 的宗门。</p></div>
         </div>
+
+    <p>门人名录中的每一行，会在其名前显示该门人当前佩戴的<a href="../titles/">称号</a>；HUD 也可携带一行<strong>宗门行</strong>，标出你所属的宗门 —— 一旦入宗即会显示，可在设置中的<strong>显示所属宗门</strong>处关闭。</p>
 
     <h2>指令</h2>
 
@@ -166,7 +184,7 @@ flowchart TD;
           <div class="panel-head">指令</div>
           <table>
     <thead><tr><th>指令</th><th>说明</th><th>权限</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;名称&gt;</code></td><td>创立宗门，你为宗主。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;玩家&gt;</code></td><td>邀请一名玩家（宗主或长老）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;宗门&gt;</code></td><td>接受该宗门尚在有效期内的邀约。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开宗门（宗主不可）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;玩家&gt;</code></td><td>移除一名门人，在线与否皆可（宗主或长老）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>将你所立的区块占为大殿（宗主）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将手中的功法秘籍镌于殿上，或空手将其抹去（宗主）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war &lt;宗门&gt;</code></td><td>发起围攻；写作 <code>/sect war status</code> 则查看本宗当前战况。见<a href="../wars/">宗门攻伐</a>。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>列出本宗的门人、大殿、碑文与战力。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>列出战力前 10 的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>打开宗门菜单。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>先行示警；加 <code>confirm</code> 方才解散宗门（宗主）。</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>打开宗门菜单。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;名称&gt;</code></td><td>创立宗门，你为宗主。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;玩家&gt;</code></td><td>邀请一名玩家（宗主或长老）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;宗门&gt;</code></td><td>接受该宗门尚在有效期内的邀约。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>离开宗门（宗主不可）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;玩家&gt;</code></td><td>移除一名门人，在线与否皆可（宗主或长老）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>将你所立的区块占为大殿（宗主）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>将手中的功法秘籍镌于殿上，或空手将其抹去（宗主）。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect banner [banner]</code></td><td>列出、升起或降下山门旗帜（宗主或长老）；传入 <code>none</code> 收起旗帜。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war &lt;宗门&gt;</code></td><td>发起围攻；写作 <code>/sect war status</code> 则查看本宗当前战况。见<a href="../wars/">宗门攻伐</a>。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>列出本宗的门人、大殿、旗帜、碑文与战力。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>列出战力前 10 的宗门。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>打开宗门菜单。</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>先行示警；加 <code>confirm</code> 方才解散宗门（宗主）。</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
         </div>
 
@@ -182,8 +200,6 @@ flowchart TD;
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

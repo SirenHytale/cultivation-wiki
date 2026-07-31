@@ -73,6 +73,21 @@ han: 匠
 
 它对内置功法与你自己注册的功法皆有效，且两种情形下都会触发 `TechniqueEvents.PreTechniquePerformEvent` 与 `TechniquePerformEvent`。构建一门功法见[注册表](/cultivation/api/registries/)，面向玩家的列表见[功法](/cultivation/techniques/)。
 
+#### 存档、称号与配色
+
+<span class="tag">v0.7.0</span> 面向玩家修炼存档与其装饰外观的读取面。注意这些方法接受的是 `Store<EntityStore>`，而非 `ComponentAccessor`。
+
+| 方法 | 返回 |
+|:---|:---|
+| `getActiveProfileName(store, ref)` | 玩家所在存档的名字；在任何存档被创建之前为 `""`。 |
+| `getProfileCount(store, ref)` | 玩家所持有的真实（非沙盒）存档数目。 |
+| `isTestProfileActive(store, ref)` | 玩家此刻是否身处管理员授予的试炼存档沙盒 —— 排行榜与宗门积分皆不将其计入。 |
+| `getMaxProfiles()` · `getMaxTechniquePresets()` | 当前生效的上限 —— 任何扩展所注册过的最高值，下限为 3。 |
+| `getTitle(store, ref)` | 玩家已佩戴的[称号](/cultivation/titles/)，或 `null`。 |
+| `getSectBanner(String)` · `getPalette(store, ref)` | 按 id 取一面已注册的旗帜；玩家所选的配色（`null` 表示默认外观）。 |
+
+**存档是被观察的，而非被驱动的。**门面上刻意没有 `switchProfile` —— 切换是玩家自己的举动，经由菜单或 `/cultivation profile` 完成。扩展所能做的，是监听（`ProfileEvents`，见[事件](/cultivation/api/events/)）、让自己按存档维系的状态与之同步，并通过 `ProgressionProvider.supportsProfiles()`（见[编写扩展](/cultivation/api/addons/)）昭告它确实这样做了。
+
 #### 注册
 
 完整内容见[注册表](/cultivation/api/registries/)：
@@ -83,9 +98,13 @@ han: 匠
 | `CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)` | `Technique` | 添加一门可施展的功法。 |
 | `CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)` | `TechniqueRule` | 为 `registerTechnique` 构建规则。 |
 | `CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)` | | 设定某件物品在打坐时的灵脉吸收倍率。 |
+| `CultivationAPI.registerTitle(CultivationTitle title)` | | 向称号页添加一个纯装饰称号。 |
+| `CultivationAPI.registerSectBanner(SectBanner banner)` | | 添加一面宗门可悬挂于其大殿之上的旗帜。 |
+| `CultivationAPI.registerPalette(CultivationPalette palette)` | | 添加一套玩家可选的菜单/HUD 配色。 |
+| `CultivationAPI.registerProfileCap(String key, int cap)` · `registerTechniquePresetCap(String key, int cap)` | | 上调存档 / 配置组的上限（取最高的注册值）。 |
 
 #### 另见
 
 - [事件](/cultivation/api/events/) —— 重塑或否决任何一项机制。
-- [注册表](/cultivation/api/registries/) —— 添加种族、功法与灵气物品。
+- [注册表](/cultivation/api/registries/) —— 添加种族、功法、灵气物品、称号、宗门旗帜与配色。
 - [配置](/cultivation/config/)与[指令](/cultivation/commands/) —— 上述大多数内容面向服主的对应形式。

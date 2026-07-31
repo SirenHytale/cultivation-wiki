@@ -7,9 +7,9 @@ han: 匠
 
 ### 注册表
 
-监听[事件](/cultivation/api/events/)让你得以重塑 Cultivation 已有的行为。而此处的注册表，让你得以**添加**模组随后会视如己出的内容 —— 一个出现在种族菜单里的种族、一门可经由每种功法触发器施展的功法、一件能增幅灵脉吸收的物品。
+监听[事件](/cultivation/api/events/)让你得以重塑 Cultivation 已有的行为。而此处的注册表，让你得以**添加**模组随后会视如己出的内容 —— 一个出现在种族菜单里的种族、一门可经由每种功法触发器施展的功法、一件能增幅灵脉吸收的物品、一个出现在选择页上的[称号](/cultivation/titles/)、一面宗门可悬挂的旗帜、一套能为每个菜单重新上色的配色。
 
-`CultivationAPI` 暴露三个注册方法与一个构建辅助方法：
+`CultivationAPI` 暴露以下这些注册方法（外加一个供功法规则使用的构建辅助方法）：
 
 | 方法 | 返回 | 说明 |
 |:---|:---|:---|
@@ -17,8 +17,11 @@ han: 匠
 | `CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)` | `Technique` | 注册一门修士可施展的全新[功法](/cultivation/techniques/)。 |
 | `CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)` | `TechniqueRule` | 为你传给 `registerTechnique` 的规则提供的便捷构建器。 |
 | `CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)` | | 注册或覆写某件物品的灵脉吸收倍率 —— 当它位于打坐玩家当前快捷栏槽位中时生效。 |
+| `CultivationAPI.registerTitle(CultivationTitle title)` <span class="tag">v0.7.0</span> | | 在称号页放上你自己的一个纯装饰[称号](/cultivation/titles/)。 |
+| `CultivationAPI.registerSectBanner(SectBanner banner)` <span class="tag">v0.7.0</span> | | 添加一面[宗门](/cultivation/sects/)可悬挂于其大殿之上的旗帜。 |
+| `CultivationAPI.registerPalette(CultivationPalette palette)` <span class="tag">v0.7.0</span> | | 添加一套能为每一个 Cultivation 菜单与 HUD 重新上色的配色。 |
 
-三者都可安全地从你自己插件的 `setup()` 中调用，相对于 Cultivation 自身的 `setup()` 无论何种加载顺序皆然。注册表是普通的静态 map，在玩家真正交互之前 —— 打开种族菜单、打坐、施展功法 —— 无人读取，而那只会发生在每个插件加载完毕许久之后。
+它们全都可安全地从你自己插件的 `setup()` 中调用，相对于 Cultivation 自身的 `setup()` 无论何种加载顺序皆然。注册表是普通的静态 map，在玩家真正交互之前 —— 打开种族菜单、打坐、施展功法 —— 无人读取，而那只会发生在每个插件加载完毕许久之后。
 
 以同一 id 重复注册一个种族或一门功法是**空操作**：它返回已有的条目而非报错，因此在你的插件重载时也是安全的。
 
@@ -191,12 +194,90 @@ CultivationAPI.registerQiAbsorptionItemModifier("MyMod:JadePendant", 1.75F);
 
 服主可在[配置](/cultivation/config/)页的 `Qi-Absorption-Item-Modifiers` 键下查看并编辑内置条目；机制本身则记载于[聚灵采气](/cultivation/qi-gathering/)。
 
+#### 注册一个称号
+
+<span class="tag">v0.7.0</span> `registerTitle` 会把你自己的一个纯装饰称号放上[称号](/cultivation/titles/)页 —— 在那里它会像内置称号一样被佩戴、悬浮于头顶、显示于聊天栏，并出现在排行榜上。称号**纯属装饰** —— 此注册表中的任何东西都不会授予属性、权限副作用，或任何玩法上的改变。
+
+```java
+CultivationAPI.registerTitle(CultivationTitle.builder("MyMod:dragonslayer")
+        .name("server.mymod.title.dragonslayer")          // server.lang 键
+        .section("server.mymod.title.section")            // 选择页的分组标题
+        .unlocked((store, ref, player) -> MyDeeds.hasSlainDragon(player))
+        .hint("server.mymod.title.dragonslayer.hint")     // 未获得前灰显
+        .build());
+```
+
+`CultivationTitle.builder(key)` 接受：
+
+| 构建器方法 | 说明 |
+|:---|:---|
+| `name(String)` / `name(Supplier<Message>)` | 显示名称 —— 一个 `server.lang` 键，或一个用于带参数名称的供给器（内置的元素称号即以此实现「{element}道」）。 |
+| `section(String)` | 在选择页上将称号分组的标题键。仅当它与前一条不同时才会被绘出，因此请把同一分组的注册项放在一起。 |
+| `unlocked(UnlockCheck)` | **获得**门槛：`boolean test(Store, Ref, PlayerRef)`。未解锁的称号仍**留在选择页上、呈灰显**，并以提示语说明如何获得它。省略此项，则任何能看到它的人皆可直接使用。 |
+| `hint(String)` / `hint(Supplier<Message>)` | 显示在未解锁图块上的那一行提示。 |
+| `permission(String)` / `visible(Predicate<PlayerRef>)` | **可见**门槛：二者必须皆通过，否则该称号会对该玩家**完全隐藏**。这是给服主／功能开关用的 —— 凡玩家可以努力去争取的，请用 `unlocked`。 |
+
+读取：`getTitles()`、`getTitle(String)`，以及用于取得玩家已佩戴称号的 `getTitle(store, ref)`。以既有的 key 再次注册会**替换**它；`unregisterTitle` 可撤下一个。请注意已佩戴的称号存放在玩家的**设置**上，而非其存档 —— 切换[存档](/cultivation/profiles/)不会丢失它 —— 且模组在读取时刻意不会重新核验 `unlocked`，因此一个在佩戴时够格获得的称号，此后会一直显示。
+
+有一处引擎层面的注意事项值得了解：头顶名字是经由共享的 `PersistentDisplayName` 组件写入的，因此一个同样会写入它的改名模组，会与称号相互覆写。
+
+#### 注册一面宗门旗帜
+
+<span class="tag">v0.7.0</span> `registerSectBanner` 会添加一面[宗门](/cultivation/sects/)可悬挂于其大殿之上的旗帜，与六种内置旗帜并列。
+
+```java
+CultivationAPI.registerSectBanner(SectBanner.builder("MyMod:crimson")
+        .name("server.mymod.banner.crimson")
+        .section("server.mymod.banner.section")
+        .swatch(0xD8452E)                       // 选择页图块与地图标记上的 RGB
+        .particle("MyMod_HallBanner_Crimson")   // 必填 —— 那道灯火本身
+        .build());
+```
+
+- **旗帜是一个粒子系统，不是一种颜色。**引擎「生成时着色」的字段并不可靠，因此旗帜的颜色是烘焙进 `.particlesystem` 资产本身的；`swatch` 只为选择页图块与大殿的[地图标记](/cultivation/sects/)着色。`build()` 会拒绝一面没有粒子的旗帜。
+- **资产必须自行燃尽。**为它设定有限的 `TotalParticles`，并给出一个明确的系统 `LifeSpan`，使其能在 `Sect-Hall-Beacon-Interval-Seconds`（默认 2.5 秒）之内结束 —— 一个没有上限的系统，会在每一个曾路过大殿的客户端上永久泄漏一个实例。
+- `permission(String)` / `visible(Predicate)` 限定谁可以**悬挂**它 —— 六种内置旗帜均未设限。
+- **卸载是安全的。**宗门存的是旗帜的 **id**，从不存旗帜本身。一个不再被任何人注册的 id，只会解算为大殿朴素的灵脉品阶灯火，而这份选择会保留，以待模组归来的那一天。
+
+读取：`getSectBanners()`、`getSectBanner(String)`（容忍 null）。变更一面旗帜会触发 `SectEvents.PreSectBannerChangeEvent` / `SectBannerChangeEvent` —— 见[事件](/cultivation/api/events/)。
+
+#### 注册一套配色
+
+<span class="tag">v0.7.0</span> `registerPalette` 让一个模组能为选中它的玩家，重新为每一个 Cultivation 菜单与 HUD 上色。配色主要是**重新上色的 `.ui` 文档**，而非十六进制色值：你在同一个根目录下发布 Cultivation 各页面的重新上色副本，并声明自己覆盖了哪些文件。
+
+```java
+CultivationAPI.registerPalette(CultivationPalette.builder("MyMod:moonlit")
+        .name("server.mymod.palette.moonlit")
+        .swatch(0x8FA8FF)                                  // 选择页图块
+        .documentRoot("Common/UI/Custom/Pages/MyMod/Moonlit/")
+        .documents(Set.of("CultivationPage.ui", "CultivationHud.ui"))  // 你所覆盖的文件
+        .halo(SkillTreeBranch.VITALITY, 0x9BD8A0)          // 九个分支，全给或全不给
+        // ……其余八个分支……
+        .build());
+```
+
+- 所声明的文档，是按**裸文件名**在 `documentRoot` 下匹配的，因此每一个被覆盖的文件都必须置于那同一个根目录下。你未声明的页面，会刻意回落到 Cultivation 自己的版本 —— 一个无法解析的 `.ui` 路径会让整个页面加载失败且不留日志，因此注册表绝不会凭空捏造一个。
+- 九个[天赋树](/cultivation/skilltree/)分支的光晕是**全有或全无**的：要么传入每一个 `SkillTreeBranch`，要么一个都不传 —— `build()` 会拒绝只传一部分。
+- `CultivationPalette.DEFAULT_KEY`（`"cultivation:default"`）即内置的默认外观。`getPalette(store, ref)` 对它返回 `null`；`document(palette, basePath)` 会依玩家当前所处的配色解析出对应路径。
+- 与已佩戴的称号一样，玩家所选的配色存放在其设置上，[存档](/cultivation/profiles/)之间共享。
+
+#### 上调上限
+
+<span class="tag">v0.7.0</span> 有两项上限并非配置键，而是可由扩展提升的 —— 走的是同一套注册／撤销结构：
+
+| 方法 | 默认值 | 上限 | 提升的对象 |
+|:---|:---|:---|:---|
+| `registerTechniquePresetCap(String key, int cap)` | 3 | 8 | 玩家可保留的功法[配置组](/cultivation/keybinds/)数目。 |
+| `registerProfileCap(String key, int cap)` | 3 | 6 | 玩家可保留的[存档](/cultivation/profiles/)数目。试炼存档沙盒绝不计入其中。 |
+
+`key` 是你模组的一个 id（例如 `"jadeSlip"`）。生效值 —— `getMaxTechniquePresets()` / `getMaxProfiles()` —— 取的是所有注册中**最高**的那个上限，绝非总和：两个扩展都把它提到六，结果是六，不是十二。**上限下调时不会销毁任何东西。**一名已填满六个位置、随后失去了那个准许它的扩展的玩家，仍会保留全部六个；在他重新落回生效上限之内前，只是**新增**会被拒绝。请在 `setup()` 中注册，在 `shutdown()` 中以对应的 `unregister*Cap` 撤销。
+
 #### 哪些不可注册
 
-并非每个扩展点都是一个 Java 注册表。截至 0.4.1，`CultivationAPI` 只为种族、功法与灵气吸收物品暴露了 `register*` 方法。天赋树节点、秘籍与灵兽物种改为在 Cultivation 自己的 JSON 配置中声明 —— 见[配置](/cultivation/config/)页 —— 且无法从代码注册。不过你仍可经由事件触及这三者：节点解锁经由 `CultivationEvents.PreSkillUnlockEvent`，秘籍经由 `ItemEvents.PreManualReadEvent`，灵兽物种则经由每个 `BeastEvents` 事件上的 `species()` getter。
+并非每个扩展点都是一个 Java 注册表。`CultivationAPI` 为种族、功法、灵气吸收物品、管理设置、菜单页、典籍条目、称号、宗门旗帜、配色，以及那两项上限，都暴露了 `register*` 方法。天赋树节点、秘籍与灵兽物种改为在 Cultivation 自己的 JSON 配置中声明 —— 见[配置](/cultivation/config/)页 —— 且无法从代码注册。不过你仍可经由事件触及这三者：节点解锁经由 `CultivationEvents.PreSkillUnlockEvent`，秘籍经由 `ItemEvents.PreManualReadEvent`，灵兽物种则经由每个 `BeastEvents` 事件上的 `species()` getter。
 
 #### 另见
 
-- [事件](/cultivation/api/events/) —— 你所注册的内容会流经的那约 135 个钩子。
+- [事件](/cultivation/api/events/) —— 你所注册的内容会流经的那 144 个钩子。
 - [接口参考](/cultivation/api/reference/) —— 在动手之前读取玩家的状态。
-- [种族](/cultivation/races/)、[功法](/cultivation/techniques/)、[聚灵采气](/cultivation/qi-gathering/)、[配置](/cultivation/config/)、[指令](/cultivation/commands/)。
+- [种族](/cultivation/races/)、[功法](/cultivation/techniques/)、[聚灵采气](/cultivation/qi-gathering/)、[称号](/cultivation/titles/)、[宗门](/cultivation/sects/)、[配置](/cultivation/config/)、[指令](/cultivation/commands/)。

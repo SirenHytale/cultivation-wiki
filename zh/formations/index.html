@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>阵法 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的阵法：聚灵阵、护山大阵与困仙阵，阵旗的布设与撤去，以及叠加规则。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -96,6 +97,8 @@
 
     <p><code>/cultivation formations</code>（别名 <code>formation</code>、<code>arrays</code>）会列出你掌控的每一座阵法 —— 类型、世界、阵眼区块与半径，新者在前 —— 好让你循迹走回去把它撤掉。</p>
 
+    <p>v0.7.0 新增：你或你的宗门所掌控的阵法，也会作为<strong>标记</strong>出现在 Hytale 自身的世界地图上，并按阵法的功用着色 —— <strong>绿色</strong>代表聚灵，<strong>蓝色</strong>代表护山，<strong>红色</strong>代表困仙 —— 满图阵法无需逐个点开标签便可看懂。地图上只会显示<strong>你自己</strong>掌控的阵法：困仙阵的全部价值，正在于闯入者事先并不知情，若把每一座阵法都公开到每一张地图上，便是不声不响地废掉了这个机制。</p>
+
     <h2>交叠与叠加</h2>
 
     <p>只有<strong>同一区块上的同类重复</strong>才会被拒，因此相邻区块上的阵法尽可自由交叠。为免其层层相乘，无论有多少座同类阵法覆盖你脚下的区块，<strong>每一类型至多生效一次</strong>。三座并排的护山大阵扼制外人是 0.25 倍，而非 0.25 的三次方。</p>
@@ -126,8 +129,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

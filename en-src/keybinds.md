@@ -61,7 +61,9 @@ Only combinations you have **actually bound** are ever intercepted. Every other 
 
 #### Loadouts
 
-Keep up to **eight named loadouts**, each holding its own set of four technique binds, and cycle them with a single key. A combat set and a travelling set no longer have to be re-bound by hand.
+Keep several **named loadouts**, each holding its own set of four technique binds, and cycle them with a single key. A combat set and a travelling set no longer have to be re-bound by hand.
+
+Since v0.7.0 you keep **three** loadouts by default, and the Keybinds page shows the count plainly — `2 / 3 kept`. The cap is not a config key: an add-on raises it through the API (`registerTechniquePresetCap`), up to a hard ceiling of **eight**. If a cap-raising add-on is later removed, every loadout you filled **survives** — the count turns gold to show you are over the cap, and only *adding* a new one is refused until you are back under it. (Players who kept more than three under v0.6.x keep them all the same way.)
 
 * * *
 

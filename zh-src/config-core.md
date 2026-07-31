@@ -11,7 +11,7 @@ han: 配
 
 #### Config
 
-核心灵气曲线与每级属性加成，位于路径 `mods/Siren_Cultivation/Config.json`。
+核心灵气曲线、每级属性加成，以及[气息](/cultivation/auras/)与[屏显通告](/cultivation/notices/)的全服开关，位于路径 `mods/Siren_Cultivation/Config.json`。
 
 | 配置项 | 默认值 | 说明 |
 |:---|:---|:---|
@@ -25,6 +25,13 @@ han: 配
 | "Description-Realm-Breakthrough-Multiplier" | 一段解释上述数值的长字符串。 | 说明正是这一层额外倍率，让境界突破远比一次寻常的子阶段进阶更为郑重。 |
 | "Health-Bonus-Per-Level" | 4.0 | 每获得一个总子等级（境界 × 4 + 阶段）所加的最大生命值。 |
 | "Damage-Percent-Bonus-Per-Level" | 2.0 | 每获得一个总子等级所增的伤害百分比。 |
+| "Aura-Enabled" | true | [气息](/cultivation/auras/)的全服总开关 —— 境界气息与打坐气息皆归其管。只想藏起自己的气息、或不愿看见他人气息的玩家，在设置中另有各自独立的三个开关可用。 |
+| "Aura-Pulse-Interval-Seconds" | 4.0 | 每道气息在其所属玩家位置重新生成的间隔。数值限制在 1.0 至 6.0 之间 —— 粒子素材按默认值设计，恰好两次脉冲会有所交叠。 |
+| "Aura-Desc" | 一段解释上述数值的长字符串。 | 重述这一全服总开关，与各玩家在设置中独立开关之间的分工。 |
+| "Notice-Titles-Enabled" | true | 境界突破、子阶段进阶、跌落境界与宗门变动时所现的[全屏标题](/cultivation/notices/)。聊天栏仍会道出这些标题所现的一切，故关闭它们无损分毫信息。 |
+| "Notice-Notifications-Enabled" | true | 较次要时刻所现的[角落通知](/cultivation/notices/) —— 如解锁一个天赋节点、[本命法宝](/cultivation/lifebound/)升级、一次洗点，或一场仪式开始。 |
+| "Breakthrough-Title-Radius-Chunks" | 9 | 境界突破向周围其他修士播告的范围，以区块计的半径距离。限制在 0 至 32 之间；0 则让每一次突破都只归你私人所知。 |
+| "Notice-Desc" | 一段解释上述数值的长字符串。 | 指出无论这些开关如何设置，走火入魔与心魔劫仍各自保有专门撰写的标题。 |
 
 #### 关于曲线
 

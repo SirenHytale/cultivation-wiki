@@ -80,6 +80,24 @@ Cultivation 中几乎每一个看起来像 bug 的东西，都是某项机制在
 
 供奉失效了。洞府随时间消耗灵石（`Upkeep-Enabled`），在地界被释放之前有 **168 小时的宽限期**（`Upkeep-Grace-Hours`）。你最多可以预蓄 **720 小时**（`Upkeep-Max-Banked-Hours`）。在轻松向的服务器上，把 `Upkeep-Enabled` 整个关掉即可。
 
+#### 存档与形象
+
+##### 我的宗门会随新存档而来吗？
+
+不会。宗门、洞府、阵法与道侣为所有存档共有 —— 仅修为随存档转换。[存档](/cultivation/profiles/)承载的是*你是谁*（境界、灵气、种族、大道、天赋树、功法）；你佩戴的[称号](/cultivation/titles/)与各项设置，同样是账号通用的。
+
+##### 为什么我切换不了存档？
+
+接管了 Cultivation 修为体系的模组（即 `ProgressionProvider`），必须声明自己的记录会随你的存档同步。在它声明之前，切换会被**直接拒绝，而非做一半** —— 提示会说明原因。请向该扩展的作者询问 `ProgressionProvider.supportsProfiles()`，或见[编写扩展](/cultivation/api/addons/)。
+
+##### 怎样才能不再看到所有人的气息？
+
+**设置** → *修为气息* → **显示其他修士的气息**。若想不再外放，使用 `/cultivation aura`，或同一分节里的第一个开关。服主则可用 `Aura-Enabled` 将[气息](/cultivation/auras/)整个关闭。
+
+##### 我的称号从名牌上消失了
+
+另一个会写头顶名牌的模组 —— 通常是昵称类插件 —— 把它覆盖了；头顶名牌是 Hytale 共享的显示名机制，后写者胜。重新佩戴[称号](/cultivation/titles/)，或者去掉那个模组给该玩家设的昵称。
+
 #### 功法与物品
 
 ##### 我知道某门功法，却用不了

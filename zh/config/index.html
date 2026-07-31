@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>配置总览 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的配置总览：文件夹分组、目录结构，以及从何处着手。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -46,7 +47,7 @@
 
     <h1>配置总览</h1>
 
-    <p class="page-lede">Cultivation 模组一切可调之处，皆位于 <code>mods/Siren_Cultivation/</code> 之下，本页对应 <strong>Cultivation v0.6.2</strong>。这些设置并非挤在一个巨大的文件里，而是拆成若干主题文件、再归入文件夹 —— 进阶核心在 <code>Cultivation/</code>，修士所修习的一切在 <code>Arts/</code>，唯因他人存在才有意义的一切在 <code>Society/</code>，每个可选种族一份文件在 <code>Race/</code>，服务器自身的运行期存档状态则在 <code>Data/</code>。</p>
+    <p class="page-lede">Cultivation 模组一切可调之处，皆位于 <code>mods/Siren_Cultivation/</code> 之下，本页对应 <strong>Cultivation v0.7.0</strong>。这些设置并非挤在一个巨大的文件里，而是拆成若干主题文件、再归入文件夹 —— 进阶核心在 <code>Cultivation/</code>，修士所修习的一切在 <code>Arts/</code>，唯因他人存在才有意义的一切在 <code>Society/</code>，每个可选种族一份文件在 <code>Race/</code>，服务器自身的运行期存档状态则在 <code>Data/</code>。</p>
 
     <p>每份设置文件都带有自己的 <code>ConfigName</code> 与 <code>ConfigVersion</code>。每当该文件的结构或数值平衡发生变化，版本号会自动递增，而你已有的设置会被自动迁移 —— 你从不需要手动编辑 <code>ConfigVersion</code>，把它改小也只会让迁移再跑一遍。文件中还含有 <code>Description-*</code> 字符串字段，那是文档而非设置：模组会在加载时把它们改写回当前文本，因此编辑它们毫无作用。</p>
 
@@ -124,8 +125,6 @@ flowchart TD;
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

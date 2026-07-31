@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Changelog — Cultivation Wiki</title>
-<meta name="description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
+<meta name="description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/changelog/">
 <meta property="og:title" content="Changelog — Cultivation Wiki">
-<meta property="og:description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
+<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Changelog — Cultivation Wiki">
-<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.6.2 — Steadying the Path — back to the v0.1.0 first release.">
+<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../assets/css/xianxia.css">
@@ -46,7 +47,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.6.2</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.7.0</strong>, the current
       release.
     </p>
 
@@ -56,6 +57,107 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.7.0 — Many Roads</h2>
+    <p>
+      Until now a server knew exactly one thing about you: your realm, on your own HUD, where only
+      you could see it. This release is about the other direction — what everyone <em>else</em> can
+      see. Cultivators give off Qi you can read from across a field, sects fly a banner over their
+      hall, and the moments that matter arrive on screen instead of scrolling past in chat. And
+      underneath all of it: you can now keep more than one cultivator.
+    </p>
+
+    <h3>Cultivation Profiles</h3>
+    <ul>
+      <li>Keep <strong>up to three separate cultivators</strong> on one account and switch freely —
+        see the new <a href="../profiles/">Profiles</a> page. A profile carries realm, stage and Qi,
+        race, dao, the skill tree, learned techniques and their keybind loadouts; your sect, cave
+        abode, formations and marriage stay with the account and are shared by every profile.</li>
+      <li>Manage them from the new <strong>Profiles</strong> menu page beside Settings, or with
+        <code>/cultivation profile</code>. Starting a fresh cultivator asks you to confirm, the
+        menu's erase button asks twice, and your current cultivator becomes Profile 1 the first
+        time you look.</li>
+      <li>A <strong>test profile</strong> for anyone granted <code>cultivation.profile.test</code> —
+        a sandbox whose realm, stage, Qi, skill points and race are typed in by hand. It requires a
+        wall-clock time limit, dissolves on its own, never touches the rankings, sect scores or
+        rosters, and does not use one of your three slots.</li>
+    </ul>
+
+    <h3>Auras — Qi You Can See</h3>
+    <ul>
+      <li>Every cultivator now gives off an <a href="../auras/">aura</a>: <strong>realm sets its
+        color and density</strong> — earthy bronze at Body Refinement, climbing through jade and
+        gold to void indigo — and <strong>sub-stage sets its size</strong>, so a Peak cultivator
+        visibly stands wider than an Early one of the same realm.</li>
+      <li>Meditating adds a second, different aura that <strong>converges inward</strong> — Qi
+        drawn out of the land toward you. It deepens through three stages the longer you sit, and
+        stops deepening when the vein beneath you runs dry.</li>
+      <li>Three switches in Settings — give off an aura, see your own, see everyone else's — plus
+        the <code>/cultivation aura</code> toggle, and two server keys
+        (<code>Aura-Enabled</code>, <code>Aura-Pulse-Interval-Seconds</code>).</li>
+    </ul>
+
+    <h3>Titles</h3>
+    <ul>
+      <li>Twenty-three cosmetic <a href="../titles/">titles</a> — one per realm, one per dao
+        element, the Righteous and Devil paths, sect leader and elder, and a capstone for the Peak
+        of Void Refinement. Equip one from the new <strong>Titles</strong> page; it shows above
+        your head, in chat, on the rankings and on your sect's roster.</li>
+      <li>Titles you have not earned stay on the list, greyed, telling you what unlocks them —
+        rather than hiding until they appear from nowhere.</li>
+    </ul>
+
+    <h3>Sect Halls — Beacons and Banners</h3>
+    <ul>
+      <li>A claimed hall now raises a <strong>standing column of light</strong> visible to
+        <em>anyone</em> walking past (<code>Sect-Hall-Beacon-Enabled</code>), and sects can
+        <a href="../sects/">fly a banner</a> over it — Azure Dragon, Vermilion Bird, White Tiger,
+        Black Tortoise, Golden Court or Jade Terrace — from the sect menu or
+        <code>/sect banner</code> (leader or elder).</li>
+      <li>Lose the hall to a siege and the light goes back to whatever the vein wanted to be; the
+        banner choice survives on the sect for its next hall. A sect with no hall can still pick
+        one in advance.</li>
+    </ul>
+
+    <h3>The World Map</h3>
+    <ul>
+      <li>Every claimed <strong>sect hall</strong> is pinned on Hytale's own world map for
+        everyone, tinted with that sect's banner color and labelled with its name.</li>
+      <li>Your own <a href="../dwelling/">cave abode</a> is marked, and so are the
+        <a href="../formations/">formations</a> you or your sect control — colored by what the
+        array does, and visible only to you. A Trapping array stays as hidden as it should be.</li>
+    </ul>
+
+    <h3>Moments That Land</h3>
+    <ul>
+      <li>Breaking into a new realm takes over the screen with a title, and <strong>every
+        cultivator within nine chunks is told</strong>
+        (<code>Breakthrough-Title-Radius-Chunks</code>; 0 makes it private). Advancements and
+        demotions get their own titles, sized to what they mean — see the new
+        <a href="../notices/">Notices</a> page.</li>
+      <li>Smaller moments — a skill node unlocked, a Life-Bound Treasure leveling, a respec, a
+        ritual beginning — arrive as corner notifications. Every one still says its piece in chat,
+        so nothing becomes unrecoverable the instant it fades.</li>
+      <li>Joining or leaving a sect is marked with a title that carries <strong>the sect's
+        motto</strong> underneath. The HUD gained a <strong>sect line</strong>, and the keybinds
+        page now shows how many loadouts you keep against how many you may.</li>
+    </ul>
+
+    <h3>For Add-on Authors</h3>
+    <ul>
+      <li>The API is up to <strong>144 events across eleven subsystems</strong> — new
+        <code>ProfileEvents</code> (switch, create, erase, expiry) and sect banner events, with
+        cancellable pre-events (expiry excepted). See <a href="../api-events/">API Events</a>.</li>
+      <li>Three more open registries: <code>registerTitle</code>, <code>registerSectBanner</code>
+        and <code>registerPalette</code> — your own titles on the picker, banners sects can fly,
+        and full menu/HUD recolors. See <a href="../api-registries/">API Registries</a>.</li>
+      <li><code>ProgressionProvider.supportsProfiles()</code> keeps a progression add-on honest:
+        until it declares support, profile switching is refused rather than half-performed.</li>
+      <li>The profile and keybind-loadout caps are addon-raisable
+        (<code>registerProfileCap</code>, <code>registerTechniquePresetCap</code>) — highest
+        registration wins, and nothing is destroyed when a cap falls. Note the loadout default is
+        now <strong>3</strong> (v0.6.x allowed a flat 8); anything you already kept survives.</li>
+    </ul>
 
     <h2>v0.6.2 — Steadying the Path</h2>
     <p>
@@ -505,15 +607,15 @@
     </ul>
     <h3>NEW — Hall Inscriptions (碑文)</h3>
     <ul>
-      <li>A sect leader can carve a <strong>technique manual into the sect hall</strong> with <code> /sect</code> inscribe, and <em>every disciple in the sect can wield that art</em> — without ever finding a manual of their own.</li>
+      <li>A sect leader can carve a <strong>technique manual into the sect hall</strong> with <code>/sect inscribe</code>, and <em>every disciple in the sect can wield that art</em> — without ever finding a manual of their own.</li>
       <li>The inscription lives in the <strong>hall</strong>, not in your members' memories. Lose the hall to a siege and the art passes from the whole sect at once, instantly, for everyone. Take a rival's hall and you take what is carved in it.</li>
-      <li>Requires a claimed hall, consumes the manual, and replaces whatever was carved there before. Run <code> /sect</code> inscribe empty-handed to scour it away.</li>
+      <li>Requires a claimed hall, consumes the manual, and replaces whatever was carved there before. Run <code>/sect inscribe</code> empty-handed to scour it away.</li>
       <li>Server owners who would rather sects did not share arts can switch it off with <code>Sect-Inscription-Enabled</code>.</li>
     </ul>
     <h3>Rankings That Survive a Restart</h3>
     <ul>
       <li>The realm rankings behind <code>/cultivation top</code>, the Rankings page and sect power scores are now <strong>saved to disk</strong> instead of living only in memory.</li>
-      <li>This fixes <strong><code> /sect</code> top</strong>, which previously counted only members who had logged in since the last restart — so sects ranked by who happened to be online rather than by their actual roster, and the whole board reset every time the server came back up.</li>
+      <li>This fixes <strong><code>/sect top</code></strong>, which previously counted only members who had logged in since the last restart — so sects ranked by who happened to be online rather than by their actual roster, and the whole board reset every time the server came back up.</li>
       <li>(Your own progress was never at risk — it has always lived on your character. Only this cross-player index was volatile.)</li>
     </ul>
     <h3>Combat Fixes</h3>
@@ -580,7 +682,7 @@
     <ul>
       <li>Lean deep enough into Yin or Yang and your deeds formally set your feet upon a <strong>path</strong>. A <strong>Devil (魔道)</strong> strikes harder against the righteous and <em>harvests the dispersing Qi</em> of every player they slay; a <strong>Righteous (正道)</strong> cultivator both hits and endures better against devils. Your path follows your balance, so it shifts as you do.</li>
       <li><strong>Qi-wager duels:</strong> challenge another cultivator with <code>/cultivation duel</code>, stake banked Qi on the outcome, and settle it by blade — or yield. Duels work even on worlds with PvP switched off.</li>
-      <li><strong>Sect vein wars:</strong> a sect leader can lay siege to a rival sect's hall with <code> /sect</code> war. Hold their hall chunk long enough and the hall — and its Spirit Vein — becomes yours. Defenders standing on the chunk stall the capture. Sieges have a window, a post-war cooldown, and won't start against a sect with nobody online.</li>
+      <li><strong>Sect vein wars:</strong> a sect leader can lay siege to a rival sect's hall with <code>/sect war</code>. Hold their hall chunk long enough and the hall — and its Spirit Vein — becomes yours. Defenders standing on the chunk stall the capture. Sieges have a window, a post-war cooldown, and won't start against a sect with nobody online.</li>
     </ul>
     <h3>NEW — Weapon Refinement (炼器) &amp; the Heart-Devil Trial (心魔劫)</h3>
     <ul>
@@ -595,7 +697,7 @@
       <li>Your path (Devil / Righteous / the Mortal Road) now shows in the Dao menu alongside your element and balance.</li>
       <li>All item tooltips — Life-Bound Treasures, refinement tiers, manuals, talismans — now flow through one composer, so a refined Life-Bound weapon reads cleanly instead of fighting over its own name.</li>
       <li>Fixed duel damage being swallowed on worlds with PvP disabled — duels resolve properly everywhere now.</li>
-      <li>Sect sieges now persist across restarts, and <code>  /sect</code> war status reports the siege you're in (or the cooldown you're under).</li>
+      <li>Sect sieges now persist across restarts, and <code>/sect war status</code> reports the siege you're in (or the cooldown you're under).</li>
       <li>Closed two Cave Abode upkeep exploits, including abandoning and re-claiming to dwell for free.</li>
       <li>Six new config files (techniques, manuals, refinement, beasts, dwellings, duels/wars) — every number in all of it is editable, live, from the in-game admin editor.</li>
       <li>Almost every config value across the mod has been reset to a new default for this release, and the config files are now sorted into Cultivation, Arts, and Society folders. Server owners with custom tuning will need to re-apply it.</li>
@@ -633,7 +735,7 @@
     </ul>
     <h3>Rankings &amp; Interface</h3>
     <ul>
-      <li>New <strong>Rankings</strong> menu page and <code>/cultivation top</code> — the server's mightiest cultivators, ranked by realm, stage, and Qi — plus sect rankings in the sect menu and <code> /sect</code> top.</li>
+      <li>New <strong>Rankings</strong> menu page and <code>/cultivation top</code> — the server's mightiest cultivators, ranked by realm, stage, and Qi — plus sect rankings in the sect menu and <code>/sect top</code>.</li>
       <li>Every menu (except the skill tree) is wider, and all buttons now size themselves to their text — no more clipped labels in any language.</li>
       <li>The admin config editor gained ~30 new live-editable values covering veins, tribulations, alchemy, sects, and the Dao.</li>
       <li>All new content fully localized: English, Portuguese (Brazil), Russian, Ukrainian, and Simplified Chinese.</li>
@@ -745,8 +847,6 @@
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

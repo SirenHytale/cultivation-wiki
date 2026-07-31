@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Sects — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - Sects, elders, halls, and hall inscriptions">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -114,7 +115,7 @@ flowchart TD;
 
     <h2>Motto and Renaming</h2>
 
-    <p>A leader or elder can set a <strong>motto</strong> from the menu - free text, trimmed and capped at 60 characters. It shows under the sect name in the menu.</p>
+    <p>A leader or elder can set a <strong>motto</strong> from the menu - free text, trimmed and capped at 60 characters. It shows under the sect name in the menu, and since v0.7.0 it is spoken at the moment it means something: the full-screen <a href="../notices/">title</a> a player sees on joining or leaving the sect carries the motto underneath. (A kicked player is deliberately not shown it.)</p>
 
     <p>Only the leader may <strong>rename</strong> the sect, and the new name goes through exactly the same validation and uniqueness check as founding one. A rename carries everything keyed to the old name along with it:</p>
 
@@ -141,6 +142,23 @@ flowchart TD;
     <p>A sect with no hall gets no bonus at all. Lose the hall to a siege and the bonus stops for everyone at once.</p>
 
     <p>The hall also grows the sect's shared <strong>Spirit Spring</strong> when <code>Sect-Hall-Spring-Enabled</code> is on - it follows the hall, so moving the hall moves the spring and losing the hall hands the spring, and whatever it had banked, to the victor. See <a href="../dwelling/">Cave Abodes</a> for how springs fill and are collected.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Beacons and Banners</h2>
+
+    <p><span class="tag">v0.7.0</span> A claimed hall raises a <strong>standing column of light</strong> visible to <em>anyone</em> walking past, not just members - a hall is a real, contestable presence in the world rather than a record only its sect knows about. The beacon re-pulses every <code>Sect-Hall-Beacon-Interval-Seconds</code> (2.5s) and is switched off server-wide with <code>Sect-Hall-Beacon-Enabled</code> - see the <a href="../config-society/">Society config</a>.</p>
+
+    <p>By default the light matches the vein under the hall. A sect's leader or an elder can instead <strong>fly a banner</strong> - from the Hall Banner picker in the sect menu, or with <code>/sect banner &lt;name&gt;</code>. Six ship with the mod:</p>
+
+    <table>
+    <thead><tr><th>Banner</th><th>Id</th><th>Color</th><th>Group</th></tr></thead>
+    <tbody><tr><td><strong>Azure Dragon</strong></td><td><code>cultivation:azure</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#3FC9D8;vertical-align:-0.08em"></span> azure</td><td>The Four Symbols</td></tr><tr><td><strong>Vermilion Bird</strong></td><td><code>cultivation:vermilion</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#FF6B3F;vertical-align:-0.08em"></span> vermilion</td><td>The Four Symbols</td></tr><tr><td><strong>White Tiger</strong></td><td><code>cultivation:white</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#E4E8FA;vertical-align:-0.08em"></span> white</td><td>The Four Symbols</td></tr><tr><td><strong>Black Tortoise</strong></td><td><code>cultivation:black</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#3F4A9B;vertical-align:-0.08em"></span> deep indigo</td><td>The Four Symbols</td></tr><tr><td><strong>Golden Court</strong></td><td><code>cultivation:golden</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#F0C44F;vertical-align:-0.08em"></span> gold</td><td>Sect Colors</td></tr><tr><td><strong>Jade Terrace</strong></td><td><code>cultivation:jade</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#6BD8A0;vertical-align:-0.08em"></span> jade</td><td>Sect Colors</td></tr></tbody>
+    </table>
+
+    <ul><li><code>/sect banner</code> with no argument lists what your sect may fly, marking the current one. The short name (<code>azure</code>) and the full id both work; <code>/sect banner none</code> returns to the plain vein light.</li><li>A sect with <strong>no hall</strong> can still pick its banner - it goes up the moment a hall is claimed.</li><li>Lose the hall to a <a href="../wars/">siege</a> and the light drops back to whatever the vein wanted to be - which is how a valley tells you its owners changed before any messenger does. The <em>choice</em> survives on the sect, so reclaiming a hall raises the same banner again.</li><li>Add-ons can register more banners through <a href="../api-registries/"><code>registerSectBanner</code></a>; none of the built-in six are permission-gated.</li></ul>
+
+    <p>Every claimed hall is also <strong>pinned on Hytale's own world map</strong>, tinted with its banner's color and labelled with the sect's name - for everyone, member or not. The map pin is not affected by <code>Sect-Hall-Beacon-Enabled</code>.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -171,10 +189,12 @@ flowchart TD;
     <p>Bare <code>/sect</code>, or <code>/sect menu</code> (alias <code>ui</code>), opens the sect menu - the graphical face of every command on this page. Three tabs:</p>
 
     <div class="grid cols-3">
-          <div class="card"><span class="card-han">宗</span><h4>My Sect</h4><p>your roster with per-member kick and promote/demote buttons, the pending join requests, the motto/rename/policy/invite controls for managers, and the claim, leave and disband actions.</p></div>
+          <div class="card"><span class="card-han">宗</span><h4>My Sect</h4><p>your roster with per-member kick and promote/demote buttons, the pending join requests, the motto/rename/policy/invite controls for managers, the Hall Banner picker, and the claim, leave and disband actions.</p></div>
           <div class="card"><span class="card-han">覽</span><h4>Browse</h4><p>every sect on the server, sorted by name, with a join or request button on the ones whose policy allows it.</p></div>
           <div class="card"><span class="card-han">榜</span><h4>Rankings</h4><p>the top 20 sects by score.</p></div>
         </div>
+
+    <p>Roster rows show each member's equipped <a href="../titles/">title</a> in front of their name, and the HUD can carry a <strong>sect line</strong> naming the sect you belong to - it appears once you are in one, and switches off under <em>Show your sect</em> in Settings.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -184,7 +204,7 @@ flowchart TD;
           <div class="panel-head">Commands</div>
           <table>
     <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member, online or offline (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>`/sect war [sect\</code></td><td>status]`</td><td>Declares a siege, or reports your current one. See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>Warns; <code>confirm</code> dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member, online or offline (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect banner [banner|none]</code></td><td>Lists, flies, or lowers the hall banner (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war [sect|status]</code></td><td>Declares a siege, or reports your current one. See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, banner, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>Warns; <code>confirm</code> dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
         </div>
 
@@ -202,8 +222,6 @@ flowchart TD;
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

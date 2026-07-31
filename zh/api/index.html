@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>接口总览 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的公开集成接口：如何引入依赖、静态入口、第一个监听器，以及各接口页导览。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -46,15 +47,15 @@
 
     <h1>Cultivation 接口</h1>
 
-    <p class="page-lede">Cultivation 为其他 Hytale 模组提供了一套公开的集成面：<code>plugin.siren.API.CultivationAPI</code>，外加同一包下的十个 <code>*Events</code> 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 <code>CultivationManager</code>、<code>Cultivation</code> 或那些 ECS 组件，因为后者随时可能在版本之间变动。</p>
+    <p class="page-lede">Cultivation 为其他 Hytale 模组提供了一套公开的集成面：<code>plugin.siren.API.CultivationAPI</code>，外加同一包下的十一个 <code>*Events</code> 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 <code>CultivationManager</code>、<code>Cultivation</code> 或那些 ECS 组件，因为后者随时可能在版本之间变动。</p>
 
     <p>你可以用它做四件事：</p>
 
     <ul><li><strong>读取</strong>玩家的修炼状态 —— 境界、阶段、全局等级、存蓄灵气、种族、打坐状态、天赋点、已解锁节点。见<a href="../api-reference/">接口参考</a>。</li><li><strong>注册</strong>与内置内容行为完全一致的新内容 —— 一个种族、一门功法、一项灵气吸收物品修正。见<a href="../api-registries/">注册表</a>。</li><li><strong>监听</strong>（并重新调参，或否决）遍及模组各子系统的约 135 个事件。见<a href="../api-events/">事件</a>。</li><li><strong>替换</strong>模组的一整个层次 —— 进阶阶梯本身、它的全套用词，或两者兼有 —— 而其余每个子系统仍照常在其之上运行。此为 0.5.0 新增；见<a href="../api-addons/">编写扩展</a>。</li></ul>
 
-    <p>本页所记载的是 Cultivation <strong>0.6.0</strong> 时的接口。</p>
+    <p>本页所记载的是 Cultivation <strong>0.7.0</strong> 时的接口。</p>
 
-    <div class="note"><strong>源码已公开。</strong>每一个公开接口类连同其 javadoc，都在 <a href="https://github.com/SirenHytale/Cultivation-API" rel="noopener">github.com/SirenHytale/Cultivation-API</a> —— 同处还有一份自动生成的全部 135 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。</div>
+    <div class="note"><strong>源码已公开。</strong>每一个公开接口类连同其 javadoc，都在 <a href="https://github.com/SirenHytale/Cultivation-API" rel="noopener">github.com/SirenHytale/Cultivation-API</a> —— 同处还有一份自动生成的全部 144 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。</div>
 
     <h2>将 Cultivation 引入你的项目</h2>
 
@@ -64,7 +65,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;plugin.siren&lt;/groupId&gt;
         &lt;artifactId&gt;Cultivation&lt;/artifactId&gt;
-        &lt;version&gt;0.6.2&lt;/version&gt;
+        &lt;version&gt;0.7.0&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
         &lt;optional&gt;true&lt;/optional&gt;
     &lt;/dependency&gt;
@@ -136,7 +137,7 @@ public final class MyCultivationHooks {
 
     <table>
     <thead><tr><th>页面</th><th>涵盖</th></tr></thead>
-    <tbody><tr><td><a href="../api-events/">事件</a></td><td>十个 <code>*Events</code> 类中的每一个事件、它暴露什么，以及取消它意味着什么。</td></tr><tr><td><a href="../api-registries/">注册表</a></td><td><code>registerRace</code>、<code>registerTechnique</code>、<code>newTechniqueRule</code> 与 <code>registerQiAbsorptionItemModifier</code>。</td></tr><tr><td><a href="../api-reference/">接口参考</a></td><td>组件类型的 getter，以及 <code>CultivationAPI</code> 门面上的各项状态读取。</td></tr><tr><td><a href="../api-addons/">编写扩展</a></td><td><code>ProgressionProvider</code>、<code>CultivationTheme</code> 与 <code>AdminConfigSection</code> —— 替换阶梯、替换用词，以及添加你自己的管理设置。</td></tr></tbody>
+    <tbody><tr><td><a href="../api-events/">事件</a></td><td>十一个 <code>*Events</code> 类中的每一个事件、它暴露什么，以及取消它意味着什么。</td></tr><tr><td><a href="../api-registries/">注册表</a></td><td><code>registerRace</code>、<code>registerTechnique</code>、<code>registerQiAbsorptionItemModifier</code>、<code>registerTitle</code>、<code>registerSectBanner</code>、<code>registerPalette</code> 以及可由扩展提升的上限。</td></tr><tr><td><a href="../api-reference/">接口参考</a></td><td>组件类型的 getter，以及 <code>CultivationAPI</code> 门面上的各项状态读取。</td></tr><tr><td><a href="../api-addons/">编写扩展</a></td><td><code>ProgressionProvider</code>（包括 <code>supportsProfiles</code>）、<code>CultivationTheme</code> 与 <code>AdminConfigSection</code> —— 替换阶梯、替换用词，以及添加你自己的管理设置。</td></tr></tbody>
     </table>
 
     <p>这些钩子所依托的各系统，其面向玩家的文档位于本站主体：<a href="../realms/">境界与阶段</a>、<a href="../qi-gathering/">聚灵采气</a>、<a href="../dao/">大道</a>、<a href="../techniques/">功法</a>、<a href="../sects/">宗门</a>、<a href="../wars/">宗门攻伐</a>、<a href="../formations/">阵法</a>、<a href="../dwelling/">洞府</a>、<a href="../duels/">斗法</a>与<a href="../beasts/">灵兽</a>。事件允许你重新调整的每一个数值，在<a href="../config/">配置</a>页都有一份面向服主的对应项，其中大多数也在<a href="../commands/">指令</a>页有所映照。</p>
@@ -149,8 +150,6 @@ public final class MyCultivationHooks {
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

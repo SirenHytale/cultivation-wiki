@@ -119,6 +119,11 @@ LINKS: dict[str, str] = {
     "/cultivation/spirit-sense/": "spirit-sense",
     "/cultivation/keybinds/": "keybinds",
     "/cultivation/partnered-cultivation/": "partnered-cultivation",
+    # v0.7.0
+    "/cultivation/profiles/": "profiles",
+    "/cultivation/auras/": "auras",
+    "/cultivation/titles/": "titles",
+    "/cultivation/notices/": "notices",
     "/cultivation/techniques/": "techniques",
     "/cultivation/manuals/": "manuals",
     "/cultivation/alchemy/": "alchemy",
@@ -477,6 +482,7 @@ SHELL = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}}catch(e){{}}</script>
 <title>{title} — Cultivation Wiki</title>
 <meta name="description" content="{desc}">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -508,8 +514,6 @@ SHELL = """<!doctype html>
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

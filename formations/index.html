@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Formations — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - Placeable chunk-anchored spirit arrays">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -102,6 +103,8 @@
 
     <p><code>/cultivation formations</code> (aliases <code>formation</code>, <code>arrays</code>) lists every array you control - type, world, anchor chunk and radius, newest first - so you can walk back to one and disperse it.</p>
 
+    <p><span class="tag">v0.7.0</span> Arrays you or your sect control are also <strong>pinned on Hytale's own world map</strong>, colored by what the array does - <span style="color:#6BD8A0">green</span> draws Qi, <span style="color:#8FA8FF">blue</span> wards, <span style="color:#D8455E">red</span> catches - so a map full of them reads without opening a single label. Only <em>your</em> arrays appear: a Trapping array's whole value is that the person walking into it did not know, and publishing every array to every map would quietly disable the mechanic.</p>
+
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>Overlap and Stacking</h2>
@@ -138,8 +141,6 @@
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

@@ -59,6 +59,25 @@ Cultivation 通过其计时打坐仪式驱动升级，并提供两种风味。�
 
 同一时刻只能安装一个 provider。最后注册者胜出，并会记录一条同时点名双方的警告 —— 因为两个模组各自都认为自己拥有进阶体系，这是一种配置错误，而不是该悄悄挑一个赢家的事。传入 `null` 即可把进阶体系交还给内置系统。
 
+##### provider 治下的存档
+
+<span class="tag">v0.7.0</span> 该接口新增了一个 `default` 方法：
+
+```java
+default boolean supportsProfiles(){
+    return false;
+}
+```
+
+而这个默认值会在你的 provider 安装期间**直接回绝**[存档](/cultivation/profiles/)切换 —— 玩家会被告知此处的进阶体系由另一个模组掌管。这是刻意为之：一次切换会在你脚下换掉玩家的 `CultivationComponent`、种族、大道、天赋树与功法，而一个未曾为此做好准备的 provider，届时描述的将是错误的那名修士 —— 做到一半，比直接回绝更糟。
+
+要解除这道回绝，请完成以下两件事，随后返回 `true`：
+
+- 处理 `ProfileEvents.PreProfileSwitchEvent` —— 为即将离开的那份存档保存你自己的状态。
+- 处理 `ProfileEvents.ProfileSwitchEvent` —— 为抵达的那份存档载入你的状态。
+
+存档监听器是整个接口中唯一被允许**直接经由 `Store` 写入组件**的地方 —— 它们运行在世界线程上，且在任何 tick 系统之外，正是为了让 provider 能做这份记账。完整的 `ProfileEvents` 表见[事件](/cultivation/api/events/)。这道回绝有一个例外：操作员的[试炼存档沙盒](/cultivation/profiles/)即便在 provider 治下也照样被允许 —— 它不会改变你的扩展对该玩家的看法，指令本身也会如此说明。
+
 #### CultivationTheme
 
 ```java

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Cultivation API — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - the public API other mods compile against">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -46,15 +47,15 @@
 
     <h1>Cultivation API</h1>
 
-    <p class="page-lede">Cultivation ships a public integration surface for other Hytale mods: <code>plugin.siren.API.CultivationAPI</code> plus ten <code>*Events</code> classes in the same package. It is the intended stable shape of the mod - prefer it over reaching into <code>CultivationManager</code>, <code>Cultivation</code> or the ECS components directly, since those are free to change between versions.</p>
+    <p class="page-lede">Cultivation ships a public integration surface for other Hytale mods: <code>plugin.siren.API.CultivationAPI</code> plus eleven <code>*Events</code> classes in the same package. It is the intended stable shape of the mod - prefer it over reaching into <code>CultivationManager</code>, <code>Cultivation</code> or the ECS components directly, since those are free to change between versions.</p>
 
     <p>There are four things you can do with it:</p>
 
-    <ul><li><strong>Read</strong> a player's cultivation state - realm, stage, global level, banked Qi, race, meditation state, skill points, unlocked nodes. See the <a href="../api-reference/">API Reference</a>.</li><li><strong>Register</strong> new content that behaves exactly like the built-in content - a race, a technique, a Qi absorption item modifier. See <a href="../api-registries/">API Registries</a>.</li><li><strong>Listen</strong> to (and re-tune, or veto) roughly 135 events across every subsystem in the mod. See <a href="../api-events/">API Events</a>.</li><li><strong>Replace</strong> a whole layer of the mod - the progression ladder itself, its entire vocabulary, or both - while every other subsystem keeps running on top. New in 0.5.0; see <a href="../api-addons/">API Addons</a>.</li></ul>
+    <ul><li><strong>Read</strong> a player's cultivation state - realm, stage, global level, banked Qi, race, meditation state, skill points, unlocked nodes. See the <a href="../api-reference/">API Reference</a>.</li><li><strong>Register</strong> new content that behaves exactly like the built-in content - a race, a technique, a Qi absorption item modifier, a title, a sect banner, a palette. See <a href="../api-registries/">API Registries</a>.</li><li><strong>Listen</strong> to (and re-tune, or veto) 144 events across every subsystem in the mod. See <a href="../api-events/">API Events</a>.</li><li><strong>Replace</strong> a whole layer of the mod - the progression ladder itself, its entire vocabulary, or both - while every other subsystem keeps running on top. New in 0.5.0; see <a href="../api-addons/">API Addons</a>.</li></ul>
 
-    <p>This page documents the API as of Cultivation <strong>0.6.0</strong>.</p>
+    <p>This page documents the API as of Cultivation <strong>0.7.0</strong>.</p>
 
-    <div class="note"><strong>The sources are published.</strong> Every public API class, with its javadoc, lives at <a href="https://github.com/SirenHytale/Cultivation-API">github.com/SirenHytale/Cultivation-API</a> — alongside a generated reference for all 135 events, a worked example add-on, and a brief written for AI coding assistants. The javadoc in those sources is the authoritative contract; this wiki is the guided tour.</div>
+    <div class="note"><strong>The sources are published.</strong> Every public API class, with its javadoc, lives at <a href="https://github.com/SirenHytale/Cultivation-API">github.com/SirenHytale/Cultivation-API</a> — alongside a generated reference for all 144 events, a worked example add-on, and a brief written for AI coding assistants. The javadoc in those sources is the authoritative contract; this wiki is the guided tour.</div>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -66,7 +67,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;plugin.siren&lt;/groupId&gt;
         &lt;artifactId&gt;Cultivation&lt;/artifactId&gt;
-        &lt;version&gt;0.6.2&lt;/version&gt;
+        &lt;version&gt;0.7.0&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
         &lt;optional&gt;true&lt;/optional&gt;
     &lt;/dependency&gt;
@@ -144,7 +145,7 @@ public final class MyCultivationHooks {
 
     <table>
     <thead><tr><th>Page</th><th>Covers</th></tr></thead>
-    <tbody><tr><td><a href="../api-events/">API Events</a></td><td>Every event in the ten <code>*Events</code> classes, what it exposes, and what cancelling one does.</td></tr><tr><td><a href="../api-registries/">API Registries</a></td><td><code>registerRace</code>, <code>registerTechnique</code>, <code>newTechniqueRule</code> and <code>registerQiAbsorptionItemModifier</code>.</td></tr><tr><td><a href="../api-reference/">API Reference</a></td><td>The component-type getters and the state reads on the <code>CultivationAPI</code> facade.</td></tr><tr><td><a href="../api-addons/">API Addons</a></td><td><code>ProgressionProvider</code>, <code>CultivationTheme</code> and <code>AdminConfigSection</code> - replacing the ladder, the wording, and adding your own admin settings.</td></tr></tbody>
+    <tbody><tr><td><a href="../api-events/">API Events</a></td><td>Every event in the eleven <code>*Events</code> classes, what it exposes, and what cancelling one does.</td></tr><tr><td><a href="../api-registries/">API Registries</a></td><td><code>registerRace</code>, <code>registerTechnique</code>, <code>registerQiAbsorptionItemModifier</code>, <code>registerTitle</code>, <code>registerSectBanner</code>, <code>registerPalette</code> and the addon-raisable caps.</td></tr><tr><td><a href="../api-reference/">API Reference</a></td><td>The component-type getters and the state reads on the <code>CultivationAPI</code> facade.</td></tr><tr><td><a href="../api-addons/">API Addons</a></td><td><code>ProgressionProvider</code> (including <code>supportsProfiles</code>), <code>CultivationTheme</code> and <code>AdminConfigSection</code> - replacing the ladder, the wording, and adding your own admin settings.</td></tr></tbody>
     </table>
 
     <p>Player-facing documentation for the systems these hooks sit on top of lives on the main wiki: <a href="../realms/">Cultivation Realms</a>, <a href="../qi-gathering/">Qi Gathering</a>, <a href="../dao/">The Dao</a>, <a href="../techniques/">Techniques</a>, <a href="../sects/">Sects</a>, <a href="../wars/">Sect Wars</a>, <a href="../formations/">Formations</a>, <a href="../dwelling/">Cave Abodes</a>, <a href="../duels/">Duels</a> and <a href="../beasts/">Spirit Beasts</a>. Every number an event lets you re-tune also has a server-owner-facing equivalent on the <a href="../config/">Config</a> page, and most of them mirror something on the <a href="../commands/">Commands</a> page.</p>
@@ -157,8 +158,6 @@ public final class MyCultivationHooks {
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

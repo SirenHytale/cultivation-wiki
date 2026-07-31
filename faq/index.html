@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>FAQ &amp; Troubleshooting — Cultivation Wiki</title>
 <meta name="description" content="Answers to the most common Cultivation questions: why a breakthrough will not start, why a ritual paused, why you lost a sub-stage, why cores are not dropping, and how to fix them.">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -175,6 +176,41 @@
       relaxed server.
     </p>
 
+    <h2>Profiles &amp; Presence</h2>
+
+    <h3>Does my sect come with my new profile?</h3>
+    <p>
+      No — and neither does your <a href="../dwelling/">abode</a>, your
+      <a href="../formations/">formations</a> or your marriage. A <a href="../profiles/">profile</a>
+      carries <em>who you are</em> (realm, Qi, race, dao, skill tree, techniques); everything
+      anchored to the account or the world is shared by all of them. Your equipped
+      <a href="../titles/">title</a> and settings are account-wide too.
+    </p>
+
+    <h3>Why can I not switch profiles?</h3>
+    <p>
+      A mod that replaces Cultivation's progression ladder must declare that it keeps its own
+      records in step with your saves. Until it does, switching is <strong>refused rather than
+      half-performed</strong> — the message names the cause. Ask that add-on's author about
+      <code>ProgressionProvider.supportsProfiles()</code>, or see
+      <a href="../api-addons/">Building Add-ons</a>.
+    </p>
+
+    <h3>How do I stop seeing everyone's auras?</h3>
+    <p>
+      Settings → <em>Cultivation Aura</em> → <strong>Show me other cultivators' auras</strong>. To
+      stop giving one off, use <code>/cultivation aura</code> or the first toggle in the same
+      section. A server owner can switch <a href="../auras/">auras</a> off entirely with
+      <code>Aura-Enabled</code>.
+    </p>
+
+    <h3>My title vanished from my nameplate</h3>
+    <p>
+      Another mod that writes display names — a nickname plugin, usually — overwrote it; the
+      overhead name is shared engine state and the last writer wins. Re-equip the
+      <a href="../titles/">title</a>, or drop the other mod's nickname for that player.
+    </p>
+
     <h2>Arts &amp; Items</h2>
 
     <h3>I know a technique but cannot use it</h3>
@@ -242,8 +278,6 @@
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

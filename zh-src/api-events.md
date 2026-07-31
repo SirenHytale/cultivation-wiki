@@ -1,15 +1,15 @@
 ---
 title: 事件
-description: Cultivation 的约 135 个事件，分布于十个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。
+description: Cultivation 的 144 个事件，分布于十一个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。
 group: 开发者
 han: 匠
 ---
 
 ### 事件
 
-Cultivation 在 `plugin.siren.API` 下的十个 `*Events` 类中，暴露了约 135 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
+Cultivation 在 `plugin.siren.API` 下的十一个 `*Events` 类中，暴露了 144 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
 
-每个类都遵循 `CultivationEvents` 上所记载的约定，因此学会一个便学会了全部十个。
+每个类都遵循 `CultivationEvents` 上所记载的约定，因此学会一个便学会了全部十一个。
 
 #### 前置与后置
 
@@ -183,7 +183,7 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 
 #### 宗门
 
-`plugin.siren.API.SectEvents` —— 27 个事件，涵盖开宗、门籍、职位、大殿与殿上碑文。面向玩家的文档：[宗门](/cultivation/sects/)，以及[指令](/cultivation/commands/)页上的 `/sect` 系列。
+`plugin.siren.API.SectEvents` —— 29 个事件，涵盖开宗、门籍、职位、大殿、殿上碑文与旗帜。面向玩家的文档：[宗门](/cultivation/sects/)，以及[指令](/cultivation/commands/)页上的 `/sect` 系列。
 
 记住上文那两条约束：监听器持有 `SectManager` 的锁，且此处的玩家是 `UUID`。此类上有两个枚举：`JoinMethod`（`INVITE`、`OPEN`、`REQUEST`）与 `LeaveReason`（`LEFT`、`KICKED`）。
 
@@ -216,8 +216,10 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 | `SectHallClaimEvent` | 否 | 宗门已在一条灵脉上设立或迁移了大殿。 | `leader()`、`sect()`、`world()`、`chunkX()`、`chunkZ()`、`veinTier()`。 |
 | `PreSectHallCaptureEvent` | 是 | 大殿即将易主给得胜的围攻方。取消可让它留在守方手中 —— 围攻仍判为胜。 | `attacker()`、`defender()`、`world()`、`chunkX()`、`chunkZ()`、`veinTier()`。 |
 | `SectHallCaptureEvent` | 否 | 一场获胜的围攻已移交大殿；守方现已无殿。 | `attacker()`、`defender()`、`world()`、`chunkX()`、`chunkZ()`、`veinTier()`。 |
+| `PreSectBannerChangeEvent` | 是 | 宗门的旗帜即将变更。取消可让旧旗继续飘扬。监听器改写该 id 之后，它**不会**被重新校验 —— 一个未注册的 id 并非错误，只会解算为对应灵脉品阶的默认灯火。 | `manager()`、`sect()`、`oldBannerId()`、`bannerId()` / `setBannerId(String)`。 |
+| `SectBannerChangeEvent` | 否 | 旗帜已变更。大殿的常置灯火会在其下一次脉动时切换为新旗。 | `manager()`、`sect()`、`oldBannerId()`、`newBannerId()`。 |
 
-这些所覆写的配置键：`PreSectInviteEvent.setExpiryMillis` 对应 `Sect-Invite-Expiry-Seconds`；大殿的设立受 `Sect-Hall-Min-Vein-Tier` 管辖；碑文受 `Sect-Inscription-Enabled` 管辖；整个子系统受 `Sects-Enabled` 与 `Sect-Max-Members` 管辖。
+这些所覆写的配置键：`PreSectInviteEvent.setExpiryMillis` 对应 `Sect-Invite-Expiry-Seconds`；大殿的设立受 `Sect-Hall-Min-Vein-Tier` 管辖；碑文受 `Sect-Inscription-Enabled` 管辖；整个子系统受 `Sects-Enabled` 与 `Sect-Max-Members` 管辖。旗帜事件所携带的旗帜 id，皆取自旗帜注册表 —— 六种内置旗帜，外加任何扩展经由 [`registerSectBanner`](/cultivation/api/registries/) 添加的旗帜。
 
 #### 战事
 
@@ -292,9 +294,29 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 
 这些所覆写的配置键：`PreDwellingClaimEvent.setRadiusChunks` 对应 `Dwelling-Radius-Chunks`；`PreSpringCollectEvent.setAmount` 对应 `Spring-Qi-Per-Hour`、`Spring-Pool-Base-Cap` 与 `Spring-Pool-Cap-Per-Realm`；`PreUpkeepDepositEvent.setHours` 对应 `Upkeep-Item-Hours`，并受 `Upkeep-Max-Banked-Hours` 封顶；`PreDwellingLapseEvent` 对应 `Upkeep-Grace-Hours`；`PreSeclusionSettleEvent.setQi` 对应 `Seclusion-Qi-Per-Hour`。整套系统的门禁：`Dwellings-Enabled`、`Upkeep-Enabled`、`Seclusion-Enabled`。
 
+#### 修炼存档
+
+`plugin.siren.API.ProfileEvents` —— 7 个事件，涵盖玩家的修炼存档：在存档间切换、创建一份、删除一份，以及试炼存档到期。面向玩家的文档：[修炼存档](/cultivation/profiles/)。
+
+这些事件携带一个 `Profile` 负载（`CultivationProfilesComponent.Profile`）—— 常用的成员有 `getName()`、`isTest()`、`getExpiresAtMillis()` 与 `remainingMillis(long)`。注意到期**没有**前置事件：试炼存档的时限无法被否决。
+
+**这些监听器可以写入。** 在整个接口中独此一处：存档监听器运行在其所属玩家的世界线程上，且不处于任何 tick 系统之内，因此在此处经由 `Store` 直接读取**并写入**组件是安全的 —— 这是「监听器内绝不写入」这条通则唯一的例外。这是刻意为之：一个进阶体系扩展必须能在切换存档时保存并载入自己的状态（见 [`ProgressionProvider.supportsProfiles()`](/cultivation/api/addons/)）。
+
+| 事件 | 可取消 | 触发时机 | 暴露 |
+|:---|:---|:---|:---|
+| `PreProfileSwitchEvent` | 是 | 玩家即将切换存档。取消可回绝这次切换 —— 指令会报告切换被拦下。 | `ref()`、`player()`、`from()`（首次补建存档时为 null）、`to()`。 |
+| `ProfileSwitchEvent` | 否 | 切换已生效 —— 抵达存档所对应的境界、灵气、种族、大道、天赋树与功法皆已写入组件。请在此载入你自己的按存档状态。 | `ref()`、`player()`、`from()`（首次补建存档时为 null）、`to()`。 |
+| `PreProfileCreateEvent` | 是 | 一份全新存档即将创建。取消可回绝之 —— 不占用任何存档位。 | `ref()`、`player()`。 |
+| `ProfileCreateEvent` | 否 | 存档已存在，玩家已切换至其上。 | `ref()`、`player()`、`profile()`。 |
+| `PreProfileDeleteEvent` | 是 | 一份存档即将被永久删除。取消可保留它。 | `ref()`、`player()`、`profile()`。 |
+| `ProfileDeleteEvent` | 否 | 存档已被删除。请在此清除你自己为其保存的状态。 | `ref()`、`player()`、`profile()`。 |
+| `ProfileExpireEvent` | 否 | 一份试炼存档的墙上时限已到期。`wasActive()` 表明玩家此前是否正在游玩它 —— 若是，他此刻刚被放回了一份真正的存档上。 | `ref()`、`player()`、`profile()`、`wasActive()`。 |
+
+若你的扩展自行维系一套进阶体系，请处理 `PreProfileSwitchEvent`（保存即将离开的那份存档）与 `ProfileSwitchEvent`（载入抵达的那份），随后令 `ProgressionProvider.supportsProfiles()` 返回 `true` —— 在你这样做之前，只要你的进阶体系仍装着，切换就会被直接回绝，而非做到一半。上限同样可由扩展提升：[接口参考](/cultivation/api/reference/)上的 `registerProfileCap` 可将默认的三个存档位上调（上限为六，取最高的注册值，且上限下调时绝不会销毁任何东西）。
+
 #### 另见
 
-- [注册表](/cultivation/api/registries/) —— 添加你自己的种族、功法与灵气吸收物品。
+- [注册表](/cultivation/api/registries/) —— 添加你自己的种族、功法、灵气吸收物品、称号、宗门旗帜与配色。
 - [接口参考](/cultivation/api/reference/) —— 直接读取玩家的修炼状态。
 - [配置](/cultivation/config/) —— 事件允许你逐玩家覆写的每一个面向服主的键。
 - [指令](/cultivation/commands/) —— 这些事件大多所依托的那些指令。

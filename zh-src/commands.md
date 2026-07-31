@@ -25,6 +25,31 @@ han: 起
 | `/cultivation hud` | 开启或关闭常驻的修炼状态栏。 | `cultivation` |
 | `/cultivation settings (options)` | 打开玩家设置菜单。 | `cultivation` |
 | `/cultivation bonuses` | 打开生效加成页，列出当前作用于你的每一项修正。 | `cultivation` |
+| `/cultivation aura` | 切换你是否外放修为[气息](/cultivation/auras/)。至于能否*看到*自己的、或他人的气息，则是设置中另外两个独立的开关。 | `cultivation` |
+
+#### 存档
+
+`/cultivation profile` 管理你的修炼存档 —— 各自独立的进度存档，见[存档](/cultivation/profiles/)。编号对应列表中从 1 起算的槽位；名称匹配不区分大小写。
+
+| 指令 | 说明 | 权限 |
+|:---|:---|:---|
+| `/cultivation profile [list]` | 列出你的存档，附境界、阶段与灵气，并标出你当前所在的那份。 | `cultivation` |
+| `/cultivation profile new confirm (create)` | 从炼体期开始一名全新的修士，并将你切换至其上。唯有传入字面的 `confirm` 一词方会执行。 | `cultivation` |
+| `/cultivation profile switch {编号或名称} (use, load)` | 保存你当前所在的存档，并载入所指的那一份。 | `cultivation` |
+| `/cultivation profile rename {名称}` | 为你当前所在的存档改名。名称上限为 24 个字符。 | `cultivation` |
+| `/cultivation profile delete {编号或名称} (remove)` | 将该存档永久抹去。会拒绝你当前所在的存档，以及你仅剩的最后一份存档。存档菜单会先后询问两次方才执行；指令则一敲即成。 | `cultivation` |
+
+试炼存档是挂在同一条指令上、由管理员另行授权的一套独立工具 —— 它能免去你哪些限制，见[存档](/cultivation/profiles/)。下表中除 `test` 本身外，每个分支都还要求你当前所在的正是这具试炼之身。
+
+| 指令 | 说明 | 权限 |
+|:---|:---|:---|
+| `/cultivation profile test {时限}` | 进入（或延长）试炼之身。时限为**必填** —— `90s`、`30m`、`4h`、`2d`，或不带单位的纯数字分钟数；范围 1 分钟至 30 天。以现实时间计算，下线也不会暂停。 | `cultivation.profile.test` |
+| `/cultivation profile realm {境界}` | 按枚举名称设定试炼之身的境界，例如 `VOID_REFINEMENT`。 | `cultivation.profile.test` |
+| `/cultivation profile stage {阶段}` | 设定子阶段：`EARLY`、`MIDDLE`、`LATE` 或 `PEAK`。 | `cultivation.profile.test` |
+| `/cultivation profile qi {数量}` | 设定存蓄的灵气。 | `cultivation.profile.test` |
+| `/cultivation profile points {数量}` | 设定（而非增加）可用的天赋点。 | `cultivation.profile.test` |
+| `/cultivation profile race {种族}` | 设定试炼之身的种族，绕过境界解锁限制。 | `cultivation.profile.test` |
+| `/cultivation profile reset` | 将试炼之身抹回一名全新修士，而不离开它。 | `cultivation.profile.test` |
 
 #### 修炼功法
 
@@ -95,7 +120,8 @@ han: 起
 | `/sect disband [confirm]` | 先行示警，道出宗门之名与门人之数；加 `confirm` 方才彻底解散，并知会每一位门人。 | `cultivation.sect` |
 | `/sect claim` | 在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。 | `cultivation.sect` |
 | `/sect inscribe` | 将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。 | `cultivation.sect` |
-| `/sect info (i)` | 列出本宗的境况 —— 门人、大殿与各项加成。 | `cultivation.sect` |
+| `/sect banner [旗帜]` | 不带参数时，列出你的宗门可悬挂的[旗帜](/cultivation/sects/)，并标出当前所悬的那面。带上名称 —— `azure`，或完整的 `cultivation:azure` —— 即可将其悬于大殿之上；`none` 则回归本色灵光。仅限宗主或长老。 | `cultivation.sect` |
+| `/sect info (i)` | 列出本宗的境况 —— 门人、大殿、旗帜与各项加成。 | `cultivation.sect` |
 | `/sect menu (ui)` | 打开宗门菜单界面，与裸写 `/sect` 所开的是同一页。 | `cultivation.sect` |
 
 #### 宗门攻伐

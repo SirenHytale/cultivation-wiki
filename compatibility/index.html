@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Compatibility — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - how Cultivation behaves alongside Endless Leveling, PlaceholderAPI and Marriage">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -96,7 +97,9 @@
 
     <h2>Writing your own compatibility</h2>
 
-    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to ~135 cancellable events across ten subsystems.</p>
+    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to 144 events across eleven subsystems.</p>
+
+    <p>Since v0.7.0, a mod that <strong>replaces Cultivation's progression ladder</strong> (a <code>ProgressionProvider</code>) has one more duty: players can now keep several <a href="../profiles/">profiles</a>, and switching swaps the cultivator underneath your mod. Until your provider declares <code>supportsProfiles()</code> and keeps its own records in step through <code>ProfileEvents</code>, switching is refused rather than half-performed — see <a href="../api-addons/">Building Add-ons</a>.</p>
 
     <p>Two calls are worth knowing if your mod applies stats of its own:</p>
 
@@ -117,8 +120,6 @@ if (CultivationAPI.isPlaceholderApiRegistered()) { ... }</code></pre>
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>接口参考 — 修真百科</title>
 <meta name="description" content="CultivationAPI 门面上的组件类型 getter 与状态读取方法，以及线程约定。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -100,18 +101,29 @@
 
     <p>它对内置功法与你自己注册的功法皆有效，且两种情形下都会触发 <code>TechniqueEvents.PreTechniquePerformEvent</code> 与 <code>TechniquePerformEvent</code>。构建一门功法见<a href="../api-registries/">注册表</a>，面向玩家的列表见<a href="../techniques/">功法</a>。</p>
 
+    <h2>存档、称号与配色</h2>
+
+    <p>&lt;span class="tag"&gt;v0.7.0&lt;/span&gt; 面向玩家修炼存档与其装饰外观的读取面。注意这些方法接受的是 <code>Store&lt;EntityStore&gt;</code>，而非 <code>ComponentAccessor</code>。</p>
+
+    <table>
+    <thead><tr><th>方法</th><th>返回</th></tr></thead>
+    <tbody><tr><td><code>getActiveProfileName(store, ref)</code></td><td>玩家所在存档的名字；在任何存档被创建之前为 <code>""</code>。</td></tr><tr><td><code>getProfileCount(store, ref)</code></td><td>玩家所持有的真实（非沙盒）存档数目。</td></tr><tr><td><code>isTestProfileActive(store, ref)</code></td><td>玩家此刻是否身处管理员授予的试炼存档沙盒 —— 排行榜与宗门积分皆不将其计入。</td></tr><tr><td><code>getMaxProfiles()</code> · <code>getMaxTechniquePresets()</code></td><td>当前生效的上限 —— 任何扩展所注册过的最高值，下限为 3。</td></tr><tr><td><code>getTitle(store, ref)</code></td><td>玩家已佩戴的<a href="../titles/">称号</a>，或 <code>null</code>。</td></tr><tr><td><code>getSectBanner(String)</code> · <code>getPalette(store, ref)</code></td><td>按 id 取一面已注册的旗帜；玩家所选的配色（<code>null</code> 表示默认外观）。</td></tr></tbody>
+    </table>
+
+    <p><strong>存档是被观察的，而非被驱动的。</strong>门面上刻意没有 <code>switchProfile</code> —— 切换是玩家自己的举动，经由菜单或 <code>/cultivation profile</code> 完成。扩展所能做的，是监听（<code>ProfileEvents</code>，见<a href="../api-events/">事件</a>）、让自己按存档维系的状态与之同步，并通过 <code>ProgressionProvider.supportsProfiles()</code>（见<a href="../api-addons/">编写扩展</a>）昭告它确实这样做了。</p>
+
     <h2>注册</h2>
 
     <p>完整内容见<a href="../api-registries/">注册表</a>：</p>
 
     <table>
     <thead><tr><th>方法</th><th>返回</th><th>说明</th></tr></thead>
-    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>向种族菜单添加一个种族，以 <code>unlockRealm</code> 为门槛。</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>添加一门可施展的功法。</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>为 <code>registerTechnique</code> 构建规则。</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>设定某件物品在打坐时的灵脉吸收倍率。</td></tr></tbody>
+    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>向种族菜单添加一个种族，以 <code>unlockRealm</code> 为门槛。</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>添加一门可施展的功法。</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>为 <code>registerTechnique</code> 构建规则。</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>设定某件物品在打坐时的灵脉吸收倍率。</td></tr><tr><td><code>CultivationAPI.registerTitle(CultivationTitle title)</code></td><td></td><td>向称号页添加一个纯装饰称号。</td></tr><tr><td><code>CultivationAPI.registerSectBanner(SectBanner banner)</code></td><td></td><td>添加一面宗门可悬挂于其大殿之上的旗帜。</td></tr><tr><td><code>CultivationAPI.registerPalette(CultivationPalette palette)</code></td><td></td><td>添加一套玩家可选的菜单/HUD 配色。</td></tr><tr><td><code>CultivationAPI.registerProfileCap(String key, int cap)</code> · <code>registerTechniquePresetCap(String key, int cap)</code></td><td></td><td>上调存档 / 配置组的上限（取最高的注册值）。</td></tr></tbody>
     </table>
 
     <h2>另见</h2>
 
-    <ul><li><a href="../api-events/">事件</a> —— 重塑或否决任何一项机制。</li><li><a href="../api-registries/">注册表</a> —— 添加种族、功法与灵气物品。</li><li><a href="../config/">配置</a>与<a href="../commands/">指令</a> —— 上述大多数内容面向服主的对应形式。</li></ul>
+    <ul><li><a href="../api-events/">事件</a> —— 重塑或否决任何一项机制。</li><li><a href="../api-registries/">注册表</a> —— 添加种族、功法、灵气物品、称号、宗门旗帜与配色。</li><li><a href="../config/">配置</a>与<a href="../commands/">指令</a> —— 上述大多数内容面向服主的对应形式。</li></ul>
 
   </main>
 
@@ -121,8 +133,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

@@ -22,6 +22,9 @@ han: 配
 | "Sect-Max-Members" | 12 | 每个宗门名录的人数上限，含宗主。 |
 | "Sect-Hall-Min-Vein-Tier" | 1 | `/sect claim` 要在某区块成功，该区块所摇出的灵脉品阶下限。1 = 丰灵脉及以上，2 = 仅限龙脉。寻常区块永远承载不了大殿。 |
 | "Description-Sect-Hall" | 一段解释上述数值的长字符串。 | 重述人数上限与灵脉阶位门槛，并指出一宗仅一殿 —— 再次占取只是把它迁走。 |
+| "Sect-Hall-Beacon-Enabled" | true | 已占[宗门大殿](/cultivation/sects/)上方的**光柱**，任何路过之人皆可望见 —— 不止门中弟子。将其关闭，并不会移除大殿在世界地图上的标记。 |
+| "Sect-Hall-Beacon-Interval-Seconds" | 2.5 | 光柱在大殿处重新一现的间隔时长。旗帜的粒子素材经设计，会在一个间隔之内燃尽。 |
+| "Description-Sect-Hall-Beacon" | 一段解释上述数值的长字符串。 | 指出宗主或长老可用 `/sect banner` 升起一面旗帜为光柱染色，而大殿一旦在围攻中失守，光柱便会退回灵脉本色。 |
 | "Sect-Qi-Bonus-Percent-Rich-Hall" | 5.0 | 宗门大殿踞于丰灵脉上时，每名门人从所有来源多得的灵气百分比。 |
 | "Sect-Qi-Bonus-Percent-Dragon-Hall" | 8.0 | 大殿踞于龙脉上时的同一加成。 |
 | "Description-Sect-Qi-Bonus" | 一段解释上述数值的长字符串。 | 该加成在全服范围内对每名门人生效，无论其身在何处；而没有大殿的宗门分文不得 —— 大殿正是关窍所在。 |

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>API Reference — Cultivation Wiki</title>
 <meta name="description" content="Cultivation Mod - the CultivationAPI facade methods">
 <link rel="icon" href="../assets/img/favicon.svg">
@@ -163,6 +164,26 @@ holder.save();</code></pre>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2>Profiles, titles and palettes</h2>
+
+    <p><span class="tag">v0.7.0</span> The read surface for a player's saved cultivators and their cosmetics. Note these take a <code>Store&lt;EntityStore&gt;</code> rather than a <code>ComponentAccessor</code>.</p>
+
+    <table>
+    <thead><tr><th>Method</th><th>Returns</th></tr></thead>
+    <tbody>
+    <tr><td><code>getActiveProfileName(store, ref)</code></td><td>The name of the profile they are on, or <code>""</code> before any was ever created.</td></tr>
+    <tr><td><code>getProfileCount(store, ref)</code></td><td>How many real (non-sandbox) profiles they keep.</td></tr>
+    <tr><td><code>isTestProfileActive(store, ref)</code></td><td>Whether they are on the operator-granted test sandbox - the one the rankings and sect scores ignore.</td></tr>
+    <tr><td><code>getMaxProfiles()</code> &middot; <code>getMaxTechniquePresets()</code></td><td>The live caps - the highest value any addon registered, floor 3.</td></tr>
+    <tr><td><code>getTitle(store, ref)</code></td><td>Their equipped <a href="../titles/">title</a>, or <code>null</code>.</td></tr>
+    <tr><td><code>getSectBanner(String)</code> &middot; <code>getPalette(store, ref)</code></td><td>A registered banner by id; the palette they picked (<code>null</code> = the default look).</td></tr>
+    </tbody>
+    </table>
+
+    <p><strong>Profiles are observed, not driven.</strong> There is deliberately no <code>switchProfile</code> on the facade - a switch is the player's own act, through the menu or <code>/cultivation profile</code>. What an addon does is listen (<code>ProfileEvents</code>, see <a href="../api-events/">Events</a>), keep its own per-profile state in step, and declare that it does so via <code>ProgressionProvider.supportsProfiles()</code> (see <a href="../api-addons/">Building Add-ons</a>).</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
     <h2>Which mods are installed</h2>
 
     <p><span class="tag">v0.6.1</span> See <a href="../compatibility/">Compatibility</a> for what each of these changes.</p>
@@ -208,14 +229,14 @@ holder.save();</code></pre>
 
     <table>
     <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>Adds a race to the race menu, gated on <code>unlockRealm</code>.</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>Adds a performable technique.</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>Builds the rule for <code>registerTechnique</code>.</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>Sets an item's Spirit Vein absorption multiplier while meditating.</td></tr></tbody>
+    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>Adds a race to the race menu, gated on <code>unlockRealm</code>.</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>Adds a performable technique.</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>Builds the rule for <code>registerTechnique</code>.</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>Sets an item's Spirit Vein absorption multiplier while meditating.</td></tr><tr><td><code>CultivationAPI.registerTitle(CultivationTitle title)</code></td><td></td><td>Adds a cosmetic title to the Titles page.</td></tr><tr><td><code>CultivationAPI.registerSectBanner(SectBanner banner)</code></td><td></td><td>Adds a banner sects can fly over their hall.</td></tr><tr><td><code>CultivationAPI.registerPalette(CultivationPalette palette)</code></td><td></td><td>Adds a menu/HUD palette players can pick.</td></tr><tr><td><code>CultivationAPI.registerProfileCap(String key, int cap)</code> &middot; <code>registerTechniquePresetCap(String key, int cap)</code></td><td></td><td>Raises the profile / keybind-loadout caps (highest registration wins).</td></tr></tbody>
     </table>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>See also</h2>
 
-    <ul><li><a href="../api-events/">API Events</a> - reshape or veto any mechanic.</li><li><a href="../api-registries/">API Registries</a> - add races, techniques and Qi items.</li><li><a href="../config/">Config</a> and <a href="../commands/">Commands</a> - the server-owner-facing equivalents of most of the above.</li></ul>
+    <ul><li><a href="../api-events/">API Events</a> - reshape or veto any mechanic.</li><li><a href="../api-registries/">API Registries</a> - add races, techniques, Qi items, titles, sect banners and palettes.</li><li><a href="../config/">Config</a> and <a href="../commands/">Commands</a> - the server-owner-facing equivalents of most of the above.</li></ul>
 
   </main>
 
@@ -225,8 +246,6 @@ holder.save();</code></pre>
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

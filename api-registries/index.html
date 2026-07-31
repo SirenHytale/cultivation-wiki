@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>API Registries — Cultivation Wiki</title>
-<meta name="description" content="Cultivation Mod - registering your own races, techniques and Qi items">
+<meta name="description" content="Cultivation Mod - registering your own races, techniques, Qi items, titles, sect banners and palettes">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/api-registries/">
 <meta property="og:title" content="API Registries — Cultivation Wiki">
-<meta property="og:description" content="Cultivation Mod - registering your own races, techniques and Qi items">
+<meta property="og:description" content="Cultivation Mod - registering your own races, techniques, Qi items, titles, sect banners and palettes">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="API Registries — Cultivation Wiki">
-<meta name="twitter:description" content="Cultivation Mod - registering your own races, techniques and Qi items">
+<meta name="twitter:description" content="Cultivation Mod - registering your own races, techniques, Qi items, titles, sect banners and palettes">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../assets/css/xianxia.css">
@@ -46,16 +47,16 @@
 
     <h1>API Registries</h1>
 
-    <p class="page-lede">Listening to <a href="../api-events/">events</a> lets you reshape what Cultivation already does. The registries here let you add content that the mod then treats as its own - a race that appears in the race menu, a technique usable through every technique trigger, an item that boosts Spirit Vein absorption.</p>
+    <p class="page-lede">Listening to <a href="../api-events/">events</a> lets you reshape what Cultivation already does. The registries here let you add content that the mod then treats as its own - a race that appears in the race menu, a technique usable through every technique trigger, an item that boosts Spirit Vein absorption, a <a href="../titles/">title</a> on the picker, a banner a sect can fly, a palette that re-colors every menu.</p>
 
-    <p><code>CultivationAPI</code> exposes three registration methods and one builder helper:</p>
+    <p><code>CultivationAPI</code> exposes these registration methods (plus one builder helper for technique rules):</p>
 
     <table>
     <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>Registers a brand-new <a href="../races/">race</a> players can choose once their cultivation reaches <code>unlockRealm</code>.</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>Registers a brand-new <a href="../techniques/">technique</a> cultivators can perform.</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>Convenience builder for the rule you pass to <code>registerTechnique</code>.</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>Registers, or overwrites, the Spirit Vein absorption multiplier granted while that item is held in a meditating player's active hotbar slot.</td></tr></tbody>
+    <tbody><tr><td><code>CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier&lt;RaceConfig&gt; stats)</code></td><td><code>PlayerRace</code></td><td>Registers a brand-new <a href="../races/">race</a> players can choose once their cultivation reaches <code>unlockRealm</code>.</td></tr><tr><td><code>CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)</code></td><td><code>Technique</code></td><td>Registers a brand-new <a href="../techniques/">technique</a> cultivators can perform.</td></tr><tr><td><code>CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)</code></td><td><code>TechniqueRule</code></td><td>Convenience builder for the rule you pass to <code>registerTechnique</code>.</td></tr><tr><td><code>CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)</code></td><td></td><td>Registers, or overwrites, the Spirit Vein absorption multiplier granted while that item is held in a meditating player's active hotbar slot.</td></tr><tr><td><code>CultivationAPI.registerTitle(CultivationTitle title)</code> <span class="tag">v0.7.0</span></td><td></td><td>Puts a cosmetic <a href="../titles/">title</a> of your own on the Titles page.</td></tr><tr><td><code>CultivationAPI.registerSectBanner(SectBanner banner)</code> <span class="tag">v0.7.0</span></td><td></td><td>Adds a banner <a href="../sects/">sects</a> can fly over their hall.</td></tr><tr><td><code>CultivationAPI.registerPalette(CultivationPalette palette)</code> <span class="tag">v0.7.0</span></td><td></td><td>Adds a palette that re-colors every Cultivation menu and the HUD.</td></tr></tbody>
     </table>
 
-    <p>All three are safe to call from your own plugin's <code>setup()</code> in any load order relative to Cultivation's own <code>setup()</code>. The registries are plain static maps that nothing reads until a player actually interacts - opens the race menu, meditates, performs a technique - which only happens well after every plugin has finished loading.</p>
+    <p>All of them are safe to call from your own plugin's <code>setup()</code> in any load order relative to Cultivation's own <code>setup()</code>. The registries are plain static maps that nothing reads until a player actually interacts - opens the race menu, meditates, performs a technique - which only happens well after every plugin has finished loading.</p>
 
     <p>Re-registering the same id for a race or a technique is a <strong>no-op</strong>: it returns the existing entry rather than erroring, so it is safe across a reload of your plugin.</p>
 
@@ -252,15 +253,86 @@ public final class MyTechniques {
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2>Registering a title</h2>
+
+    <p><span class="tag">v0.7.0</span> <code>registerTitle</code> puts a cosmetic title of your own on the <a href="../titles/">Titles</a> page, where it is picked, shown above heads, in chat, and on the rankings exactly like a built-in one. Titles are <strong>purely cosmetic</strong> - nothing in this registry grants a stat, a permission side-effect, or any gameplay change.</p>
+
+    <pre><code class="language-java">CultivationAPI.registerTitle(CultivationTitle.builder("MyMod:dragonslayer")
+        .name("server.mymod.title.dragonslayer")          // server.lang key
+        .section("server.mymod.title.section")            // picker group caption
+        .unlocked((store, ref, player) -&gt; MyDeeds.hasSlainDragon(player))
+        .hint("server.mymod.title.dragonslayer.hint")     // shown greyed until earned
+        .build());</code></pre>
+
+    <p><code>CultivationTitle.builder(key)</code> takes:</p>
+
+    <table>
+    <thead><tr><th>Builder method</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>name(String)</code> / <code>name(Supplier&lt;Message&gt;)</code></td><td>The display name - a <code>server.lang</code> key, or a supplier for parameterised names (the built-in element titles use one for <em>{element} Dao</em>).</td></tr><tr><td><code>section(String)</code></td><td>A caption key grouping titles on the picker. Drawn when it differs from the previous entry, so keep registrations of one section together.</td></tr><tr><td><code>unlocked(UnlockCheck)</code></td><td>The <em>earned</em> gate: <code>boolean test(Store, Ref, PlayerRef)</code>. A locked title <strong>stays on the picker, greyed</strong>, with the hint explaining what earns it. Omit it and the title is available to everyone who can see it.</td></tr><tr><td><code>hint(String)</code> / <code>hint(Supplier&lt;Message&gt;)</code></td><td>The line shown on the locked tile.</td></tr><tr><td><code>permission(String)</code> / <code>visible(Predicate&lt;PlayerRef&gt;)</code></td><td>The <em>visibility</em> gate: both must pass or the title is hidden from that player <strong>entirely</strong>. This is the operator/feature switch - use <code>unlocked</code> for anything a player can work toward.</td></tr></tbody>
+    </table>
+
+    <p>Reads: <code>getTitles()</code>, <code>getTitle(String)</code>, and <code>getTitle(store, ref)</code> for a player's equipped title. Registering an existing key <strong>replaces</strong> it; <code>unregisterTitle</code> withdraws one. Note the equipped title is stored on the player's <em>settings</em>, not their profile - switching <a href="../profiles/">profiles</a> keeps it - and the mod deliberately does not re-check <code>unlocked</code> at read time, so a title that was earnable when equipped stays shown.</p>
+
+    <p>One engine caveat worth knowing: the overhead name is written through the shared <code>PersistentDisplayName</code> component, so a nickname mod that also writes it will overwrite, or be overwritten by, the title.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Registering a sect banner</h2>
+
+    <p><span class="tag">v0.7.0</span> <code>registerSectBanner</code> adds a banner <a href="../sects/">sects</a> can fly over their hall, beside the built-in six.</p>
+
+    <pre><code class="language-java">CultivationAPI.registerSectBanner(SectBanner.builder("MyMod:crimson")
+        .name("server.mymod.banner.crimson")
+        .section("server.mymod.banner.section")
+        .swatch(0xD8452E)                       // RGB on the picker tile and map pin
+        .particle("MyMod_HallBanner_Crimson")   // REQUIRED - the light itself
+        .build());</code></pre>
+
+    <ul><li><strong>A banner is a particle system, not a color.</strong> The engine's color-on-spawn field is unreliable, so the banner's colors are baked into the <code>.particlesystem</code> asset itself; <code>swatch</code> only tints the picker tile and the hall's <a href="../sects/">map pin</a>. <code>build()</code> refuses a banner with no particle.</li><li><strong>The asset must burn out on its own.</strong> Give it a finite <code>TotalParticles</code> and an explicit system <code>LifeSpan</code> sized to finish inside <code>Sect-Hall-Beacon-Interval-Seconds</code> (2.5s by default) - an uncapped system would leak an instance on every client that ever walked past the hall, forever.</li><li><code>permission(String)</code> / <code>visible(Predicate)</code> gate who may <em>fly</em> it - none of the built-in six are gated.</li><li><strong>Uninstalling is safe.</strong> A sect stores the banner <em>id</em>, never the banner. An id nobody registers any more simply resolves to the hall's plain vein-tier light, and the choice survives for if the mod returns.</li></ul>
+
+    <p>Reads: <code>getSectBanners()</code>, <code>getSectBanner(String)</code> (null-tolerant). Changing a banner fires <code>SectEvents.PreSectBannerChangeEvent</code> / <code>SectBannerChangeEvent</code> - see <a href="../api-events/">Events</a>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Registering a palette</h2>
+
+    <p><span class="tag">v0.7.0</span> <code>registerPalette</code> lets a mod re-color every Cultivation menu and the HUD for players who pick it. A palette is mostly <strong>re-colored <code>.ui</code> documents</strong>, not hex values: you ship recolored copies of Cultivation's pages under one root and declare which files you cover.</p>
+
+    <pre><code class="language-java">CultivationAPI.registerPalette(CultivationPalette.builder("MyMod:moonlit")
+        .name("server.mymod.palette.moonlit")
+        .swatch(0x8FA8FF)                                  // picker tile
+        .documentRoot("Common/UI/Custom/Pages/MyMod/Moonlit/")
+        .documents(Set.of("CultivationPage.ui", "CultivationHud.ui"))  // the files you cover
+        .halo(SkillTreeBranch.VITALITY, 0x9BD8A0)          // all nine branches, or none
+        // ... the other eight branches ...
+        .build());</code></pre>
+
+    <ul><li>Declared documents are matched on the <strong>bare file name</strong> against <code>documentRoot</code>, so every covered file must live under that one root. A page you do not declare deliberately falls through to Cultivation's own - an unresolvable <code>.ui</code> path kills the whole page load with no log line, so the registry never invents one.</li><li>The nine <a href="../skilltree/">skill tree</a> branch halos are <strong>all-or-none</strong>: pass every <code>SkillTreeBranch</code> or none - <code>build()</code> refuses a partial set.</li><li><code>CultivationPalette.DEFAULT_KEY</code> (<code>"cultivation:default"</code>) is the built-in look. <code>getPalette(store, ref)</code> returns null for it; <code>document(palette, basePath)</code> resolves a path through whichever palette a player is on.</li><li>Like the equipped title, a player's palette choice lives on their settings, shared across <a href="../profiles/">profiles</a>.</li></ul>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Raising the caps</h2>
+
+    <p><span class="tag">v0.7.0</span> Two limits are addon-raisable rather than config keys, through the same register/unregister shape:</p>
+
+    <table>
+    <thead><tr><th>Method</th><th>Default</th><th>Ceiling</th><th>Raises</th></tr></thead>
+    <tbody><tr><td><code>registerTechniquePresetCap(String key, int cap)</code></td><td>3</td><td>8</td><td>How many technique <a href="../keybinds/">keybind loadouts</a> a player may keep.</td></tr><tr><td><code>registerProfileCap(String key, int cap)</code></td><td>3</td><td>6</td><td>How many <a href="../profiles/">profiles</a> a player may keep. The test sandbox never counts against it.</td></tr></tbody>
+    </table>
+
+    <p>The <code>key</code> is an id for your mod (<code>"jadeSlip"</code>). The live value - <code>getMaxTechniquePresets()</code> / <code>getMaxProfiles()</code> - is the <strong>highest</strong> registered cap, never the sum: two addons that both raise it to six mean six, not twelve. <strong>Nothing is destroyed when a cap falls.</strong> A player who filled six slots and then lost the addon that allowed them keeps all six; only <em>adding</em> is refused until they are back under the live cap. Register from <code>setup()</code>, withdraw with the matching <code>unregister*Cap</code> in <code>shutdown()</code>.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
     <h2>What is not registrable</h2>
 
-    <p>Not every extension point is a Java registry. <code>CultivationAPI</code> exposes <code>register*</code> methods for races, techniques, Qi absorption items, admin config sections, menu pages and codex entries. Skill tree nodes, manuals and spirit beast species are declared in Cultivation's own JSON config instead - see the <a href="../config/">Config</a> page - and are not registrable from code. You can still reach all three through events: node unlocks through <code>CultivationEvents.PreSkillUnlockEvent</code>, manuals through <code>ItemEvents.PreManualReadEvent</code>, and beast species through the <code>species()</code> getter on every <code>BeastEvents</code> event.</p>
+    <p>Not every extension point is a Java registry. <code>CultivationAPI</code> exposes <code>register*</code> methods for races, techniques, Qi absorption items, admin config sections, menu pages, codex entries, titles, sect banners, palettes and the two caps. Skill tree nodes, manuals and spirit beast species are declared in Cultivation's own JSON config instead - see the <a href="../config/">Config</a> page - and are not registrable from code. You can still reach all three through events: node unlocks through <code>CultivationEvents.PreSkillUnlockEvent</code>, manuals through <code>ItemEvents.PreManualReadEvent</code>, and beast species through the <code>species()</code> getter on every <code>BeastEvents</code> event.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
     <h2>See also</h2>
 
-    <ul><li><a href="../api-events/">API Events</a> - the ~135 hooks your registered content fires through.</li><li><a href="../api-reference/">API Reference</a> - reading a player's state before you act on it.</li><li><a href="../races/">Races</a>, <a href="../techniques/">Techniques</a>, <a href="../qi-gathering/">Qi Gathering</a>, <a href="../config/">Config</a>, <a href="../commands/">Commands</a>.</li></ul>
+    <ul><li><a href="../api-events/">API Events</a> - the 144 hooks your registered content fires through.</li><li><a href="../api-reference/">API Reference</a> - reading a player's state before you act on it.</li><li><a href="../races/">Races</a>, <a href="../techniques/">Techniques</a>, <a href="../qi-gathering/">Qi Gathering</a>, <a href="../titles/">Titles</a>, <a href="../sects/">Sects</a>, <a href="../config/">Config</a>, <a href="../commands/">Commands</a>.</li></ul>
 
   </main>
 
@@ -270,8 +342,6 @@ public final class MyTechniques {
 <div id="site-footer"></div>
 
 <script src="../data/nav.js"></script>
-<script src="../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../assets/js/site.js"></script>
 </body>
 </html>

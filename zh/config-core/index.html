@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>核心配置 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的 Config.json：灵气曲线与每级属性加成，以及调整它们的后果。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -50,11 +51,11 @@
 
     <h2>Config</h2>
 
-    <p>核心灵气曲线与每级属性加成，位于路径 <code>mods/Siren_Cultivation/Config.json</code>。</p>
+    <p>核心灵气曲线、每级属性加成，以及<a href="../auras/">气息</a>与<a href="../notices/">屏显通告</a>的全服开关，位于路径 <code>mods/Siren_Cultivation/Config.json</code>。</p>
 
     <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
-    <tbody><tr><td>"ConfigName"</td><td>"Cultivation Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>4</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Base-Qi-Requirement"</td><td>175.0</td><td>从最初的子阶段（炼体期·初期）进阶所需的灵气量。曲线中其余每一项需求都以这个基数缩放。</td></tr><tr><td>"Description-Base-Qi-Requirement"</td><td>一段解释上述数值的长字符串。</td><td>重述这是第一个子阶段的需求，且整条曲线都由它缩放而来。</td></tr><tr><td>"Substage-Growth-Rate"</td><td>1.55</td><td>在一个境界之内每攀升一个子阶段（初期 → 中期 → 后期 → 圆满），灵气需求所乘的倍率。</td></tr><tr><td>"Realm-Base-Multiplier"</td><td>4.25</td><td>每达到一个境界，灵气需求所乘的倍率，叠加在子阶段增长之上。</td></tr><tr><td>"Realm-Breakthrough-Multiplier"</td><td>5.5</td><td>仅在境界突破（圆满 → 下一境界的初期）的灵气消耗上额外施加的倍率，叠加于常规曲线之上。</td></tr><tr><td>"Description-Realm-Breakthrough-Multiplier"</td><td>一段解释上述数值的长字符串。</td><td>说明正是这一层额外倍率，让境界突破远比一次寻常的子阶段进阶更为郑重。</td></tr><tr><td>"Health-Bonus-Per-Level"</td><td>4.0</td><td>每获得一个总子等级（境界 × 4 + 阶段）所加的最大生命值。</td></tr><tr><td>"Damage-Percent-Bonus-Per-Level"</td><td>2.0</td><td>每获得一个总子等级所增的伤害百分比。</td></tr></tbody>
+    <tbody><tr><td>"ConfigName"</td><td>"Cultivation Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>4</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Base-Qi-Requirement"</td><td>175.0</td><td>从最初的子阶段（炼体期·初期）进阶所需的灵气量。曲线中其余每一项需求都以这个基数缩放。</td></tr><tr><td>"Description-Base-Qi-Requirement"</td><td>一段解释上述数值的长字符串。</td><td>重述这是第一个子阶段的需求，且整条曲线都由它缩放而来。</td></tr><tr><td>"Substage-Growth-Rate"</td><td>1.55</td><td>在一个境界之内每攀升一个子阶段（初期 → 中期 → 后期 → 圆满），灵气需求所乘的倍率。</td></tr><tr><td>"Realm-Base-Multiplier"</td><td>4.25</td><td>每达到一个境界，灵气需求所乘的倍率，叠加在子阶段增长之上。</td></tr><tr><td>"Realm-Breakthrough-Multiplier"</td><td>5.5</td><td>仅在境界突破（圆满 → 下一境界的初期）的灵气消耗上额外施加的倍率，叠加于常规曲线之上。</td></tr><tr><td>"Description-Realm-Breakthrough-Multiplier"</td><td>一段解释上述数值的长字符串。</td><td>说明正是这一层额外倍率，让境界突破远比一次寻常的子阶段进阶更为郑重。</td></tr><tr><td>"Health-Bonus-Per-Level"</td><td>4.0</td><td>每获得一个总子等级（境界 × 4 + 阶段）所加的最大生命值。</td></tr><tr><td>"Damage-Percent-Bonus-Per-Level"</td><td>2.0</td><td>每获得一个总子等级所增的伤害百分比。</td></tr><tr><td>"Aura-Enabled"</td><td>true</td><td><a href="../auras/">气息</a>的全服总开关 —— 境界气息与打坐气息皆归其管。只想藏起自己的气息、或不愿看见他人气息的玩家，在设置中另有各自独立的三个开关可用。</td></tr><tr><td>"Aura-Pulse-Interval-Seconds"</td><td>4.0</td><td>每道气息在其所属玩家位置重新生成的间隔。数值限制在 1.0 至 6.0 之间 —— 粒子素材按默认值设计，恰好两次脉冲会有所交叠。</td></tr><tr><td>"Aura-Desc"</td><td>一段解释上述数值的长字符串。</td><td>重述这一全服总开关，与各玩家在设置中独立开关之间的分工。</td></tr><tr><td>"Notice-Titles-Enabled"</td><td>true</td><td>境界突破、子阶段进阶、跌落境界与宗门变动时所现的<a href="../notices/">全屏标题</a>。聊天栏仍会道出这些标题所现的一切，故关闭它们无损分毫信息。</td></tr><tr><td>"Notice-Notifications-Enabled"</td><td>true</td><td>较次要时刻所现的<a href="../notices/">角落通知</a> —— 如解锁一个天赋节点、<a href="../lifebound/">本命法宝</a>升级、一次洗点，或一场仪式开始。</td></tr><tr><td>"Breakthrough-Title-Radius-Chunks"</td><td>9</td><td>境界突破向周围其他修士播告的范围，以区块计的半径距离。限制在 0 至 32 之间；0 则让每一次突破都只归你私人所知。</td></tr><tr><td>"Notice-Desc"</td><td>一段解释上述数值的长字符串。</td><td>指出无论这些开关如何设置，走火入魔与心魔劫仍各自保有专门撰写的标题。</td></tr></tbody>
     </table>
 
     <h2>关于曲线</h2>
@@ -73,8 +74,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

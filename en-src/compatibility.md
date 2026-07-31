@@ -96,7 +96,15 @@ feature stays off no matter what `Society/PartnerConfig.json` says.
 
 Cultivation's API is designed for exactly this. An add-on can read every config
 file, drive progression, register its own settings into the admin menu, and
-listen to ~135 cancellable events across ten subsystems.
+listen to 144 events across eleven subsystems.
+
+Since v0.7.0, a mod that **replaces Cultivation's progression ladder** (a
+`ProgressionProvider`) has one more duty: players can now keep several
+[profiles](/cultivation/profiles/), and switching swaps the cultivator
+underneath your mod. Until your provider declares
+`supportsProfiles()` and keeps its own records in step through `ProfileEvents`,
+switching is refused rather than half-performed — see
+[Building Add-ons](/cultivation/api/addons/).
 
 Two calls are worth knowing if your mod applies stats of its own:
 

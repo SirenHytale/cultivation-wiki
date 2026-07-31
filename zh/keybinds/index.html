@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>快捷键与配置组 — 修真百科</title>
 <meta name="description" content="Cultivation 模组的技法快捷键：一键施展功法，并可保存多套绑定。">
 <link rel="icon" href="../../assets/img/favicon.svg">
@@ -95,7 +96,9 @@
 
     <h2>配置组</h2>
 
-    <p>最多可保存<strong>八套具名配置组</strong>，每套各有自己的四个功法绑定，一键循环切换。战斗一套、赶路一套，不必再手动重绑。</p>
+    <p>保存多套<strong>具名配置组</strong>，每套各有自己的四个功法绑定，一键循环切换。战斗一套、赶路一套，不必再手动重绑。</p>
+
+    <p>自 v0.7.0 起，默认保留<strong>三套</strong>配置组，快捷键页面会直白标出数量 —— <code>已存 2 / 3</code>。此上限并非配置项：扩展模组可通过 API（<code>registerTechniquePresetCap</code>）将其提高，硬性天花板为<strong>八套</strong>。若提高上限的扩展模组后来被移除，你已保存的每一套配置组<strong>都会保留</strong> —— 计数会转为金色以示你已超出上限，只是在回到上限以下之前，不能再*新建*而已。（在 v0.6.x 下保存过三套以上的玩家，也照样悉数保留。）</p>
 
     <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
@@ -126,8 +129,6 @@
 <div id="site-footer"></div>
 
 <script src="../../data/nav.js"></script>
-<script src="../../data/search-index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="../../assets/js/site.js"></script>
 </body>
 </html>

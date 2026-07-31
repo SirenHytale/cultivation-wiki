@@ -7,7 +7,7 @@ han: 匠
 
 ### Cultivation 接口
 
-Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.siren.API.CultivationAPI`，外加同一包下的十个 `*Events` 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 `CultivationManager`、`Cultivation` 或那些 ECS 组件，因为后者随时可能在版本之间变动。
+Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.siren.API.CultivationAPI`，外加同一包下的十一个 `*Events` 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 `CultivationManager`、`Cultivation` 或那些 ECS 组件，因为后者随时可能在版本之间变动。
 
 你可以用它做四件事：
 
@@ -16,9 +16,9 @@ Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.s
 - **监听**（并重新调参，或否决）遍及模组各子系统的约 135 个事件。见[事件](/cultivation/api/events/)。
 - **替换**模组的一整个层次 —— 进阶阶梯本身、它的全套用词，或两者兼有 —— 而其余每个子系统仍照常在其之上运行。此为 0.5.0 新增；见[编写扩展](/cultivation/api/addons/)。
 
-本页所记载的是 Cultivation **0.6.0** 时的接口。
+本页所记载的是 Cultivation **0.7.0** 时的接口。
 
-> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 135 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
+> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 144 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
 
 #### 将 Cultivation 引入你的项目
 
@@ -29,7 +29,7 @@ Maven `pom.xml`：
     <dependency>
         <groupId>plugin.siren</groupId>
         <artifactId>Cultivation</artifactId>
-        <version>0.6.2</version>
+        <version>0.7.0</version>
         <scope>provided</scope>
         <optional>true</optional>
     </dependency>
@@ -108,9 +108,9 @@ public final class MyCultivationHooks {
 
 | 页面 | 涵盖 |
 |:---|:---|
-| [事件](/cultivation/api/events/) | 十个 `*Events` 类中的每一个事件、它暴露什么，以及取消它意味着什么。 |
-| [注册表](/cultivation/api/registries/) | `registerRace`、`registerTechnique`、`newTechniqueRule` 与 `registerQiAbsorptionItemModifier`。 |
+| [事件](/cultivation/api/events/) | 十一个 `*Events` 类中的每一个事件、它暴露什么，以及取消它意味着什么。 |
+| [注册表](/cultivation/api/registries/) | `registerRace`、`registerTechnique`、`registerQiAbsorptionItemModifier`、`registerTitle`、`registerSectBanner`、`registerPalette` 以及可由扩展提升的上限。 |
 | [接口参考](/cultivation/api/reference/) | 组件类型的 getter，以及 `CultivationAPI` 门面上的各项状态读取。 |
-| [编写扩展](/cultivation/api/addons/) | `ProgressionProvider`、`CultivationTheme` 与 `AdminConfigSection` —— 替换阶梯、替换用词，以及添加你自己的管理设置。 |
+| [编写扩展](/cultivation/api/addons/) | `ProgressionProvider`（包括 `supportsProfiles`）、`CultivationTheme` 与 `AdminConfigSection` —— 替换阶梯、替换用词，以及添加你自己的管理设置。 |
 
 这些钩子所依托的各系统，其面向玩家的文档位于本站主体：[境界与阶段](/cultivation/realms/)、[聚灵采气](/cultivation/qi-gathering/)、[大道](/cultivation/dao/)、[功法](/cultivation/techniques/)、[宗门](/cultivation/sects/)、[宗门攻伐](/cultivation/wars/)、[阵法](/cultivation/formations/)、[洞府](/cultivation/dwelling/)、[斗法](/cultivation/duels/)与[灵兽](/cultivation/beasts/)。事件允许你重新调整的每一个数值，在[配置](/cultivation/config/)页都有一份面向服主的对应项，其中大多数也在[指令](/cultivation/commands/)页有所映照。

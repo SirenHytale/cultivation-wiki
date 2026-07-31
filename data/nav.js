@@ -25,7 +25,7 @@ window.SITE = {
   title: "Cultivation",
   tagline: "Hytale Mod Wiki",
   han: "修仙",
-  version: "v0.6.2",
+  version: "v0.7.0",
   owner: "Siren",          // shown in the footer copyright line
 
   zhTitle: "修真",
@@ -94,6 +94,7 @@ window.SITE = {
         { title: "Home",                  zh: "首页",           href: "./",               zhPage: true },
         { title: "Getting Started",       zh: "入门指南",       href: "getting-started/", zhPage: true },
         { title: "The Codex",             zh: "典籍",           href: "codex/",           zhPage: true },
+        { title: "Profiles",              zh: "修炼存档",       href: "profiles/",        zhPage: true },
         { title: "Commands",              zh: "指令",           href: "commands/",        zhPage: true },
         { title: "Permissions",           zh: "权限",           href: "permissions/",     zhPage: true },
         { title: "FAQ & Troubleshooting", zh: "常见问题与排错", href: "faq/",             zhPage: true },
@@ -106,11 +107,13 @@ window.SITE = {
         { title: "Realms & Stages",  zh: "境界与阶段", href: "realms/",       zhPage: true },
         { title: "Qi Gathering",     zh: "聚灵采气",   href: "qi-gathering/", zhPage: true },
         { title: "Spirit Sense",     zh: "灵气感知",   href: "spirit-sense/", zhPage: true },
+        { title: "Auras",            zh: "修为气息",   href: "auras/",        zhPage: true },
         { title: "Tribulations",     zh: "天劫",       href: "tribulations/", zhPage: true },
         { title: "Races",            zh: "种族",       href: "races/",        zhPage: true },
         { title: "Skill Tree",       zh: "天赋树",     href: "skilltree/",    zhPage: true },
         { title: "The Dao",          zh: "大道",       href: "dao/",          zhPage: true },
-        { title: "Karma",            zh: "业力",       href: "karma/",        zhPage: true }
+        { title: "Karma",            zh: "业力",       href: "karma/",        zhPage: true },
+        { title: "Titles",           zh: "称号",       href: "titles/",       zhPage: true }
       ]
     },
     {
@@ -133,7 +136,8 @@ window.SITE = {
         { title: "Cave Abode", zh: "洞府",     href: "dwelling/",   zhPage: true },
         { title: "Partnered Cultivation", zh: "双修", href: "partnered-cultivation/", zhPage: true },
         { title: "Duels",      zh: "斗法",     href: "duels/",      zhPage: true },
-        { title: "Sect Wars",  zh: "宗门攻伐", href: "wars/",       zhPage: true }
+        { title: "Sect Wars",  zh: "宗门攻伐", href: "wars/",       zhPage: true },
+        { title: "Notices",    zh: "屏显通告", href: "notices/",    zhPage: true }
       ]
     },
     {
