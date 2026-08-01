@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Changelog — Cultivation Wiki</title>
-<meta name="description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
+<meta name="description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/changelog/">
 <meta property="og:title" content="Changelog — Cultivation Wiki">
-<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
+<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Changelog — Cultivation Wiki">
-<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.0 — Many Roads — back to the v0.1.0 first release.">
+<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="../assets/css/xianxia.css">
@@ -57,6 +57,61 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.7.1 — The Body Endures</h2>
+    <p>
+      Every realm so far was climbed by gathering Qi. This release adds a second ladder that is not
+      climbed that way at all — it is climbed by standing there and taking the hit. And because
+      armor stops the blow, armor also stops the lesson.
+    </p>
+
+    <h3>Body Tempering</h3>
+    <ul>
+      <li>A <strong>second progression track</strong> running alongside the realms — see the new
+        <a href="../body-tempering/">Body Tempering</a> page. It is <em>not</em> the Body Refinement
+        realm: a Void Refinement cultivator can still be completely untempered.</li>
+      <li>XP comes from <strong>damage that actually reached you</strong>, after armor and every
+        other reduction. Bare-skinned you temper at full rate; in the heaviest set on the server you
+        earn a tenth as much.</li>
+      <li>It pays back as <strong>damage reduction</strong> — up to <strong>40% with nothing on</strong>
+        at max level, <strong>15% in full armor</strong>, scaling the whole way up, and stacking with
+        your armor's own resistance rather than replacing it.</li>
+      <li><strong>Max level is deliberately distant.</strong> The curve compounds; capping out
+        bare-skinned means taking roughly 1.5 million damage.</li>
+      <li>Your <strong>Overview</strong> page shows the trade live: your level, how armored you are,
+        and what your body currently turns aside.</li>
+    </ul>
+
+    <h3>The Info Page</h3>
+    <ul>
+      <li>A new <strong>last tab</strong> listing every mod in the Cultivation family — installed or
+        not, its version, and whether its build verified.</li>
+      <li>Administrators are told <strong>once on join</strong> when something is out of date, with a
+        clickable link. "Unverified" only ever means nobody could confirm it, never an accusation,
+        and nothing is disabled because of it.</li>
+      <li>All of it is off with one switch in the new <code>UpdateConfig.json</code>. Nothing about
+        your server is ever sent — each check is a plain read of a static file.</li>
+    </ul>
+
+    <h3>Cultivation: Jade Slip</h3>
+    <ul>
+      <li>The first release of the supporter add-on — five hand-made palettes recoloring every menu,
+        the HUD, the skill tree and <em>the aura you give off</em>, plus banners, titles and lore.
+        See <a href="../jade-slip/">Jade Slip</a>.</li>
+      <li><strong>Purely cosmetic.</strong> No stats, no power, no advantage. Cultivation is free and
+        stays free; Jade Slip is available to supporters at
+        <a href="https://patreon.mermaids.dev/">patreon.mermaids.dev</a>.</li>
+    </ul>
+
+    <h3>Compatibility &amp; API</h3>
+    <ul>
+      <li>Body tempering's protection is <strong>handed to Endless Leveling's Defense</strong> rather
+        than stacking on top of it — one combined calculation instead of two.</li>
+      <li>API: <strong>BodyTemperingEvents</strong> (its pre-XP event carries a <em>mutable</em>
+        amount, so an add-on can scale the reward rather than only refuse it),
+        <code>registerUpdateCheck</code> and <code>registerBuildCheck</code>, and palettes can now
+        recolor the cultivation aura through <code>auraPrefix</code>.</li>
+    </ul>
 
     <h2>v0.7.0 — Many Roads</h2>
     <p>

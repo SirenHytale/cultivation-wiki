@@ -113,7 +113,8 @@ window.SITE = {
         { title: "Skill Tree",       zh: "天赋树",     href: "skilltree/",    zhPage: true },
         { title: "The Dao",          zh: "大道",       href: "dao/",          zhPage: true },
         { title: "Karma",            zh: "业力",       href: "karma/",        zhPage: true },
-        { title: "Titles",           zh: "称号",       href: "titles/",       zhPage: true }
+        { title: "Titles",           zh: "称号",       href: "titles/",       zhPage: true },
+        { title: "Body Tempering",   zh: "炼体",       href: "body-tempering/" }
       ]
     },
     {
@@ -125,7 +126,8 @@ window.SITE = {
         { title: "Alchemy",           zh: "炼丹",     href: "alchemy/",    zhPage: true },
         { title: "Weapon Refinement", zh: "炼器",     href: "refinement/", zhPage: true },
         { title: "Life-Bound",        zh: "本命法宝", href: "lifebound/",  zhPage: true },
-        { title: "Spirit Beasts",     zh: "灵兽",     href: "beasts/",     zhPage: true }
+        { title: "Spirit Beasts",     zh: "灵兽",     href: "beasts/",     zhPage: true },
+        { title: "Jade Slip",         zh: "玉简",     href: "jade-slip/" }
       ]
     },
     {

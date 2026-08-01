@@ -1,0 +1,87 @@
+---
+title: Body Tempering
+description: Cultivation Mod - the second ladder, climbed by taking blows rather than gathering Qi, and how armor blunts it
+group: The Path
+han: 體
+---
+
+### Body Tempering
+
+Every realm on the Qi ladder is climbed by **gathering**. Body tempering (炼体) is climbed by **enduring**: your body tempers from damage that actually reaches it, and the reward is a body that turns damage aside.
+
+New in v0.7.1. It runs **alongside** the realms, not inside them — a Void Refinement cultivator can be completely untempered, and a fully tempered body can belong to somebody who has never condensed Qi.
+
+* * *
+
+#### It is not the Body Refinement realm
+
+The names collide and the systems do not. **Body Refinement** is the first rung of the [realm ladder](/cultivation/realms/), left by gathering Qi. **Body Tempering** is a separate track with its own level, its own curve and its own reward. You have both at once.
+
+* * *
+
+#### Earning it
+
+XP comes from **damage that actually reached you** — measured after armor, after every other reduction, counting only what got through.
+
+That is the whole design. Armor turns the blow aside, and turns the lesson aside with it. Blows below a minimum are ignored, so chip damage (drowning a pixel at a time, standing in a fire) cannot be farmed.
+
+**What you wear scales it twice over:**
+
+| Wearing | XP earned |
+| --- | --- |
+| Nothing | Full rate |
+| Any ordinary armor | 35% of full |
+| Onyxium | 23.5% of full |
+| Prisma | 10% of full |
+
+Partial sets count partially: one piece of a set is a quarter of the effect, so a single helmet is a real decision.
+
+* * *
+
+#### The reward
+
+A tempered body **turns damage aside**, and that scales on the same two things — how far up the ladder you are, and what you are wearing:
+
+| At max level, wearing | Damage reduced |
+| --- | --- |
+| Nothing | **40%** |
+| Halfway armored | 27.5% |
+| The heaviest set | **15%** |
+
+Below max level you get a proportion of it: a level 50 of 100 body wearing nothing gets half of 40%.
+
+This is the tempered body itself. It **stacks with** your armor's own resistance rather than replacing it — so heavy armor is still the safer choice moment to moment. What it is not is the *faster* choice.
+
+* * *
+
+#### Max level is meant to be far away
+
+The curve compounds. At the defaults the last level costs nearly **three thousand times** the first, and capping out bare-skinned means taking roughly **1.5 million damage**. In full armor it is ten times that.
+
+This is not a weekend's work and is not designed to be. A cultivator who has capped it has spent a very long time choosing to be hit.
+
+* * *
+
+#### Where to see it
+
+Your **Overview** page shows the whole trade: your level, how armored you currently are, what that costs you per blow, and how much damage your body is turning aside right now.
+
+Swap a chestplate and reopen it — the numbers move. That is the clearest way to understand the system.
+
+* * *
+
+#### For server owners
+
+`Cultivation/BodyTemperingConfig.json` holds all of it: the curve, the ceiling, the XP rate, both ends of the armor scale, and both ends of the reduction.
+
+**Armor is ranked two ways.** By default `Protection-Mode` is `Tiered`, which ranks by family — Prisma highest, Onyxium second, everything else equal — because that is the ranking most servers actually play with.
+
+If your server retunes armor, switch it to `Live` and the system scores armor on **your own numbers instead**: resistance across the damage causes you list, the max health a set grants, and optionally item level, all read from the items themselves at the moment of the blow. Armor added by another mod is scored on exactly the same terms as vanilla's, with nothing to register and no list to maintain.
+
+Switch the whole system off with `Body-Tempering-Enabled`; the damage reduction goes with it.
+
+* * *
+
+#### With Endless Leveling
+
+Body tempering's damage reduction is handed to **Endless Leveling's Defense attribute** rather than applied separately, so the two mods produce one combined calculation instead of quietly compounding two independent reductions. See [Compatibility](/cultivation/compatibility/).
