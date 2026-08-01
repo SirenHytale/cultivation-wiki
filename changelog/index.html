@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Changelog — Cultivation Wiki</title>
-<meta name="description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
+<meta name="description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/changelog/">
 <meta property="og:title" content="Changelog — Cultivation Wiki">
-<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
+<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Changelog — Cultivation Wiki">
-<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.1 — The Body Endures — back to the v0.1.0 first release.">
+<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,7 +49,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.7.0</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.7.2</strong>, the current
       release.
     </p>
 
@@ -59,6 +59,110 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.7.2 &mdash; The Long Practice</h2>
+    <p>
+      An art used to be only as strong as the realm of whoever held it. Learn it at Foundation
+      Establishment and it did what a Foundation Establishment art does &mdash; and it kept doing
+      exactly that until you broke through, however many thousand times you had thrown it. This
+      release makes <strong>practice</strong> something the mod actually measures.
+    </p>
+
+    <h3>Technique mastery</h3>
+    <ul>
+      <li>Every technique now climbs its own <strong>five-rung ladder</strong> &mdash; Entry, Minor
+        Accomplishment, Major Accomplishment, Consummation, Pinnacle &mdash; separately for each art
+        you know. See <a href="../techniques/#mastery">Mastery</a>.</li>
+      <li>A rung needs <strong>all three at once</strong>: a realm you have reached, practice XP the
+        art earned from <em>successful</em> uses, and more copies of its manual studied into it.</li>
+      <li>At Pinnacle an art hits <strong>2.2&times; as hard</strong>, costs <strong>25% less
+        Qi</strong> and returns <strong>30% faster</strong>. A well-worn old art can beat a fresh one.</li>
+      <li>A duplicate <a href="../manuals/">manual</a> is no longer a wasted drop &mdash; reading one
+        for an art you already know now studies it deeper.</li>
+      <li>Realm now decides only whether you may <em>hold</em> an art, not how good you are with it.</li>
+    </ul>
+
+    <h3>Thirteen new arts</h3>
+    <ul>
+      <li>The roster goes from <strong>9 to 22</strong>. See <a href="../techniques/">Techniques</a>.</li>
+      <li><strong>One art for each of the ten Daos</strong>, usable only by a cultivator walking that
+        element &mdash; Blazing Lotus, Frozen Domain, Golden Edge, Gale Rend, Venom Mist,
+        Thunderclap Descent, Mountain Press, Void Devour, Verdant Renewal and Flowing Current. Eight
+        strike; Wood mends and Water wards.</li>
+      <li><strong>One art for each bloodline</strong>: Blood Devour (Demon) drinks what it wounds,
+        Divine Descent (Deity) is judgment and the strength to stand after it, and Boundless
+        Potential (Human) is a long damage buff with no element and nothing closed off.</li>
+    </ul>
+
+    <h3>Spirit beasts grow up</h3>
+    <ul>
+      <li>Beasts learn <strong>five arts of their own</strong> &mdash; Rending Claw, Ember Maw, Stone
+        Hide, Spirit Siphon and the late Beast Soul Howl &mdash; and use them in a fight without
+        being told. Each is gated on <strong>the beast's own realm</strong>, not yours. See
+        <a href="../beasts/#arts">Beast Arts</a>.</li>
+      <li><strong>Twelve evolution paths</strong> run through the 24 species: a black wolf becomes an
+        Emberwulf, a white one a Snow Leopard then a Sabertooth. Levels, XP and the bond all carry
+        across. See <a href="../beasts/#evolution">Evolution</a>.</li>
+      <li><strong>Seven species grow large enough to ride.</strong> See
+        <a href="../beasts/#mounts">Mounts</a>.</li>
+      <li><code>/cultivation beast info</code> was rewritten around all of it.</li>
+    </ul>
+
+    <h3>The ground shapes you</h3>
+    <ul>
+      <li>The land now pushes your Dao the way weather already did &mdash; Fire in a volcano, Ice in a
+        glacier, Poison in a bog. <strong>60 biome keywords</strong> cover all ten elements, matched
+        against the biome's own name so it works with a generator mod's biomes too. See
+        <a href="../dao/#terrain">The Ground You Sit On</a>.</li>
+      <li>Ground matching the Dao you already walk gathers Qi <strong>a quarter faster</strong>.</li>
+    </ul>
+
+    <h3>Sects: a Dao, a shared climb, and holdings</h3>
+    <ul>
+      <li>A sect can <strong>name one of the ten Daos as its own</strong>, and ground it holds turns
+        Qi toward that element &mdash; <strong>+30%</strong> for a disciple who shares it. See
+        <a href="../sects/#sect-dao">The Sect Dao</a>.</li>
+      <li><strong>Shared progression</strong>: a sect banks XP whenever one of its members advances or
+        breaks through, and levels from it. Recruiting people and raising them is the whole of it.</li>
+      <li><strong>Six kinds of sect building</strong> beyond the hall, one slot per sect level up to
+        six. Each carries a switch for whether its ground presses the sect's Dao on those inside
+        &mdash; turning it off makes <strong>neutral ground</strong>, which is how a sect takes in a
+        friend who walks a different element. See <a href="../sects/#buildings">Sect Buildings</a>.</li>
+    </ul>
+
+    <h3>Life-Bound Treasures have a nature</h3>
+    <ul>
+      <li>A treasure's nature is now <strong>rolled once, at binding, and never re-rolled</strong>.
+        Six of them: Keen Edge, Warding Shell, Blood Drinker, Qi Siphon, Vessel of Life and the rare
+        Spirit Conduit that quickens cultivation itself. See
+        <a href="../lifebound/#natures">Traits</a>.</li>
+      <li>Two natures grow into <strong>an art the treasure lends you while it is held</strong>, and
+        takes back when you sheathe it.</li>
+      <li>Treasures bound before this release keep the exact benefit and numbers they already had.</li>
+    </ul>
+
+    <h3>Fixes</h3>
+    <ul>
+      <li><strong>Pills, spirit cores, talismans and manuals activate on right-click</strong> now
+        rather than left &mdash; all 20 consumables.</li>
+      <li><strong>One Step, a Thousand Li reaches farther</strong>: 6 blocks base rather than 4, +3 per
+        realm rather than +2, and a ceiling of 60 rather than 40.</li>
+      <li><strong>The flying sword can be mounted.</strong> The summoned sword and every rideable
+        beast carried an interaction check that quietly refused.</li>
+    </ul>
+
+    <h3>Owners and add-on authors</h3>
+    <ul>
+      <li>The in-game admin editor covers all of it &mdash; <strong>22 sections, 135 settings</strong>,
+        up from 21 and 116. Every new system has a switch that turns it fully off and returns that
+        system to exactly how v0.7.1 behaved.</li>
+      <li>The API grew to <strong>156 events</strong> and gained <strong>four new open
+        registries</strong> &mdash; beast arts, sect building types, Life-Bound traits and mastery
+        rungs. See <a href="../api-registries/">Registries</a> and
+        <a href="../api-events/">Events</a>.</li>
+      <li><strong>All five languages ship complete</strong>: English, Simplified Chinese, Portuguese
+        (Brazil), Russian and Ukrainian.</li>
+    </ul>
 
     <h2>v0.7.1 — The Body Endures</h2>
     <p>

@@ -80,6 +80,20 @@ han: 配
 | "Path-Righteous-Defense-Vs-Devil-Percent" | 15.0 | 正道修士从魔道处少受的伤害。 |
 | "Description-Path" | 一段解释上述数值的长字符串。 | 概述道途如何由偏倚推导而来、两侧针锋相对的优势、魔道的 PK 掠夺，以及道途会随行止而移。 |
 
+##### 地貌亲和
+
+大地对你元素的拉扯。见[脚下之地](/cultivation/dao/#terrain)。
+
+| 变量名 | 默认值 | 说明 |
+| --- | --- | --- |
+| `Terrain-Dao-Enabled` | true | 置 false 则大地无性。 |
+| `Terrain-Matched-Multiplier` | 1.25 | 地貌与自身大道相合时的采气倍率。 |
+| `Terrain-Ambient-Multiplier` | 1.08 | 仅为元素之地时的采气倍率。 |
+| `Terrain-Affinity-Interval-Seconds` | 10 | 多久向地貌之元素拉一次亲和。 |
+| `Terrain-Affinity-Per-Interval` | 1.5 | 一次拉多少。故意比一次击杀温和。 |
+| `Terrain-Element-Keywords` | 60 对 | `关键词:元素`，以不区分大小写的子串匹配生群系名称，命中即止。地形模组的生群系一样适用。 |
+
+
 #### 功法配置项
 
 每一门主动修炼功法背后的规则集，位于路径 `mods/Siren_Cultivation/Arts/TechniqueConfig.json`。各门功法的效果见[功法](/cultivation/techniques/)。
@@ -127,6 +141,20 @@ han: 配
 | "qi_infusion" | QI_CONDENSATION | 20.0 | 15.0 | FIRE | DurationSeconds 10、DamageBonusPercent 30、DamageBonusPercentPerRealm 3 |
 
 御剑飞行是唯一一门 `Qi-Cost` 刻意为 0 的功法 —— 开启它是免费的，真正的代价是凌空期间持续收取的 `QiDrainPerSecond`。九天雷掌也是唯一设了 `Damage-Type`（`Cultivation_Lightning`）的内置功法。其他模组注册的功法刻意不会被写入此数组；它们依自己注册的默认规则运行，不过你仍可手动添加一条 `Id` 相符的覆写条目。
+
+##### 功法境界
+
+每一道功法所爱的五层阶梯。其在实战中的含义见[功法境界](/cultivation/techniques/#mastery)。
+
+| 变量名 | 默认值 | 说明 |
+| --- | --- | --- |
+| `Mastery-Enabled` | true | 总开关。置 false 则所有功法回到只看境界的 0.7.1 行为。 |
+| `Mastery-Xp-Per-Use` | 2 | 一次*成功*施展所积的熟练度。被拒的施展不计。 |
+| `Mastery-Xp-Per-Qi-Cost` | 0.05 | 按该功法灵气消耗额外给的熟练度，故耗气大的功法每次长得快些。 |
+| `Mastery-Stages` | 5 项 | 阶梯本身。每层含 `Name`、`RequiredRealm`、`RequiredXp`、`RequiredManuals`、`PowerMultiplier`、`QiCostMultiplier` 与 `CooldownMultiplier`。 |
+
+> **阶梯封顶五层。** 配置中多于五层的会被截至前五层，一层都没的则回退为单层平阶。之所以封顶，是因为界面与语言文件只备了五层 —— 扩展调用 `registerMasteryStage` 超出此数时会得到 `false`，而非默默忽略。
+
 
 #### 秘籍配置
 
@@ -239,6 +267,18 @@ han: 配
 | "Awakened-Proc-Chance" | 0.25 | 已觉醒兵器的一次命中迸发灵气粒子的概率（0–1）。 |
 | "Description-Awakened" | 一段解释上述数值的长字符串。 | 法宝在达到 LifeBound-Max-Level 时觉醒：其名获得觉醒后缀，得到上述加成，并附带粒子触发。 |
 
+##### 本命法宝之性
+
+法宝可能掷出的几种性。见[法宝之性](/cultivation/lifebound/#natures)。
+
+| 变量名 | 默认值 | 说明 |
+| --- | --- | --- |
+| `Life-Bound-Traits-Enabled` | true | 置 false 则所有法宝回到 0.7.1 的平均伤害/减免划分。 |
+| `Life-Bound-Traits` | 6 项 | 每项含 `Id`、`Slot`（`WEAPON`、`ARMOR` 或 `ANY`）、`BaseAmount`、`AmountPerLevel`、`MaxAmount`、`Weight`，以及可选的 `UnlockTechnique` 与 `UnlockTechniqueLevel`。 |
+
+之性在**结下本命时掷定一次**，按 `Weight` 加权、受 `Slot` 限制，此后不再重掷。**权重置 0** 可将一种之性退出掷选，而不影响已携带它的法宝 —— 这是在运营中的服务器上移除一种之性的安全做法。
+
+
 #### 灵兽配置
 
 灵兽伙伴，位于路径 `mods/Siren_Cultivation/Arts/BeastConfig.json`。见[灵兽](/cultivation/beasts/)。
@@ -320,3 +360,19 @@ han: 配
 | "Fox" | GATHERER | WIND | 0.45 | 0 | 0.9 | 1.2 |
 | "Deer_Stag" | GATHERER | WOOD | 0.45 | 0 | 0.9 | 1.2 |
 | "Antelope" | GATHERER | WIND | 0.45 | 0 | 0.85 | 1.2 |
+
+
+##### 长成：兽技、进化与坐骑
+
+灵兽系统在 0.7.2 新增的那一半。见[兽技](/cultivation/beasts/#arts)、[进化](/cultivation/beasts/#evolution)与[灵兽坐骑](/cultivation/beasts/#mounts)。
+
+| 变量名 | 默认值 | 说明 |
+| --- | --- | --- |
+| `Beast-Arts-Enabled` | true | 兽技总开关。 |
+| `Beast-Arts-Owner-Commanded` | true | `/cultivation beast art` 是否可用。 |
+| `Beast-Arts-Autonomous` | true | 灵兽是否在交战时自行施展。 |
+| `Beast-Arts-Autonomous-Range` | 12 | 争斗靠得多近才会让它自行出手。 |
+| `Beast-Evolution-Enabled` | true | 进化总开关。 |
+| `Beast-Mounts-Enabled` | true | 坐骑总开关。 |
+
+哪个物种习得什么不在这里，而在物种自身的 `BeastSpeciesList` 上：`Arts` 列出它能长成的兽技，`EvolvesTo` 与 `EvolveRealm` 指定下一形态，`MountRealm` 则使它可骑。这正是扩展可以注册一道兽技、而将“谁能学”仍交给服务器主决定的原因。

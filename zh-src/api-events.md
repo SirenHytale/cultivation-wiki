@@ -1,15 +1,15 @@
 ---
 title: 事件
-description: Cultivation 的 144 个事件，分布于十一个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。
+description: Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。
 group: 开发者
 han: 匠
 ---
 
 ### 事件
 
-Cultivation 在 `plugin.siren.API` 下的十一个 `*Events` 类中，暴露了 144 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
+Cultivation 在 `plugin.siren.API` 下的十二个 `*Events` 类中，暴露了 156 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
 
-每个类都遵循 `CultivationEvents` 上所记载的约定，因此学会一个便学会了全部十一个。
+每个类都遵循 `CultivationEvents` 上所记载的约定，因此学会一个便学会了全部十二个。
 
 #### 前置与后置
 
@@ -115,7 +115,7 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 
 #### 功法
 
-`plugin.siren.API.TechniqueEvents` —— 11 个事件，涵盖功法的施展与习得、御剑飞行的开关，以及计时战斗增益。面向玩家的文档：[功法](/cultivation/techniques/)与[秘籍](/cultivation/manuals/)。
+`plugin.siren.API.TechniqueEvents` —— 13 个事件，涵盖功法的施展与习得、御剑飞行的开关，以及计时战斗增益。面向玩家的文档：[功法](/cultivation/techniques/)与[秘籍](/cultivation/manuals/)。
 
 对经由 [`CultivationAPI.registerTechnique`](/cultivation/api/registries/) 注册的第三方功法，这些事件与对内置功法完全一样地触发 —— 关卡、消耗与冷却的管线是共用的。此处有两个枚举：`BuffType`（`IRON_BODY`、`QI_INFUSION`、`QI_BARRIER`、`CLOUD_STEP`）与 `FlightStopReason`（`TOGGLE`、`QI_EXHAUSTED`、`DEATH`）。
 
@@ -160,7 +160,7 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 
 #### 灵兽
 
-`plugin.siren.API.BeastEvents` —— 12 个事件，涵盖收服、孵化、召唤，以及伙伴自身的修行。面向玩家的文档：[灵兽](/cultivation/beasts/)。
+`plugin.siren.API.BeastEvents` —— 18 个事件，涵盖收服、孵化、召唤，以及伙伴自身的修行。面向玩家的文档：[灵兽](/cultivation/beasts/)。
 
 此处有两个枚举：`BindSource`（`TAME`、`HATCH`）与 `DismissReason`（`DISMISSED` —— 遣归，所修一概不损；`RELEASED` —— 永久放归，契约就此断绝）。
 
@@ -179,7 +179,7 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 | `PreBeastAdvanceEvent` | 是 | 伙伴即将进阶一个阶段。取消可把它按在原处 —— 那一阶段的经验已经花掉了，因此这会让它白丢那份进度。 | `owner()`、`player()`、`fromRealm()`、`fromStage()`。 |
 | `BeastAdvanceEvent` | 否 | 伙伴已进阶。每一阶段触发一次。 | `owner()`、`player()`、`realm()`、`stage()`。 |
 
-这些所覆写的配置键：`PreBeastTameAttemptEvent.setChance` 对应 `Tame-Chance-Bonus-Per-Realm`、`Tame-Chance-Element-Match-Bonus` 与 `Tame-Chance-Max`（由 `Tame-Consume-Talisman-On-Failure` 决定失手的代价）；`PreBeastXpGainEvent.setAmount` 对应 `Beast-Xp-Per-Kill`、`Beast-Xp-Own-Kill-Multiplier` 与 `Beast-Xp-Per-Qi-Item-Point`。整套系统的门禁：`Beasts-Enabled`。
+这些所覆写的配置键：`PreBeastTameAttemptEvent.setChance` 对应 `Tame-Chance-Bonus-Per-Realm`、`Tame-Chance-Element-Match-Bonus` 与 `Tame-Chance-Max`（由 `Tame-Consume-Talisman-On-Failure` 决定失手的代价）；`PreBeastXpGainEvent.setAmount` 对应 `Beast-Xp-Per-Kill`、`Beast-Xp-Own-Kill-Multiplier` 与 `Beast-Xp-Per-Qi-Item-Point`。整套系统的门禁：`Beasts-Enabled`；`Beast-Arts-Enabled`、`Beast-Evolution-Enabled` 与 `Beast-Mounts-Enabled` 则分别控制 0.7.2 新增的三项系统。
 
 #### 宗门
 
@@ -293,6 +293,19 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 | `SeclusionSettleEvent` | 否 | 修士已出关，并已为其离开的时日付讫。 | `ref()`、`player()`、`dwelling()`、`hours()`、`qi()`。 |
 
 这些所覆写的配置键：`PreDwellingClaimEvent.setRadiusChunks` 对应 `Dwelling-Radius-Chunks`；`PreSpringCollectEvent.setAmount` 对应 `Spring-Qi-Per-Hour`、`Spring-Pool-Base-Cap` 与 `Spring-Pool-Cap-Per-Realm`；`PreUpkeepDepositEvent.setHours` 对应 `Upkeep-Item-Hours`，并受 `Upkeep-Max-Banked-Hours` 封顶；`PreDwellingLapseEvent` 对应 `Upkeep-Grace-Hours`；`PreSeclusionSettleEvent.setQi` 对应 `Seclusion-Qi-Per-Hour`。整套系统的门禁：`Dwellings-Enabled`、`Upkeep-Enabled`、`Seclusion-Enabled`。
+
+#### 淬体
+
+`plugin.siren.API.BodyTemperingEvents` —— 4 个事件，涵盖第二条修行之路：不靠采气、只靠挨打的那一条。面向玩家的文档：[淬体](/cultivation/body-tempering/)。
+
+| 事件 | 可取消 | 触发时机 | 暴露 |
+| --- | --- | --- | --- |
+| `PreXpGainEvent` | 是 | 即将因落在身上的伤害获得淬体熟练度。数额**可改**，而不只是可拒 —— 这是为单个玩家或单个场景重调整条阶梯的正规做法。 | `ref()`、`player()`、`amount()` / `setAmount(float)`、`level()`。 |
+| `XpGainEvent` | 否 | 熟练度已入账。 | `ref()`、`player()`、`amount()`、`level()`。 |
+| `PreLevelUpEvent` | 是 | 即将提升一级淬体。取消则维持原位。 | `ref()`、`player()`、`fromLevel()`、`toLevel()`。 |
+| `LevelUpEvent` | 否 | 已提升。一击跨越多级时逐级触发。 | `ref()`、`player()`、`fromLevel()`、`toLevel()`。 |
+
+总开关：`Body-Tempering-Enabled`。注意熟练度是按护甲*之后*计算的，因此监听器读到的 `amount()` 是真正穿透过来的那一部分，而非挥出的那一下。
 
 #### 修炼存档
 

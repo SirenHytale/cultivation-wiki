@@ -106,6 +106,39 @@
 
     <p><strong>喂食</strong>取用你手中之物。各类修行之核的价值，恰是你自己吸收所得 —— 灵核 30、玄核 80、神核 220；灵石值 40；四种<a href="../alchemy/">丹药</a>各值 25。除此之外的东西，灵兽一概不吃。</p>
 
+    <h2 id="arts">兽技</h2>
+
+    <p>养成的灵兽不只是一副跟在身后的数值。自 <strong>0.7.2</strong> 起，它会习得<strong>属于自己的功法</strong> —— 与你的<a href="../techniques/">功法</a>相对的兽一侧，各有冷却与解锁境界。</p>
+
+    <table>
+    <thead><tr><th>兽技</th><th>解锁境界</th><th>冷却</th><th>效果</th></tr></thead>
+    <tbody><tr><td><strong>裂爪</strong></td><td>炼体期</td><td>9 秒</td><td>扫向四周逼近之敌 —— 半径 3.5，4 伤害 + 每级 0.6，物理。几乎每只战兽开局就会。</td></tr><tr><td><strong>焰口</strong></td><td>练气期</td><td>14 秒</td><td>吐火 —— 半径 5，6 伤害 + 每级 0.8，火属。稀有：仅焰狼与洞穴霸王龙能习。</td></tr><tr><td><strong>石甲</strong></td><td>筑基期</td><td>30 秒</td><td>非攻击。为*主人*披上 8 秒减伤 —— 10% + 每级 0.5，上限 35%。守兽之所以为守兽。</td></tr><tr><td><strong>吸灵</strong></td><td>练气期</td><td>45 秒</td><td>非攻击。从天地间抽出 8 点灵气 + 每级 1.5，递与主人。采灵兽的本事。</td></tr><tr><td><strong>兽魂啸</strong></td><td>金丹期</td><td>60 秒</td><td>后期之啸，三类皆可习：为主人治疗 12 + 每级 1.2。仅四个终态形态能及。</td></tr></tbody>
+    </table>
+
+    <p>上述量值均随<strong>灵兽自身的等级</strong>而长，而非境界，因此一只长期养护的普通物种不至于被刚进化的新兽比下去。</p>
+
+    <p>两条规矩决定了它们的手感。兽技属于<strong>物种</strong>而非个体 —— 狐狸再怎么养也不会焰口；且每一道都看<strong>兽自己的境界</strong>，你无法把自己的修为借给它，所以一位元婴期主人新收的狼，依旧只会一道。</p>
+
+    <p>灵兽会在十二格以内起争斗时<strong>自行施展</strong>，你也可以用 <code>/cultivation beast art {name}</code> 主动号令。两者可分别开关 —— <code>Beast-Arts-Autonomous</code> 与 <code>Beast-Arts-Owner-Commanded</code> —— 因此希望灵兽只会被动应战、或只听号令的服务器，两种都做得到。</p>
+
+    <h2 id="evolution">进化</h2>
+
+    <p>名录上有一半并非终点。<strong>24 个物种中有 12 个能化为另一种</strong>，且链条往往不止一环：</p>
+
+    <ul><li><strong>白狼</strong> → 雪豹 → 剑齿虎 —— 最长的战兽一系，终点可骑。</li><li><strong>黑狼</strong> → 焰狼 —— 由虚入火，也是通往焰口的常规之路。</li><li><strong>鬣狗</strong> → 沼泽潜行兽，<strong>洞穴迅献</strong> → 洞穴霸王龙。</li><li><strong>穿山甲</strong> → 灵龟，<strong>棕熊</strong> → 北极熊 → 雪怪 —— 守兽一系，自中段起即可骑乘。</li><li><strong>狂犊蟾耴</strong> → 熔岩狂犊蟾耴。</li><li><strong>仙人掌</strong> → 龙花兽 → 三叠兽，<strong>狐狸</strong> → 灵电 —— 两条采灵兽之路。</li></ul>
+
+    <p>进化是主动的，不会自行发生：待灵兽达到目标形态所需的境界后，执行 <code>/cultivation beast evolve</code>。它会<strong>带着等级、修为与缘分一同过去</strong>，并接纳新形态的元素、强度与兽技。无一重掷，无一丢失 —— 化为焰狼的黑狼，仍是那只灵兽，名字也还是那个名字。</p>
+
+    <p>需留意的是，进化往往<strong>换掉灵兽的元素</strong>：黑狼属虚而焰狼属火，鬣狗属毒而沼泽潜行兽属水。若你本是按自身大道挑的兽，按下去之前值得想一想。若尚不能进化，指令会直接告诉你还缺什么。</p>
+
+    <h2 id="mounts">灵兽坐骑</h2>
+
+    <p><strong>七个物种长得足够高大，可载人</strong> —— 剑齿虎、洞穴霸王龙、棕熊、北极熊、雪怪、公麟与三叠兽。养至名录所列的境界后，<code>/cultivation beast mount</code> 便能上它的背。</p>
+
+    <p>只有公麟在第 2 境即可骑乘，其余都要等到第 3 或第 4 境，且其中四个是<a href="#evolution">进化</a>的终态形态，无法直接收服。骑乘灵兽因此是长期养护所至之处，而非买得来的东西。</p>
+
+    <div class="note"><strong>两种赶路的法子。</strong> 坐骑是除<a href="../techniques/">御剑飞行</a>之外的另一种，且与御剑不同 —— 它赶路不耗分毫灵气。两者都是普通的右键乘骑；若在 0.7.2 之前的版本上右键毫无反应，那是本版修正的交互缺陷，不是你做错了。</div>
+
     <h2>指令</h2>
 
     <div class="panel">

@@ -104,7 +104,7 @@ flowchart LR;
 
     <p>A cultivator with no dao at all is not left out: a <a href="../refinement/">refined weapon</a> supplies its own element for conversion and the counter cycle, and when that element matches its wielder's own dao it adds a resonance bonus on top. <a href="../techniques/">Techniques</a> that deal damage route through the same filter, so Sword Qi Slash and Nine Heavens Thunder Palm are recoloured by your dao for free.</p>
 
-    <h2>Switching, and Drift</h2>
+    <h2 id="switching-and-drift">Switching, and Drift</h2>
 
     <p>Switching dao deliberately costs banked Qi and honours a real-time cooldown:</p>
 
@@ -116,6 +116,37 @@ flowchart LR;
     <p>Your dao can also <strong>drift</strong> on its own. Every elemental kill feeds <code>Dao-Affinity-Per-Elemental-Kill</code> (1) into the hidden affinity of the killing blow's element, and your race's alignment bias feeds it too. When another element's affinity exceeds your chosen dao's by <code>Dao-Drift-Margin</code> (25) you get a warning; if it keeps growing past twice the margin, your dao converts on its own - no Qi cost, no cooldown. Set <code>Dao-Drift-Enabled</code> false to freeze daos to deliberate choices only.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2 id="terrain">The Ground You Sit On</h2>
+
+    <p>Weather has always pushed your element. Since <strong>0.7.2</strong> so does <strong>the land itself</strong>. Meditate in a volcano and your affinity drifts toward Fire; in a glacier, toward Ice; in a bog, toward Poison &mdash; whether or not you meant it to.</p>
+
+    <p>The element of a place is resolved from <strong>its biome&rsquo;s own name</strong>. <code>Terrain-Element-Keywords</code> is a list of <code>keyword:ELEMENT</code> pairs matched as case-insensitive substrings, first hit wins, and it ships with <strong>60 keywords covering all ten elements</strong>:</p>
+
+    <div class="panel">
+          <div class="panel-head">What the Land Counts As</div>
+          <table>
+    <thead><tr><th>Element</th><th>Keywords in a biome name</th></tr></thead>
+    <tbody><tr><td><strong>Fire</strong></td><td>Volcan, Lava, Magma, Ember, Scorch</td></tr><tr><td><strong>Earth</strong></td><td>Desert, Dune, Canyon, Badland, Mesa, Rock, Mountain, Cave</td></tr><tr><td><strong>Wood</strong></td><td>Forest, Jungle, Wood, Grove, Bamboo, Plains, Meadow</td></tr><tr><td><strong>Water</strong></td><td>Ocean, Sea, River, Lake, Beach, Coast, Swamp, Marsh</td></tr><tr><td><strong>Poison</strong></td><td>Bog, Fen, Blight, Rot, Fungal, Mushroom</td></tr><tr><td><strong>Ice</strong></td><td>Snow, Frost, Ice, Glacier, Tundra, Frozen, Arctic</td></tr><tr><td><strong>Wind</strong></td><td>Peak, Sky, Cliff, Highland, Steppe, Savanna</td></tr><tr><td><strong>Lightning</strong></td><td>Storm, Thunder</td></tr><tr><td><strong>Metal</strong></td><td>Crystal, Quarry, Mine, Iron, Ore</td></tr><tr><td><strong>Void</strong></td><td>Void, Corrupt, Cursed, Shadow, Dark, Abyss</td></tr></tbody>
+    </table>
+        </div>
+
+    <p>Matching on the name rather than on a fixed biome list is what lets this work on <strong>any</strong> world &mdash; including one whose biomes come from a generator mod. A biome that matches nothing is simply inert ground.</p>
+
+    <h3>What sitting on it does</h3>
+
+    <p>Two things, and the second matters more:</p>
+
+    <ul><li><strong>Qi comes faster.</strong> Meditating where the land matches the Dao you already walk multiplies what you draw by <strong>1.25</strong>. Merely elemental ground &mdash; any of the ten, not necessarily yours &mdash; gives <strong>1.08</strong>. Where you choose to sit is now a real decision rather than scenery.</li><li><strong>Your affinity drifts.</strong> Every 10 seconds of meditation adds <strong>1.5 affinity</strong> toward the land&rsquo;s element, feeding the ordinary <a href="#switching-and-drift">drift rules</a>. Sit in a volcano long enough and your Dao will turn to Fire on its own.</li></ul>
+
+    <div class="note">
+          <span class="note-title">Slower than a kill, on purpose</span>
+          The per-tick affinity from terrain is deliberately gentler than what a kill grants. Terrain is a <em>slow pressure you choose to sit in</em>, not an event &mdash; it should take a season of meditating in one kind of place to turn you, not an afternoon. If that is not the pace you want, <code>Terrain-Affinity-Per-Interval</code> and <code>Terrain-Affinity-Interval-Seconds</code> are both yours; <code>Terrain-Dao-Enabled</code> false leaves the land inert entirely.
+        </div>
+
+    <p>Terrain is not the strongest pull on your element. <a href="../sects/#sect-dao">Sect ground</a> is stronger still, because a sect&rsquo;s grounds are cultivated deliberately &mdash; and unlike terrain, that one you opt into by joining.</p>
 
     <h2>Yin-Yang Balance</h2>
 

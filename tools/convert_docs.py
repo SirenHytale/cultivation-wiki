@@ -203,6 +203,15 @@ def resolve_link(url: str) -> str:
         return f"../{slug}/" + frag
     if url.startswith(("http://", "https://", "#", "mailto:")):
         return url
+    # A permalink carrying an anchor ("/cultivation/sects/#buildings") will not
+    # match LINKS, which is keyed on bare page permalinks. Resolve the page and
+    # re-attach the caller's fragment rather than reporting it unmapped - the
+    # alternative is an entry in LINKS per anchor, which nobody would maintain.
+    if "#" in url:
+        base, _, frag = url.partition("#")
+        if base in LINKS:
+            resolved = resolve_link(base)
+            return resolved + ("#" + frag if frag else "")
     # An unmapped site-absolute link would 404 silently; surface it instead.
     if url.startswith("/"):
         UNMAPPED.add(url)
@@ -264,6 +273,7 @@ def inline(text: str, refs: dict[str, str]) -> str:
 RE_HR = re.compile(r"^\s*(\*\s*\*\s*\*|-\s*-\s*-|_\s*_\s*_)[\s*\-_]*$")
 RE_BR = re.compile(r"^\s*<br\s*/?>\s*$", re.I)
 RE_HEAD = re.compile(r"^(#{1,6})\s+(.*?)\s*#*$")
+RE_HEAD_ID = re.compile(r"\s*\{#([A-Za-z0-9_-]+)\}\s*$")
 RE_LI = re.compile(r"^(\s*)([-*+]|\d+\.)\s+(.*)$")
 RE_TROW = re.compile(r"^\s*\|.*\|\s*$")
 RE_TSEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
@@ -354,12 +364,24 @@ def convert(md: str, demote: int = 0, allow_lede: bool = True) -> tuple[dict, st
         m = RE_HEAD.match(line)
         if m:
             lvl = max(1, len(m.group(1)) - offset) + demote
-            txt = inline(m.group(2), refs)
+            raw = m.group(2)
+            # An explicit "{#anchor}" suffix pins the heading id. site.js only
+            # auto-generates an id when the element has none, and its generator
+            # slugifies the heading TEXT - which for a Chinese page produces a
+            # Chinese anchor that no cross-language link can predict. Pinning it
+            # is what lets zh/ and the English pages share one anchor.
+            anchor = ""
+            am = RE_HEAD_ID.search(raw)
+            if am:
+                anchor = f' id="{am.group(1)}"'
+                raw = raw[: am.start()].rstrip()
+            txt = inline(raw, refs)
             if lvl == 1 and not seen_h1:
                 seen_h1 = True
-                out.append(f"<h1>{txt}</h1>")
+                out.append(f"<h1{anchor}>{txt}</h1>")
             else:
-                out.append(f"<h{min(lvl, 5)}>{txt}</h{min(lvl, 5)}>")
+                tag = min(lvl, 5)
+                out.append(f"<h{tag}{anchor}>{txt}</h{tag}>")
             i += 1
             continue
 

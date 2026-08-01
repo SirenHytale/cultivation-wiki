@@ -64,6 +64,17 @@
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h3>The sect Dao, shared progression and buildings</h3>
+
+    <p>See <a href="../sects/#sect-dao">The Sect Dao</a>, <a href="../sects/#shared-progression">Shared Progression</a> and <a href="../sects/#buildings">Sect Buildings</a>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Sect-Dao-Enabled</code></td><td>true</td><td>Whether a sect may name a Dao at all.</td></tr><tr><td><code>Sect-Dao-Matched-Multiplier</code></td><td>1.3</td><td>Qi gained on sect ground when the cultivator already walks its element.</td></tr><tr><td><code>Sect-Dao-Ambient-Multiplier</code></td><td>1.1</td><td>Qi gained on sect ground when they do not.</td></tr><tr><td><code>Sect-Dao-Affinity-Interval-Seconds</code></td><td>8</td><td>How often meditating there pulls affinity toward the sect's element.</td></tr><tr><td><code>Sect-Dao-Affinity-Per-Interval</code></td><td>2.5</td><td>How much it pulls. Deliberately stronger than terrain's 1.5 per 10s.</td></tr><tr><td><code>Sect-Buildings-Enabled</code></td><td>true</td><td>Whole-system switch for holdings beyond the hall.</td></tr><tr><td><code>Sect-Xp-Per-Member-Advancement</code></td><td>10</td><td>Sect XP banked when a member advances a stage.</td></tr><tr><td><code>Sect-Xp-Per-Member-Breakthrough</code></td><td>60</td><td>Sect XP banked when a member breaks through a realm.</td></tr><tr><td><code>Sect-Level-Base-Xp</code></td><td>200</td><td>Cost of level 2; level <em>N</em> costs this &times; growth<sup>(N&minus;1)</sup>.</td></tr><tr><td><code>Sect-Level-Growth-Rate</code></td><td>1.6</td><td>How steeply each sect level costs more than the last.</td></tr><tr><td><code>Sect-Buildings-Per-Level</code></td><td>1</td><td>Building slots granted per sect level.</td></tr><tr><td><code>Sect-Buildings-Max</code></td><td>6</td><td>Hard ceiling on holdings, however high the sect climbs.</td></tr><tr><td><code>Sect-Building-Types</code></td><td>6 entries</td><td>Each carries <code>Id</code>, <code>MeditationMultiplier</code>, <code>RequiredSectLevel</code> and <code>DaoActiveByDefault</code>.</td></tr></tbody>
+    </table>
+
+    <p><code>DaoActiveByDefault</code> is the one to think about: <code>false</code> makes that kind of building <strong>neutral ground</strong>, so a member who walks a different element can cultivate there untouched. It is why Guest Court, Alchemy Garden and Forge ship as <code>false</code>. Players can toggle any individual building afterwards with <code>/sect building dao</code>.</p>
+
     <h2>Formation Config</h2>
 
     <p>The three placeable spirit arrays, found in the path <code>mods/Siren_Cultivation/Society/FormationConfig.json</code>.</p>

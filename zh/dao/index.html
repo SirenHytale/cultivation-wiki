@@ -117,6 +117,27 @@ flowchart LR;
 
     <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2 id="terrain">脚下之地</h2>
+
+    <p>天候一直在推动你的元素。自 <strong>0.7.2</strong> 起，<strong>地貌亦然</strong>。坐于火山之中，你的亲和向火偏移；冰川之上向冰；沼泽之间向毒 —— 无论你是否有意。</p>
+
+    <p>一地属何元素，是从<strong>生群系自身的名称</strong>解析出来的。<code>Terrain-Element-Keywords</code> 是一串 <code>关键词:元素</code> 对，以不区分大小写的子串匹配，命中即止，默认包含<strong>涵盖十大元素的 60 个关键词</strong>：</p>
+
+    <table>
+    <thead><tr><th>元素</th><th>生群系名中的关键词</th></tr></thead>
+    <tbody><tr><td><strong>火</strong></td><td>Volcan, Lava, Magma, Ember, Scorch</td></tr><tr><td><strong>土</strong></td><td>Desert, Dune, Canyon, Badland, Mesa, Rock, Mountain, Cave</td></tr><tr><td><strong>木</strong></td><td>Forest, Jungle, Wood, Grove, Bamboo, Plains, Meadow</td></tr><tr><td><strong>水</strong></td><td>Ocean, Sea, River, Lake, Beach, Coast, Swamp, Marsh</td></tr><tr><td><strong>毒</strong></td><td>Bog, Fen, Blight, Rot, Fungal, Mushroom</td></tr><tr><td><strong>冰</strong></td><td>Snow, Frost, Ice, Glacier, Tundra, Frozen, Arctic</td></tr><tr><td><strong>风</strong></td><td>Peak, Sky, Cliff, Highland, Steppe, Savanna</td></tr><tr><td><strong>雷</strong></td><td>Storm, Thunder</td></tr><tr><td><strong>金</strong></td><td>Crystal, Quarry, Mine, Iron, Ore</td></tr><tr><td><strong>虚</strong></td><td>Void, Corrupt, Cursed, Shadow, Dark, Abyss</td></tr></tbody>
+    </table>
+
+    <p>按名称而非固定生群系表匹配，正是为了让它在<strong>任何</strong>世界上都管用 —— 包括生群系来自地形模组的世界。毫无命中的生群系，就只是一片无性之地。</p>
+
+    <p>坐在上面有两件事，而后一件更要紧：</p>
+
+    <ul><li><strong>采气更快。</strong> 地貌与自身大道相合时，所得乘以 <strong>1.25</strong>；仅仅是十大元素之一而非你的，也有 <strong>1.08</strong>。坐在哪里如今是一个真正的选择，而非布景。</li><li><strong>亲和偏移。</strong> 每打坐 10 秒，向地貌之元素增加 <strong>1.5 点</strong>亲和，汇入常规的<a href="#换道与偏移">偏移规则</a>。在火山里坐得够久，你的大道会自行转为火。</li></ul>
+
+    <div class="note"><strong>比一次击杀慢，是故意的。</strong> 地貌每次给的亲和故意低于击杀。地貌是*你选择坐进去的一种缓慢压力*，而非一桩事件 —— 转化一个人应当需要一季的静坐，而不是一个下午。若这不是你想要的节奏，<code>Terrain-Affinity-Per-Interval</code> 与 <code>Terrain-Affinity-Interval-Seconds</code> 都归你；<code>Terrain-Dao-Enabled</code> 置 false 则让大地彻底无性。</div>
+
+    <p>地貌并非最强的那一股拉力。<a href="../sects/#sect-dao">宗门地界</a>更强，因为宗门的地是刻意经营的 —— 而与地貌不同，那一种是你入门时自己选的。</p>
+
     <h2>阴阳之衡</h2>
 
     <p>每位修士都背负着一条随行止而动的阴阳之衡：</p>

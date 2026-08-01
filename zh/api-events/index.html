@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>事件 — 修真百科</title>
-<meta name="description" content="Cultivation 的 148 个事件，分布于十一个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta name="description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/api-events/">
 <meta property="og:title" content="事件 — 修真百科">
-<meta property="og:description" content="Cultivation 的 148 个事件，分布于十一个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta property="og:description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="事件 — 修真百科">
-<meta name="twitter:description" content="Cultivation 的 148 个事件，分布于十一个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta name="twitter:description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,9 +49,9 @@
 
     <h1>事件</h1>
 
-    <p class="page-lede">Cultivation 在 <code>plugin.siren.API</code> 下的十一个 <code>*Events</code> 类中，暴露了 148 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生<strong>之前</strong>触发的可取消 <code>Pre*</code> 事件，一次是变更落定之后触发的普通后置事件。</p>
+    <p class="page-lede">Cultivation 在 <code>plugin.siren.API</code> 下的十二个 <code>*Events</code> 类中，暴露了 156 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生<strong>之前</strong>触发的可取消 <code>Pre*</code> 事件，一次是变更落定之后触发的普通后置事件。</p>
 
-    <p>每个类都遵循 <code>CultivationEvents</code> 上所记载的约定，因此学会一个便学会了全部十一个。</p>
+    <p>每个类都遵循 <code>CultivationEvents</code> 上所记载的约定，因此学会一个便学会了全部十二个。</p>
 
     <h2>前置与后置</h2>
 
@@ -115,7 +115,7 @@ DaoEvents.onPathChange(event -&gt; myPlugin.announce(event.player(), event.newPa
 
     <h2>功法</h2>
 
-    <p><code>plugin.siren.API.TechniqueEvents</code> —— 11 个事件，涵盖功法的施展与习得、御剑飞行的开关，以及计时战斗增益。面向玩家的文档：<a href="../techniques/">功法</a>与<a href="../manuals/">秘籍</a>。</p>
+    <p><code>plugin.siren.API.TechniqueEvents</code> —— 13 个事件，涵盖功法的施展与习得、御剑飞行的开关，以及计时战斗增益。面向玩家的文档：<a href="../techniques/">功法</a>与<a href="../manuals/">秘籍</a>。</p>
 
     <p>对经由 <a href="../api-registries/"><code>CultivationAPI.registerTechnique</code></a> 注册的第三方功法，这些事件与对内置功法完全一样地触发 —— 关卡、消耗与冷却的管线是共用的。此处有两个枚举：<code>BuffType</code>（<code>IRON_BODY</code>、<code>QI_INFUSION</code>、<code>QI_BARRIER</code>、<code>CLOUD_STEP</code>）与 <code>FlightStopReason</code>（<code>TOGGLE</code>、<code>QI_EXHAUSTED</code>、<code>DEATH</code>）。</p>
 
@@ -141,7 +141,7 @@ DaoEvents.onPathChange(event -&gt; myPlugin.announce(event.player(), event.newPa
 
     <h2>灵兽</h2>
 
-    <p><code>plugin.siren.API.BeastEvents</code> —— 12 个事件，涵盖收服、孵化、召唤，以及伙伴自身的修行。面向玩家的文档：<a href="../beasts/">灵兽</a>。</p>
+    <p><code>plugin.siren.API.BeastEvents</code> —— 18 个事件，涵盖收服、孵化、召唤，以及伙伴自身的修行。面向玩家的文档：<a href="../beasts/">灵兽</a>。</p>
 
     <p>此处有两个枚举：<code>BindSource</code>（<code>TAME</code>、<code>HATCH</code>）与 <code>DismissReason</code>（<code>DISMISSED</code> —— 遣归，所修一概不损；<code>RELEASED</code> —— 永久放归，契约就此断绝）。</p>
 
@@ -150,7 +150,7 @@ DaoEvents.onPathChange(event -&gt; myPlugin.announce(event.player(), event.newPa
     <tbody><tr><td><code>PreBeastTameAttemptEvent</code></td><td>是</td><td>一次收服判定即将掷出。取消可直接回绝这次尝试 —— 不耗符箓。</td><td><code>ref()</code>、<code>player()</code>、<code>species()</code>、<code>chance()</code> / <code>setChance(float)</code> —— 0–1，已计入境界与道之共鸣的加权。</td></tr><tr><td><code>BeastTameAttemptEvent</code></td><td>否</td><td>判定已结算。</td><td><code>ref()</code>、<code>player()</code>、<code>species()</code>、<code>chance()</code>、<code>success()</code>。</td></tr><tr><td><code>PreBeastBindEvent</code></td><td>是</td><td>一头伙伴即将结契。取消则修士保留他原有的灵兽 —— 符箓或蛋照样耗掉。</td><td><code>ref()</code>、<code>player()</code>、<code>species()</code>、<code>source()</code>。</td></tr><tr><td><code>BeastBindEvent</code></td><td>否</td><td>伙伴已结契，取代此前的那一头。</td><td><code>ref()</code>、<code>player()</code>、<code>species()</code>、<code>source()</code>。</td></tr><tr><td><code>PreBeastSummonEvent</code></td><td>是</td><td>伙伴之身即将生成。取消则玩家会被告知召唤失败。</td><td><code>owner()</code>、<code>player()</code>、<code>species()</code>。</td></tr><tr><td><code>BeastSummonEvent</code></td><td>否</td><td>其身已生成于主人身侧。</td><td><code>owner()</code>、<code>player()</code>、<code>beast()</code>（生成的实体）、<code>species()</code>。</td></tr><tr><td><code>PreBeastDismissEvent</code></td><td>是</td><td>伙伴即将被遣归或放归。</td><td><code>owner()</code>、<code>player()</code>、<code>reason()</code>。</td></tr><tr><td><code>BeastDismissEvent</code></td><td>否</td><td>其身已离世间。</td><td><code>owner()</code>、<code>player()</code>、<code>reason()</code>。</td></tr><tr><td><code>PreBeastXpGainEvent</code></td><td>是</td><td>伙伴即将获得经验。对每一处来源皆触发 —— 打坐分成、击杀与亲手喂食一视同仁。</td><td><code>owner()</code>、<code>player()</code>、<code>beast()</code>（当前的 <code>SpiritBeastComponent</code> —— 境界、阶段、已存经验）、<code>amount()</code> / <code>setAmount(float)</code>。</td></tr><tr><td><code>BeastXpGainEvent</code></td><td>否</td><td>经验已入账。</td><td><code>owner()</code>、<code>player()</code>、<code>amount()</code>、<code>stagesGained()</code>（只存了进度时为 0）。</td></tr><tr><td><code>PreBeastAdvanceEvent</code></td><td>是</td><td>伙伴即将进阶一个阶段。取消可把它按在原处 —— 那一阶段的经验已经花掉了，因此这会让它白丢那份进度。</td><td><code>owner()</code>、<code>player()</code>、<code>fromRealm()</code>、<code>fromStage()</code>。</td></tr><tr><td><code>BeastAdvanceEvent</code></td><td>否</td><td>伙伴已进阶。每一阶段触发一次。</td><td><code>owner()</code>、<code>player()</code>、<code>realm()</code>、<code>stage()</code>。</td></tr></tbody>
     </table>
 
-    <p>这些所覆写的配置键：<code>PreBeastTameAttemptEvent.setChance</code> 对应 <code>Tame-Chance-Bonus-Per-Realm</code>、<code>Tame-Chance-Element-Match-Bonus</code> 与 <code>Tame-Chance-Max</code>（由 <code>Tame-Consume-Talisman-On-Failure</code> 决定失手的代价）；<code>PreBeastXpGainEvent.setAmount</code> 对应 <code>Beast-Xp-Per-Kill</code>、<code>Beast-Xp-Own-Kill-Multiplier</code> 与 <code>Beast-Xp-Per-Qi-Item-Point</code>。整套系统的门禁：<code>Beasts-Enabled</code>。</p>
+    <p>这些所覆写的配置键：<code>PreBeastTameAttemptEvent.setChance</code> 对应 <code>Tame-Chance-Bonus-Per-Realm</code>、<code>Tame-Chance-Element-Match-Bonus</code> 与 <code>Tame-Chance-Max</code>（由 <code>Tame-Consume-Talisman-On-Failure</code> 决定失手的代价）；<code>PreBeastXpGainEvent.setAmount</code> 对应 <code>Beast-Xp-Per-Kill</code>、<code>Beast-Xp-Own-Kill-Multiplier</code> 与 <code>Beast-Xp-Per-Qi-Item-Point</code>。整套系统的门禁：<code>Beasts-Enabled</code>；<code>Beast-Arts-Enabled</code>、<code>Beast-Evolution-Enabled</code> 与 <code>Beast-Mounts-Enabled</code> 则分别控制 0.7.2 新增的三项系统。</p>
 
     <h2>宗门</h2>
 
@@ -214,6 +214,17 @@ DaoEvents.onPathChange(event -&gt; myPlugin.announce(event.player(), event.newPa
     </table>
 
     <p>这些所覆写的配置键：<code>PreDwellingClaimEvent.setRadiusChunks</code> 对应 <code>Dwelling-Radius-Chunks</code>；<code>PreSpringCollectEvent.setAmount</code> 对应 <code>Spring-Qi-Per-Hour</code>、<code>Spring-Pool-Base-Cap</code> 与 <code>Spring-Pool-Cap-Per-Realm</code>；<code>PreUpkeepDepositEvent.setHours</code> 对应 <code>Upkeep-Item-Hours</code>，并受 <code>Upkeep-Max-Banked-Hours</code> 封顶；<code>PreDwellingLapseEvent</code> 对应 <code>Upkeep-Grace-Hours</code>；<code>PreSeclusionSettleEvent.setQi</code> 对应 <code>Seclusion-Qi-Per-Hour</code>。整套系统的门禁：<code>Dwellings-Enabled</code>、<code>Upkeep-Enabled</code>、<code>Seclusion-Enabled</code>。</p>
+
+    <h2>淬体</h2>
+
+    <p><code>plugin.siren.API.BodyTemperingEvents</code> —— 4 个事件，涵盖第二条修行之路：不靠采气、只靠挨打的那一条。面向玩家的文档：<a href="../../body-tempering/">淬体</a>。</p>
+
+    <table>
+    <thead><tr><th>事件</th><th>可取消</th><th>触发时机</th><th>暴露</th></tr></thead>
+    <tbody><tr><td><code>PreXpGainEvent</code></td><td>是</td><td>即将因落在身上的伤害获得淬体熟练度。数额<strong>可改</strong>，而不只是可拒 —— 这是为单个玩家或单个场景重调整条阶梯的正规做法。</td><td><code>ref()</code>、<code>player()</code>、<code>amount()</code> / <code>setAmount(float)</code>、<code>level()</code>。</td></tr><tr><td><code>XpGainEvent</code></td><td>否</td><td>熟练度已入账。</td><td><code>ref()</code>、<code>player()</code>、<code>amount()</code>、<code>level()</code>。</td></tr><tr><td><code>PreLevelUpEvent</code></td><td>是</td><td>即将提升一级淬体。取消则维持原位。</td><td><code>ref()</code>、<code>player()</code>、<code>fromLevel()</code>、<code>toLevel()</code>。</td></tr><tr><td><code>LevelUpEvent</code></td><td>否</td><td>已提升。一击跨越多级时逐级触发。</td><td><code>ref()</code>、<code>player()</code>、<code>fromLevel()</code>、<code>toLevel()</code>。</td></tr></tbody>
+    </table>
+
+    <p>总开关：<code>Body-Tempering-Enabled</code>。注意熟练度是按护甲*之后*计算的，因此监听器读到的 <code>amount()</code> 是真正穿透过来的那一部分，而非挥出的那一下。</p>
 
     <h2>修炼存档</h2>
 

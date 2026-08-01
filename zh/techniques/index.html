@@ -68,22 +68,67 @@
 
     <div class="panel">
           <div class="panel-head">施展顺序 —— 第一个未通过的关卡即是所告之因</div>
-          <ol><li>整个系统已启用（<code>Techniques-Enabled</code>），且该功法自身的 <code>Enabled</code> 开关为开。</li><li>若该功法设了 <code>Requires-Manual</code>，你必须已<strong>习得</strong>它 —— 详见下文。</li><li>你的境界已达到或超过其 <code>Unlock-Realm</code>。</li><li>若该功法为 <code>Dao-Specific</code>，你所选之道须与其 <code>Required-Element</code> 相符。</li><li>你存蓄的灵气不低于其 <code>Qi-Cost</code>。</li><li>距你上次施展已过了 <code>Cooldown-Seconds</code>。</li></ol>
+          <ol><li>整个系统已启用（<code>Techniques-Enabled</code>），且该功法自身的 <code>Enabled</code> 开关为开。</li><li>若该功法设了 <code>Requires-Manual</code>，你必须已<strong>习得</strong>它 —— 详见下文。</li><li>你的境界已达到或超过其 <code>Unlock-Realm</code>。</li><li>若该功法为 <code>Dao-Specific</code>，你所选之道须与其 <code>Required-Element</code> 相符。</li><li>若该功法标了 <code>Required-Race</code>，你须为那一族 —— 三道血脉功法正是由此所限。</li><li>你存蓄的灵气不低于其 <code>Qi-Cost</code>。</li><li>距你上次施展已过了 <code>Cooldown-Seconds</code>。</li></ol>
         </div>
 
     <p>通过之后，灵气随即扣除，冷却开始计时，法术生效。冷却按功法各自计算，且以真实时间流逝，因此你去做别的事情时它照样在走。</p>
 
-    <h2>内置九法</h2>
+    <h2>内置功法</h2>
 
     <p>模组自带九门功法。下表中的每个数值都是出厂默认值，皆可在配置中逐门重新调整。</p>
 
     <div class="panel">
-          <div class="panel-head">内置九法</div>
+          <div class="panel-head">通用功法</div>
           <table>
     <thead><tr><th>功法</th><th>解锁境界</th><th>灵气消耗</th><th>冷却</th><th>效果</th></tr></thead>
     <tbody><tr><td><strong>一步千里</strong></td><td>炼气</td><td>50</td><td>5 秒</td><td>瞬息前掠。距离为 4 格 + 每境界 2 格 + 每阶段 0.5 格，上限 40 格。</td></tr><tr><td><strong>御剑飞行</strong></td><td>金丹</td><td>0</td><td>3 秒</td><td>开关式功法，赋予真正的飞行。</td></tr><tr><td><strong>剑气斩</strong></td><td>筑基</td><td>30</td><td>4 秒</td><td>身前瞬发的扇形一击 —— 射程 8，半角 50 度，伤害 15 + 每境界 4。</td></tr><tr><td><strong>九天雷掌</strong></td><td>元婴</td><td>60</td><td>8 秒</td><td>以自身为中心的范围落雷 —— 半径 6，伤害 25 + 每境界 6。绝不误伤施法者。</td></tr><tr><td><strong>金刚不坏</strong></td><td>筑基</td><td>25</td><td>20 秒</td><td>10 秒内减免所受伤害：40% + 每境界 2%，上限 90%。</td></tr><tr><td><strong>疾风步</strong></td><td>炼气</td><td>15</td><td>15 秒</td><td>12 秒内地面移速 ×1.6，每境界再 +0.05。</td></tr><tr><td><strong>疗伤诀</strong></td><td>炼气</td><td>40</td><td>12 秒</td><td>瞬间自愈 40 + 每境界 10 点生命。</td></tr><tr><td><strong>护体真气</strong></td><td>筑基</td><td>35</td><td>18 秒</td><td>15 秒的伤害吸收池，容量 60 + 每境界 15 —— 是定额之池，而非百分比。</td></tr><tr><td><strong>真气灌注</strong></td><td>炼气</td><td>20</td><td>15 秒</td><td>10 秒内所造成伤害 +30%，每境界再 +3%。</td></tr></tbody>
     </table>
         </div>
+
+    <h2 id="dao-arts">十大道功法</h2>
+
+    <p>十道功法，一元素一道，<strong>非修此道者不可用</strong>。选定一道元素，不再只是决定你的攻击转为何种伤害 —— 它决定你能得到哪一道功法。</p>
+
+    <p>其中八道是以自身为中心的范围爆发，各携本元素的伤害类型，因而白得<a href="../dao/">五行相克</a>的加成。另两道并非攻击：木主疗愈，水主防御 —— 这正是那两种元素的本意。</p>
+
+    <table>
+    <thead><tr><th>功法</th><th>大道</th><th>解锁境界</th><th>灵气</th><th>冷却</th><th>效果</th></tr></thead>
+    <tbody><tr><td><strong>烈焰莲</strong></td><td>火</td><td>筑基期</td><td>40</td><td>12 秒</td><td>半径 6，18 伤害 + 每境 5，火属。</td></tr><tr><td><strong>冰封领域</strong></td><td>冰</td><td>筑基期</td><td>40</td><td>14 秒</td><td>范围最广，半径 7，14 伤害 + 每境 4，冰属。</td></tr><tr><td><strong>金锋</strong></td><td>金</td><td>筑基期</td><td>38</td><td>10 秒</td><td>半径 5，22 伤害 + 每境 6，金属。</td></tr><tr><td><strong>孡风裂</strong></td><td>风</td><td>练气期</td><td>28</td><td>8 秒</td><td>最廉也最快，半径 6，12 伤害 + 每境 3.5。</td></tr><tr><td><strong>毒雾</strong></td><td>毒</td><td>练气期</td><td>30</td><td>16 秒</td><td>半径 6.5，10 伤害 + 每境 4。</td></tr><tr><td><strong>山岳镇</strong></td><td>土</td><td>筑基期</td><td>42</td><td>13 秒</td><td>半径 5，20 伤害 + 每境 5.5。</td></tr><tr><td><strong>雷霆落</strong></td><td>雷</td><td>金丹期</td><td>55</td><td>15 秒</td><td>半径 5.5，28 伤害 + 每境 7。</td></tr><tr><td><strong>虚空噬</strong></td><td>虚</td><td>元婴期</td><td>65</td><td>20 秒</td><td>半径 6，24 伤害 + 每境 6，并将所造成伤害的 <strong>25%</strong> 化为自身生机。</td></tr><tr><td><strong>青木复苏</strong></td><td>木</td><td>练气期</td><td>30</td><td>25 秒</td><td>非攻击。即时自愈 30 + 每境 9，胜于通用的疗伤诀。</td></tr><tr><td><strong>流水劲</strong></td><td>水</td><td>练气期</td><td>26</td><td>20 秒</td><td>非攻击。10 秒内受到的伤害减免 12% + 每境 3%。</td></tr></tbody>
+    </table>
+
+    <div class="note"><strong>换道即换功法。</strong> 道法看的是你*当下*所修之道，而非当初学它时的那一道。若因德行、天候，或如今因<a href="../dao/#terrain">脚下地貌</a>而偏向另一元素，旧元素的功法便不再可用，新元素的则开启。已积的境界不会丢失，只是静待。</div>
+
+    <h2 id="race-arts">三大血脉功法</h2>
+
+    <p>三道功法，一族一道，所限的是<strong>血脉</strong>而非元素。这也是<a href="../races/">种族</a>之选如今关乎你能做什么、而不只关乎倍率的原因。</p>
+
+    <table>
+    <thead><tr><th>功法</th><th>种族</th><th>解锁境界</th><th>灵气</th><th>冷却</th><th>效果</th></tr></thead>
+    <tbody><tr><td><strong>噬血</strong></td><td>魔</td><td>筑基期</td><td>45</td><td>18 秒</td><td>半径 5，20 伤害 + 每境 5，并将所造成伤害的 <strong>40%</strong> 化为生机 —— 全模组最深的吸取。</td></tr><tr><td><strong>神降</strong></td><td>神</td><td>金丹期</td><td>60</td><td>22 秒</td><td>半径 7，26 伤害 + 每境 6，雷属；无论是否命中，都固定自愈 25。</td></tr><tr><td><strong>万法归一</strong></td><td>人</td><td>练气期</td><td>35</td><td>45 秒</td><td>非攻击。20 秒内造成的伤害 +15%，每境再 +4% —— 无所属元素，也无所不可。</td></tr></tbody>
+    </table>
+
+    <h2 id="mastery">功法境界</h2>
+
+    <p>在 0.7.2 之前，一道功法的强弱完全由境界决定。而今，<strong>模组计量的是你练了多少</strong>。</p>
+
+    <p>每一道功法都有属于自己的五层境界，<strong>逐道分开计算</strong>。两名境界相同的修士，在同一道功法上可以相去甚远。</p>
+
+    <table>
+    <thead><tr><th>层次</th><th>境界</th><th>熟练度</th><th>秘籍</th><th>威力</th><th>灵气</th><th>冷却</th></tr></thead>
+    <tbody><tr><td><strong>入门</strong></td><td>—</td><td>0</td><td>0</td><td>×1</td><td>×1</td><td>×1</td></tr><tr><td><strong>小成</strong></td><td>练气期</td><td>60</td><td>1</td><td>×1.2</td><td>×0.95</td><td>×0.95</td></tr><tr><td><strong>大成</strong></td><td>筑基期</td><td>200</td><td>2</td><td>×1.45</td><td>×0.9</td><td>×0.88</td></tr><tr><td><strong>圆满</strong></td><td>金丹期</td><td>500</td><td>3</td><td>×1.75</td><td>×0.85</td><td>×0.8</td></tr><tr><td><strong>登峰造极</strong></td><td>元婴期</td><td>1,100</td><td>5</td><td>×2.2</td><td>×0.75</td><td>×0.7</td></tr></tbody>
+    </table>
+
+    <p>进境不靠购买，也不是仪式，而是<strong>三个条件同时满足</strong>：</p>
+
+    <ul><li><strong>已至的境界。</strong> 旧规则唯一存留的那一半。</li><li><strong>该功法自身积下的熟练度</strong>，且只算*施展成功*的那一次 —— 被拒的施展不会长进。每次值 2 点，再加该功法灵气消耗的 0.05 倍。</li><li><strong>又参透了几本同样的<a href="../manuals/">秘籍</a>。</strong> 再读一本已会的，不再只是告诉你“已会”。</li></ul>
+
+    <p>三者中最后落定的那一个，就是推它上去的那一个，且当场告知。突破也算：若一道功法熟练度与秘籍早已备齐，只等境界，那么突破的那一刻它便随之而上 —— 若已等得够久，可能一口气连进几层。</p>
+
+    <p>登峰造极之时，一道功法威力为 <strong>2.2 倍</strong>、灵气<strong>少耗四成之一</strong>、冷却<strong>快三成</strong>。这是一次真正的次序重排：三个大境界之前学的一道旧功法，交手时可能胜过今早刚到手的新功法。</p>
+
+    <p>倍率作用于该功法产出的一切量值 —— 伤害、治疗、护盾、增益百分比。消耗与冷却的减免则已接入所有原本读取原始数值之处，包括“灵气不足”的判定与提示，因此 <code>/cultivation technique</code> 列出的就是你实际要付的。</p>
+
+    <div class="note"><strong>自 0.7.1 升级。</strong> 你已会的每一道功法都从<strong>入门</strong>起算，从下一次施展开始累积。过往的练习从未被记录，因而无从追认。将 <code>Mastery-Enabled</code> 置为 false，一切回到 0.7.1 的样子。</div>
 
     <h2>几门功法的细节</h2>
 

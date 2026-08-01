@@ -83,7 +83,40 @@
 
     <p>The 60% combined cap exists so a fully-levelled Life-Bound set cannot approach damage immunity, however many pieces are worn.</p>
 
+    <p>These four settings govern the two <em>original</em> benefits, which since 0.7.2 are two of <a href="#natures">six natures</a> a treasure can roll. A treasure whose nature is Blood Drinker or Vessel of Life is not bound by them &mdash; its own trait entry carries its cap.</p>
+
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2 id="natures">Traits: a Treasure&rsquo;s Nature</h2>
+
+    <p>Before <strong>0.7.2</strong> every bound weapon was the same weapon with a different number on it. Now a treasure has a <strong>nature</strong>, and it is rolled <strong>once, at the moment you bind it, and never rolled again</strong>. The blade a cultivator happens to bind is theirs, and cannot be traded in for a different kind.</p>
+
+    <div class="panel">
+          <div class="panel-head">The Six Natures</div>
+          <table>
+    <thead><tr><th>Trait</th><th>Slot</th><th>Base</th><th>Per level</th><th>Cap</th><th>Weight</th><th>What it does</th></tr></thead>
+    <tbody><tr><td><strong>Keen Edge (锋锐)</strong></td><td>Weapon</td><td>0</td><td>1.5</td><td>60</td><td>3</td><td>Outgoing damage percent &mdash; the familiar one, and the commonest.</td></tr><tr><td><strong>Warding Shell (护体甲壳)</strong></td><td>Armor</td><td>0</td><td>1</td><td>40</td><td>3</td><td>Damage reduction percent &mdash; the other familiar one.</td></tr><tr><td><strong>Blood Drinker (饮血)</strong></td><td>Weapon</td><td>1</td><td>0.4</td><td>20</td><td>1.5</td><td>Returns a share of the damage dealt as health. Unlocks <strong>Blood Devour</strong> at level 8.</td></tr><tr><td><strong>Qi Siphon (吸灵)</strong></td><td>Weapon</td><td>1</td><td>0.6</td><td>30</td><td>1.5</td><td>Feeds its wielder Qi on every hit &mdash; a blade that feeds you rather than itself.</td></tr><tr><td><strong>Vessel of Life (生命之器)</strong></td><td>Armor</td><td>2</td><td>1.2</td><td>60</td><td>1.5</td><td>Flat max health. Widens the vessel instead of thickening the shell.</td></tr><tr><td><strong>Spirit Conduit (灵脉导引)</strong></td><td>Any</td><td>2</td><td>0.8</td><td>35</td><td>1</td><td>Multiplies the Qi you draw while meditating. Unlocks <strong>Qi Barrier</strong> at level 10.</td></tr></tbody>
+    </table>
+        </div>
+
+    <p>A trait&rsquo;s magnitude is <code>BaseAmount + AmountPerLevel &times; level</code>, capped at <code>MaxAmount</code> &mdash; and what that magnitude <em>means</em> differs per trait. Damage and reduction are percentages as before; Blood Drinker and Qi Siphon are what one hit returns; Spirit Conduit multiplies meditation; Vessel of Life is flat health.</p>
+
+    <h3>How the roll works</h3>
+
+    <ul><li><strong>Weight decides the odds.</strong> The two originals are twice as likely as the drinkers and four times as likely as Spirit Conduit &mdash; so the nature a long-term cultivator actually wants is the rarest.</li><li><strong>Slot is a real restriction.</strong> A <code>Weapon</code> trait never lands on a breastplate, which is what stops half of all rolls from being useless. Only Spirit Conduit can appear on either.</li><li><strong>Weight 0 retires a nature</strong> from the roll without breaking treasures already carrying it &mdash; the way to remove one from a live server.</li></ul>
+
+    <h3>Arts a treasure lends you</h3>
+
+    <p>Two natures grow into more than a number. Once the treasure reaches the trait&rsquo;s <code>UnlockTechniqueLevel</code>, it <strong>lends its owner an art while it is held</strong>:</p>
+
+    <ul><li><strong>Blood Drinker</strong> at level 8 lends <a href="../techniques/#race-arts">Blood Devour</a> &mdash; normally a Demon-only art.</li><li><strong>Spirit Conduit</strong> at level 10 lends <a href="../techniques/">Qi Barrier</a>.</li></ul>
+
+    <p>It is checked <strong>live</strong>, so sheathing the treasure takes the art away again. <code>UnlockTechnique</code> names any registered technique id, which means a server owner or an add-on can point a trait at anything on the <a href="../techniques/">technique list</a>, including its own.</p>
+
+    <div class="note">
+          <span class="note-title">Coming from 0.7.1</span>
+          Treasures bound before this release <strong>keep the exact benefit and the exact numbers they already had</strong> &mdash; a bound weapon stays a Keen Edge weapon at the same percentage, and a bound armor piece stays Warding Shell. Nothing is re-rolled, because a nature is decided once and there is no re-roll in the mod at all. Setting <code>Life-Bound-Traits-Enabled</code> to false returns every treasure to the flat damage/reduction split of 0.7.1.
+        </div>
 
     <h2>Awakening</h2>
 

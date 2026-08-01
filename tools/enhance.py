@@ -299,7 +299,7 @@ STRINGS: dict[str, dict[str, dict[str, str]]] = {
         "zh": dict(performing="如何施展",
                    gates="层层关卡",
                    gates_title="施展顺序 —— 第一个未通过的关卡即是所告之因",
-                   builtin="内置九法", builtin_title="内置九法",
+                   builtin="内置功法", builtin_title="通用功法",
                    stacking="叠加时有明确的先后",
                    stacking_title="护体真气与金刚不坏的叠加"),
     },

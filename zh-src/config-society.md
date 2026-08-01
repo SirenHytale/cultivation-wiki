@@ -32,6 +32,29 @@ han: 配
 | "Sect-Inscription-Enabled" | true | 宗主是否可将功法秘籍镌于大殿之上，将此法借予全体门人。 |
 | "Description-Sect-Inscription" | 一段解释上述数值的长字符串。 | 宗主立于自家大殿中以 `/sect inscribe` 消耗一本功法秘籍；此后只要宗门**持有**大殿，每名门人便知晓此法。同时只能镌刻一道，且唯有功法秘籍行得通 —— 天赋树秘籍授予的是永久节点，无法外借。 |
 
+
+##### 宗门本道、共修与产业
+
+见[宗门本道](/cultivation/sects/#sect-dao)、[共修之进境](/cultivation/sects/#shared-progression)与[宗门产业](/cultivation/sects/#buildings)。
+
+| 变量名 | 默认值 | 说明 |
+| --- | --- | --- |
+| `Sect-Dao-Enabled` | true | 宗门是否可拉本道。 |
+| `Sect-Dao-Matched-Multiplier` | 1.3 | 修士本就修此道时，在宗门地界上的采气倍率。 |
+| `Sect-Dao-Ambient-Multiplier` | 1.1 | 修士不修此道时的采气倍率。 |
+| `Sect-Dao-Affinity-Interval-Seconds` | 8 | 多久向宗门之元素拉一次亲和。 |
+| `Sect-Dao-Affinity-Per-Interval` | 2.5 | 一次拉多少。故意强于地貌的每 10 秒 1.5。 |
+| `Sect-Buildings-Enabled` | true | 山门之外的产业总开关。 |
+| `Sect-Xp-Per-Member-Advancement` | 10 | 成员晋一阶时宗门所积。 |
+| `Sect-Xp-Per-Member-Breakthrough` | 60 | 成员破一境时宗门所积。 |
+| `Sect-Level-Base-Xp` | 200 | 第 2 级的消耗；第 *N* 级为此值 × 增长率^(N−1)。 |
+| `Sect-Level-Growth-Rate` | 1.6 | 每级比上一级贵多少。 |
+| `Sect-Buildings-Per-Level` | 1 | 每升一级开几个产业位。 |
+| `Sect-Buildings-Max` | 6 | 产业硬上限，无论宗门升得多高。 |
+| `Sect-Building-Types` | 6 项 | 每项含 `Id`、`MeditationMultiplier`、`RequiredSectLevel` 与 `DaoActiveByDefault`。 |
+
+`DaoActiveByDefault` 是需要想一想的那一项：置 `false` 使该种产业成为**中立之地**，所修不同的成员可在其中安心修行。客卿院、丹药园与炼器坊默认为 `false`，正是为此。具体到每一处产业，玩家事后仍可用 `/sect building dao` 切换。
+
 #### 阵法配置
 
 三种可布设的灵阵，位于路径 `mods/Siren_Cultivation/Society/FormationConfig.json`。

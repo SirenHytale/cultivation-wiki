@@ -70,6 +70,36 @@ flowchart LR;
 
 * * *
 
+#### 脚下之地 {#terrain}
+
+天候一直在推动你的元素。自 **0.7.2** 起，**地貌亦然**。坐于火山之中，你的亲和向火偏移；冰川之上向冰；沼泽之间向毒 —— 无论你是否有意。
+
+一地属何元素，是从**生群系自身的名称**解析出来的。`Terrain-Element-Keywords` 是一串 `关键词:元素` 对，以不区分大小写的子串匹配，命中即止，默认包含**涵盖十大元素的 60 个关键词**：
+
+| 元素 | 生群系名中的关键词 |
+| --- | --- |
+| **火** | Volcan, Lava, Magma, Ember, Scorch |
+| **土** | Desert, Dune, Canyon, Badland, Mesa, Rock, Mountain, Cave |
+| **木** | Forest, Jungle, Wood, Grove, Bamboo, Plains, Meadow |
+| **水** | Ocean, Sea, River, Lake, Beach, Coast, Swamp, Marsh |
+| **毒** | Bog, Fen, Blight, Rot, Fungal, Mushroom |
+| **冰** | Snow, Frost, Ice, Glacier, Tundra, Frozen, Arctic |
+| **风** | Peak, Sky, Cliff, Highland, Steppe, Savanna |
+| **雷** | Storm, Thunder |
+| **金** | Crystal, Quarry, Mine, Iron, Ore |
+| **虚** | Void, Corrupt, Cursed, Shadow, Dark, Abyss |
+
+按名称而非固定生群系表匹配，正是为了让它在**任何**世界上都管用 —— 包括生群系来自地形模组的世界。毫无命中的生群系，就只是一片无性之地。
+
+坐在上面有两件事，而后一件更要紧：
+
+- **采气更快。** 地貌与自身大道相合时，所得乘以 **1.25**；仅仅是十大元素之一而非你的，也有 **1.08**。坐在哪里如今是一个真正的选择，而非布景。
+- **亲和偏移。** 每打坐 10 秒，向地貌之元素增加 **1.5 点**亲和，汇入常规的[偏移规则](#换道与偏移)。在火山里坐得够久，你的大道会自行转为火。
+
+> **比一次击杀慢，是故意的。** 地貌每次给的亲和故意低于击杀。地貌是*你选择坐进去的一种缓慢压力*，而非一桩事件 —— 转化一个人应当需要一季的静坐，而不是一个下午。若这不是你想要的节奏，`Terrain-Affinity-Per-Interval` 与 `Terrain-Affinity-Interval-Seconds` 都归你；`Terrain-Dao-Enabled` 置 false 则让大地彻底无性。
+
+地貌并非最强的那一股拉力。[宗门地界](/cultivation/sects/#sect-dao)更强，因为宗门的地是刻意经营的 —— 而与地貌不同，那一种是你入门时自己选的。
+
 #### 阴阳之衡
 
 每位修士都背负着一条随行止而动的阴阳之衡：

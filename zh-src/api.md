@@ -7,18 +7,18 @@ han: 匠
 
 ### Cultivation 接口
 
-Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.siren.API.CultivationAPI`，外加同一包下的十一个 `*Events` 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 `CultivationManager`、`Cultivation` 或那些 ECS 组件，因为后者随时可能在版本之间变动。
+Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.siren.API.CultivationAPI`，外加同一包下的十二个 `*Events` 类。它是本模组有意保持稳定的形态 —— 请优先使用它，而非直接伸手去碰 `CultivationManager`、`Cultivation` 或那些 ECS 组件，因为后者随时可能在版本之间变动。
 
 你可以用它做四件事：
 
 - **读取**玩家的修炼状态 —— 境界、阶段、全局等级、存蓄灵气、种族、打坐状态、天赋点、已解锁节点。见[接口参考](/cultivation/api/reference/)。
 - **注册**与内置内容行为完全一致的新内容 —— 一个种族、一门功法、一项灵气吸收物品修正。见[注册表](/cultivation/api/registries/)。
-- **监听**（并重新调参，或否决）遍及模组各子系统的约 135 个事件。见[事件](/cultivation/api/events/)。
+- **监听**（并重新调参，或否决）遍及模组各子系统的156 个事件。见[事件](/cultivation/api/events/)。
 - **替换**模组的一整个层次 —— 进阶阶梯本身、它的全套用词，或两者兼有 —— 而其余每个子系统仍照常在其之上运行。此为 0.5.0 新增；见[编写扩展](/cultivation/api/addons/)。
 
 本页所记载的是 Cultivation **0.7.0** 时的接口。
 
-> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 144 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
+> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 156 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
 
 #### 将 Cultivation 引入你的项目
 
@@ -108,7 +108,7 @@ public final class MyCultivationHooks {
 
 | 页面 | 涵盖 |
 |:---|:---|
-| [事件](/cultivation/api/events/) | 十一个 `*Events` 类中的每一个事件、它暴露什么，以及取消它意味着什么。 |
+| [事件](/cultivation/api/events/) | 十二个 `*Events` 类中的每一个事件、它暴露什么，以及取消它意味着什么。 |
 | [注册表](/cultivation/api/registries/) | `registerRace`、`registerTechnique`、`registerQiAbsorptionItemModifier`、`registerTitle`、`registerSectBanner`、`registerPalette` 以及可由扩展提升的上限。 |
 | [接口参考](/cultivation/api/reference/) | 组件类型的 getter，以及 `CultivationAPI` 门面上的各项状态读取。 |
 | [编写扩展](/cultivation/api/addons/) | `ProgressionProvider`（包括 `supportsProfiles`）、`CultivationTheme` 与 `AdminConfigSection` —— 替换阶梯、替换用词，以及添加你自己的管理设置。 |

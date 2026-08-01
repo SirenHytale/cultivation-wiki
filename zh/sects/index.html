@@ -162,6 +162,46 @@ flowchart TD;
 
     <p>将 <code>Sect-Inscription-Enabled</code> 设为 <code>false</code> 即可整体关闭此功能；关闭期间碑文立刻停止授法。</p>
 
+    <h2 id="sect-dao">宗门本道</h2>
+
+    <p>自 <strong>0.7.2</strong> 起，宗门可以用 <code>/sect dao {element}</code> 拉十大<a href="../dao/">道</a>之一为本宗之道。在宗门所辖的地界上修行 —— 山门，以及任何开着开关的<a href="#buildings">产业</a> —— 灵气便偏向那一元素。</p>
+
+    <table>
+    <thead><tr><th>设置</th><th>默认</th><th>作用</th></tr></thead>
+    <tbody><tr><td><code>Sect-Dao-Matched-Multiplier</code></td><td>1.3</td><td>修士本就修此道时的采气倍率。</td></tr><tr><td><code>Sect-Dao-Ambient-Multiplier</code></td><td>1.1</td><td>修士不修此道时的采气倍率。</td></tr><tr><td><code>Sect-Dao-Affinity-Interval-Seconds</code></td><td>8</td><td>多久拉一次亲和。</td></tr><tr><td><code>Sect-Dao-Affinity-Per-Interval</code></td><td>2.5</td><td>一次拉多少，汇入常规的<a href="../dao/">偏移规则</a>。</td></tr></tbody>
+    </table>
+
+    <p>这比<a href="../dao/#terrain">地貌</a><strong>刻意更强</strong> —— 每 8 秒 2.5 点，对比地貌的每 10 秒 1.5 点。宗门的地是刻意经营的，在其中坐上一季的弟子，本就应当带着宗门的元素走出来。宗门如今有了性情，而它的地会把那性情教给人。</p>
+
+    <p>执行 <code>/sect dao</code> 不带参数可查看当前之道，传入 <code>none</code> 则清除。未拉本道的宗门，地界与 0.7.2 之前一样无性。</p>
+
+    <h2 id="shared-progression">共修之进境</h2>
+
+    <p>宗门之所以上进，是因为<strong>门下弟子在上进</strong>。每有一名成员晋一阶或破一境，宗门便积下一分：</p>
+
+    <ul><li>成员晋阶：<strong>10 点</strong>（<code>Sect-Xp-Per-Member-Advancement</code>）。</li><li>成员破境：<strong>60 点</strong>（<code>Sect-Xp-Per-Member-Breakthrough</code>）。</li><li>第 <em>N</em> 级需 <strong>200 × 1.6^(N−1)</strong> —— 即第 2 级 200，第 3 级 320，第 4 级 512，依此类推。</li></ul>
+
+    <p>共修之进境就这么多，而它的形状正是重点：无物可捐，也无处可刷。<strong>招人、且真把人养出来，才是建宗之道</strong> —— 一山门永不晋阶的炼体期弟子，一分也挤不出来。</p>
+
+    <p>等级换来的是<a href="#buildings">产业</a>：每级一个位，最多六处。</p>
+
+    <h2 id="buildings">宗门产业</h2>
+
+    <p>山门之外，宗门可在自己的地块上置下产业。每一种都有自己的打坐倍率，以及一个需要等候的宗门等级：</p>
+
+    <table>
+    <thead><tr><th>产业</th><th>打坐</th><th>宗门等级</th><th>是否承本宗之道</th></tr></thead>
+    <tbody><tr><td><strong>藏经阁</strong></td><td>×1.2</td><td>1</td><td>是</td></tr><tr><td><strong>静修亭</strong></td><td>×1.15</td><td>1</td><td>是</td></tr><tr><td><strong>客卿院</strong></td><td>×1.1</td><td>2</td><td><strong>否</strong></td></tr><tr><td><strong>丹药园</strong></td><td>×1.1</td><td>2</td><td><strong>否</strong></td></tr><tr><td><strong>宗门炼器坊</strong></td><td>×1.05</td><td>3</td><td><strong>否</strong></td></tr><tr><td><strong>祖师祠</strong></td><td>×1.3</td><td>4</td><td>是</td></tr></tbody>
+    </table>
+
+    <p>站在目标地块上用 <code>/sect building claim {type}</code> 置下，<code>/sect building abandon</code> 舍弃，<code>/sect building</code> 不带参数则列出已有与尚可置下的。</p>
+
+    <p>每一处产业都带着<strong>一道重于其余的开关</strong>：其地是否向内中修士压本宗之道。用 <code>/sect building dao</code> 切换。</p>
+
+    <div class="note"><strong>中立之地才是重点。</strong> 关掉开关的产业即为中立之地：打坐倍率照旧生效，却不再拉扯修士的元素。这正是宗门如何<strong>接纳一位所修不同的好友</strong>而不把他慢慢换成另一个人。客卿院、丹药园与炼器坊默认关闭，正是为此 —— 一座会您您同化客人的客卿院，算什么客卿院。</div>
+
+    <p>反过来也同样是刻意的。想让全宗归于一元素的，就多置藏经阁与祖师祠、开尽开关；想广纳四方的，就置客卿院。两种都玩得转，而产业就是宗门表明自己是哪一种的方式。</p>
+
     <h2>战力与排行</h2>
 
     <p>宗门的<strong>战力</strong>，是排行榜所见过的每一名门人的全局修为等级之和，其中一名门人贡献 <code>境界 × 4 + 阶段 + 1</code>。人多、境界高的宗门排名更前。</p>

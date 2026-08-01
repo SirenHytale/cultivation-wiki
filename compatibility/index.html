@@ -99,7 +99,7 @@
 
     <h2>Writing your own compatibility</h2>
 
-    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to 144 events across eleven subsystems.</p>
+    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to 156 events across twelve subsystems.</p>
 
     <p>Since v0.7.0, a mod that <strong>replaces Cultivation's progression ladder</strong> (a <code>ProgressionProvider</code>) has one more duty: players can now keep several <a href="../profiles/">profiles</a>, and switching swaps the cultivator underneath your mod. Until your provider declares <code>supportsProfiles()</code> and keeps its own records in step through <code>ProfileEvents</code>, switching is refused rather than half-performed — see <a href="../api-addons/">Building Add-ons</a>.</p>
 

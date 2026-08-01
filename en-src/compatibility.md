@@ -96,7 +96,7 @@ feature stays off no matter what `Society/PartnerConfig.json` says.
 
 Cultivation's API is designed for exactly this. An add-on can read every config
 file, drive progression, register its own settings into the admin menu, and
-listen to 144 events across eleven subsystems.
+listen to 156 events across twelve subsystems.
 
 Since v0.7.0, a mod that **replaces Cultivation's progression ladder** (a
 `ProgressionProvider`) has one more duty: players can now keep several

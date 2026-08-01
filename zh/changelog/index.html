@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>更新日志 — 修真百科</title>
-<meta name="description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
+<meta name="description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/changelog/">
 <meta property="og:title" content="更新日志 — 修真百科">
-<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
+<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="更新日志 — 修真百科">
-<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.7.0 回溯至 v0.1.0 首发。">
+<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,12 +49,64 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.7.0</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.7.2</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.7.2 —— 功不唐捐</h2>
+
+    <p>在此之前，一道功法有多强，只看持有它的人到了何境。筑基期学得的剑气斩，便永远是筑基期的剑气斩 —— 哪怕你已掷出过千百回，直到下一次突破为止。这一版，模组开始真正计量<strong>你练了多少</strong>。</p>
+
+    <h3>功法境界</h3>
+
+    <ul><li>每一道功法都有属于自己的<strong>五层境界</strong> —— 入门、小成、大成、圆满、登峰造极 —— 且<strong>逐道分开计算</strong>。见<a href="../techniques/#mastery">功法</a>。</li><li>每进一层，<strong>三个条件缺一不可</strong>：已至的境界、该功法因<strong>施展成功</strong>所积的熟练度，以及又参透了几本同样的功法秘籍。</li><li>至登峰造极，一道功法威力为<strong>二点二倍</strong>，灵气消耗<strong>减四成之一</strong>，冷却<strong>快三成</strong>。一道练得透的旧功法，胜过刚到手的新功法。</li><li>重复的<a href="../manuals/">功法秘籍</a>不再白白浪费 —— 再读一本已会的，是把它参得更深。</li><li>境界如今只决定你能不能<strong>持有</strong>一道功法，不再决定你使得有多好。</li></ul>
+
+    <h3>十三道新功法</h3>
+
+    <ul><li>功法总数由 <strong>9 道增至 22 道</strong>。见<a href="../techniques/">功法</a>。</li><li><strong>十大道各有一道本道功法</strong>，非此道不可修 —— 烈焰莲、冰封领域、金锋、孡风裂、毒雾、雷霆落、山岳镇、虚空噬、青木复苏与流水劲。八道为攻；木主愈，水主守。</li><li><strong>三大血脉各有一道</strong>：噬血（魔）饮其所伤，神降（神）是审判与审判后仍能站着的底气，万法归一（人）无所专精，也无所不可。</li></ul>
+
+    <h3>灵兽长成</h3>
+
+    <ul><li>灵兽习得<strong>属于自己的五道兽技</strong> —— 裂爪、焰口、石甲、吸灵，以及后期的兽魂啸 —— 且临战时不待吿咐自行施展。每一道都看<strong>兽自己的境界</strong>，而非主人的。见<a href="../beasts/#arts">兽技</a>。</li><li>24 个物种之间贯穿着<strong>十二条进化之路</strong>：黑狼化为焰狼，白狼先化雪豹、再化剑齿虎。等级、修为与结下的缘分全部带过去。见<a href="../beasts/#evolution">进化</a>。</li><li><strong>七个物种长得足够高大，可供骑乘</strong>。见<a href="../beasts/#mounts">灵兽坐骑</a>。</li><li><code>/cultivation beast info</code> 围绕这一切重写了。</li></ul>
+
+    <h3>脚下之地塑你之道</h3>
+
+    <ul><li>天候早已影响大道，如今<strong>地貌亦然</strong> —— 坐于火山则偏火，冰川则偏冰，沼泽则偏毒。<strong>60 个地貌关键词</strong>覆盖十大元素，按生群系自身名称匹配，因而在装了地形模组的世界上一样管用。见<a href="../dao/#terrain">脚下之地</a>。</li><li>地貌与自身大道相合时，采气<strong>快一成五</strong>。</li></ul>
+
+    <h3>宗门：本道、共修与产业</h3>
+
+    <ul><li>宗门可<strong>拉十大道之一为本宗之道</strong>，宗门地界上的灵气便偏向那一元素 —— 同道弟子<strong>多得三成</strong>。见<a href="../sects/#sect-dao">宗门本道</a>。</li><li><strong>共修之进境</strong>：门下弟子每晋一阶、每破一境，宗门便积一分。宗门因弟子上进而上进 —— 招人、且真把人养出来，就是它的全部。</li><li>山门之外可置<strong>六种宗门产业</strong>，每升一级开一个位，最多六处。每处都带一道开关：其地是否压本宗之道。关掉便是<strong>中立之地</strong> —— 这正是宗门如何接纳一位所修不同的好友。见<a href="../sects/#buildings">宗门产业</a>。</li></ul>
+
+    <h3>本命法宝各有其性</h3>
+
+    <ul><li>法宝之性如今<strong>在结下本命的那一刻定下，此后不再重掷</strong>。共六种：锋锐、护体甲壳、饮血、吸灵、生命之器，以及最稀罕、能直接加快修行的灵脉导引。见<a href="../lifebound/#natures">法宝之性</a>。</li><li>其中两种养到一定层次后，会<strong>在持在手中时借你一道功法</strong>，收起则收回。</li><li>本版之前已结下本命的法宝，完全保留原有的效果与数值。</li></ul>
+
+    <h3>修正</h3>
+
+    <ul><li><strong>丹药、灵核、符箴与秘籍改为右键使用</strong>，不再是左键 —— 共 20 件。</li><li><strong>一步千里跌得更远</strong>：基础 6 格（原 4），每境 +3（原 +2），上限 60（原 40）。</li><li><strong>御剑可乘了。</strong>召出的飞剑与所有可骑灵兽都带着一道您您拒绝的交互判定。</li></ul>
+
+    <h3>服务器主与扩展作者</h3>
+
+    <ul><li>游戏内管理页已覆盖全部新内容 —— <strong>22 个分区、135 项设置</strong>（原为 21 与 116）。每一项新系统都有开关可彻底关闭，关后即回到 v0.7.1 的行为。</li><li>接口增至 <strong>156 个事件</strong>，并新增<strong>四个开放注册表</strong> —— 兽技、宗门产业类型、本命法宝之性与功法境界。见<a href="../api-registries/">注册表</a>与<a href="../api-events/">事件</a>。</li><li><strong>五种语言均已译全</strong>：英语、简体中文、葡萄牙语（巴西）、俄语与乌克兰语。</li></ul>
+
+    <h2>v0.7.1 —— 体魄长存</h2>
+
+    <p>在此之前，每一境都是采气修来的。这一版添了另一条阶梯 —— 它不靠采气，只靠<strong>站在那里挨那一下</strong>。而护甲既然挡下了那一击，也就挡下了那一课。</p>
+
+    <h3>淬体</h3>
+
+    <ul><li>与境界并行的<strong>第二条修行之路</strong> —— 见新的<a href="../../body-tempering/">淬体</a>页。它不是炼体期：一位炼虚期修士也可能完全未经淬炼。</li><li>熟练度只来自<strong>真正落在身上的伤害</strong>，按护甲与各项减免之后计算。赤身淬炼最快；穿上服务器上最厚的一套，所得只有十分之一。</li><li>回报是<strong>伤害减免</strong> —— 满级时赤身最高 <strong>40%</strong>，全套护甲下 <strong>15%</strong>，一路线性插值，且与护甲自身的抵抗叠加而非取代。</li><li>满级 100 是一场<strong>长久的跋涉</strong> —— 赤身撑到顶大约需承受一百五十万点伤害。</li></ul>
+
+    <h3>信息页</h3>
+
+    <ul><li>菜单栏末端新增一页，列出 Cultivation 全家族的每个模组、其版本，以及该构建是否通过校验。</li><li>管理员入服时<strong>仅提醒一次</strong>哪些已落后，附可点击的下载链接。一个开关即可关闭，且从不上报你服务器的任何信息。</li></ul>
+
+    <h3>兼容与配置</h3>
+
+    <ul><li>淬体的减免会<strong>交给 Endless Leveling 的防御</strong>而非叠在其上 —— 两个模组之间只算一次。</li><li>新增 <code>UpdateConfig.json</code> 与 <code>Cultivation/BodyTemperingConfig.json</code>。</li></ul>
 
     <h2>v0.7.0 —— 万法诸身</h2>
 

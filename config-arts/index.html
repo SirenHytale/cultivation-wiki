@@ -66,6 +66,15 @@
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h3>Terrain affinity</h3>
+
+    <p>The land's pull on your element. See <a href="../dao/#terrain">The Ground You Sit On</a>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Terrain-Dao-Enabled</code></td><td>true</td><td>False leaves the land inert.</td></tr><tr><td><code>Terrain-Matched-Multiplier</code></td><td>1.25</td><td>Qi gained where the land matches the cultivator's own dao.</td></tr><tr><td><code>Terrain-Ambient-Multiplier</code></td><td>1.08</td><td>Qi gained on merely elemental ground.</td></tr><tr><td><code>Terrain-Affinity-Interval-Seconds</code></td><td>10</td><td>How often meditating adds affinity toward the land's element.</td></tr><tr><td><code>Terrain-Affinity-Per-Interval</code></td><td>1.5</td><td>How much it adds. Gentler than a kill on purpose.</td></tr><tr><td><code>Terrain-Element-Keywords</code></td><td>60 pairs</td><td><code>keyword:ELEMENT</code>, matched as case-insensitive substrings of the biome's own name, first hit wins. Works with a generator mod's biomes.</td></tr></tbody>
+    </table>
+
     <h2>Technique Config</h2>
 
     <p>The rule set behind every active cultivation art, found in the path <code>mods/Siren_Cultivation/Arts/TechniqueConfig.json</code>. See <a href="../techniques/">Techniques</a> for what each one does.</p>
@@ -92,6 +101,20 @@
     <p>Sword Flying is the one technique whose <code>Qi-Cost</code> is 0 on purpose - toggling it is free, and the real price is the ongoing <code>QiDrainPerSecond</code> charged while airborne. Nine Heavens Thunder Palm is also the only built-in that sets a <code>Damage-Type</code> (<code>Cultivation_Lightning</code>). Techniques registered by other mods are deliberately not written into this array; they run off their own registered default rule, though you may still add an override entry with a matching <code>Id</code> by hand.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h3>Technique mastery</h3>
+
+    <p>The five-rung ladder every art climbs. See <a href="../techniques/#mastery">Mastery</a> for what it means in play.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Mastery-Enabled</code></td><td>true</td><td>Whole-system switch. False returns every art to realm-only strength, exactly as 0.7.1 behaved.</td></tr><tr><td><code>Mastery-Xp-Per-Use</code></td><td>2</td><td>Practice XP banked by one <em>successful</em> use. A refused activation teaches nothing.</td></tr><tr><td><code>Mastery-Xp-Per-Qi-Cost</code></td><td>0.05</td><td>Extra XP per point of the art's Qi cost, so an expensive art climbs faster per cast.</td></tr><tr><td><code>Mastery-Stages</code></td><td>5 entries</td><td>The ladder itself. Each rung carries <code>Name</code>, <code>RequiredRealm</code>, <code>RequiredXp</code>, <code>RequiredManuals</code>, <code>PowerMultiplier</code>, <code>QiCostMultiplier</code> and <code>CooldownMultiplier</code>.</td></tr></tbody>
+    </table>
+
+    <div class="note warn">
+          <span class="note-title">The ladder is capped at five</span>
+          A config with more than five rungs is clamped to the first five, and one with none falls back to a single flat rung. The cap exists because the UI and the lang keys only cover five &mdash; an add-on calling <code>registerMasteryStage</code> past that gets <code>false</code> back rather than a silently ignored rung.
+        </div>
 
     <h2>Manual Config</h2>
 
@@ -151,6 +174,17 @@
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h3>Life-Bound traits</h3>
+
+    <p>The natures a treasure can roll. See <a href="../lifebound/#natures">Traits</a>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Life-Bound-Traits-Enabled</code></td><td>true</td><td>False returns every treasure to the flat damage/reduction split of 0.7.1.</td></tr><tr><td><code>Life-Bound-Traits</code></td><td>6 entries</td><td>Each carries <code>Id</code>, <code>Slot</code> (<code>WEAPON</code>, <code>ARMOR</code> or <code>ANY</code>), <code>BaseAmount</code>, <code>AmountPerLevel</code>, <code>MaxAmount</code>, <code>Weight</code>, and optionally <code>UnlockTechnique</code> plus <code>UnlockTechniqueLevel</code>.</td></tr></tbody>
+    </table>
+
+    <p>A nature is rolled <strong>once, at binding</strong>, weighted by <code>Weight</code> and restricted by <code>Slot</code>, and never re-rolled. <strong>Weight 0 retires a trait</strong> from the roll without breaking treasures already carrying it &mdash; the safe way to remove one from a live server.</p>
+
     <h2>Beast Config</h2>
 
     <p>Spirit Beast companions (灵兽), found in the path <code>mods/Siren_Cultivation/Arts/BeastConfig.json</code>. See <a href="../beasts/">Spirit Beasts</a>.</p>
@@ -174,6 +208,17 @@
     <tbody><tr><td>"Wolf_Black"</td><td>GUARDIAN</td><td>VOID</td><td>0.35</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>"Wolf_White"</td><td>GUARDIAN</td><td>ICE</td><td>0.35</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>"Emberwulf"</td><td>GUARDIAN</td><td>FIRE</td><td>0.2</td><td>3</td><td>1.4</td><td>0.4</td></tr><tr><td>"Leopard_Snow"</td><td>GUARDIAN</td><td>ICE</td><td>0.28</td><td>2</td><td>1.2</td><td>0.7</td></tr><tr><td>"Tiger_Sabertooth"</td><td>GUARDIAN</td><td>METAL</td><td>0.22</td><td>3</td><td>1.4</td><td>0.5</td></tr><tr><td>"Fen_Stalker"</td><td>GUARDIAN</td><td>WATER</td><td>0.25</td><td>2</td><td>1.2</td><td>0.6</td></tr><tr><td>"Raptor_Cave"</td><td>GUARDIAN</td><td>WIND</td><td>0.3</td><td>2</td><td>1.1</td><td>0.8</td></tr><tr><td>"Rex_Cave"</td><td>GUARDIAN</td><td>METAL</td><td>0.15</td><td>4</td><td>1.6</td><td>0.2</td></tr><tr><td>"Hyena"</td><td>GUARDIAN</td><td>POISON</td><td>0.35</td><td>1</td><td>0.9</td><td>1.0</td></tr><tr><td>"Bear_Grizzly"</td><td>WARDEN</td><td>EARTH</td><td>0.28</td><td>2</td><td>1.2</td><td>0.8</td></tr><tr><td>"Bear_Polar"</td><td>WARDEN</td><td>ICE</td><td>0.26</td><td>2</td><td>1.25</td><td>0.7</td></tr><tr><td>"Yeti"</td><td>WARDEN</td><td>ICE</td><td>0.18</td><td>4</td><td>1.5</td><td>0.3</td></tr><tr><td>"Tortoise"</td><td>WARDEN</td><td>EARTH</td><td>0.5</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>"Toad_Rhino"</td><td>WARDEN</td><td>POISON</td><td>0.4</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>"Toad_Rhino_Magma"</td><td>WARDEN</td><td>FIRE</td><td>0.25</td><td>3</td><td>1.3</td><td>0.5</td></tr><tr><td>"Armadillo"</td><td>WARDEN</td><td>METAL</td><td>0.5</td><td>0</td><td>0.85</td><td>1.2</td></tr><tr><td>"Moose_Bull"</td><td>WARDEN</td><td>EARTH</td><td>0.32</td><td>1</td><td>1.1</td><td>0.9</td></tr><tr><td>"Spark_Living"</td><td>GATHERER</td><td>LIGHTNING</td><td>0.2</td><td>3</td><td>1.5</td><td>0.4</td></tr><tr><td>"Snapdragon"</td><td>GATHERER</td><td>WOOD</td><td>0.3</td><td>2</td><td>1.2</td><td>0.7</td></tr><tr><td>"Cactee"</td><td>GATHERER</td><td>WOOD</td><td>0.4</td><td>1</td><td>1.0</td><td>1.0</td></tr><tr><td>"Trillodon"</td><td>GATHERER</td><td>WOOD</td><td>0.22</td><td>3</td><td>1.35</td><td>0.5</td></tr><tr><td>"Fox"</td><td>GATHERER</td><td>WIND</td><td>0.45</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>"Deer_Stag"</td><td>GATHERER</td><td>WOOD</td><td>0.45</td><td>0</td><td>0.9</td><td>1.2</td></tr><tr><td>"Antelope"</td><td>GATHERER</td><td>WIND</td><td>0.45</td><td>0</td><td>0.85</td><td>1.2</td></tr></tbody>
     </table>
 
+
+    <h3>Growth: arts, evolution and mounts</h3>
+
+    <p>The 0.7.2 half of the beast system. See <a href="../beasts/#arts">Beast Arts</a>, <a href="../beasts/#evolution">Evolution</a> and <a href="../beasts/#mounts">Mounts</a>.</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Beast-Arts-Enabled</code></td><td>true</td><td>Whole-system switch for companion arts.</td></tr><tr><td><code>Beast-Arts-Owner-Commanded</code></td><td>true</td><td>Whether <code>/cultivation beast art</code> works at all.</td></tr><tr><td><code>Beast-Arts-Autonomous</code></td><td>true</td><td>Whether a beast uses its arts unprompted in a fight.</td></tr><tr><td><code>Beast-Arts-Autonomous-Range</code></td><td>12</td><td>How close a fight must be for it to act on its own.</td></tr><tr><td><code>Beast-Evolution-Enabled</code></td><td>true</td><td>Whole-system switch for evolution.</td></tr><tr><td><code>Beast-Mounts-Enabled</code></td><td>true</td><td>Whole-system switch for rideable companions.</td></tr></tbody>
+    </table>
+
+    <p>Which creature learns what is not here &mdash; it is on the species itself, in <code>BeastSpeciesList</code>: <code>Arts</code> lists the art ids it can grow into, <code>EvolvesTo</code> plus <code>EvolveRealm</code> name its next form, and <code>MountRealm</code> makes it rideable. That is what lets an add-on register an art and still leave the owner to decide which beasts get it.</p>
   </main>
 
   <div id="site-toc"></div>
