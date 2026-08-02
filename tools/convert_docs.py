@@ -135,6 +135,7 @@ LINKS: dict[str, str] = {
     "/cultivation/sects/": "sects",
     "/cultivation/formations/": "formations",
     "/cultivation/dwelling/": "dwelling",
+    "/cultivation/land/": "land",
     "/cultivation/duels/": "duels",
     "/cultivation/wars/": "wars",
     "/cultivation/config/": "config",

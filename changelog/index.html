@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Changelog — Cultivation Wiki</title>
-<meta name="description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
+<meta name="description" content="Release notes for the Cultivation mod, from v0.7.3 — The Ground You Stand On — back to the v0.1.0 first release.">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/changelog/">
 <meta property="og:title" content="Changelog — Cultivation Wiki">
-<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
+<meta property="og:description" content="Release notes for the Cultivation mod, from v0.7.3 — The Ground You Stand On — back to the v0.1.0 first release.">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Changelog — Cultivation Wiki">
-<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.2 — The Long Practice — back to the v0.1.0 first release.">
+<meta name="twitter:description" content="Release notes for the Cultivation mod, from v0.7.3 — The Ground You Stand On — back to the v0.1.0 first release.">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,7 +49,7 @@
 
     <h1>Changelog</h1>
     <p class="page-lede">
-      Release notes for Cultivation. This wiki documents <strong>v0.7.2</strong>, the current
+      Release notes for Cultivation. This wiki documents <strong>v0.7.3</strong>, the current
       release.
     </p>
 
@@ -59,6 +59,97 @@
       classpath will conflict. Existing worlds, player progress, sects and abodes all carry over,
       and your config files are migrated automatically. No reset is needed between versions.
     </div>
+
+    <h2>v0.7.3 &mdash; The Ground You Stand On</h2>
+    <p>
+      A sect could claim a hall, and it meant almost nothing. Anyone could walk in, break the walls,
+      empty the chests and walk out again. This release makes claimed ground <strong>real</strong>:
+      it has a border you can see, rules you set yourself, and it turns away people who do not
+      belong on it.
+    </p>
+
+    <h3>Land protection</h3>
+    <ul>
+      <li>Sect halls, every chunk a sect holds, and every cave abode now <strong>refuse
+        outsiders</strong> by default &mdash; no breaking, placing, opening containers, using doors
+        or workbenches, or harming creatures. See <a href="../land/">Land Protection</a>.</li>
+      <li><strong>Rules are set per claim</strong>, separately for outsiders and for plain members,
+        from <code>/land</code> where you stand or the Rules button in the sect menu. There is a
+        one-click <strong>Seal</strong>.</li>
+      <li>Every claim carries a <strong>posture line</strong> &mdash; Sealed, Partly open or Exposed
+        &mdash; with anything outsiders can do marked in red.</li>
+      <li><strong>Trusted guests</strong> pass through the rules: a sect-wide list, and a separate
+        one per abode.</li>
+      <li>Each <strong>kind</strong> of sect building carries its own defaults, so a treasury is
+        sealed and a training yard is open the moment each is raised.</li>
+      <li>A disciple who cannot change the rules can still read them.</li>
+    </ul>
+
+    <h3>Sect territory</h3>
+    <ul>
+      <li>The sect menu now carries a <strong>live map of your territory</strong> &mdash; crimson is
+        ground you hold, faint gold is open ground you could take next. Click a chunk to work on it.
+        See <a href="../sects/#territory">Territory</a>.</li>
+      <li>Sects <strong>spread outward</strong>: a chunk can only be claimed if it touches ground the
+        sect already holds, so territory stays one connected piece of land.</li>
+      <li><strong>Ground is bought with disciples, not levels.</strong> A sect holds
+        <strong>3 chunks</strong> including its hall, and gains <strong>one more per disciple</strong>
+        past the founder.</li>
+      <li><strong>Claiming and building are two steps.</strong> Take a chunk as plain ground and
+        decide later what it is for, or set it back without giving it up. Assigning a use never
+        touches the land rules or the Dao switch already on it.</li>
+      <li>A <strong>title on screen</strong> when you cross a sect's border, so a claimed compound
+        stops being invisible from outside.</li>
+    </ul>
+
+    <h3>A smaller menu</h3>
+    <ul>
+      <li>The nav bar went from <strong>fourteen buttons to nine</strong> without losing a page.</li>
+      <li><strong>Bonuses folded into the Overview</strong>, which now leads with your totals summed
+        per stat &mdash; and per unit, so a flat <em>+120 Health</em> and a <em>+15% Health</em> stay
+        separate lines. <strong>Show More</strong> unfolds the full per-source breakdown.</li>
+      <li><strong>Profiles</strong> and <strong>Technique Keybinds</strong> moved into Settings.</li>
+      <li><strong>Titles</strong> folded in beside Race, on one page now called <strong>Identity</strong>.</li>
+      <li><a href="../spirit-sense/">Spirit Sense</a> only appears once your realm actually opens it.
+        Its setting stays in Settings the whole time.</li>
+    </ul>
+
+    <h3>Command grammar</h3>
+    <ul>
+      <li><strong>Every <code>--flag</code> argument is gone</strong> &mdash; all twenty-three of
+        them. Where a command took an option it now takes a real subcommand:
+        <code>/cultivation bind confirm</code>, <code>/cultivation technique use &lt;name&gt;</code>,
+        <code>/sect dao set &lt;element&gt;</code>, <code>/sect building assign &lt;type&gt;</code>.
+        See <a href="../commands/">Commands</a>.</li>
+      <li>Admin tools take the player as a trailing name:
+        <code>/cultivation admin setrealm player &lt;realm&gt; &lt;name&gt;</code>. Acting on
+        yourself is still <code>/cultivation admin setrealm &lt;realm&gt;</code>.</li>
+      <li>Nothing lost a default &mdash; <code>/cultivation admin grantskillpoints</code> still
+        grants one.</li>
+      <li><strong>Test profiles left the menu</strong> and are command-only. Admins can grant one to
+        another player and set its realm, stage and Qi with
+        <code>/cultivation admin test</code>.</li>
+    </ul>
+
+    <h3>Fixes</h3>
+    <ul>
+      <li><strong>Every map marker was in the wrong place.</strong> A Hytale chunk is 32 blocks and
+        the mod treated it as 16, so hall, abode, formation and vein pins all sat at half their true
+        distance from the origin &mdash; drifting further off the further out you went. Hall beacons
+        and vein beacons were misplaced the same way.</li>
+      <li><code>/sect building claim</code> claimed the wrong chunk for the same reason, disagreeing
+        with both the sect menu and <code>/sect claim</code>. <code>/land</code> read the rules of a
+        different chunk than the one it named.</li>
+      <li>Fixed a crash that took the world thread down when <a href="../techniques/">Sword
+        Flying</a> ran out of Qi mid-flight, and again on death while flying. Two more of the same
+        kind were found and fixed on <a href="../beasts/">spirit beasts</a> &mdash; completing an
+        evolution, and taming while you already had one.</li>
+      <li><a href="../spirit-sense/">Spirit Sense</a> no longer pins a vein on ground a sect already
+        holds &mdash; a compound is built on exactly those veins, so two markers stacked on one
+        chunk.</li>
+      <li>The Overview no longer shows a bare heading over an empty list for a cultivator who has
+        not started yet.</li>
+    </ul>
 
     <h2>v0.7.2 &mdash; The Long Practice</h2>
     <p>

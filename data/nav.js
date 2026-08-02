@@ -136,6 +136,7 @@ window.SITE = {
         { title: "Sects",      zh: "宗门",     href: "sects/",      zhPage: true },
         { title: "Formations", zh: "阵法",     href: "formations/", zhPage: true },
         { title: "Cave Abode", zh: "洞府",     href: "dwelling/",   zhPage: true },
+        { title: "Land Protection", zh: "领地守护", href: "land/",   zhPage: true },
         { title: "Partnered Cultivation", zh: "双修", href: "partnered-cultivation/", zhPage: true },
         { title: "Duels",      zh: "斗法",     href: "duels/",      zhPage: true },
         { title: "Sect Wars",  zh: "宗门攻伐", href: "wars/",       zhPage: true },

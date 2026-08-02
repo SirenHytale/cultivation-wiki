@@ -60,8 +60,8 @@ han: 起
 | `/cultivation codex` | 打开游戏内[典籍](/cultivation/codex/) —— 二十四篇记载，写的是本服的真实数值与你自己的进度。 | `cultivation` |
 | `/cultivation sense` | 开关[灵气感知](/cultivation/spirit-sense/) —— 感应四周天地灵气，并在灵脉、龙脉之上显出光柱。 | `cultivation` |
 | `/cultivation partner` | 查看你与道侣的[双修](/cultivation/partnered-cultivation/)状态，以及是哪一条挡住了双修。需要 Marriage 模组。 | `cultivation` |
-| `/cultivation technique (tech) [名称]` | 不填名称时，列出每一门[功法](/cultivation/techniques/)及其解锁境界、灵气消耗与当前可用状态。填了名称则施展该功法。 | `cultivation` |
-| `/cultivation refine (temper) [属性]` | 不填属性时，回报手中兵器当前的炼器情况，以及下一炼要付出什么、冒什么险。填了属性则预先扣除灵气，并让你坐入[炼器](/cultivation/refinement/)仪式。 | `cultivation` |
+| `/cultivation technique (tech) [use <名称>]` | 不带参数时，列出每一门[功法](/cultivation/techniques/)及其解锁境界、灵气消耗与当前可用状态。`use` 则施展一门。 | `cultivation` |
+| `/cultivation refine (temper) [start <属性>]` | 不带参数时，回报手中兵器当前的炼器情况，以及下一炼要付出什么、冒什么险。`start` 则预先扣除灵气，并让你坐入[炼器](/cultivation/refinement/)仪式。 | `cultivation` |
 | `/cultivation respec (resetskillpoints, resetskills)` | 返还你付费购得的每一点天赋点并清空这些节点。由[秘籍](/cultivation/manuals/)所授的节点不耗天赋点，因此既不退还也不清除。需要 `Respec-Enabled`。 | `cultivation` |
 
 #### 灵兽
@@ -120,7 +120,7 @@ han: 起
 | `/sect disband [confirm]` | 先行示警，道出宗门之名与门人之数；加 `confirm` 方才彻底解散，并知会每一位门人。 | `cultivation.sect` |
 | `/sect claim` | 在你所立的区块设立（或迁移）宗门大殿。唯有踞于配置所要求品阶的灵脉之上方可成功。 | `cultivation.sect` |
 | `/sect inscribe` | 将你手中的功法秘籍镌于大殿之上，只要宗门还持有大殿，此法便传于全体门人。秘籍会被消耗。空手运行则改为将现有碑文抹去。 | `cultivation.sect` |
-| `/sect banner [旗帜]` | 不带参数时，列出你的宗门可悬挂的[旗帜](/cultivation/sects/)，并标出当前所悬的那面。带上名称 —— `azure`，或完整的 `cultivation:azure` —— 即可将其悬于大殿之上；`none` 则回归本色灵光。仅限宗主或长老。 | `cultivation.sect` |
+| `/sect banner [set <旗帜>]` | 不带参数时，列出你的宗门可悬挂的[旗帜](/cultivation/sects/)，并标出当前所悬的那面。带上名称 —— `azure`，或完整的 `cultivation:azure` —— 即可将其悬于大殿之上；`set none` 则回归本色灵光。仅限宗主或长老。 | `cultivation.sect` |
 | `/sect info (i)` | 列出本宗的境况 —— 门人、大殿、旗帜与各项加成。 | `cultivation.sect` |
 | `/sect menu (ui)` | 打开宗门菜单界面，与裸写 `/sect` 所开的是同一页。 | `cultivation.sect` |
 
@@ -145,14 +145,20 @@ han: 起
 | 指令 | 说明 | 权限 |
 |:---|:---|:---|
 | `/cultivation admin` | 打开游戏内的实时配置编辑界面。 | `cultivation.admin` |
-| `/cultivation admin setrealm [玩家] {境界}` | 直接设定玩家的[境界](/cultivation/realms/)，保留其当前阶段。 | `cultivation.admin` |
-| `/cultivation admin setstage [玩家] {阶段}` | 直接设定玩家的子阶段（初期、中期、后期或圆满），保留其当前境界。 | `cultivation.admin` |
-| `/cultivation admin setqi [玩家] {灵气}` | 直接设定玩家当前存蓄的灵气。 | `cultivation.admin` |
-| `/cultivation admin setrace [玩家] {种族}` | 直接设定玩家的[种族](/cultivation/races/)。除非将 `Race-Admin-Bypasses-Realm-Gate` 设为 false，否则会绕过该族的解锁境界。 | `cultivation.admin` |
-| `/cultivation admin grantracechoice [玩家] [数量]` | 授予额外的改换种族次数，让玩家可重新打开种族菜单再择一次。默认为 1。 | `cultivation.admin` |
-| `/cultivation admin grantskillpoints [玩家] [数量]` | 授予额外的[天赋树](/cultivation/skilltree/)点数。默认为 1。 | `cultivation.admin` |
-| `/cultivation admin setlifebound [玩家] {等级} [经验]` | 强制设定玩家手中[本命法宝](/cultivation/lifebound/)的等级，并可选地设定该等级内已存的经验。 | `cultivation.admin` |
-| `/cultivation admin reset [玩家]` | 将玩家的修炼进度重置回炼体期初期、0 点灵气。 | `cultivation.admin` |
+| `/cultivation admin setrealm {境界}，或 player {境界} {玩家}` | 直接设定玩家的[境界](/cultivation/realms/)，保留其当前阶段。 | `cultivation.admin` |
+| `/cultivation admin setstage {阶段}，或 player {阶段} {玩家}` | 直接设定玩家的子阶段（初期、中期、后期或圆满），保留其当前境界。 | `cultivation.admin` |
+| `/cultivation admin setqi {灵气}，或 player {灵气} {玩家}` | 直接设定玩家当前存蓄的灵气。 | `cultivation.admin` |
+| `/cultivation admin setrace {种族}，或 player {种族} {玩家}` | 直接设定玩家的[种族](/cultivation/races/)。除非将 `Race-Admin-Bypasses-Realm-Gate` 设为 false，否则会绕过该族的解锁境界。 | `cultivation.admin` |
+| `/cultivation admin grantracechoice [数量]，或 player {数量} {玩家}` | 授予额外的改换种族次数，让玩家可重新打开种族菜单再择一次。默认为 1。 | `cultivation.admin` |
+| `/cultivation admin grantskillpoints [数量]，或 player {数量} {玩家}` | 授予额外的[天赋树](/cultivation/skilltree/)点数。默认为 1。 | `cultivation.admin` |
+| `/cultivation admin setlifebound {等级} [经验]，或 player {等级} [经验] {玩家}` | 强制设定玩家手中[本命法宝](/cultivation/lifebound/)的等级，并可选地设定该等级内已存的经验。 | `cultivation.admin` |
+| `/cultivation admin reset，或 reset player {玩家}` | 将玩家的修炼进度重置回炼体期初期、0 点灵气。 | `cultivation.admin` |
+| `/cultivation admin test grant {时限} {玩家}` | 让另一位玩家进入试炼[存档](/cultivation/profiles/)，并指定时限；已有者则延长。 | `cultivation.admin` |
+| `/cultivation admin test realm {境界} {玩家}` | 设定该试炼之身的境界。对方不在试炼存档上时会被回绝。 | `cultivation.admin` |
+| `/cultivation admin test stage {阶段} {玩家}` | 设定该试炼之身的阶段。 | `cultivation.admin` |
+| `/cultivation admin test qi {数量} {玩家}` | 设定该试炼之身已存蓄的灵气。 | `cultivation.admin` |
+| `/cultivation admin test end {玩家}` | 提前结束试炼存档，让该玩家回到自身的修为。 | `cultivation.admin` |
+| `/land` | 指出你所站之地属于谁，并开启其[领地规矩](/cultivation/land/)。 | `cultivation` |
 
 #### 调试指令
 

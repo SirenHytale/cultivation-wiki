@@ -91,7 +91,7 @@ flowchart TD;
 
     <table>
     <thead><tr><th>Action</th><th>Leader</th><th>Elder</th><th>Disciple</th></tr></thead>
-    <tbody><tr><td>Invite a player (<code>/sect invite</code>)</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Approve or deny a join request</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Set the motto</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Kick a plain disciple</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Kick an elder</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Promote or demote an elder</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Set the join policy</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Rename the sect</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Claim or move the hall (<code>/sect claim</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Inscribe or scour the hall (<code>/sect inscribe</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Declare war (<code>/sect war &lt;sect&gt;</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Disband the sect</td><td>Yes</td><td>No</td><td>No</td></tr></tbody>
+    <tbody><tr><td>Invite a player (<code>/sect invite</code>)</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Approve or deny a join request</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Set the motto</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Kick a plain disciple</td><td>Yes</td><td>Yes</td><td>No</td></tr><tr><td>Kick an elder</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Promote or demote an elder</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Set the join policy</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Rename the sect</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Claim or move the hall (<code>/sect claim</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Inscribe or scour the hall (<code>/sect inscribe</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Declare war (<code>/sect war declare &lt;sect&gt;</code>)</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Disband the sect</td><td>Yes</td><td>No</td><td>No</td></tr></tbody>
     </table>
 
     <p>Nobody can kick the leader, and an elder who tries to kick another elder is refused. Being kicked or leaving clears your rank and any pending join request you had.</p>
@@ -151,14 +151,14 @@ flowchart TD;
 
     <p><span class="tag">v0.7.0</span> A claimed hall raises a <strong>standing column of light</strong> visible to <em>anyone</em> walking past, not just members - a hall is a real, contestable presence in the world rather than a record only its sect knows about. The beacon re-pulses every <code>Sect-Hall-Beacon-Interval-Seconds</code> (2.5s) and is switched off server-wide with <code>Sect-Hall-Beacon-Enabled</code> - see the <a href="../config-society/">Society config</a>.</p>
 
-    <p>By default the light matches the vein under the hall. A sect's leader or an elder can instead <strong>fly a banner</strong> - from the Hall Banner picker in the sect menu, or with <code>/sect banner &lt;name&gt;</code>. Six ship with the mod:</p>
+    <p>By default the light matches the vein under the hall. A sect's leader or an elder can instead <strong>fly a banner</strong> - from the Hall Banner picker in the sect menu, or with <code>/sect banner set &lt;name&gt;</code>. Six ship with the mod:</p>
 
     <table>
     <thead><tr><th>Banner</th><th>Id</th><th>Color</th><th>Group</th></tr></thead>
     <tbody><tr><td><strong>Azure Dragon</strong></td><td><code>cultivation:azure</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#3FC9D8;vertical-align:-0.08em"></span> azure</td><td>The Four Symbols</td></tr><tr><td><strong>Vermilion Bird</strong></td><td><code>cultivation:vermilion</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#FF6B3F;vertical-align:-0.08em"></span> vermilion</td><td>The Four Symbols</td></tr><tr><td><strong>White Tiger</strong></td><td><code>cultivation:white</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#E4E8FA;vertical-align:-0.08em"></span> white</td><td>The Four Symbols</td></tr><tr><td><strong>Black Tortoise</strong></td><td><code>cultivation:black</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#3F4A9B;vertical-align:-0.08em"></span> deep indigo</td><td>The Four Symbols</td></tr><tr><td><strong>Golden Court</strong></td><td><code>cultivation:golden</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#F0C44F;vertical-align:-0.08em"></span> gold</td><td>Sect Colors</td></tr><tr><td><strong>Jade Terrace</strong></td><td><code>cultivation:jade</code></td><td><span style="display:inline-block;width:0.85em;height:0.85em;border-radius:2px;background:#6BD8A0;vertical-align:-0.08em"></span> jade</td><td>Sect Colors</td></tr></tbody>
     </table>
 
-    <ul><li><code>/sect banner</code> with no argument lists what your sect may fly, marking the current one. The short name (<code>azure</code>) and the full id both work; <code>/sect banner none</code> returns to the plain vein light.</li><li>A sect with <strong>no hall</strong> can still pick its banner - it goes up the moment a hall is claimed.</li><li>Lose the hall to a <a href="../wars/">siege</a> and the light drops back to whatever the vein wanted to be - which is how a valley tells you its owners changed before any messenger does. The <em>choice</em> survives on the sect, so reclaiming a hall raises the same banner again.</li><li>Add-ons can register more banners through <a href="../api-registries/"><code>registerSectBanner</code></a>; none of the built-in six are permission-gated.</li></ul>
+    <ul><li><code>/sect banner</code> with no argument lists what your sect may fly, marking the current one. The short name (<code>azure</code>) and the full id both work; <code>/sect banner set none</code> returns to the plain vein light.</li><li>A sect with <strong>no hall</strong> can still pick its banner - it goes up the moment a hall is claimed.</li><li>Lose the hall to a <a href="../wars/">siege</a> and the light drops back to whatever the vein wanted to be - which is how a valley tells you its owners changed before any messenger does. The <em>choice</em> survives on the sect, so reclaiming a hall raises the same banner again.</li><li>Add-ons can register more banners through <a href="../api-registries/"><code>registerSectBanner</code></a>; none of the built-in six are permission-gated.</li></ul>
 
     <p>Every claimed hall is also <strong>pinned on Hytale's own world map</strong>, tinted with its banner's color and labelled with the sect's name - for everyone, member or not. The map pin is not affected by <code>Sect-Hall-Beacon-Enabled</code>.</p>
 
@@ -182,7 +182,7 @@ flowchart TD;
 
     <h2 id="sect-dao">The Sect Dao</h2>
 
-    <p>Since <strong>0.7.2</strong> a sect can name one of the ten <a href="../dao/">Daos</a> as its own with <code>/sect dao {element}</code>. Cultivate on ground the sect holds &mdash; its hall, and any <a href="#buildings">building</a> whose Dao switch is on &mdash; and the Qi turns toward that element.</p>
+    <p>Since <strong>0.7.2</strong> a sect can name one of the ten <a href="../dao/">Daos</a> as its own with <code>/sect dao set {element}</code>. Cultivate on ground the sect holds &mdash; its hall, and any <a href="#buildings">building</a> whose Dao switch is on &mdash; and the Qi turns toward that element.</p>
 
     <div class="panel">
           <div class="panel-head">What Sect Ground Does</div>
@@ -204,11 +204,46 @@ flowchart TD;
 
     <p>That is the whole of shared progression, and the shape of it is the point: there is nothing to donate and nothing to grind directly. <strong>Recruiting people and actually raising them is what builds a sect</strong> &mdash; a hall full of Body Refinement disciples who never advance earns nothing at all.</p>
 
-    <p>What levels buy is <a href="#buildings">buildings</a>: one slot per level, to a maximum of six.</p>
+    <p>Levels gate which <a href="#buildings">buildings</a> a sect may raise. How much <em>ground</em> it may hold is a separate question, and since <strong>0.7.3</strong> that one is answered by <a href="#territory">how many disciples it has</a>.</p>
+
+    <h2 id="territory">Territory</h2>
+
+    <p>Since <strong>0.7.3</strong> a sect holds <strong>a connected stretch of ground</strong> rather than a hall and some scattered pins. It spreads outward one chunk at a time from the hall, and the ground it holds is <a href="../land/">protected</a>.</p>
+
+    <div class="panel">
+          <div class="panel-head">How much ground</div>
+          <table>
+    <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
+    <tbody><tr><td><code>Sect-Chunks-Base</code></td><td>3</td><td>Chunks a sect holds to begin with, <strong>the hall included</strong></td></tr><tr><td><code>Sect-Chunks-Per-Member</code></td><td>1</td><td>Extra chunks per disciple <strong>past the founder</strong></td></tr><tr><td><code>Sect-Chunks-Max</code></td><td>32</td><td>Ceiling, however large the sect grows</td></tr></tbody>
+    </table>
+        </div>
+
+    <p>So a sect founded by one cultivator holds its hall and two chunks around it. Take in a second disciple and it may claim a third. <strong>Ground is bought with people</strong>, which is the same thing that already drives a sect&rsquo;s level &mdash; and it means an abandoned one-person sect cannot sit on a sprawl.</p>
+
+    <h3>Claiming from the map</h3>
+
+    <p>The sect menu carries a <strong>live map of your territory</strong>: a window of chunks centred on the hall. Crimson is ground the sect holds, faint gold is open ground it could take next, and everything else is inert with a tooltip saying why &mdash; another sect holds it, it is out of reach, or the sect has no room left.</p>
+
+    <p>Click a chunk to select it, and the row beneath the map offers what can be done with it: <strong>Claim Chunk</strong> for open ground, or <strong>Set Use</strong> and <strong>Give Up</strong> for ground you already hold.</p>
+
+    <div class="note">
+          <span class="note-title">Territory grows outward</span>
+          A chunk can only be claimed if it <strong>touches ground the sect already holds</strong>, orthogonally &mdash; not diagonally. A sect&rsquo;s land is therefore always one connected piece you can walk across, rather than pins scattered over a continent. The hall is the seed; claim it first.
+        </div>
+
+    <h3>Plain ground, and ground with a use</h3>
+
+    <p>Claiming and building are <strong>two steps</strong>. A newly claimed chunk is <strong>plain ground</strong> &mdash; it counts against the allowance, it is protected, and its Dao switch works, but it has no kind. Decide later what it is for with <code>/sect building assign {type}</code> or the map&rsquo;s Set Use button, and <code>assign none</code> takes the kind back off without giving the ground up.</p>
+
+    <p>Assigning a use <strong>never</strong> re-applies a building kind&rsquo;s default rules. The <a href="../land/">land rules</a> and the Dao switch you set are yours to keep; renaming what a chunk is for will not quietly unseal it.</p>
+
+    <h3>Crossing the border</h3>
+
+    <p>Walking onto a sect&rsquo;s ground shows a <strong>title on screen</strong> naming the sect, and walking off shows another. Your own sect&rsquo;s border greets you with its motto; a rival&rsquo;s simply tells you whose land you are standing on. It fires only on the crossing, never while you stand or walk about inside.</p>
 
     <h2 id="buildings">Sect Buildings</h2>
 
-    <p>Beyond the hall, a sect can raise holdings on chunks of its own. Each has a meditation multiplier of its own and a sect level it waits for:</p>
+    <p>A chunk the sect holds can be given a <strong>kind</strong>. Each has a meditation multiplier of its own and a sect level it waits for:</p>
 
     <div class="panel">
           <div class="panel-head">The Six Kinds</div>
@@ -218,7 +253,7 @@ flowchart TD;
     </table>
         </div>
 
-    <p>Claim one with <code>/sect building claim {type}</code> on the chunk you are standing in, give it up with <code>/sect building abandon</code>, and run <code>/sect building</code> bare to list what your sect holds and what it could still raise.</p>
+    <p>Take the chunk you are standing in with <code>/sect building claim</code>, or take it and raise something on it at once with <code>/sect building claim {type}</code>. Name what a held chunk is for with <code>/sect building assign {type}</code>, give it up with <code>/sect building abandon</code>, and run <code>/sect building</code> bare to list what your sect holds.</p>
 
     <h3>The switch that matters</h3>
 
@@ -259,7 +294,7 @@ flowchart TD;
           <div class="panel-head">Commands</div>
           <table>
     <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
-    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member, online or offline (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect dao [element]</code></td><td>Name the sect&rsquo;s Dao, or show it. Pass <code>none</code> to clear. Leader only.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect building [claim|dao|abandon|list]</code></td><td>Raise a holding on this chunk, toggle whether its ground carries the sect Dao, give it up, or list what the sect holds. Leader only to claim or change.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect banner [banner|none]</code></td><td>Lists, flies, or lowers the hall banner (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war [sect|status]</code></td><td>Declares a siege, or reports your current one. See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, banner, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>Warns; <code>confirm</code> dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
+    <tbody><tr><td><code>/sect</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect create &lt;name&gt;</code></td><td>Founds a sect with you as leader.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect invite &lt;player&gt;</code></td><td>Invites a player (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect join &lt;sect&gt;</code></td><td>Accepts a live invite to that sect.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect leave</code></td><td>Leaves your sect (not the leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect kick &lt;player&gt;</code></td><td>Removes a member, online or offline (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect claim</code></td><td>Claims the chunk you stand in as the hall (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect dao [set &lt;element&gt;]</code></td><td>Bare shows the sect&rsquo;s Dao; <code>set</code> names it, and <code>set none</code> clears it. Leader only to change.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect building [list|claim|assign|abandon|dao]</code></td><td>Take this chunk, name what a held one is for, give it up, toggle whether its ground carries the sect Dao, or list what the sect holds. Leader only to claim or give up; elders may assign and toggle.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect inscribe</code></td><td>Carves the held technique manual into the hall, or scours it empty-handed (leader).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect banner [set &lt;banner&gt;]</code></td><td>Bare lists what the sect may fly; <code>set</code> flies one, and <code>set none</code> lowers it (leader or elder).</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect war [status|declare &lt;sect&gt;]</code></td><td>Bare or <code>status</code> reports your current siege; <code>declare</code> starts one (leader). See <a href="../wars/">Sect Wars</a>.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect info</code></td><td>Prints your sect's roster, hall, banner, inscription and score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect top</code></td><td>Lists the top 10 sects by score.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect menu</code></td><td>Opens the sect menu.</td><td><code>cultivation.sect</code></td></tr><tr><td><code>/sect disband [confirm]</code></td><td>Warns; <code>confirm</code> dissolves your sect (leader).</td><td><code>cultivation.sect</code></td></tr></tbody>
     </table>
         </div>
 

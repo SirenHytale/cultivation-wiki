@@ -1,0 +1,114 @@
+---
+title: Land Protection
+description: Cultivation Mod - Land Protection, the rules that decide who may build, open and fight on claimed ground
+group: The World
+han: 地
+---
+
+### Land Protection
+
+Claiming ground used to be a label. A [sect hall](/cultivation/sects/) sat on a vein and a [cave abode](/cultivation/dwelling/) sat in a hillside, and anyone at all could walk in, break the walls, empty the chests and walk out again.
+
+**Land Protection**, new in v0.7.3, makes a claim mean something. Claimed ground refuses outsiders by default, and the people who hold it decide exactly how far that goes.
+
+Switched on by default (`Land-Protection-Enabled`).
+
+* * *
+
+#### What a Claim Protects
+
+Five things can be allowed or refused, each on its own.
+
+| Action | What it covers |
+| --- | --- |
+| Break | Breaking any block inside the claim |
+| Place | Placing any block inside the claim |
+| Containers | Opening chests, barrels, and processing benches |
+| Use | Doors, hatches, levers, workbenches and other interactables |
+| Harm creatures | Attacking animals and NPCs standing on the claim |
+
+Three kinds of ground carry rules: a **sect hall**, every **chunk a sect holds**, and every **cave abode**. Each is set separately, so a sect can seal its treasury while the training yard beside it stays open.
+
+* * *
+
+#### Two Audiences, Set Separately
+
+Every claim answers the same question twice.
+
+*   **Outsiders** are everyone with no standing on that ground. By default they may do **nothing** — the safe answer, and the one a claim silently had before this feature existed.
+*   **Members** are the sect's disciples, on sect ground. By default they may do **everything**, and you take things away from there rather than granting them one at a time.
+
+That split is why a sect that never opens the menu still behaves sensibly: outsiders are locked out, disciples are not.
+
+Some people are measured against neither list:
+
+*   The **abode's owner**, on their own abode.
+*   A sect's **leader and elders**, on their own sect's ground.
+*   **Trusted guests** — a sect-wide list, plus a separate one per abode.
+*   Anyone holding `cultivation.land.bypass`.
+
+___
+
+#### Setting the Rules
+
+Stand on the ground and run `/land`. It names whose claim you are on, tells you what **you** may do there, and opens the rules page.
+
+The page is one matrix: five rows, and a column each for **Outsiders** and **Members**. Anything outsiders are allowed to do is marked in crimson, because that is the row somebody will regret leaving open. There is a one-click **Seal** for shutting the whole claim.
+
+A sect's leader and elders can also reach any claim without walking to it — the sect menu carries a **Rules** button on the hall card and on every building row.
+
+A disciple who cannot change the rules still gets a **read-only** view of them. Being refused by rules you were never allowed to read is its own kind of unfair.
+
+* * *
+
+#### Posture
+
+Every claim shows one line summarising where it stands:
+
+| Posture | Meaning |
+| --- | --- |
+| Sealed | Outsiders may do nothing |
+| Partly open | Outsiders may do some things |
+| Exposed | Outsiders may do everything |
+
+It exists so you can tell at a glance what you have actually left open, without reading ten checkboxes.
+
+* * *
+
+#### Buildings Come With Their Own Rules
+
+Each **kind** of sect building carries default rules in config, and those are stamped onto a building the moment it is raised. A treasury is sealed on the day it is built and a training yard is open, so nobody has to remember to lock the thing they just finished.
+
+Changing what a chunk is *for* later never re-applies those defaults — the rules you set are yours, and renaming the use of a chunk will not quietly unseal it.
+
+* * *
+
+#### What It Does Not Stop
+
+Stated plainly, because a protection you believe in more than it deserves is worse than none:
+
+*   **Fire, fluids and falling blocks** place and remove blocks without going through the events this reads, so a claim can still be burned or flooded into from outside.
+*   **Non-damage entity interaction** has no engine hook at all, so it cannot be guarded.
+*   Explosions **are** covered — a vanilla bomb was the first thing that opened a sealed wall in testing, and it was closed.
+
+___
+
+#### Configuration
+
+| Key | Default | What it does |
+| --- | --- | --- |
+| `Land-Protection-Enabled` | `true` | Master switch for everything on this page |
+
+Per-claim rules live with the claim itself, not in config — they are set in game and saved with the sect or the abode.
+
+* * *
+
+#### Commands and Permissions
+
+| Command | What it does |
+| --- | --- |
+| `/land` | Names the claim you are standing on and opens its rules |
+
+| Permission | Default | What it grants |
+| --- | --- | --- |
+| `cultivation.land.bypass` | op | Ignore every claim's rules everywhere |

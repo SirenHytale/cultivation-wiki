@@ -13,8 +13,9 @@ han: 起
 |:---|:---|
 | `cultivation` | `/cultivation` 根指令及其下每一条面向玩家的子指令 —— info、bind、meditate、hud、settings、race、skilltree、dao、technique、refine、respec、bonuses、formations、abode、beast、duel、top、profile、aura。 |
 | `cultivation.sect` | `/sect` 根指令及每一条宗门子指令，含 `/sect war`、`/sect banner` 与 `/sect top`。经由 `/cultivation sect ...` 抵达的同一套指令，用的也是这个节点。 |
-| `cultivation.admin` | `/cultivation admin` 配置编辑界面，及其全部八条会改动玩家的子指令。 |
-| `cultivation.profile.test` <span class="tag">v0.7.0</span> | 试炼存档：`/cultivation profile test` 及其 realm、stage、qi、points、race、reset 各分支，加上[存档](/cultivation/profiles/)菜单页的试炼存档一节。 |
+| `cultivation.admin` | `/cultivation admin` 配置编辑界面、其会改动玩家的各条子指令，以及 `/cultivation admin test` 一系。 |
+| `cultivation.profile.test` <span class="tag">v0.7.0</span> | 自己账号上的试炼存档：`/cultivation profile test` 及其 realm、stage、qi、points、race、reset 各分支。自 v0.7.3 起沙盒仅可由命令使用，不再出现于[存档](/cultivation/profiles/)菜单；为**他人**授予试炼之身则归 `cultivation.admin`。 |
+| `cultivation.land.bypass` | 无视各处[领地](/cultivation/land/)的规矩 —— 宗门大殿、宗门之地与洞府一概在内。 |
 | `cultivation.debug` | `/cultivation debug` 指令组。 |
 | `cultivation.debug.vein` | `/cultivation debug vein`。 |
 | `cultivation.debug.hotkeys` | `/cultivation debug hotkeys`。 |

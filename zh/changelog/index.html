@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>更新日志 — 修真百科</title>
-<meta name="description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
+<meta name="description" content="Cultivation 各版本的更新说明，自 v0.7.3 回溯至 v0.1.0 首发。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/changelog/">
 <meta property="og:title" content="更新日志 — 修真百科">
-<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
+<meta property="og:description" content="Cultivation 各版本的更新说明，自 v0.7.3 回溯至 v0.1.0 首发。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="更新日志 — 修真百科">
-<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.7.2 回溯至 v0.1.0 首发。">
+<meta name="twitter:description" content="Cultivation 各版本的更新说明，自 v0.7.3 回溯至 v0.1.0 首发。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,12 +49,36 @@
 
     <h1>更新日志</h1>
 
-    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.7.2</strong>，即当前版本。</p>
+    <p class="page-lede">Cultivation 的版本更新说明。本站所记载的是<strong>v0.7.3</strong>，即当前版本。</p>
 
     <div class="note">
           <span class="note-title">升级须知</span>
           在放入新的 <code>Cultivation.jar</code> 之前，请先删除旧的那一份 —— classpath 上有两份会互相冲突。已有的世界、玩家进度、宗门与洞府一律沿用，你的配置文件也会自动迁移。版本之间无需重置。
         </div>
+
+    <h2>v0.7.3 —— 脚下之地</h2>
+
+    <p>宗门立起大殿，却几乎形同虚设。谁都能走进来，拆了墙、搬空箱子，再扬长而去。这一版让所占之地<strong>名副其实</strong>：有看得见的疆界，有你自己定下的规矩，也会将不该进来的人挡在外面。</p>
+
+    <h3>领地守护</h3>
+
+    <ul><li>宗门大殿、宗门所占的每一块区块，以及每一处洞府，如今<strong>默认拒外人于门外</strong> —— 不得破坏、放置、开启容器、使用门扉与工作台，亦不得伤害其中生灵。见<a href="../land/">领地守护</a>。</li><li><strong>规矩逐处而定</strong>，对外人与对普通弟子分开设置：站在原地用 <code>/land</code>，或从宗门菜单的「规矩」按钮设置。另有一键<strong>封禁</strong>。</li><li>每处领地都标有<strong>戒备状态</strong> —— 已封禁、半开放、门户洞开 —— 凡外人可为之事皆以朱色标出。</li><li><strong>信客</strong>可越过规矩：宗门共用一份名册，每处洞府另有一份。</li><li>每<strong>一类</strong>宗门建筑自带默认规矩，故库房甫一落成便已封禁，演武场则敞开 —— 无需谁记得去锁刚建好的那一处。</li><li>无权更改规矩的弟子，仍可<strong>查看</strong>规矩。</li></ul>
+
+    <h3>宗门领地</h3>
+
+    <ul><li>宗门菜单中新增<strong>领地舆图</strong> —— 朱红为宗门所有，淡金为下一步可占之地。点击区块即可处置。见<a href="../sects/#territory">领地</a>。</li><li>宗门之地<strong>向外延展</strong>：唯有与已有之地相邻的区块方可占取，故领地始终连成一片。</li><li><strong>拓土靠人，不靠等级。</strong> 宗门连大殿在内共 <strong>3 块区块</strong>，此后<strong>每收一名弟子多得一块</strong>。</li><li><strong>占地与营建分为两步。</strong> 可先将区块占为空地，日后再定其用途；亦可撤回用途而不弃其地。指定用途绝不会动到已设好的领地规矩与大道开关。</li><li>跨越宗门疆界时会有<strong>屏显通告</strong>，宗门驻地不再从外面看不出所属。</li></ul>
+
+    <h3>菜单精简</h3>
+
+    <ul><li>导航栏由<strong>十四个按钮减至九个</strong>，且未失一页。</li><li><strong>加成并入总览</strong>，总览如今先列出各项属性的合计 —— 且按单位分列，故 <em>+120 生命</em> 与 <em>+15% 生命</em> 各占一行。点<strong>查看详情</strong>可展开完整的来源明细。</li><li><strong>存档</strong>与<strong>功法快捷键</strong>移入设置。</li><li><strong>称号</strong>并入种族，合为一页，现称<strong>身份</strong>。</li><li><a href="../spirit-sense/">灵气感知</a>唯有在境界真正开启之后才会出现，其开关始终留在设置中。</li></ul>
+
+    <h3>命令文法</h3>
+
+    <ul><li><strong>所有 <code>--flag</code> 式参数尽数移除</strong> —— 共二十三处。凡原先用选项之处，如今皆为真正的子命令：<code>/cultivation bind confirm</code>、<code>/cultivation technique use &lt;name&gt;</code>、<code>/sect dao set &lt;element&gt;</code>、<code>/sect building assign &lt;type&gt;</code>。见<a href="../commands/">命令</a>。</li><li>管理命令将玩家作为末位参数：<code>/cultivation admin setrealm player &lt;realm&gt; &lt;name&gt;</code>。作用于自身仍是 <code>/cultivation admin setrealm &lt;realm&gt;</code>。</li><li>无一处失却默认值 —— <code>/cultivation admin grantskillpoints</code> 仍是授予一点。</li><li><strong>试炼存档已移出菜单</strong>，仅可由命令使用。管理员可用 <code>/cultivation admin test</code> 授予他人试炼之身，并设定其境界、阶段与灵气。</li></ul>
+
+    <h3>修正</h3>
+
+    <ul><li><strong>所有舆图标记的位置都是错的。</strong> Hytale 的区块为 32 格，而模组按 16 格计算，故大殿、洞府、阵法与灵脉的标记皆落在距原点一半的位置 —— 离原点越远，偏差越大。大殿光柱与灵脉光柱亦同此误。</li><li><code>/sect building claim</code> 因同一缘故占错了区块，与宗门菜单及 <code>/sect claim</code> 各执一词。<code>/land</code> 所读取的规矩，也不是它所指的那一块地。</li><li>修正了<a href="../techniques/">御剑飞行</a>灵气耗尽时、以及飞行途中身死时使世界线程崩溃的错误。<a href="../beasts/">灵兽</a>上另发现并修正两处同类崩溃 —— 进化完成之时，以及已有灵兽却又收服一只之时。</li><li><a href="../spirit-sense/">灵气感知</a>不再于宗门已占之地上标出灵脉 —— 驻地本就建在这些灵脉之上，两个标记会叠在同一区块。</li><li>尚未起步的修士，总览页不再只显出一个空标题。</li></ul>
 
     <h2>v0.7.2 —— 功不唐捐</h2>
 
