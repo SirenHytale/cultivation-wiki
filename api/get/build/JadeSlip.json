@@ -1,5 +1,8 @@
 {
   "builds": {
+    "0.1.1": [
+      "cb5a3ea1596ff03e2fdbf62ef4cc3fa52022d433b59c6122fecaa82358307847"
+    ],
     "0.1.0": [
       "30b7e7645bfde2e64605ef991abdf6347376a284cfd03e4dd1fa32415c6b59b9"
     ]
