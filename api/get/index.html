@@ -82,6 +82,8 @@
 <h1>Read API</h1>
 <p class="sub">Static, read-only JSON served straight from this site. No keys, no rate limits, no write endpoints.</p>
 
+<p>Three families: <a href="#builds">build digests</a> say whether a jar is the one that shipped, <a href="#compat">compatibility matrices</a> say which versions work together, and the version manifests below say what is current.</p>
+
 <h2>Version manifests</h2>
 <p>Each mod in the Cultivation family publishes the version it considers current. The mods fetch their own manifest to tell a server owner when an update is out. <a href="#builds">Build digests</a> are published alongside them.</p>
 
@@ -157,6 +159,69 @@
 <div class="note">
   <p style="margin:0 0 .75rem">A version absent from <code>builds</code> leaves that install <strong>unverified</strong>, not condemned &mdash; as does an unreachable endpoint or an unreadable jar. A mod only concludes it is unofficial on a positive mismatch: digests were published for its exact version and its own was not among them.</p>
   <p style="margin:0"><strong>This is detection, not protection.</strong> Anyone able to rebuild a mod is equally able to remove the check, and no code running on someone else&rsquo;s machine can do better. What it reliably catches is repackaged uploads, redistributed paid addons, and downloads that arrived damaged.</p>
+</div>
+
+<h2 id="compat">Compatibility matrices</h2>
+<p>Each add-on publishes which Cultivation versions each of <em>its</em> versions is known to work against. Add-ons fetch their own matrix and withdraw what they contribute if the pairing they are running is listed as broken.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Mod</th><th>Endpoint</th></tr></thead>
+  <tbody>
+    <tr><td>Cultivation: Jade Slip</td><td><a href="/api/get/compat/JadeSlip.json"><code>/api/get/compat/JadeSlip.json</code></a></td></tr>
+    <tr><td>Soul Rings</td><td><a href="/api/get/compat/SoulRings.json"><code>/api/get/compat/SoulRings.json</code></a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Cultivation itself publishes none: the question is always &ldquo;does this add-on work with the Cultivation underneath it&rdquo;, and the base mod is the thing being measured against.</p>
+
+<pre><code>{
+  "compatible": {
+    "0.1.2": {
+      "min": "0.7.4",
+      "below": "0.8.0",
+      "blocked": []
+    }
+  }
+}</code></pre>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Field</th><th>Type</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>compatible</code></td>
+      <td>object</td>
+      <td>Keyed by the <em>add-on&rsquo;s</em> own version. A <code>default</code> key applies to any version not listed individually.</td>
+    </tr>
+    <tr>
+      <td><code>min</code></td>
+      <td>string</td>
+      <td>Oldest Cultivation this add-on version works with, inclusive. Optional &mdash; omit for no floor.</td>
+    </tr>
+    <tr>
+      <td><code>below</code></td>
+      <td>string</td>
+      <td>First Cultivation this add-on version does <em>not</em> work with, exclusive. Optional &mdash; omit for no ceiling.</td>
+    </tr>
+    <tr>
+      <td><code>blocked</code></td>
+      <td>string[]</td>
+      <td>Individual Cultivation versions inside the band that turned out not to work after all. This is the field worth having: it retracts one pairing without touching the range or shipping a jar.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Why this exists when a manifest already gates loading</h2>
+<p>It is the weaker of the two mechanisms, and deliberately the second one. Every add-on in this family declares a real range in its own <code>manifest.json</code> &mdash; <code>"Siren:Cultivation": "&gt;=0.7.4 &lt;0.8.0"</code> &mdash; and the server refuses to load it against a Cultivation outside that band before a line of its code runs, with no network involved. That is the gate.</p>
+
+<p>What a manifest cannot do is change its mind. It is baked into a shipped jar, so it can only say what was known on release day. When a later Cultivation turns out to break an add-on that honestly declared a wide range months earlier, the manifest loads the pairing happily. Editing <code>blocked</code> here reaches servers that already have both installed.</p>
+
+<div class="note">
+  <p style="margin:0 0 .75rem">An add-on concludes it is incompatible <strong>only on a positive statement about its exact pairing</strong>. An unreachable endpoint, a malformed body, or a version absent from <code>compatible</code> all leave it running &mdash; so an offline server is never told its mods do not work together, and forgetting to publish an entry is harmless rather than an outage.</p>
+  <p style="margin:0">Add-ons act on this by <strong>withdrawing what they registered and saying so in the console</strong>, not by refusing to start: by the time a verdict arrives they have been running for half a minute, and a mod that aborts its own startup takes the whole server down with it.</p>
 </div>
 
 <footer>
