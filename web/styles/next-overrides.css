@@ -152,6 +152,28 @@ html[data-theme="light"] .hero::after {
   margin-bottom: 1.8em;
 }
 
+/* Footer column headings.
+
+   Two fixes in one rule. The element is now an <h2> rather than an <h5> so the
+   document outline does not skip two levels, which means the original
+   `.footer-col h5` selector no longer matches — the visual style is restored
+   here verbatim.
+
+   The colour also changed: --gold-600 (#8C6B1F) on --bg-sunken measured about
+   3.9:1 on the dark theme and 3.5:1 on light, and at 0.7rem WCAG AA wants 4.5.
+   These two clear it in their respective themes while staying the same
+   antique gold. */
+.footer-col h2 {
+  margin: 0 0 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  color: #b8912b;
+}
+html[data-theme="light"] .footer-col h2 {
+  color: #5e4110;
+}
+
 /* Pre-rendered diagrams.
 
    Both theme variants are inlined as SVG at build time (see

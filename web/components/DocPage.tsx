@@ -6,6 +6,7 @@ import { getDoc } from "@/lib/content";
 import { GROUP_HAN, t } from "@/lib/i18n";
 import { SECTIONS, type Lang } from "@/lib/nav";
 import { mdxComponents } from "@/components/mdx";
+import { DocJsonLd } from "@/components/JsonLd";
 import { PageNav } from "@/components/chrome/PageNav";
 import { Sidebar } from "@/components/chrome/Sidebar";
 import { Toc } from "@/components/chrome/Toc";
@@ -76,6 +77,13 @@ export async function DocPage({ lang, slug }: { lang: Lang; slug: string }) {
 
   return (
     <div className="layout">
+      <DocJsonLd
+        lang={lang}
+        slug={slug}
+        title={frontmatter.title}
+        description={frontmatter.description}
+        group={frontmatter.group}
+      />
       <Sidebar lang={lang} />
       <main className="content" id="main">
         {group && (

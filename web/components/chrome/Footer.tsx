@@ -14,7 +14,11 @@ export function Footer({ lang }: { lang: Lang }) {
       <div className="footer-inner">
         {SECTIONS.slice(0, 3).map((section) => (
           <div className="footer-col" key={section.title}>
-            <h5>{lang === "zh" && section.zh ? section.zh : section.title.toUpperCase()}</h5>
+            {/* h2, not h5: the page's own content stops at h2/h3, so an h5 here
+                skips two levels and breaks the document outline for screen
+                readers. Styling is unchanged — see .footer-col h2 in
+                next-overrides.css. */}
+            <h2>{lang === "zh" && section.zh ? section.zh : section.title.toUpperCase()}</h2>
             <ul>
               {section.items.slice(0, 5).map((item) => (
                 <li key={item.href}>
@@ -26,7 +30,7 @@ export function Footer({ lang }: { lang: Lang }) {
         ))}
 
         <div className="footer-col">
-          <h5>{ui.elsewhere}</h5>
+          <h2>{ui.elsewhere}</h2>
           <ul>
             {EXTERNAL.map((link) => (
               <li key={link.href}>

@@ -6,6 +6,7 @@ import { getDoc } from "@/lib/content";
 import type { Lang } from "@/lib/nav";
 import { mdxComponents } from "@/components/mdx";
 import { HeroMotes } from "@/components/HeroMotes";
+import { SiteJsonLd } from "@/components/JsonLd";
 import { heroEn, heroZh } from "@/lib/home/hero";
 
 const HERO: Record<Lang, string> = { en: heroEn, zh: heroZh };
@@ -28,6 +29,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <>
+      <SiteJsonLd lang={lang} />
       <section className="hero" dangerouslySetInnerHTML={{ __html: HERO[lang] }} />
       <HeroMotes />
 

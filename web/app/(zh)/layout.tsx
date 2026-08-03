@@ -4,6 +4,7 @@ import "@/styles/xianxia.css";
 import "@/styles/next-overrides.css";
 import { DrawerProvider } from "@/components/chrome/Drawer";
 import { Footer } from "@/components/chrome/Footer";
+import { FontLoader } from "@/components/chrome/FontLoader";
 import { Header } from "@/components/chrome/Header";
 import { ThemeScript } from "@/components/chrome/ThemeScript";
 import { SITE } from "@/lib/nav";
@@ -47,16 +48,7 @@ export default function ChineseLayout({ children }: { children: React.ReactNode 
     <html lang="zh-CN" data-theme="dark" className={cinzel.variable} suppressHydrationWarning>
       <head>
         <ThemeScript />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        {/* See the note in the English layout: next/font has no Chinese subset
-            for this family, so it cannot be self-hosted. It matters more here
-            than anywhere — this is the body font for the whole tree. */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&display=swap"
-        />
+        <FontLoader />
       </head>
       <body>
         <DrawerProvider>

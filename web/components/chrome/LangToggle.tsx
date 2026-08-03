@@ -29,12 +29,16 @@ export function LangToggle({ lang }: { lang: Lang }) {
     href = slug && hasZhPage(slug) ? `/zh/${slug}/` : "/zh/";
   }
 
+  // The accessible name has to contain the visible text ("中文"), or voice
+  // control users cannot activate the control by reading it aloud — the
+  // label-content-name-mismatch rule. Keeping the explanation after it means
+  // screen reader users still hear what the link does.
   return (
     <a
       className="icon-btn lang-toggle"
       href={href}
       title={ui.langSwitch}
-      aria-label={ui.langSwitch}
+      aria-label={`${ui.langName} — ${ui.langSwitch}`}
       hrefLang={lang === "zh" ? "en" : "zh-Hans"}
     >
       {ui.langName}
