@@ -152,6 +152,82 @@ html[data-theme="light"] .hero::after {
   margin-bottom: 1.8em;
 }
 
+/* Light-theme contrast corrections.
+
+   --text-mut on the Yang palette was #8A6D58, which measures 4.09:1 on
+   --bg-panel and 4.20:1 on --bg-sunken — just under the 4.5 WCAG AA needs for
+   text this size. It is the token behind .realm-sub, .realm-tier, .hero-meta
+   and the whole footer, so every one of those failed together. This value
+   clears 4.5 against all four light surfaces (--bg, --bg-panel, --bg-raise,
+   --bg-sunken) while staying lighter than --text-dim, preserving the
+   three-step text hierarchy.
+
+   The dark palette is unaffected: --parchment-mut already measures 4.8–5.0:1
+   on its surfaces. */
+html[data-theme="light"] {
+  /* Dark enough to clear 4.5:1 on the *darkest* light surface it lands on —
+     the striped table rows (#DFC7AC) on the calculator, not just --bg-panel. */
+  --text-mut: #634c39;
+  /* --gold-300 (#9A6714) measured 3.75:1 behind h3 and 4.17:1 behind
+     .note-title; --gold-600 (#8C6B1F) measured 4.26:1 behind the tool-page
+     field labels. Both sit just under AA on the Yang palette. These values
+     clear 4.5 against every light surface — --bg, --bg-panel, --bg-raise and
+     --bg-sunken — and keep the same antique-gold hue. The Yin palette is
+     untouched; it already passes. */
+  --gold-300: #7a5210;
+  --gold-600: #6e4e10;
+}
+
+/* .chip sets --gold-300 over a translucent --accent-soft fill. On paper that
+   lands near 3:1, and because the fill is semi-transparent some checkers
+   report it as indeterminate rather than failing — which is how it survived
+   earlier passes. Pinned to a bronze that clears AA against the blend. */
+html[data-theme="light"] .chip {
+  color: #5a3a0c;
+}
+
+/* .btn is gold-on-crimson. On the Yang palette --gold-200 darkens to #8A5A12,
+   which against the unchanged crimson fill collapses to 2.23:1 — the worst
+   contrast on the site. The crimson stays dark in both themes, so the label
+   should stay pale in both. Ghost buttons are excluded: they have no fill and
+   their --text-dim already passes. */
+html[data-theme="light"] .btn:not(.ghost) {
+  color: var(--gold-100);
+}
+
+/* Dark-theme corrections, measured against the calculator's highlighted table
+   rows — a darker surface than --bg-panel, which is where these two slip.
+   --parchment-mut landed at 4.47:1 there (AA wants 4.5), and .chip.crimson at
+   2.6:1. Both nudged just far enough, keeping their hue. */
+html[data-theme="dark"] {
+  --text-mut: #948560;
+}
+html[data-theme="dark"] .chip.crimson {
+  color: #e07878;
+}
+
+/* Callout titles.
+
+   .note.warn borrows --crimson-400 and .note.tip borrows --jade. Both tokens
+   are shared with larger decorative text where 3:1 is enough, but at the
+   0.76rem of .note-title they need 4.5 — and each fails in the theme where its
+   hue sits closest to the background: crimson on ink, jade on paper. Adjusted
+   per theme so the callouts keep their colour coding. */
+html[data-theme="dark"] .note.warn .note-title {
+  color: #d96a6a;
+}
+html[data-theme="light"] .note.tip .note-title {
+  color: #2e7a5a;
+}
+
+/* Tool-page field labels sat on --gold-600, which is 3.8:1 on ink and 4.26:1
+   on paper — under AA at 0.68rem in both themes. --gold-300 clears it on
+   both. */
+.field > label {
+  color: var(--gold-300);
+}
+
+
 /* Footer column headings.
 
    Two fixes in one rule. The element is now an <h2> rather than an <h5> so the

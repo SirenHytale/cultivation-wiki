@@ -358,6 +358,48 @@ def grid_block(node: Node, lang: str) -> str:
     return f"<CardGrid cols={{{cols}}}>\n{indent(body)}\n</CardGrid>"
 
 
+RE_REALM_COLOR = re.compile(r"--realm:\s*([#\w().,%\- ]+)")
+
+
+def realm_track_block(node: Node, lang: str) -> str:
+    """The realm ladder. Each row keeps its own accent colour.
+
+    Flattening this to paragraphs (which is what the generic path did) loses
+    the medal, the tier label and the per-realm colour, leaving 28 stray lines
+    of prose where a structured ladder belongs.
+    """
+    rows = []
+    for row in node.children:
+        if not isinstance(row, Node) or "realm-row" not in row.classes:
+            continue
+        colour_match = RE_REALM_COLOR.search(row.attrs.get("style", ""))
+        colour = colour_match.group(1).strip() if colour_match else ""
+        medal = row.find("div", "realm-medal")
+        name = row.find("div", "realm-name")
+        sub = row.find("div", "realm-sub")
+        tier = row.find("div", "realm-tier")
+        rows.append(
+            "      <Realm"
+            f' color="{esc_attr(colour)}"'
+            f' medal="{esc_attr(collapse(medal.text()) if medal else "")}"'
+            f' name="{esc_attr(collapse(name.text()) if name else "")}"'
+            f' sub="{esc_attr(collapse(sub.text()) if sub else "")}"'
+            f' tier="{esc_attr(collapse(tier.text()) if tier else "")}"'
+            " />"
+        )
+    if not rows:
+        return blocks(node, lang)
+    return "<RealmTrack>\n" + "\n".join(rows) + "\n    </RealmTrack>"
+
+
+def button_link(node: Node, lang: str) -> str:
+    href = fix_href(node.attrs.get("href", ""), lang)
+    # " ghost" renders as a JSX boolean prop on the component.
+    ghost = " ghost" if "ghost" in node.classes else ""
+    label = collapse(inline_children(node, lang))
+    return f'<ButtonLink href="{esc_attr(href)}"{ghost}>{label}</ButtonLink>'
+
+
 def panel_block(node: Node, lang: str) -> str:
     head = node.find("div", "panel-head")
     title = collapse(head.text()) if head else ""
@@ -386,6 +428,15 @@ def block(node, lang: str) -> str:
     if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
         return heading(node, lang)
     if tag == "p":
+        # A centred paragraph holding call-to-action buttons, e.g. the
+        # "Full realm mechanics" link under the realm ladder.
+        buttons = [c for c in node.children
+                   if isinstance(c, Node) and c.tag == "a" and "btn" in c.classes]
+        if buttons:
+            rendered = " ".join(button_link(b, lang) for b in buttons)
+            if "text-align:center" in node.attrs.get("style", "").replace(" ", ""):
+                return f"<Center>\n      {rendered}\n    </Center>"
+            return rendered
         return collapse(inline_children(node, lang))
     if tag in ("ul", "ol"):
         return list_block(node, lang)
@@ -401,6 +452,8 @@ def block(node, lang: str) -> str:
     # flattened to an inline link by the INLINE_TAGS branch below.
     if tag == "a" and "card" in cls:
         return card_block(node, lang)
+    if tag == "a" and "btn" in cls:
+        return button_link(node, lang)
     if tag == "div":
         if "note" in cls:
             return note_block(node, lang)
@@ -408,6 +461,8 @@ def block(node, lang: str) -> str:
             return grid_block(node, lang)
         if "panel" in cls:
             return panel_block(node, lang)
+        if "realm-track" in cls:
+            return realm_track_block(node, lang)
         if "mermaid-wrap" in cls:
             pre = node.find("pre", "mermaid")
             cap = node.find("span", "mermaid-cap")

@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { getDoc } from "@/lib/content";
+import { rehypeTableHeaders } from "@/lib/rehypeTableHeaders";
 import { GROUP_HAN, t } from "@/lib/i18n";
 import { SECTIONS, type Lang } from "@/lib/nav";
 import { mdxComponents } from "@/components/mdx";
@@ -106,7 +107,7 @@ export async function DocPage({ lang, slug }: { lang: Lang; slug: string }) {
           options={{
             mdxOptions: {
               remarkPlugins: [remarkGfm, remarkHeadingIds],
-              rehypePlugins: [rehypeSlug],
+              rehypePlugins: [rehypeSlug, rehypeTableHeaders],
             },
           }}
         />

@@ -82,10 +82,14 @@ export function Card({
   han?: string;
   children: React.ReactNode;
 }) {
+  // h3, not h4: cards follow an h2 section heading, so an h4 skips a level and
+  // fails heading-order. The stylesheet already treats `.card h3` and
+  // `.card h4` identically, so nothing moves visually — and it now matches the
+  // h3 that CardLink has always used.
   return (
     <div className="card">
       {han && <span className="card-han">{han}</span>}
-      {title && <h4>{title}</h4>}
+      {title && <h3>{title}</h3>}
       {children}
     </div>
   );
@@ -129,6 +133,72 @@ export function CardLink({
       {inner}
     </Link>
   );
+}
+
+/**
+ * The realm ladder on the home and Realms pages.
+ *
+ * Each row carries its own accent through the `--realm` custom property, which
+ * the stylesheet uses for the medal ring and the row's left edge — so the
+ * colour has to survive as an inline style, not a class.
+ */
+export function RealmTrack({ children }: { children: React.ReactNode }) {
+  return <div className="realm-track">{children}</div>;
+}
+
+export function Realm({
+  color,
+  medal,
+  name,
+  sub,
+  tier,
+}: {
+  color: string;
+  medal: string;
+  name: string;
+  sub: string;
+  tier: string;
+}) {
+  return (
+    <div className="realm-row" style={{ "--realm": color } as React.CSSProperties}>
+      <div className="realm-medal">{medal}</div>
+      <div>
+        <div className="realm-name">{name}</div>
+        <div className="realm-sub">{sub}</div>
+      </div>
+      <div className="realm-tier">{tier}</div>
+    </div>
+  );
+}
+
+/** A call-to-action link styled as a button. */
+export function ButtonLink({
+  href,
+  ghost,
+  children,
+}: {
+  href: string;
+  ghost?: boolean;
+  children: React.ReactNode;
+}) {
+  const className = `btn${ghost ? " ghost" : ""}`;
+  if (/^https?:/i.test(href)) {
+    return (
+      <a className={className} href={href} rel="noopener noreferrer" target="_blank">
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link className={className} href={href}>
+      {children}
+    </Link>
+  );
+}
+
+/** Centres a short row of controls — the source used an inline text-align. */
+export function Center({ children }: { children: React.ReactNode }) {
+  return <p style={{ textAlign: "center", marginTop: "2em" }}>{children}</p>;
 }
 
 export function Panel({ title, children }: { title: string; children: React.ReactNode }) {

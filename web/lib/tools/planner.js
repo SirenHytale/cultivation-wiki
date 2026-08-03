@@ -211,7 +211,11 @@ export function init(LANG) {
           gEdges.appendChild(e);
         });
 
-        var g = el("g", { class: "node", tabindex: "0", role: "button" });
+        /* Each node is a focusable role="button", so it needs an accessible
+           name — the visual label lives only in the hover tooltip, which a
+           screen reader never sees. */
+        var g = el("g", { class: "node", tabindex: "0", role: "button",
+                          "aria-label": nodeAria(n) });
         g.dataset.id = n.id;
         var c = el("circle", { class: "ring", cx: p.x, cy: p.y, r: nodeRadius(n),
                                stroke: BRANCH[n.branch].color, "fill-opacity": 0.25 });
@@ -284,6 +288,15 @@ export function init(LANG) {
                "<span>" + branchLabel(b) + '</span><span class="bar"><i style="width:' +
                (v / 28 * 100) + '%"></i></span><span>' + v + "/28</span></div>";
       }).join("");
+    }
+
+    /* Plain-text equivalent of the tooltip, for the node's aria-label. Built
+       from the same helpers so the two can never describe a node differently. */
+    function nodeAria(n) {
+      var bonuses = n.bonuses.map(label).join(", ");
+      return branchLabel(BRANCH[n.branch]) + " " + tierLabel(n.tier) + ", " +
+             n.cost + (n.cost === 1 ? STR.point : STR.pointsSuffix) +
+             (bonuses ? ": " + bonuses : "");
     }
 
     /* ---------- tooltip ---------------------------------------------------- */

@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { getDoc } from "@/lib/content";
+import { rehypeTableHeaders } from "@/lib/rehypeTableHeaders";
 import type { Lang } from "@/lib/nav";
 import { mdxComponents } from "@/components/mdx";
 import { HeroMotes } from "@/components/HeroMotes";
@@ -41,7 +42,7 @@ export function HomePage({ lang }: { lang: Lang }) {
             options={{
               mdxOptions: {
                 remarkPlugins: [remarkGfm],
-                rehypePlugins: [rehypeSlug],
+                rehypePlugins: [rehypeSlug, rehypeTableHeaders],
               },
             }}
           />

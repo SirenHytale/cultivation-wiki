@@ -1,6 +1,19 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
-import { Card, CardGrid, CardLink, Chip, Divider, Note, Panel, Tag } from "./Blocks";
+import {
+  ButtonLink,
+  Card,
+  CardGrid,
+  CardLink,
+  Center,
+  Chip,
+  Divider,
+  Note,
+  Panel,
+  Realm,
+  RealmTrack,
+  Tag,
+} from "./Blocks";
 import { MermaidStatic } from "./MermaidStatic";
 
 /** Pull the plain text out of a fenced-code child, however MDX nested it. */
@@ -34,6 +47,10 @@ export const mdxComponents: MDXComponents = {
   Mermaid: MermaidStatic,
   Chip,
   Tag,
+  RealmTrack,
+  Realm,
+  ButtonLink,
+  Center,
 
   // --- element overrides ---------------------------------------------------
 
