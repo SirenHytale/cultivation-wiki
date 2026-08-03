@@ -378,6 +378,37 @@ public final class MyTechniques {
 
     <p>It returns <strong>false</strong> if the ladder is already full rather than silently ignoring you &mdash; the ladder is capped at five, because the UI and the lang keys only cover that many. Check the return value.</p>
 
+    <h2 id="standing-modifiers">Registering a standing modifier</h2>
+
+    <p><strong>New in 0.7.4.</strong> The hook for anything that changes what a cultivator <strong>is</strong> rather than what they do &mdash; a bloodline, a constitution, a physique. One registration answers a set of typed channels, and Cultivation asks them at each of its own chokepoints:</p>
+
+    <pre><code class="language-java">CultivationAPI.registerModifierSource("mymod:bloodlines", new CultivationModifierSource() {
+    @Override
+    public float qiGainMultiplier(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 1.15f : 1f;
+    }
+
+    @Override
+    public float damageTakenMultiplier(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 0.95f : 1f;
+    }
+});</code></pre>
+
+    <p>Every method has a default meaning &ldquo;no opinion&rdquo;, so you implement only the channels you care about. Sixteen exist, covering Qi gain and meditation, damage dealt and taken, unarmed damage, damage-cause immunity, <a href="../techniques/#gathered-arts">charge</a> time, the Dao element lock, Dao affinity, alignment shift, Yin-Yang tolerance, ritual difficulty, meditating in lava, and <a href="../auras/">aura</a> size &mdash; plus two that contribute rows to the Overview page rather than changing a number.</p>
+
+    <div class="note">
+      <span class="note-title">Why this and not events</span>
+      Events are the right tool for reacting to a <em>moment</em>. This is for a standing <em>fact</em>
+      about a player that re-prices a dozen unrelated systems at once &mdash; doing that with events
+      would mean a listener on every one of them, each re-deriving the same fact.
+    </div>
+
+    <p>Multipliers <strong>multiply</strong> across every registered source and booleans <strong>OR</strong>, so two addons each granting +10% produce &times;1.21 rather than &times;1.20 &mdash; the same way Cultivation's own internal multipliers already stack. A source that throws is caught, logged once and thereafter ignored, so a broken addon cannot take the damage pipeline down with it.</p>
+
+    <p>Your methods are called on the world thread, sometimes from inside the damage pipeline, so keep them to a component read and some arithmetic. When nothing is registered every channel returns its neutral value immediately, so a server without such an addon pays one emptiness check per chokepoint.</p>
+
+    <p><a href="../sacred-bodies/">Cultivation: Sacred Bodies</a> is built entirely on this registry and nothing else, and is worth reading as a shape to copy: it answers every channel from a <strong>single component read</strong>, and contributes its own named lines to the Overview so a constitution shows up as readable text rather than as an unexplained change in the player's numbers.</p>
+
     <h2>Raising the caps</h2>
 
     <p><span class="tag">v0.7.0</span> Two limits are addon-raisable rather than config keys, through the same register/unregister shape:</p>
@@ -399,7 +430,7 @@ public final class MyTechniques {
 
     <h2>See also</h2>
 
-    <ul><li><a href="../api-events/">API Events</a> - the 156 hooks your registered content fires through.</li><li><a href="../api-reference/">API Reference</a> - reading a player's state before you act on it.</li><li><a href="../races/">Races</a>, <a href="../techniques/">Techniques</a>, <a href="../qi-gathering/">Qi Gathering</a>, <a href="../titles/">Titles</a>, <a href="../sects/">Sects</a>, <a href="../config/">Config</a>, <a href="../commands/">Commands</a>.</li></ul>
+    <ul><li><a href="../api-events/">API Events</a> - the 160 hooks your registered content fires through.</li><li><a href="../api-reference/">API Reference</a> - reading a player's state before you act on it.</li><li><a href="../races/">Races</a>, <a href="../techniques/">Techniques</a>, <a href="../qi-gathering/">Qi Gathering</a>, <a href="../titles/">Titles</a>, <a href="../sects/">Sects</a>, <a href="../config/">Config</a>, <a href="../commands/">Commands</a>.</li></ul>
 
   </main>
 

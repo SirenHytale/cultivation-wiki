@@ -13,12 +13,12 @@ Cultivation 为其他 Hytale 模组提供了一套公开的集成面：`plugin.s
 
 - **读取**玩家的修炼状态 —— 境界、阶段、全局等级、存蓄灵气、种族、打坐状态、天赋点、已解锁节点。见[接口参考](/cultivation/api/reference/)。
 - **注册**与内置内容行为完全一致的新内容 —— 一个种族、一门功法、一项灵气吸收物品修正。见[注册表](/cultivation/api/registries/)。
-- **监听**（并重新调参，或否决）遍及模组各子系统的156 个事件。见[事件](/cultivation/api/events/)。
+- **监听**（并重新调参，或否决）遍及模组各子系统的160 个事件。见[事件](/cultivation/api/events/)。
 - **替换**模组的一整个层次 —— 进阶阶梯本身、它的全套用词，或两者兼有 —— 而其余每个子系统仍照常在其之上运行。此为 0.5.0 新增；见[编写扩展](/cultivation/api/addons/)。
 
 本页所记载的是 Cultivation **0.7.0** 时的接口。
 
-> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 156 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
+> **源码已公开。**每一个公开接口类连同其 javadoc，都在 [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) —— 同处还有一份自动生成的全部 160 个事件的参考、一个完整的示例扩展，以及一份写给 AI 编程助手的说明。那些源码中的 javadoc 才是权威的约定；本站是带你走一遍的向导。
 
 #### 将 Cultivation 引入你的项目
 

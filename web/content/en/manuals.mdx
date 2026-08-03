@@ -14,7 +14,13 @@ The system is on by default (`Manuals-Enabled`).
 
 ## What They Teach
 
-**A technique manual** adds that art to your learned set, permanently. This only matters for an art whose rule sets `Requires-Manual` true - and none of the nine built-in techniques do by default, so out of the box a technique manual is something a server owner or another mod adds alongside a gated art.
+**A technique manual** adds that art to your learned set, permanently.
+
+<Note kind="warn" title="This changed completely in 0.7.4">
+  Technique manuals used to be a curiosity: `Requires-Manual` was false on every built-in art, so nothing was actually gated behind one. Since 0.7.4 the flag is `Requires-Unlock` and it is **true on all 28 built-ins**, which makes a manual one of the four ways an art is [come by](/techniques/#unlocking) at all — and the only one you can go looking for, trade, or take off a body.
+</Note>
+
+A second copy of a manual you can already read is never wasted: it is studied into that art's [mastery](/techniques/#mastery) instead, so manuals stay worth picking up long after the art itself is learned.
 
 **A skill-node manual** unlocks that node for free. It still honours the node's prerequisites - a manual cannot hand you a tier-5 fork whose tier-4 parent you never took - but it ignores the point cost entirely.
 
@@ -22,7 +28,15 @@ Nodes taught this way are recorded as *granted* rather than merely unlocked, whi
 
 ## The Shipped Manuals
 
-Five ship with the mod, all teaching a first-tier skill node:
+**34 ship with the mod** as of 0.7.4: one technique manual for each of the 28 [arts](/techniques/), five teaching a first-tier skill node, and the Tattered Manual.
+
+Their item quality rises with the art's tier — 25 are Rare, 8 Epic and one Legendary — so a book **glows the color of what it holds** and you can weigh it before you pick it up.
+
+<Panel title="The Tattered Manual">
+  Names no art on its cover. Reading it teaches **one at random from those you have already grown into** — never something beyond your realm, and never something you already know. It is the safety net for a cultivator whose luck with named manuals has run dry.
+</Panel>
+
+The five node manuals:
 
 | Manual | Teaches | Drop Weight |
 | --- | --- | --- |

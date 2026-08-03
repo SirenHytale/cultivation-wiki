@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>兼容模组 — 修真百科</title>
-<meta name="description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids）、兼容性说明，以及如何编写自己的扩展。">
+<meta name="description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids、玉简、圣体）、兼容性说明，以及如何编写自己的扩展。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/addons/">
 <meta property="og:title" content="兼容模组 — 修真百科">
-<meta property="og:description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids）、兼容性说明，以及如何编写自己的扩展。">
+<meta property="og:description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids、玉简、圣体）、兼容性说明，以及如何编写自己的扩展。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="兼容模组 — 修真百科">
-<meta name="twitter:description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids）、兼容性说明，以及如何编写自己的扩展。">
+<meta name="twitter:description" content="Cultivation 的扩展生态：四个扩展点、已知扩展（SoulRings、Mermaids、玉简、圣体）、兼容性说明，以及如何编写自己的扩展。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -74,6 +74,10 @@
     <p>它用进阶钩子替换阶梯，用主题钩子改写模组的用词，注册自己的功法，并向 Cultivation 的管理配置编辑器中添加自己的分节。宗门、阵法、洞府、斗法、炼丹、灵兽与天赋树，全都原封不动地继续在其之上运作 —— 而这正是 0.5.0 接口所为之打造的场景。（开发中；同一作者。）</p>
 
     <p><strong>Mermaids。</strong> 把<strong>人鱼族</strong>注册为一个可选的 Cultivation 种族。它与内置三族并列出现在 <code>/cultivation race</code> 中，带有自己的解锁境界、属性加成与阴气偏向，且走的是与人族、魔族、神族完全相同的代码路径。（种族集成；同一作者。）</p>
+
+    <p><strong>Cultivation: Jade Slip · 玉简。</strong> 赞助者扩展：五套手工调制的<strong>配色</strong>，为每一处菜单、HUD 与天赋树重新上色，另有更明亮的灵光、八面宗门旗、六个装饰性称号与四篇典籍。它<strong>纯为外观</strong> —— 其中没有任何一样会改动修炼进度、平衡，或任何玩家能做的事，未装此扩展的服务器所玩的是一模一样的游戏。见<a href="../../jade-slip/">玉简</a>。（纯外观；同一作者。）</p>
+
+    <p><strong>Cultivation: Sacred Bodies · 圣体。</strong> 修士<strong>与生俱来</strong>的稀有体质。十六种圣体与八种可叠加的特殊体质，皆于玩家首次登录时掷定，此后终身相随 —— 并会重定灵气、伤害、蓄力时长、仪轨与灵光。与玉简不同，此扩展<strong>并非</strong>纯外观，故装之前值得先知其所为：大约每四十名修士中才有一人生具圣体，而每一种圣体、每一种体质与每一项概率皆可单独关闭。它全然建于 0.7.4 所加入的常驻修正注册表之上。见<a href="../../sacred-bodies/">圣体</a>。（会改动平衡；同一作者。）</p>
 
     <div class="note">
           <span class="note-title">运行一个扩展</span>

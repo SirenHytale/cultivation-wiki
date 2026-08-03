@@ -49,35 +49,51 @@
 
     <h1>灵气感知</h1>
 
-    <p class="page-lede"><strong>灵气感知</strong>是修士对四周地脉灵气的感应。凝神静气，四周灵气便渐渐显形 —— 微光自你所坐的地面浮起，而<a href="../qi-gathering/">灵脉或龙脉</a>之上，则有光柱远隔山川而立。此功能于 v0.6.0 加入，默认开启（<code>Spirit-Sense-Enabled</code>）。</p>
+    <p class="page-lede"><strong>灵气感知</strong>是修士对四周地脉灵气的感应，尤其是<strong>脚下这片地能否承载你下一次晋阶</strong>。凝神静气，四周灵气便渐渐显形 —— 微光自你所坐的地面浮起，而<a href="../qi-gathering/">灵脉或龙脉</a>之上，则有光柱远隔山川而立。此功能于 v0.6.0 加入，默认开启（<code>Spirit-Sense-Enabled</code>）。</p>
 
     <p>以 <code>/cultivation sense</code> 开关。它不耗灵气，也不会自行失效。</p>
 
     <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2>它所回答的问题</h2>
+
+    <p>自 <strong>v0.7.4</strong> 起，此感终于答上了它一直被问的那个问题 —— 不是「此地灵气可丰」，而是<strong>「此处可否突破」</strong>。</p>
+
+    <p>单看盈满与否，从来答不了这个问题。一次突破需 <strong>750</strong> 灵气，而寻常灵脉整个容量不过 <strong>500</strong> —— 故普通地面上的「灵气磅礴」，是一条满了却仍不足以行仪的灵脉，修士大可寻上一辈子，而每一次都被如实告知：此地灵气颇丰。</p>
+
+    <p>因此它如今会读取你<strong>待行的那一次晋阶</strong>，并就脚下这块地给出判词：</p>
+
+    <ul><li><strong>可行</strong> —— 此区块此刻便能承载你所待的那一仪。</li><li><strong>待涨</strong> —— 地脉够深，只是还需回涨。</li><li><strong>终不足用</strong> —— 此地无论如何都不成，另寻他处。</li></ul>
+
+    <p>HUD 与面板上皆以颜色分别，舆图上凡此刻足以承你一仪的方格，一律泛起明亮的青玉之色。</p>
+
     <h2>分两阶解锁</h2>
 
-    <p>此门槛是刻意分开的 —— 先有所感，而后方能测其精微。</p>
+    <p>此门槛是刻意分开的 —— 先有所感，而后方能测其精微。两阶皆同时以<strong>境界</strong>与<strong>该境之内的阶段</strong>为门槛。</p>
 
     <table>
     <thead><tr><th>阶段</th><th>配置项</th><th>默认值</th><th>所得</th></tr></thead>
-    <tbody><tr><td><strong>感其厚薄</strong></td><td><code>Spirit-Sense-Min-Realm</code></td><td>2（筑基）</td><td>仅以<strong>言辞</strong>述之</td></tr><tr><td><strong>测其精微</strong></td><td><code>Spirit-Sense-Precise-Min-Realm</code></td><td>4（元婴）</td><td>另附<strong>确切数值</strong></td></tr></tbody>
+    <tbody><tr><td><strong>感其厚薄</strong></td><td><code>Spirit-Sense-Qualitative-Min-Realm</code> / <code>Spirit-Sense-Qualitative-Min-Stage</code></td><td>0 / 3 —— <strong>炼体圆满</strong></td><td>以<strong>言辞</strong>述之，并附判词</td></tr><tr><td><strong>测其精微</strong></td><td><code>Spirit-Sense-Precise-Min-Realm</code> / <code>Spirit-Sense-Precise-Min-Stage</code></td><td>2 / 3 —— <strong>筑基圆满</strong></td><td>另附<strong>确切数值</strong></td></tr></tbody>
     </table>
 
-    <p>未至精微之境时，HUD 只告诉你此地灵气是<strong>枯竭</strong>、<strong>稀薄</strong>、<strong>平和</strong>、<strong>充盈</strong>还是<strong>磅礴</strong>，以及你脚下是<strong>寻常之地</strong>、<strong>灵脉</strong>还是<strong>龙脉</strong>。它同时会标出<strong>浊气</strong>之地 —— 那里的地脉灵气偏邪，你在其上打坐会牵动自身的<a href="../dao/">阴阳之衡</a>。</p>
+    <p>这两个时点是刻意选定的：它们正是修士头两次不得不出门另寻厚土的时候，而那正是此感存在所要解决的难处。</p>
 
-    <p>修至精微之境后，HUD 会多出一行原始数字：当前灵气、此区块的上限，以及两者之间的百分比。</p>
+    <p>未至精微之门槛时，HUD 只告诉你此地灵气是<strong>枯竭</strong>、<strong>稀薄</strong>、<strong>平和</strong>、<strong>充盈</strong>还是<strong>磅礴</strong>，以及你脚下是<strong>寻常之地</strong>、<strong>灵脉</strong>还是<strong>龙脉</strong>。它同时会标出<strong>浊气</strong>之地 —— 那里的地脉灵气偏邪，你在其上打坐会牵动自身的<a href="../dao/">阴阳之衡</a>。</p>
 
-    <p>先言辞、后数字，正是此处的用意。一名筑基修士能分辨地气优劣，这已足够；至于读出一条灵脉的确切储量，那是后话。</p>
+    <p>越过精微之门槛后，HUD 会多出一行原始数字：当前灵气、此区块的上限、两者之间的百分比，以及那一仪真正据以衡量的数目。</p>
+
+    <p>先言辞、后数字，正是此处的用意。初入门的修士能分辨地气优劣，这已足够；至于读出一条灵脉的确切储量，那是后话。</p>
 
     <h2>感应范围随境界而广</h2>
 
     <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
-    <tbody><tr><td><code>Spirit-Sense-Radius-Per-Realm</code></td><td>1</td><td>解锁之后，每高一境界所增的区块数。</td></tr><tr><td><code>Spirit-Sense-Max-Radius-Chunks</code></td><td>4</td><td>该范围的上限。</td></tr></tbody>
+    <tbody><tr><td><code>Spirit-Sense-Base-Radius-Chunks</code></td><td>2</td><td>开启此感之境所具的范围。</td></tr><tr><td><code>Spirit-Sense-Radius-Per-Realm</code></td><td>1</td><td>解锁之后，每高一境界所增的区块数。</td></tr><tr><td><code>Spirit-Sense-Max-Radius-Chunks</code></td><td>4</td><td>该范围的上限。</td></tr></tbody>
     </table>
 
-    <p>按默认值，筑基修士<strong>只能感应自身所在的区块</strong>，而炼虚修士可感应身周 <strong>9×9</strong> 的范围。感应得更远，本身就是继续攀登的理由。</p>
+    <p>按默认值，炼体圆满为身周 <strong>5×5</strong>，凝气期为 <strong>7×7</strong>，筑基以上则为 <strong>9×9</strong>。感应得更远，本身就是继续攀登的理由。</p>
+
+    <p>基础范围切莫设为 <code>0</code>。v0.7.4 之前的算法实际上正是如此，开启此感之境所及者只有自己脚下那一块区块 —— 而一份远不过自己双足的感应，根本答不了「该往哪儿去」，那正是拥有它的全部意义。</p>
 
     <img class="divider-ink" src="../../assets/img/divider-ink.svg" alt="" width="340" height="24">
 

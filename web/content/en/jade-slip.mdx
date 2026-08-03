@@ -26,11 +26,11 @@ A server without Jade Slip plays exactly the same game, and a player without it 
 
 **Frost Peak · Verdant Hall · Bloodmoon · Golden Court · Ink Wash**
 
-Each is a complete set of **59 recolored documents** — every page, every card, the HUD, and the [skill tree](/skilltree/)'s nine branch halos, which are the fiddliest part and the one most likely to be skipped. Nothing is half-themed.
+Each is a complete set of **61 recolored documents** — every page, every card, the HUD, and the [skill tree](/skilltree/)'s nine branch halos, which are the fiddliest part and the one most likely to be skipped. Nothing is half-themed.
 
 They cover add-on pages too, so a server also running an add-on with its own Cultivation pages gets those in your palette rather than one stubbornly crimson page in an otherwise frost-blue menu.
 
-Choose one from the **Palettes** page on the menu bar. Your choice is saved per account and you can change it whenever you like.
+Choose one from the **theme dropdown in Cultivation's Settings page**, which lists every installed look from any mod. Jade Slip's own Palettes page was removed in v0.1.2 once that shared list existed — a separate tab for one mod's looks was always the lesser answer. Your saved choice carries over untouched, and you can change it whenever you like.
 
 <Divider />
 
@@ -61,7 +61,11 @@ This is the one part of Jade Slip that is not purely decorative, and it is worth
 
 Everything is configurable and editable in game from Cultivation's admin page: both caps, per-look permission nodes (hand palettes out as rank rewards instead of giving everyone everything), the titles, and the aura.
 
+`Palettes-Require-Permission` and `Banners-Require-Permission` take effect **immediately**, with no restart. They gate **choosing**, not **keeping**: a player already wearing a palette keeps wearing it, and a sect keeps flying its banner. That is deliberate and matches how Cultivation treats its own cosmetics — an equipped [title](/titles/) outlives its requirements too. If you want a permission binding from the start, turn it on **before** handing the looks out.
+
 Jade Slip also verifies itself against this site to confirm it is a genuine, current build. If it cannot verify for 30 days it withdraws its palettes, banners and titles and falls back to Cultivation's own look — nothing is lost, saved palette choices are kept, and everything returns the moment the build is current again. If your server has no outbound connection, the console warns you for a week beforehand.
+
+It reads the published [compatibility](/compatibility/) list alongside that check. If a future Cultivation release turns out to break this build, Jade Slip stands its cosmetics down and says exactly why in the console rather than misbehaving quietly, and everything returns on the next boot once the versions match.
 
 <Divider />
 

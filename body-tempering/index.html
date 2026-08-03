@@ -62,7 +62,7 @@
 
     <p>XP comes from <strong>damage that actually reached you</strong> — measured after armor, after every other reduction, counting only what got through.</p>
 
-    <p>That is the whole design. Armor turns the blow aside, and turns the lesson aside with it. Blows below a minimum are ignored, so chip damage (drowning a pixel at a time, standing in a fire) cannot be farmed.</p>
+    <p>That is the whole design. Armor turns the blow aside, and turns the lesson aside with it. Blows below <code>Min-Damage-For-Xp</code> are ignored outright.</p>
 
     <p><strong>What you wear scales it twice over:</strong></p>
 
@@ -72,6 +72,27 @@
     </table>
 
     <p>Partial sets count partially: one piece of a set is a quarter of the effect, so a single helmet is a real decision.</p>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2>Attrition — the standing-in-a-fire rule</h2>
+
+    <p><strong>New in v0.7.4.</strong> Attrition means damage with <strong>nothing holding it</strong>: an effect ticking (Burn, Poison), drowning, suffocation, a fall, a damaging block. A mob or a player hitting you is never attrition, so <strong>ordinary combat is untouched by any of this</strong>.</p>
+
+    <p>It exists because the ladder could be farmed on a brazier. A vanilla brazier applies Burn for 5 Fire damage a second — which a tempered body shrugs off and a meat skewer out-heals entirely. Free progress for standing still, forever.</p>
+
+    <p>Two keys close it, and <strong>both</strong> must be satisfied for attrition to temper at all:</p>
+
+    <table>
+    <thead><tr><th>Variable Name</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody><tr><td><code>Attrition-Min-Damage-Percent-Of-Max-Health</code></td><td>8</td><td>A blow must cost at least this share of your <strong>maximum</strong> health.</td></tr><tr><td><code>Attrition-Xp-Interval-Seconds</code></td><td>5</td><td>Attrition can temper at most once per this many seconds.</td></tr></tbody>
+    </table>
+
+    <p>The first makes the bar <strong>scale with the body</strong> rather than standing still, so a hazard that genuinely threatens a novice is beneath the notice of a cultivator who has doubled their health pool. The second exists because the real problem with a burning block is not how hard it hits but that it hits <em>forever</em>.</p>
+
+    <p>The 8% default is chosen against that exact number. A player's base maximum health is 100, so the bar sits at 8 and Burn's 5 does not clear it even on a bare-skinned novice with no fire resistance at all — while a bad fall or a lava bath still counts.</p>
+
+    <p>Raise it if your pack has harsher ambient hazards. Lowering it toward 5 if you <em>want</em> fire to temper re-opens the loop for anyone at base health, since 5 is exactly Burn's damage. Setting either key to <code>0</code> switches it off; setting both to <code>0</code> restores the pre-0.7.4 behavior where a fire tempered you as fast as it could tick.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 

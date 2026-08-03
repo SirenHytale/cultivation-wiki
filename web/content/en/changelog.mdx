@@ -1,17 +1,73 @@
 ---
 title: "Changelog"
-description: "Release notes for the Cultivation mod, from v0.7.3 — The Ground You Stand On — back to the v0.1.0 first release."
+description: "Release notes for the Cultivation mod, from v0.7.4 — Nothing Is Given — back to the v0.1.0 first release."
 group: "About"
 toc: "h2"
 ---
 
 # Changelog
 
-Release notes for Cultivation. This wiki documents **v0.7.3**, the current release.
+Release notes for Cultivation. This wiki documents **v0.7.4**, the current release.
 
 <Note title="Upgrading">
-  Delete the old `Cultivation.jar` before adding a new one — two copies on the classpath will conflict. Existing worlds, player progress, sects and abodes all carry over, and your config files are migrated automatically. No reset is needed between versions.
+  Delete the old `Cultivation.jar` before adding a new one — two copies on the classpath will conflict. Existing worlds, player progress, sects and abodes all carry over, and your config files are migrated automatically. No reset is needed between versions — the one exception is that **v0.7.4 clears every cultivator's learned techniques** on purpose, so they are come by again through its four unlock routes.
 </Note>
+
+## v0.7.4 — Nothing Is Given
+
+Reaching a realm used to hand you every art that realm allowed. That is over. **Every technique must now be come by** — found in a manual, comprehended in meditation, opened by a breakthrough, or taught by your sect. Six new arts arrive with it: three **gathered** arts that are not loosed the instant you call them but built up, and three **fist arts** that refuse to be thrown with a weapon in hand. Fighting bare-handed now trains a ladder of its own. And Spirit Sense finally answers the question it was always asked: not “is this ground rich” but **“can I break through here”**.
+
+<Note kind="warn" title="One thing does not carry over">
+  Worlds, progress, sects, abodes, beasts and Life-Bound Treasures are untouched, and your config files are left as they are. **Techniques are the exception**: every cultivator starts this release knowing none of them, and comes by them again through the four routes below. See [what this means for an existing save](#v074-saves).
+</Note>
+
+### Every art must be come by
+
+- Meeting an art's realm, Dao and bloodline now makes you **able to hold it** — not entitled to it. Coming by it is a separate event, and there are **four** ways. See [Unlocking an art](/techniques/#unlocking).
+- **Manuals.** There is now **one manual per art** — twenty-eight of them — plus a **Tattered Manual** that names no art and teaches one at random from those you have already grown into. Manuals are the only route you can go looking for, trade, or take off a body, and they glow the color of the realm they belong to. See [Manuals](/manuals/).
+- **Enlightenment** (頁悟). Sit long enough on good ground and understanding sometimes simply arrives. Every second of meditation that actually draws Qi rolls for it, and richer veins comprehend faster — so nobody is ever hard-stuck behind loot that has not dropped.
+- **Breakthrough.** Crossing into a new realm opens one art you had grown into but never met, so a new tier never arrives empty.
+- **Sect inscription** works as it always did — borrowed, not learned, and gone the moment the sect loses the hall.
+- A second copy of a manual you can already read is still studied into that art's mastery, exactly as before.
+- `/cultivation technique` now shows what you hold, what is within reach and what is still beyond you — and the [keybind menu](/keybinds/) only offers arts you actually know, so no key is ever bound to something that cannot fire.
+
+### The gathered arts — hold it, and it grows
+
+- Three new arts are not loosed the moment you call them. Use one and you begin gathering Qi; use it again to loose it. The longer you hold, the more it carries — up to a ceiling past which it fires on its own rather than making you watch a full bar.
+- **Piercing Sun Qi Beam**. Everything you have gathered condensed into a single lance along your line of sight. It **pierces** — it does not stop at the first thing it meets, only at the world itself.
+- **Myriad Swords Return**. A storm of sword qi over the ground around you, every blade falling and cutting on its own and landing on the terrain rather than hanging in a flat disc. Five blades at a tap; twenty at a full gathering.
+- **Starfall Strike**. Alone among them, it lands somewhere other than where you stand — on whatever you are looking at, up to thirty-eight blocks off.
+- A gathering drains Qi every second and scatters if you move off your mark, so what these really cost is **standing still in a fight**. Run your Qi dry and the art looses at whatever it had reached rather than being lost.
+- A **charge meter** on the HUD tracks it, and the gathering visibly tightens and rises in pitch as it deepens.
+
+### Fist arts — a third ladder, climbed with empty hands
+
+- Fighting bare-handed now trains something. Every blow you land with a free hand banks fist-art experience, and your bare hands hit harder for it — up to **+220%** at the top of the ladder, plus more for every realm you have broken into.
+- XP is measured by **the damage that actually got through**. Hitting something armored teaches less than hitting something soft, and a punch a shield ate whole teaches nothing.
+- The bonus applies to your fists and to the fist arts, and **never to a weapon**. It also never leaks onto your other techniques — a Sword Qi Slash thrown with empty hands is still a Sword Qi Slash.
+- **Crashing Mountain Fist** is one committed straight punch: the shortest reach and by far the hardest single blow. **Hundred Rending Fists** is a flurry where every strike lands on everything caught in the arc. **Heaven-Shaking Fist** is the summit — a gathered art thrown from a planted stance and loosed as a shockwave.
+- All three scale on the fist ladder as well as your realm, so the levels you spent punching things are what make them worth throwing.
+
+### Spirit Sense — “can I break through here?”
+
+- Fullness alone could never answer that. A breakthrough wants **750 Qi** and a common vein's entire capacity is **500**, so “Overflowing” on ordinary ground was a full vein that still refused the ritual — and a player could search forever while being told, truthfully, that the land was rich.
+- It now reads your pending rank-up and gives a **verdict**: ready, wait for it to refill, or this ground will never do. Color-coded on the HUD and on the panel, with a bright jade wash on every square of the map that would carry your ritual right now.
+- The sense opens in **two stages** — Qualitative at Body Refinement Peak tells you how the ground feels, Precise at Foundation Establishment Peak gives you the numbers. See [Spirit Sense](/spirit-sense/).
+- It also reaches further from the start. The old formula gave the unlocking realm a radius of **zero** — your own chunk and nothing else — which could not answer “where should I go”, the entire point of having it.
+
+### Fixes and tuning
+
+- **Body tempering could be farmed on a brazier.** Standing in a fire ticked constant chip damage that a tempered body shrugged off and a meat skewer out-healed, so the ladder climbed for free. Damage nothing is holding — a burning block, drowning, a fall — now has to be worth **8% of your maximum health** and can only count every **5 seconds**. Combat is untouched: a swing or a projectile has an attacker behind it and never reaches those rules. See [Body Tempering](/body-tempering/).
+- Add-ons can now publish **which Cultivation versions they work with**, so a pairing that turns out to be broken can be corrected after both have shipped instead of needing a new jar. It fails open in every direction — an offline server is never told its mods disagree. See [Compatibility](/compatibility/).
+- The Info page now lists **Cultivation: Sacred Bodies** alongside the rest of the family. See [Sacred Bodies](/sacred-bodies/).
+- **New for add-on authors:** one registration can now change what a cultivator *is* — re-pricing Qi, damage, Dao progress, charge time, rituals and the aura at once — and contribute its own rows to the Overview. Sacred Bodies is built entirely on it. See [Registries](/api-registries/).
+
+### What this means for an existing save \{#v074-saves\}
+
+- Your realm, Qi, Dao, sect, abode, beasts and treasures are **untouched**. Your arts are not — every cultivator begins this release knowing none of them.
+- This is deliberate, and it is quick to undo: a breakthrough hands one back, meditation on good ground hands more back over time, and manuals drop from tribulation strikes, demonic cultivators and slain cultivators as they always have.
+- Server owners who want the old behavior can set `Requires-Unlock` to `false` on any rule in `Arts/TechniqueConfig.json` — per art, or on all of them. See [Arts config](/config-arts/).
+- Admins get `/cultivation admin granttechnique <art>` (or `all`) and `revoketechnique`, both usable on another player.
 
 ## v0.7.3 — The Ground You Stand On
 

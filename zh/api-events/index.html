@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>事件 — 修真百科</title>
-<meta name="description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta name="description" content="Cultivation 的 160 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/api-events/">
 <meta property="og:title" content="事件 — 修真百科">
-<meta property="og:description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta property="og:description" content="Cultivation 的 160 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="事件 — 修真百科">
-<meta name="twitter:description" content="Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
+<meta name="twitter:description" content="Cultivation 的 160 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,7 +49,7 @@
 
     <h1>事件</h1>
 
-    <p class="page-lede">Cultivation 在 <code>plugin.siren.API</code> 下的十二个 <code>*Events</code> 类中，暴露了 156 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生<strong>之前</strong>触发的可取消 <code>Pre*</code> 事件，一次是变更落定之后触发的普通后置事件。</p>
+    <p class="page-lede">Cultivation 在 <code>plugin.siren.API</code> 下的十二个 <code>*Events</code> 类中，暴露了 160 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生<strong>之前</strong>触发的可取消 <code>Pre*</code> 事件，一次是变更落定之后触发的普通后置事件。</p>
 
     <p>每个类都遵循 <code>CultivationEvents</code> 上所记载的约定，因此学会一个便学会了全部十二个。</p>
 
@@ -124,7 +124,7 @@ DaoEvents.onPathChange(event -&gt; myPlugin.announce(event.player(), event.newPa
     <tbody><tr><td><code>PreTechniquePerformEvent</code></td><td>是</td><td>一门功法即将施展 —— 每道关卡都已通过。取消可静默回绝：不耗灵气，不进冷却。</td><td><code>ref()</code>、<code>player()</code>、<code>technique()</code>、<code>qiCost()</code> / <code>setQiCost(float)</code>、<code>cooldownSeconds()</code> / <code>setCooldownSeconds(float)</code>（小于等于 0 则不盖冷却戳）。</td></tr><tr><td><code>TechniquePerformEvent</code></td><td>否</td><td>灵气已耗、冷却已盖戳、效果已运行。</td><td><code>ref()</code>、<code>player()</code>、<code>technique()</code>、<code>qiCost()</code>。</td></tr><tr><td><code>PreTechniqueLearnEvent</code></td><td>是</td><td>一门功法即将被永久习得。取消可回绝之 —— 无论如何秘籍都会被消耗，正如一本传授已知功法的秘籍照样会被用掉。</td><td><code>ref()</code>、<code>player()</code>、<code>techniqueId()</code>。</td></tr><tr><td><code>TechniqueLearnEvent</code></td><td>否</td><td>功法已习得。宗门所授的功法是实时解算的，永不触发此事件 —— 请改为监听宗门碑文事件。</td><td><code>ref()</code>、<code>player()</code>、<code>techniqueId()</code>。</td></tr><tr><td><code>PreSwordFlightStartEvent</code></td><td>是</td><td>修士即将御剑升空。</td><td><code>ref()</code>、<code>player()</code>、<code>horizontalSpeed()</code> / <code>setHorizontalSpeed(float)</code>、<code>verticalSpeed()</code> / <code>setVerticalSpeed(float)</code>。</td></tr><tr><td><code>SwordFlightStartEvent</code></td><td>否</td><td>他已凌空。</td><td><code>ref()</code>、<code>player()</code>、<code>horizontalSpeed()</code>、<code>verticalSpeed()</code>。</td></tr><tr><td><code>PreSwordFlightStopEvent</code></td><td>是</td><td>修士即将落地。对 <code>TOGGLE</code> 取消是安全的，但取消一次 <code>DEATH</code> 落地会把飞行状态留在一具尸体上 —— 请按 <code>reason()</code> 加以判别。</td><td><code>ref()</code>、<code>player()</code>、<code>reason()</code>。</td></tr><tr><td><code>SwordFlightStopEvent</code></td><td>否</td><td>他已落地；其坐骑（若有）也已消失。</td><td><code>ref()</code>、<code>player()</code>、<code>reason()</code>。</td></tr><tr><td><code>PreTechniqueBuffApplyEvent</code></td><td>是</td><td>一项计时功法增益即将施加。</td><td><code>ref()</code>、<code>player()</code>、<code>type()</code>、<code>durationSeconds()</code> / <code>setDurationSeconds(float)</code>、<code>magnitude()</code> / <code>setMagnitude(float)</code>。</td></tr><tr><td><code>TechniqueBuffApplyEvent</code></td><td>否</td><td>增益已生效。<code>magnitude</code> 表示该增益所度量的东西 —— 一个减伤百分比、一个伤害百分比、一个护盾池、一个速度倍率。</td><td><code>ref()</code>、<code>player()</code>、<code>type()</code>、<code>durationSeconds()</code>、<code>magnitude()</code>。</td></tr><tr><td><code>TechniqueBuffExpireEvent</code></td><td>否</td><td>疾风步的速度倍率已被撤回，或因到期，或因清理。</td><td><code>ref()</code>、<code>player()</code>、<code>type()</code>。</td></tr></tbody>
     </table>
 
-    <p>这些所覆写的配置键：<code>PreTechniquePerformEvent</code> 映照功法规则中各门功法自己的 <code>Qi-Cost</code> 与 <code>Cooldown-Seconds</code> 条目（见<a href="../config/">配置</a>），以及<a href="../commands/">指令</a>页上的 <code>/cultivation technique &lt;id&gt;</code> 指令。<code>PreTechniqueLearnEvent</code> 只会为规则中设了 <code>Requires-Manual</code> 的功法触发。</p>
+    <p>这些所覆写的配置键：<code>PreTechniquePerformEvent</code> 映照功法规则中各门功法自己的 <code>Qi-Cost</code> 与 <code>Cooldown-Seconds</code> 条目（见<a href="../config/">配置</a>），以及<a href="../commands/">指令</a>页上的 <code>/cultivation technique &lt;id&gt;</code> 指令。<code>PreTechniqueLearnEvent</code> 会为玩家求得的每一门功法触发，无论出自四条途径中的哪一条 —— 阅读<a href="../manuals/">秘籍</a>、打坐中的顿悟、突破所开，或宗门铭刻 —— 故监听者无须理会究竟是哪一条。</p>
 
     <h2>物品</h2>
 

@@ -92,11 +92,39 @@ The Marriage mod is what defines who is married to whom, and
 entirely. Without Marriage there is nothing to define a partner, so the whole
 feature stays off no matter what `Society/PartnerConfig.json` says.
 
+## Version compatibility
+
+**New in v0.7.4.** An add-on can publish **which Cultivation versions it works
+with**, so a pairing that turns out to be broken can be corrected after both jars
+have already shipped.
+
+This is deliberately the *second* layer. The first is the add-on's own
+`manifest.json`, whose `Dependencies` entry takes a full semver range rather than
+just a floor:
+
+```json
+"Dependencies": { "Siren:Cultivation": ">=0.7.4 <0.8.0" }
+```
+
+That is absolute and offline — the engine refuses to load the add-on outside the
+band before a line of its code runs. What a shipped manifest *cannot* do is
+describe a pairing nobody knew was broken at the time. The published
+compatibility list can, because it is a file that changes without a release.
+
+When a pairing is listed as broken, a well-behaved add-on **stands itself down
+and says why in the console** rather than misbehaving quietly. Nothing is
+deleted, and everything comes back on the next boot once the versions match.
+
+It **fails open in every direction**. An unreachable site, a malformed list, or a
+version nobody has written an entry for all leave the mod running untouched, so
+an offline server is never told its mods disagree. See
+[Registries](/cultivation/api/registries/) for how to register one.
+
 ## Writing your own compatibility
 
 Cultivation's API is designed for exactly this. An add-on can read every config
 file, drive progression, register its own settings into the admin menu, and
-listen to 156 events across twelve subsystems.
+listen to 160 events across thirteen subsystems.
 
 Since v0.7.0, a mod that **replaces Cultivation's progression ladder** (a
 `ProgressionProvider`) has one more duty: players can now keep several

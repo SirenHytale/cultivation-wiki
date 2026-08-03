@@ -52,11 +52,15 @@ There is also a **600 ms debounce** between activations, so a mistimed double-ta
 
 | Slots | Default | Binds to |
 | --- | --- | --- |
-| **4 technique binds** | ALT+6, ALT+7, ALT+8, ALT+9 | Any [technique](/techniques/) you can perform |
+| **4 technique binds** | ALT+6, ALT+7, ALT+8, ALT+9 | Any [technique](/techniques/) you have learned |
 | **4 menu binds** | ALT+3 → Qi overview, ALT+4 → [Codex](/codex/) | Any Cultivation menu page |
 | **1 loadout switch** | ALT+5 | Cycles your loadouts |
 
 Only combinations you have **actually bound** are ever intercepted. Every other key does its normal job, whether or not a modifier is held — an unbound 6 still switches hotbar slot, and an unmodified Q still drops your item.
+
+Since **v0.7.4** the technique dropdown only offers arts you have actually [come by](/techniques/#unlocking), so no key can be bound to something that cannot fire. An art you have not learned yet simply is not in the list.
+
+A [gathered art](/techniques/#gathered-arts) bound to a key uses that key **twice**: once to begin gathering, once to loose it. A [fist art](/techniques/#fist-arts) bound to a key refuses while a weapon is in hand, exactly as it does from the command.
 
 ## Loadouts
 

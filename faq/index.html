@@ -215,13 +215,22 @@
 
     <h2>Arts &amp; Items</h2>
 
-    <h3>I know a technique but cannot use it</h3>
+    <h3>I have the realm for a technique but cannot use it</h3>
     <p>
-      If <code>Requires-Manual</code> is on for that art, knowing the realm is not enough — you
-      have to have <strong>learned it from a manual</strong>. Manuals drop from surviving
-      tribulation bolts (4%), from NPC cultivators, and from players you kill. A sect leader can
-      also <a href="../sects/">inscribe</a> one technique into their hall, lending it to every
-      member for as long as the sect holds that hall.
+      Since <strong>0.7.4</strong>, reaching the realm makes you <em>able to hold</em> an art rather
+      than entitled to it. <code>Requires-Unlock</code> is on for all 28 built-ins, so you also have
+      to have <a href="../techniques/#unlocking">come by it</a> — by reading its
+      <a href="../manuals/">manual</a>, comprehending it in meditation, being handed it by a
+      breakthrough, or having your <a href="../sects/">sect</a> inscribe it in a hall it still holds.
+    </p>
+    <p>
+      Manuals drop from surviving tribulation bolts (4%), from NPC cultivators, and from players you
+      kill. If nothing has dropped for you, meditating on a rich vein is the route that cannot run
+      dry — every second that actually draws Qi rolls for enlightenment.
+    </p>
+    <p>
+      Server owners who want the old behavior can set <code>Requires-Unlock: false</code> per art in
+      <code>Arts/TechniqueConfig.json</code>.
     </p>
 
     <h3>My Life-Bound weapon stopped gaining levels</h3>

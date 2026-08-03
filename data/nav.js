@@ -114,7 +114,8 @@ window.SITE = {
         { title: "The Dao",          zh: "大道",       href: "dao/",          zhPage: true },
         { title: "Karma",            zh: "业力",       href: "karma/",        zhPage: true },
         { title: "Titles",           zh: "称号",       href: "titles/",       zhPage: true },
-        { title: "Body Tempering",   zh: "炼体",       href: "body-tempering/" }
+        { title: "Body Tempering",   zh: "炼体",       href: "body-tempering/" },
+        { title: "Sacred Bodies",    zh: "圣体",       href: "sacred-bodies/" }
       ]
     },
     {

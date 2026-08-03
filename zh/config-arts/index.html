@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>功法配置 — 修真百科</title>
-<meta name="description" content="Cultivation 模组 Arts/ 目录下的七份文件：大道、功法、秘籍、炼丹、炼器、本命法宝与灵兽。">
+<meta name="description" content="Cultivation 模组 Arts/ 目录下的八份文件：大道、功法、拳法、秘籍、炼丹、炼器、本命法宝与灵兽。">
 <link rel="icon" href="../../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/zh/config-arts/">
 <meta property="og:title" content="功法配置 — 修真百科">
-<meta property="og:description" content="Cultivation 模组 Arts/ 目录下的七份文件：大道、功法、秘籍、炼丹、炼器、本命法宝与灵兽。">
+<meta property="og:description" content="Cultivation 模组 Arts/ 目录下的八份文件：大道、功法、拳法、秘籍、炼丹、炼器、本命法宝与灵兽。">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="功法配置 — 修真百科">
-<meta name="twitter:description" content="Cultivation 模组 Arts/ 目录下的七份文件：大道、功法、秘籍、炼丹、炼器、本命法宝与灵兽。">
+<meta name="twitter:description" content="Cultivation 模组 Arts/ 目录下的八份文件：大道、功法、拳法、秘籍、炼丹、炼器、本命法宝与灵兽。">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -49,7 +49,7 @@
 
     <h1>功法配置</h1>
 
-    <p class="page-lede"><code>mods/Siren_Cultivation/Arts/</code> 中的七份文件涵盖修士所修习、所炼制、所淬炼、所认主的一切 —— 他所行的<a href="../dao/">大道</a>、他所施展的<a href="../techniques/">功法</a>、传授这些的<a href="../manuals/">秘籍</a>、他在<a href="../alchemy/">炼丹</a>中所炼的丹药、他所承受的<a href="../refinement/">炼器</a>、他的<a href="../lifebound/">本命法宝</a>，以及他的<a href="../beasts/">灵兽</a>。</p>
+    <p class="page-lede"><code>mods/Siren_Cultivation/Arts/</code> 中的八份文件涵盖修士所修习、所炼制、所淬炼、所认主的一切 —— 他所行的<a href="../dao/">大道</a>、他所施展的<a href="../techniques/">功法</a>、他空手所练的<a href="../techniques/#fist-arts">拳法</a>、传授这些的<a href="../manuals/">秘籍</a>、他在<a href="../alchemy/">炼丹</a>中所炼的丹药、他所承受的<a href="../refinement/">炼器</a>、他的<a href="../lifebound/">本命法宝</a>，以及他的<a href="../beasts/">灵兽</a>。</p>
 
     <p>这是最大的一组配置。其中几份文件承载的是数组而非单纯的数值 —— <code>Techniques</code>、<code>Manuals</code> 与 <code>Beast-Species</code> 都是开放的表，你尽可往里添加自己的条目。</p>
 
@@ -77,17 +77,17 @@
 
     <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
-    <tbody><tr><td>"ConfigName"</td><td>"Technique Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Techniques-Enabled"</td><td>true</td><td>整套功法系统的总开关。为 false 则一次性禁用每一门功法，与各自的规则无关。</td></tr><tr><td>"Description-Techniques"</td><td>一段解释上述数值的长字符串。</td><td>重述此开关凌驾于下方 Techniques 数组中的每一条之上。</td></tr><tr><td>"Techniques"</td><td>一个含九条内置规则的数组（见下）。</td><td>每门功法一条。每条的 <code>Id</code> 须匹配某个功法 id，管理器才会将其作为覆写施加。</td></tr><tr><td>"Technique-Hotkeys-Enabled"</td><td>true</td><td>修士能否以<a href="../keybinds/">快捷键</a>（修饰键加主键）施展功法，而不必只靠 <code>/cultivation technique</code>。与 "Techniques-Enabled" 相互独立。</td></tr><tr><td>"Technique-Hotkeys-Q-E-R-Enabled"</td><td>false</td><td>Q、E、R 是否可被绑定。默认关闭，因为夺走其中任一个的代价，是玩家丢不了物品、开不了背包，或切不了快捷栏方块组 —— 而数字键的代价仅是一次快捷栏切换，且模组会立刻还原。</td></tr><tr><td>"Description-Technique-Hotkeys"</td><td>一段解释上述数值的长字符串。</td><td>哪些键与修饰键可绑定、为何只有这些，没有 0 键这回事，默认绑定，以及修饰键是自按下起半秒内有效而非按住有效。</td></tr><tr><td>"Description-Technique-Rules"</td><td>一段解释上述数组的长字符串。</td><td>记载功法规则的每一个字段，以及「一步千里」的距离参数。</td></tr></tbody>
+    <tbody><tr><td>"ConfigName"</td><td>"Technique Config"</td><td>此配置文件的名称。</td></tr><tr><td>"ConfigVersion"</td><td>1</td><td>你为此插件加载时的当前版本。</td></tr><tr><td>"Techniques-Enabled"</td><td>true</td><td>整套功法系统的总开关。为 false 则一次性禁用每一门功法，与各自的规则无关。</td></tr><tr><td>"Description-Techniques"</td><td>一段解释上述数值的长字符串。</td><td>重述此开关凌驾于下方 Techniques 数组中的每一条之上。</td></tr><tr><td>"Techniques"</td><td>一个含二十八条内置规则的数组（见下）。</td><td>每门功法一条。每条的 <code>Id</code> 须匹配某个功法 id，管理器才会将其作为覆写施加。</td></tr><tr><td>"Technique-Hotkeys-Enabled"</td><td>true</td><td>修士能否以<a href="../keybinds/">快捷键</a>（修饰键加主键）施展功法，而不必只靠 <code>/cultivation technique</code>。与 "Techniques-Enabled" 相互独立。</td></tr><tr><td>"Technique-Hotkeys-Q-E-R-Enabled"</td><td>false</td><td>Q、E、R 是否可被绑定。默认关闭，因为夺走其中任一个的代价，是玩家丢不了物品、开不了背包，或切不了快捷栏方块组 —— 而数字键的代价仅是一次快捷栏切换，且模组会立刻还原。</td></tr><tr><td>"Description-Technique-Hotkeys"</td><td>一段解释上述数值的长字符串。</td><td>哪些键与修饰键可绑定、为何只有这些，没有 0 键这回事，默认绑定，以及修饰键是自按下起半秒内有效而非按住有效。</td></tr><tr><td>"Description-Technique-Rules"</td><td>一段解释上述数组的长字符串。</td><td>记载功法规则的每一个字段，以及「一步千里」的距离参数。</td></tr></tbody>
     </table>
 
     <p><code>Techniques</code> 数组中的每一条采用如下结构。</p>
 
     <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
-    <tbody><tr><td>"Id"</td><td>""</td><td>须匹配一个已注册的功法 id，此条才会作为覆写生效。</td></tr><tr><td>"Enabled"</td><td>true</td><td>仅开关这一门功法。</td></tr><tr><td>"Dao-Specific"</td><td>false</td><td>若为 true，唯有所择之道为 <code>Required-Element</code> 的修士方可施展。</td></tr><tr><td>"Required-Element"</td><td>""</td><td>此功法所锁定的 DaoElement 名称。仅在 Dao-Specific 为 true 时有意义。</td></tr><tr><td>"Elements"</td><td>""</td><td>以逗号分隔的 DaoElement 列表，标示该功法所带的属性，用作元数据与风味。</td></tr><tr><td>"Damage-Type"</td><td>""</td><td>伤害类功法所用的 DamageCause 资产 id。留空则效果回退为 PHYSICAL，而大道战斗过滤器仍可能将其重新转为施法者自身的元素。</td></tr><tr><td>"Requires-Manual"</td><td>false</td><td>为 true 时，此功法在被<a href="../manuals/">秘籍</a>传授之前无法施展。内置九法默认皆未设此项。</td></tr><tr><td>"Unlock-Realm"</td><td>"QI_CONDENSATION"</td><td>使用它所需的境界，以枚举名表示。</td></tr><tr><td>"Qi-Cost"</td><td>0.0</td><td>每次使用所耗的存蓄灵气。</td></tr><tr><td>"Cooldown-Seconds"</td><td>0.0</td><td>两次使用之间的真实时间冷却。</td></tr><tr><td>"Params"</td><td><code>[]</code></td><td>一个 <code>Key</code>／<code>Value</code> 对的数组，承载该功法专属的数字，如此一门功法可以自行添加旋钮而无需改动配置的结构。</td></tr></tbody>
+    <tbody><tr><td>"Id"</td><td>""</td><td>须匹配一个已注册的功法 id，此条才会作为覆写生效。</td></tr><tr><td>"Enabled"</td><td>true</td><td>仅开关这一门功法。</td></tr><tr><td>"Dao-Specific"</td><td>false</td><td>若为 true，唯有所择之道为 <code>Required-Element</code> 的修士方可施展。</td></tr><tr><td>"Required-Element"</td><td>""</td><td>此功法所锁定的 DaoElement 名称。仅在 Dao-Specific 为 true 时有意义。</td></tr><tr><td>"Elements"</td><td>""</td><td>以逗号分隔的 DaoElement 列表，标示该功法所带的属性，用作元数据与风味。</td></tr><tr><td>"Damage-Type"</td><td>""</td><td>伤害类功法所用的 DamageCause 资产 id。留空则效果回退为 PHYSICAL，而大道战斗过滤器仍可能将其重新转为施法者自身的元素。</td></tr><tr><td>"Requires-Unlock"</td><td>true</td><td>为 true 时，此功法在玩家<a href="../techniques/#unlocking">求得</a>它之前无法施展 —— 或经<a href="../manuals/">秘籍</a>、顿悟、突破，或经宗门铭刻。<strong>自 0.7.4 起二十八门内置功法尽数设此</strong>；设为 false 则该法在境界达标时即可自由施展。此键取代了 <code>Requires-Manual</code>，而这次更名本身就是迁移之法：旧配置中残留的 <code>"Requires-Manual": false</code> 会被当作未知键忽略，故新的默认值得以生效，而不会被悄悄覆盖。</td></tr><tr><td>"Charged"</td><td>false</td><td>为 true 时，此法按一次开始蓄气，再按一次方才放出，蓄得越久威势越盛。其数值随 <code>Charge*</code> 参数一并附上。三门<a href="../techniques/#gathered-arts">蓄力功法</a>已设此项。</td></tr><tr><td>"Requires-Unarmed"</td><td>false</td><td>为 true 时，手中握有兵器则此法不肯出手。三门<a href="../techniques/#fist-arts">拳法</a>已设此项。何谓空手，由拳法配置中的 <code>Unarmed-Requires-Empty-Hand</code> 决定。</td></tr><tr><td>"Unlock-Realm"</td><td>"QI_CONDENSATION"</td><td>使用它所需的境界，以枚举名表示。</td></tr><tr><td>"Qi-Cost"</td><td>0.0</td><td>每次使用所耗的存蓄灵气。</td></tr><tr><td>"Cooldown-Seconds"</td><td>0.0</td><td>两次使用之间的真实时间冷却。</td></tr><tr><td>"Params"</td><td><code>[]</code></td><td>一个 <code>Key</code>／<code>Value</code> 对的数组，承载该功法专属的数字，如此一门功法可以自行添加旋钮而无需改动配置的结构。</td></tr></tbody>
     </table>
 
-    <p>以下是首次运行时写入文件的九条内置规则。</p>
+    <p>以下是首次运行时写入文件的二十八条内置规则。</p>
 
     <table>
     <thead><tr><th>功法 Id</th><th>解锁境界</th><th>灵气消耗</th><th>冷却</th><th>属性</th><th>参数</th></tr></thead>
@@ -107,6 +107,15 @@
 
     <div class="note"><strong>阶梯封顶五层。</strong> 配置中多于五层的会被截至前五层，一层都没的则回退为单层平阶。之所以封顶，是因为界面与语言文件只备了五层 —— 扩展调用 <code>registerMasteryStage</code> 超出此数时会得到 <code>false</code>，而非默默忽略。</div>
 
+    <h2>拳法配置</h2>
+
+    <p>空手伤害的阶梯，以及依之而立的拳法，位于 <code>mods/Siren_Cultivation/Arts/FistConfig.json</code>。<strong>0.7.4 新增。</strong> 见<a href="../techniques/#fist-arts">拳法</a>。</p>
+
+    <table>
+    <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
+    <tbody><tr><td>"Fist-Arts-Enabled"</td><td>true</td><td>关闭整条阶梯，连同其伤害加成一并关闭。三门拳法作为功法依然存在，可在功法配置中逐一停用。</td></tr><tr><td>"Unarmed-Requires-Empty-Hand"</td><td>false</td><td>何谓空手。false 表示只要不是兵器即可，故手持火把或一叠石块仍可施展拳法；true 则要求手中空无一物。</td></tr><tr><td>"Max-Level"</td><td>100</td><td>阶梯的上限。全额伤害加成唯有至此方能拿满。</td></tr><tr><td>"Base-Xp-Requirement"</td><td>30.0</td><td>升至 2 级所需的经验。第 N 级所需为此值乘以 <code>Xp-Growth-Rate</code> 的 N-1 次方。</td></tr><tr><td>"Xp-Growth-Rate"</td><td>1.075</td><td>需求增长的陡峭程度。此处的微小改动会把上限推出很远。</td></tr><tr><td>"Xp-Per-Damage-Dealt"</td><td>0.5</td><td>每点<strong>真正透进去的</strong>伤害所得的经验。打在披甲之物上所得少于打在血肉之躯上，而被盾牌整个吃下的一拳一无所得。</td></tr><tr><td>"Damage-Bonus-Percent-At-Max"</td><td>220.0</td><td>至 <code>Max-Level</code> 时额外的空手伤害百分比。只及于你的双拳与三门拳法，绝不及于兵器。</td></tr><tr><td>"Damage-Bonus-Percent-Per-Realm"</td><td>12.0</td><td>在阶梯之外，每破一<a href="../realms/">境</a>另加的空手伤害。</td></tr></tbody>
+    </table>
+
     <h2>秘籍配置</h2>
 
     <p>可拾取、能永久传授一门功法或一个天赋节点的典籍，位于路径 <code>mods/Siren_Cultivation/Arts/ManualConfig.json</code>。见<a href="../manuals/">秘籍</a>。</p>
@@ -120,7 +129,7 @@
 
     <table>
     <thead><tr><th>配置项</th><th>默认值</th><th>说明</th></tr></thead>
-    <tbody><tr><td>"ItemId"</td><td>""</td><td>该秘籍物品的资产 id。</td></tr><tr><td>"TechniqueId"</td><td>""</td><td>阅读它所传授的功法（若有）。仅对规则中 <code>Requires-Manual</code> 为 true 的功法有意义。</td></tr><tr><td>"SkillNodeId"</td><td>""</td><td>阅读它所解锁的天赋树节点（若有）。该节点的前置要求仍须遵守，但其天赋点消耗被无视。</td></tr><tr><td>"Weight"</td><td>1.0</td><td>在掉落表中的相对权重。0 表示它永不自行掉落，只能由管理员或其他模组放置。</td></tr></tbody>
+    <tbody><tr><td>"ItemId"</td><td>""</td><td>该秘籍物品的资产 id。</td></tr><tr><td>"TechniqueId"</td><td>""</td><td>阅读它所传授的功法（若有）。自 0.7.4 起内置各法皆设有 <code>Requires-Unlock</code>，故功法秘籍是一次真正的解锁，而非摆设。</td></tr><tr><td>"SkillNodeId"</td><td>""</td><td>阅读它所解锁的天赋树节点（若有）。该节点的前置要求仍须遵守，但其天赋点消耗被无视。</td></tr><tr><td>"Weight"</td><td>1.0</td><td>在掉落表中的相对权重。0 表示它永不自行掉落，只能由管理员或其他模组放置。</td></tr></tbody>
     </table>
 
     <p>以下是首次运行时写入文件的五条。</p>

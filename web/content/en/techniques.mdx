@@ -1,12 +1,16 @@
 ---
 title: "Techniques"
-description: "Cultivation Mod - Active arts, their costs, cooldowns and the manual gate"
+description: "Cultivation Mod - Active arts, their costs, cooldowns, the four ways to unlock one, and the gathered and fist arts"
 group: "Arts & Treasures"
 ---
 
 # Techniques
 
 Techniques are the active **arts** a cultivator performs - the things you do rather than the stats you accumulate. They sit on top of the [Dao](/dao/) system, cost banked Qi, run on real-time cooldowns, and unlock by realm. Since **0.7.2** each one also carries its own [mastery rung](#mastery), so how strong an art is depends on how much you have used it, not only on how far you have climbed.
+
+<Note kind="warn" title="New in 0.7.4 — reaching a realm is no longer enough">
+  Meeting an art's realm, Dao and bloodline now makes you **able to hold it**, not entitled to it. Every art must additionally be [come by](#unlocking), through one of four routes. Existing saves began this release knowing none of them.
+</Note>
 
 ## Performing One
 
@@ -30,21 +34,54 @@ An activation is checked in this order, and the first failure is what you are to
 
 <Panel title="Activation Order — first failure is what you are told">
   1. The whole system is enabled (`Techniques-Enabled`), and this art's own `Enabled` flag is on.
-  2. If the art's `Requires-Manual` is set, you must have **learned** it - see below.
+  2. If the art's `Requires-Unlock` is set — and it is set on every built-in since 0.7.4 — you must have **[come by](#unlocking)** it.
   3. Your realm is at or past its `Unlock-Realm`.
   4. If the art is `Dao-Specific`, your chosen dao matches its `Required-Element`.
   5. If the art names a `Required-Race`, you are of that race. This is what gates the three bloodline arts.
-  6. You have at least its `Qi-Cost` banked.
-  7. Its `Cooldown-Seconds` has elapsed since you last used it.
+  6. If the art sets `Requires-Unarmed`, your hand is free. This is what gates the three [fist arts](#fist-arts).
+  7. You have at least its `Qi-Cost` banked.
+  8. Its `Cooldown-Seconds` has elapsed since you last used it.
 </Panel>
 
 On success the Qi is deducted, the cooldown is stamped, and the effect runs. Cooldowns are per-technique and measured in real time, so they keep running while you're doing something else.
 
 <Divider />
 
+## Unlocking an Art \{#unlocking\}
+
+Every art carries a `Requires-Unlock` flag, and since **0.7.4 it is true for all 28 built-ins by default**. Meeting an art's realm makes you able to hold it; coming by it is a separate event. There are **four** routes, and an art learned by any of them is learned for good.
+
+<CardGrid cols={2}>
+  <Card title="A manual" han="籍">
+    Read its [manual](/manuals/) — one per art, twenty-eight of them, plus a **Tattered Manual** that names no art and teaches one at random from those you have already grown into. This is the only route you can go looking for, trade, or take off a body.
+  </Card>
+
+  <Card title="Enlightenment (頓悟)" han="悟">
+    Sit long enough on good ground and understanding sometimes simply arrives. Every second of meditation that actually draws Qi rolls for it, and richer [veins](/qi-gathering/) comprehend faster. This is the route that guarantees nobody is ever hard-stuck behind loot that has not dropped.
+  </Card>
+
+  <Card title="A breakthrough" han="破">
+    Crossing into a new realm opens one art you had grown into but never met, so a new tier never arrives empty-handed.
+  </Card>
+
+  <Card title="Sect inscription" han="宗">
+    Your [sect](/sects/) has it inscribed in a hall it still holds. This one is **borrowed, not learned**, and resolved live — a sect that loses its hall to a siege stops teaching the art to every member at once.
+  </Card>
+</CardGrid>
+
+Not knowing an art outranks every other refusal — you are told you have never learned it, not that your realm is too low. `/cultivation technique` divides its listing into what you hold, what is within reach, and what is still beyond you, and the [keybind menu](/keybinds/) only offers arts you actually know, so no key is ever bound to something that cannot fire.
+
+This flag is about whether you may use the art at all. It is separate from [mastery](#mastery), which always wants manuals: a second copy of a manual you can already read is still studied into that art's mastery, so manuals matter for every art you own however you came by it.
+
+<Note title="For server owners">
+  Setting `Requires-Unlock: false` on a rule in `Arts/TechniqueConfig.json` restores the pre-0.7.4 behavior for that art — per art, or on all of them. Admins also have `/cultivation admin granttechnique <art>` (or `all`) and `revoketechnique`, both usable on another player.
+</Note>
+
+<Divider />
+
 ## The Built-In Arts
 
-**22 arts** ship with the mod: nine open to anyone, ten locked to a single Dao, and three to a bloodline. Every number below is the shipped default and can be retuned per-technique in the config. Damage and healing figures are the *Entry*-rung values — [mastery](#mastery) multiplies them.
+**28 arts** ship with the mod: nine open to anyone, ten locked to a single Dao, three to a bloodline, three [gathered](#gathered-arts) and three [fist arts](#fist-arts). Every number below is the shipped default and can be retuned per-technique in the config. Damage and healing figures are the *Entry*-rung values — [mastery](#mastery) multiplies them.
 
 <Panel title="The Common Arts — open to every cultivator">
   | Technique | Unlock Realm | Qi Cost | Cooldown | What it does |
@@ -101,6 +138,57 @@ Demon and Deity are the two aggressive ones, and both give something back — Bl
 
 <Divider />
 
+<Divider />
+
+## The Gathered Arts \{#gathered-arts\}
+
+Three arts are **not loosed the moment you call them**. Use one and you begin gathering Qi; use it again to loose it. The longer you hold, the more it carries.
+
+<Panel title="How a gathering works">
+  - Beginning costs the art's `Qi-Cost`. Holding then drains `ChargeQiPerSecond` every second on top of that.
+  - Below `ChargeMinSeconds` the art will not fire at all — a gathering has a floor, so a mis-tap is a cancel rather than a wasted art at minimum power.
+  - At `ChargeMaxSeconds` it **looses on its own** rather than making you watch a full bar.
+  - Moving further than `ChargeMoveTolerance` from where you began **scatters** it. What these arts really cost is standing still in a fight.
+  - Run your Qi dry mid-gathering and the art looses at whatever it had reached, rather than being lost.
+  - Power scales from **×1** at the floor up to `ChargePowerAtFull`.
+</Panel>
+
+A **charge meter** on the HUD tracks it, and the gathering visibly tightens and rises in pitch as it deepens. Only one may be gathering at a time.
+
+<Panel title="The Gathered Arts — hold, then loose">
+  | Technique | Unlock Realm | Qi Cost | Cooldown | Gathering | What it does |
+  | --- | --- | --- | --- | --- | --- |
+  | **Piercing Sun Qi Beam (貫日罡氣)** | Nascent Soul | 45 + 14/s | 25s | 0.6–6s, to ×3.2 | A single lance along your line of sight, range 45 + 3 per realm. It **pierces** — it does not stop at the first thing it meets, only at the world itself. 30 damage + 8 per realm; the beam itself widens from 1.5 to 2.75 blocks as it deepens. |
+  | **Myriad Swords Return (萬劍歸宗)** | Golden Core Formation | 40 + 11/s | 22s | 0.5–5s, to ×2.4 | A storm of sword qi over the ground around you, radius 9 + 0.75 per realm. Every blade falls and cuts on its own, landing on the terrain rather than hanging in a flat disc. **Five blades at a tap, twenty at a full gathering**, 9 damage + 2.5 per realm each. |
+  | **Starfall Strike (隕星擊)** | Soul Formation | 55 + 16/s | 30s | 0.75–7s, to ×3.6 | Alone among them it lands **somewhere other than where you stand** — on whatever you are looking at, up to 38 blocks off. 40 damage + 10 per realm, over a radius that grows from 5 to 9 blocks. Deals real `Fire` damage. |
+</Panel>
+
+<Divider />
+
+## The Fist Arts \{#fist-arts\}
+
+Three arts **refuse while a weapon is in hand**. They are the visible half of a third progression ladder, climbed by fighting bare-handed.
+
+### The unarmed ladder
+
+Every blow you land with a free hand banks fist-art experience, and your bare hands hit harder for it.
+
+- **100 levels**, worth up to **+220%** unarmed damage at the top, plus a further **+12% per realm** you have broken into.
+- XP is measured by **the damage that actually got through** — 0.5 per point dealt. Hitting something armored teaches less than hitting something soft, and a punch a shield ate whole teaches nothing.
+- The bonus applies to your fists and to the three fist arts, and **never to a weapon**. It also never leaks onto your other techniques: a Sword Qi Slash thrown with empty hands is still a Sword Qi Slash.
+
+By default anything that is not a weapon counts as a free hand, so a torch or a stack of stone still lets a fist art fly. Server owners who want it strict can set `Unarmed-Requires-Empty-Hand`, and the whole ladder is switched by `Fist-Arts-Enabled`.
+
+<Panel title="The Fist Arts — empty hands only">
+  | Technique | Unlock Realm | Qi Cost | Cooldown | What it does |
+  | --- | --- | --- | --- | --- |
+  | **Crashing Mountain Fist (崩山拳)** | Qi Condensation | 20 | 6s | One committed straight punch — the shortest reach in the mod at 4.5 blocks, and by far the hardest single blow for its tier. 22 damage + 6 per realm. |
+  | **Hundred Rending Fists (百裂拳)** | Foundation Establishment | 35 | 12s | A flurry across a 60-degree arc at range 5, where **every strike lands on everything caught in it**. 8 strikes + 1 per realm, 4.5 damage + 1.2 per realm each. |
+  | **Heaven-Shaking Fist (撼天拳)** | Golden Core Formation | 50 + 12/s | 26s | The summit, and the only art that is **both gathered and unarmed**: thrown from a planted stance and loosed as a shockwave from 5 blocks out to 10 at a full gathering. 30 damage + 8 per realm, to ×3. Its 1.75-block move tolerance is the tightest of any gathered art — it wants you rooted. |
+</Panel>
+
+All three scale on the fist ladder as well as your realm, so the levels you spent punching things are what make them worth throwing.
+
 ## Mastery \{#mastery\}
 
 Before 0.7.2 an art was exactly as strong as your realm made it. Learn Sword Qi Slash at Foundation Establishment and it did what a Foundation Establishment art does — and it kept doing precisely that until you broke through, however many thousand times you had thrown it. **Mastery is the mod measuring practice instead.**
@@ -154,21 +242,6 @@ The multiplier applies to every magnitude the art produces — damage, healing, 
 <Note kind="tip" title="Stacking Qi Barrier and Iron Body">
   **Qi Barrier** and **Iron Body** stack in a defined order: Iron Body's percentage reduction is applied first, and what survives it is deducted from the Qi Barrier pool.
 </Note>
-
-<Divider />
-
-## The Manual Gate
-
-Every art carries a `Requires-Manual` flag, and it is **false for all 22 built-ins by default** — out of the box, every technique is available the moment you meet its realm requirement (and its element or bloodline, where it has one).
-
-Set it true and that art becomes unlearnable except by being taught. Two things count as knowing it:
-
-- You read its [manual](/manuals/) yourself. That is permanent and lives on your own character.
-- Your [sect](/sects/) has it inscribed in a hall it still holds. That one is borrowed and resolved live, so a sect that loses its hall to a siege stops teaching the art to every member at once.
-
-Not knowing a gated art outranks every other refusal — you are told you have never learned it, not that your realm is too low.
-
-This flag is about whether you may use the art at all. It is separate from [mastery](#mastery), which always wants manuals: an art with `Requires-Manual` false still needs copies of its manual to climb past Entry, so manuals matter on every server whether or not they gate anything.
 
 <Divider />
 

@@ -6,7 +6,7 @@ group: "Configuration"
 
 # Arts Configs
 
-The seven files in `mods/Siren_Cultivation/Arts/` cover everything a cultivator practices, crafts, tempers, and binds to themselves - the [Dao](/dao/) they walk, the [Techniques](/techniques/) they perform, the [Manuals](/manuals/) that teach them, the pills they brew in [Alchemy](/alchemy/), the [Weapon Refinement](/refinement/) they endure, their [Life-Bound Treasures](/lifebound/), and their [Spirit Beasts](/beasts/).
+The eight files in `mods/Siren_Cultivation/Arts/` cover everything a cultivator practices, crafts, tempers, and binds to themselves - the [Dao](/dao/) they walk, the [Techniques](/techniques/) they perform, the [Fist Arts](/techniques/#fist-arts) they train bare-handed, the [Manuals](/manuals/) that teach them, the pills they brew in [Alchemy](/alchemy/), the [Weapon Refinement](/refinement/) they endure, their [Life-Bound Treasures](/lifebound/), and their [Spirit Beasts](/beasts/).
 
 This is the largest config group. Several files hold arrays rather than plain values - `Techniques`, `Manuals`, and `Beast-Species` are open tables you may add your own entries to.
 
@@ -106,7 +106,7 @@ The rule set behind every active cultivation art, found in the path `mods/Siren_
 | "ConfigVersion" | 1 | Current Version when you have loaded for the plugin. |
 | "Techniques-Enabled" | true | Master toggle for the whole Technique system. False disables every technique at once, regardless of the individual rules. |
 | "Description-Techniques" | A long string explaining the value above. | Restates that this toggle overrides every entry in the Techniques array below. |
-| "Techniques" | An array of the nine built-in rules (see below). | One entry per technique. Each entry's `Id` must match a technique id for the manager to apply it as an override. |
+| "Techniques" | An array of the 28 built-in rules (see below). | One entry per technique. Each entry's `Id` must match a technique id for the manager to apply it as an override. |
 | "Technique-Hotkeys-Enabled" | true | Whether cultivators may fire techniques from [a keybind](/keybinds/) (a modifier plus a key) rather than only from `/cultivation technique`. Independent of "Techniques-Enabled". |
 | "Technique-Hotkeys-Q-E-R-Enabled" | false | Whether Q, E and R may be bound at all. Off by default because taking one over costs a player dropping an item, the inventory, or their hotbar block set — the number row only costs a hotbar switch, which the mod immediately undoes. |
 | "Description-Technique-Hotkeys" | A long string explaining the values above. | Which keys and modifiers are bindable and why the set is what it is, that there is no 0 key, the default bindings, and that the modifier arms on the press for half a second rather than while held. |
@@ -122,13 +122,15 @@ Each entry in the `Techniques` array uses this shape.
 | "Required-Element" | "" | The DaoElement name this technique is locked to. Only meaningful when Dao-Specific is true. |
 | "Elements" | "" | A comma-separated list of DaoElements the technique carries, as metadata and flavour. |
 | "Damage-Type" | "" | A DamageCause asset id for damaging techniques. Empty means the effect falls back to PHYSICAL, which the Dao combat filter may still re-convert to the caster's own element. |
-| "Requires-Manual" | false | When true this technique cannot be performed until a [manual](/manuals/) has taught it. None of the nine built-ins set this by default. |
+| "Requires-Unlock" | true | When true this technique cannot be performed until the player has [come by](/techniques/#unlocking) it — a [manual](/manuals/), enlightenment, a breakthrough, or a sect inscription. **Set on all 28 built-ins since 0.7.4**; set it false to make an art freely available at its realm. This key replaced `Requires-Manual`, and the rename is deliberately the migration: an old config's stale `"Requires-Manual": false` is read as an unknown key and ignored, so the new default applies rather than being silently overridden. |
+| "Charged" | false | When true the art is pressed once to begin gathering and again to loose it, growing stronger the longer it is held. Its numbers ride along as the `Charge*` params. Set on the three [gathered arts](/techniques/#gathered-arts). |
+| "Requires-Unarmed" | false | When true the art refuses while a weapon is in hand. Set on the three [fist arts](/techniques/#fist-arts). What counts as a free hand is governed by `Unarmed-Requires-Empty-Hand` in the fist config. |
 | "Unlock-Realm" | "QI_CONDENSATION" | The realm required to use it, as an enum name. |
 | "Qi-Cost" | 0.0 | Banked Qi spent per use. |
 | "Cooldown-Seconds" | 0.0 | Real-time cooldown between uses. |
 | "Params" | `[]` | An array of `Key`/`Value` pairs holding technique-specific numbers, so a technique can add its own knobs without changing the config's shape. |
 
-These are the nine built-in rules written to the file on first run.
+These are the 28 built-in rules written to the file on first run.
 
 | Technique Id | Unlock Realm | Qi Cost | Cooldown | Elements | Params |
 | --- | --- | --- | --- | --- | --- |
@@ -161,6 +163,23 @@ The five-rung ladder every art climbs. See [Mastery](/techniques/#mastery) for w
   A config with more than five rungs is clamped to the first five, and one with none falls back to a single flat rung. The cap exists because the UI and the lang keys only cover five — an add-on calling `registerMasteryStage` past that gets `false` back rather than a silently ignored rung.
 </Note>
 
+<Divider />
+
+## Fist Config
+
+The bare-handed damage ladder and the arts that ride on it (拳法), found in the path `mods/Siren_Cultivation/Arts/FistConfig.json`. New in **0.7.4**. See [Fist Arts](/techniques/#fist-arts).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "Fist-Arts-Enabled" | true | Switches the whole ladder off, including its damage bonus. The three fist arts still exist as techniques and can be disabled individually in the technique config. |
+| "Unarmed-Requires-Empty-Hand" | false | What counts as a free hand. False means anything that is not a weapon, so a torch or a stack of stone still lets a fist art fly; true demands a strictly empty hand. |
+| "Max-Level" | 100 | The ceiling on the ladder. The full damage bonus is paid out only there. |
+| "Base-Xp-Requirement" | 30.0 | XP needed for level 2. The requirement for level N is this times `Xp-Growth-Rate` to the power of N-1. |
+| "Xp-Growth-Rate" | 1.075 | How steeply the requirement compounds. Small changes here move the ceiling a very long way. |
+| "Xp-Per-Damage-Dealt" | 0.5 | XP per point of damage that **actually got through**. Hitting something armored teaches less than hitting something soft, and a punch a shield ate whole teaches nothing. |
+| "Damage-Bonus-Percent-At-Max" | 220.0 | Extra unarmed damage at `Max-Level`, as a percentage. It applies to your fists and to the three fist arts, and never to a weapon. |
+| "Damage-Bonus-Percent-Per-Realm" | 12.0 | Further unarmed damage for every [realm](/realms/) you have broken into, on top of the ladder. |
+
 ## Manual Config
 
 Lootable books that permanently teach a technique or a skill-tree node, found in the path `mods/Siren_Cultivation/Arts/ManualConfig.json`. See [Manuals](/manuals/).
@@ -183,7 +202,7 @@ Each entry in the `Manuals` array uses this shape.
 | Variable Name | Default Value | Description |
 | --- | --- | --- |
 | "ItemId" | "" | The manual item's asset id. |
-| "TechniqueId" | "" | The technique reading it teaches, if any. Only meaningful for a technique whose rule sets `Requires-Manual` true. |
+| "TechniqueId" | "" | The technique reading it teaches, if any. Since 0.7.4 every built-in art sets `Requires-Unlock`, so a technique manual is a real unlock rather than a curiosity. |
 | "SkillNodeId" | "" | The skill-tree node reading it unlocks, if any. The node's prerequisites are still honoured, but its point cost is ignored. |
 | "Weight" | 1.0 | Relative likelihood within the drop table. 0 means it never drops on its own and must be placed by an admin or another mod. |
 

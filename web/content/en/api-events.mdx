@@ -6,7 +6,7 @@ group: "For Developers"
 
 # API Events
 
-Cultivation exposes 156 events across twelve `*Events` classes in `plugin.siren.API`. Nearly every mechanic in the mod is exposed twice - once as a cancellable `Pre*` event fired before the change, and once as a plain post-event fired after it is committed.
+Cultivation exposes 160 events across thirteen `*Events` classes in `plugin.siren.API`. Nearly every mechanic in the mod is exposed twice - once as a cancellable `Pre*` event fired before the change, and once as a plain post-event fired after it is committed.
 
 Every class follows the conventions documented on `CultivationEvents`, so learning one teaches you all eleven.
 
@@ -144,7 +144,7 @@ These fire for third-party techniques registered through [`CultivationAPI.regist
 | `PreTechniqueMasteryAdvanceEvent` | Yes | An art is about to rise a mastery rung. Cancel to hold it where it is — the XP and the studied manuals stay banked, so it simply tries again the next time anything about it changes. | `ref()`, `player()`, `techniqueId()`, `stage()` (the rung it is rising *to*). |
 | `TechniqueMasteryAdvanceEvent` | No | An art’s mastery rose a rung. | `ref()`, `player()`, `techniqueId()`, `stage()`. |
 
-Config keys these override: `PreTechniquePerformEvent` mirrors the per-technique `Qi-Cost` and `Cooldown-Seconds` entries in the technique rules (see [Config](/config/)), and the `/cultivation technique <id>` command on the [Commands](/commands/) page. `PreTechniqueLearnEvent` only ever fires for techniques whose rule sets `Requires-Manual`.
+Config keys these override: `PreTechniquePerformEvent` mirrors the per-technique `Qi-Cost` and `Cooldown-Seconds` entries in the technique rules (see [Config](/config/)), and the `/cultivation technique <id>` command on the [Commands](/commands/) page. `PreTechniqueLearnEvent` fires for every art a player comes by, whichever of the four unlock routes produced it — reading a [manual](/manuals/), enlightenment while meditating, a breakthrough, or a sect inscription — so a listener does not have to care which.
 
 <Divider />
 

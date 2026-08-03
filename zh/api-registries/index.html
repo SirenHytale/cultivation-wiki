@@ -255,6 +255,32 @@ public final class MyTechniques {
 
     <ul><li>所声明的文档，是按<strong>裸文件名</strong>在 <code>documentRoot</code> 下匹配的，因此每一个被覆盖的文件都必须置于那同一个根目录下。你未声明的页面，会刻意回落到 Cultivation 自己的版本 —— 一个无法解析的 <code>.ui</code> 路径会让整个页面加载失败且不留日志，因此注册表绝不会凭空捏造一个。</li><li>九个<a href="../skilltree/">天赋树</a>分支的光晕是<strong>全有或全无</strong>的：要么传入每一个 <code>SkillTreeBranch</code>，要么一个都不传 —— <code>build()</code> 会拒绝只传一部分。</li><li><code>CultivationPalette.DEFAULT_KEY</code>（<code>"cultivation:default"</code>）即内置的默认外观。<code>getPalette(store, ref)</code> 对它返回 <code>null</code>；<code>document(palette, basePath)</code> 会依玩家当前所处的配色解析出对应路径。</li><li>与已佩戴的称号一样，玩家所选的配色存放在其设置上，<a href="../profiles/">存档</a>之间共享。</li></ul>
 
+    <h2>注册常驻修正</h2>
+
+    <p><strong>0.7.4 新增。</strong> 凡要改变一名修士<strong>是什么</strong>、而非他<strong>做什么</strong>的，皆挂在此处 —— 血脉、体质、特殊体质。一次注册即回答一组具名的通道，Cultivation 则在自己各处关口逐一相询：</p>
+
+    <pre><code class="language-java">CultivationAPI.registerModifierSource("mymod:bloodlines", new CultivationModifierSource() {
+    @Override
+    public float qiGainMultiplier(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 1.15f : 1f;
+    }
+
+    @Override
+    public float damageTakenMultiplier(ComponentAccessor&lt;EntityStore&gt; accessor, Ref&lt;EntityStore&gt; ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 0.95f : 1f;
+    }
+});</code></pre>
+
+    <p>每个方法都有一个「不予置评」的默认实现，故你只需实现自己在意的那几条。通道共十六条，涵盖灵气吸纳与打坐、所施与所受的伤害、空手伤害、伤害类型免疫、<a href="../techniques/#gathered-arts">蓄力</a>时长、大道元素之锁、大道亲和、阴阳偏移、阴阳容差、仪轨难度、于岩浆中打坐，以及<a href="../auras/">灵光</a>大小 —— 另有两条并不改动数值，而是向总览页添入条目。</p>
+
+    <p><strong>为何是此处而非事件。</strong> 事件适于回应一个<strong>瞬间</strong>；此处所对的是关于一名玩家的一桩<strong>常驻事实</strong>，它会一举重定十几套彼此无关的系统。若以事件为之，便要在每一套上各挂一个监听器，且各自反复推导同一桩事实。</p>
+
+    <p>各注册来源之间，倍率<strong>相乘</strong>，布尔值<strong>取或</strong>，故两个扩展各加 10% 得到的是 ×1.21 而非 ×1.20 —— 这与 Cultivation 自身内部倍率的叠加方式一致。某个来源若抛出异常，会被捕获并记录一次，此后不再理会，故一个有缺陷的扩展无法拖垮整条伤害管线。</p>
+
+    <p>你的方法在世界线程上被调用，有时更在伤害管线内部，故请只做一次组件读取与一些算术。当无人注册时，每条通道都会立即返回其中性值。</p>
+
+    <p><a href="../../sacred-bodies/">Cultivation: Sacred Bodies</a> 全然建于此注册表之上，别无其他，值得当作可仿的范式来读：它以<strong>一次组件读取</strong>回答全部通道，并向总览页添入自己的具名条目，使体质显现为可读的文字，而非玩家数值上一处无从解释的变动。</p>
+
     <h2>上调上限</h2>
 
     <p>&lt;span class="tag"&gt;v0.7.0&lt;/span&gt; 有两项上限并非配置键，而是可由扩展提升的 —— 走的是同一套注册／撤销结构：</p>

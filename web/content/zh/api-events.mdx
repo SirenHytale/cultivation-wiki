@@ -1,12 +1,12 @@
 ---
 title: "事件"
-description: "Cultivation 的 156 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。"
+description: "Cultivation 的 160 个事件，分布于十二个 *Events 类：前置可取消事件与后置通知事件的约定、线程规则，以及逐个子系统的完整表格。"
 group: "For Developers"
 ---
 
 # 事件
 
-Cultivation 在 `plugin.siren.API` 下的十二个 `*Events` 类中，暴露了 156 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
+Cultivation 在 `plugin.siren.API` 下的十二个 `*Events` 类中，暴露了 160 个事件。模组中几乎每一项机制都被暴露了两次 —— 一次是变更发生**之前**触发的可取消 `Pre*` 事件，一次是变更落定之后触发的普通后置事件。
 
 每个类都遵循 `CultivationEvents` 上所记载的约定，因此学会一个便学会了全部十二个。
 
@@ -132,7 +132,7 @@ DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath(
 | `TechniqueBuffApplyEvent` | 否 | 增益已生效。`magnitude` 表示该增益所度量的东西 —— 一个减伤百分比、一个伤害百分比、一个护盾池、一个速度倍率。 | `ref()`、`player()`、`type()`、`durationSeconds()`、`magnitude()`。 |
 | `TechniqueBuffExpireEvent` | 否 | 疾风步的速度倍率已被撤回，或因到期，或因清理。 | `ref()`、`player()`、`type()`。 |
 
-这些所覆写的配置键：`PreTechniquePerformEvent` 映照功法规则中各门功法自己的 `Qi-Cost` 与 `Cooldown-Seconds` 条目（见[配置](/zh/config/)），以及[指令](/zh/commands/)页上的 `/cultivation technique <id>` 指令。`PreTechniqueLearnEvent` 只会为规则中设了 `Requires-Manual` 的功法触发。
+这些所覆写的配置键：`PreTechniquePerformEvent` 映照功法规则中各门功法自己的 `Qi-Cost` 与 `Cooldown-Seconds` 条目（见[配置](/zh/config/)），以及[指令](/zh/commands/)页上的 `/cultivation technique <id>` 指令。`PreTechniqueLearnEvent` 会为玩家求得的每一门功法触发，无论出自四条途径中的哪一条 —— 阅读[秘籍](/zh/manuals/)、打坐中的顿悟、突破所开，或宗门铭刻 —— 故监听者无须理会究竟是哪一条。
 
 ## 物品
 

@@ -91,10 +91,14 @@
 
     <table>
     <thead><tr><th>Slots</th><th>Default</th><th>Binds to</th></tr></thead>
-    <tbody><tr><td><strong>4 technique binds</strong></td><td>ALT+6, ALT+7, ALT+8, ALT+9</td><td>Any <a href="../techniques/">technique</a> you can perform</td></tr><tr><td><strong>4 menu binds</strong></td><td>ALT+3 → Qi overview, ALT+4 → <a href="../codex/">Codex</a></td><td>Any Cultivation menu page</td></tr><tr><td><strong>1 loadout switch</strong></td><td>ALT+5</td><td>Cycles your loadouts</td></tr></tbody>
+    <tbody><tr><td><strong>4 technique binds</strong></td><td>ALT+6, ALT+7, ALT+8, ALT+9</td><td>Any <a href="../techniques/">technique</a> you have learned</td></tr><tr><td><strong>4 menu binds</strong></td><td>ALT+3 → Qi overview, ALT+4 → <a href="../codex/">Codex</a></td><td>Any Cultivation menu page</td></tr><tr><td><strong>1 loadout switch</strong></td><td>ALT+5</td><td>Cycles your loadouts</td></tr></tbody>
     </table>
 
     <p>Only combinations you have <strong>actually bound</strong> are ever intercepted. Every other key does its normal job, whether or not a modifier is held — an unbound 6 still switches hotbar slot, and an unmodified Q still drops your item.</p>
+
+    <p>Since <strong>v0.7.4</strong> the technique dropdown only offers arts you have actually <a href="../techniques/#unlocking">come by</a>, so no key can be bound to something that cannot fire. An art you have not learned yet simply is not in the list.</p>
+
+    <p>A <a href="../techniques/#gathered-arts">gathered art</a> bound to a key uses that key <strong>twice</strong>: once to begin gathering, once to loose it. A <a href="../techniques/#fist-arts">fist art</a> bound to a key refuses while a weapon is in hand, exactly as it does from the command.</p>
 
     <h2>Loadouts</h2>
 

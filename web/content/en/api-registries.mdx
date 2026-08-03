@@ -388,6 +388,36 @@ boolean added = CultivationAPI.registerMasteryStage(
 
 It returns **false** if the ladder is already full rather than silently ignoring you — the ladder is capped at five, because the UI and the lang keys only cover that many. Check the return value.
 
+## Registering a standing modifier \{#standing-modifiers\}
+
+**New in 0.7.4.** The hook for anything that changes what a cultivator **is** rather than what they do — a bloodline, a constitution, a physique. One registration answers a set of typed channels, and Cultivation asks them at each of its own chokepoints:
+
+```java
+CultivationAPI.registerModifierSource("mymod:bloodlines", new CultivationModifierSource() {
+    @Override
+    public float qiGainMultiplier(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 1.15f : 1f;
+    }
+
+    @Override
+    public float damageTakenMultiplier(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref) {
+        return Bloodline.of(accessor, ref) == Bloodline.DRAGON ? 0.95f : 1f;
+    }
+});
+```
+
+Every method has a default meaning “no opinion”, so you implement only the channels you care about. Sixteen exist, covering Qi gain and meditation, damage dealt and taken, unarmed damage, damage-cause immunity, [charge](/techniques/#gathered-arts) time, the Dao element lock, Dao affinity, alignment shift, Yin-Yang tolerance, ritual difficulty, meditating in lava, and [aura](/auras/) size — plus two that contribute rows to the Overview page rather than changing a number.
+
+<Note title="Why this and not events">
+  Events are the right tool for reacting to a *moment*. This is for a standing *fact* about a player that re-prices a dozen unrelated systems at once — doing that with events would mean a listener on every one of them, each re-deriving the same fact.
+</Note>
+
+Multipliers **multiply** across every registered source and booleans **OR**, so two addons each granting +10% produce ×1.21 rather than ×1.20 — the same way Cultivation's own internal multipliers already stack. A source that throws is caught, logged once and thereafter ignored, so a broken addon cannot take the damage pipeline down with it.
+
+Your methods are called on the world thread, sometimes from inside the damage pipeline, so keep them to a component read and some arithmetic. When nothing is registered every channel returns its neutral value immediately, so a server without such an addon pays one emptiness check per chokepoint.
+
+[Cultivation: Sacred Bodies](/sacred-bodies/) is built entirely on this registry and nothing else, and is worth reading as a shape to copy: it answers every channel from a **single component read**, and contributes its own named lines to the Overview so a constitution shows up as readable text rather than as an unexplained change in the player's numbers.
+
 ## Raising the caps
 
 <Tag>v0.7.0</Tag> Two limits are addon-raisable rather than config keys, through the same register/unregister shape:
@@ -409,6 +439,6 @@ Not every extension point is a Java registry. `CultivationAPI` exposes `register
 
 ## See also
 
-- [API Events](/api-events/) - the 156 hooks your registered content fires through.
+- [API Events](/api-events/) - the 160 hooks your registered content fires through.
 - [API Reference](/api-reference/) - reading a player's state before you act on it.
 - [Races](/races/), [Techniques](/techniques/), [Qi Gathering](/qi-gathering/), [Titles](/titles/), [Sects](/sects/), [Config](/config/), [Commands](/commands/).

@@ -97,9 +97,23 @@
 
     <p>The Marriage mod is what defines who is married to whom, and <a href="../partnered-cultivation/">Partnered Cultivation</a> is gated on it entirely. Without Marriage there is nothing to define a partner, so the whole feature stays off no matter what <code>Society/PartnerConfig.json</code> says.</p>
 
+    <h2>Version compatibility</h2>
+
+    <p><strong>New in v0.7.4.</strong> An add-on can publish <strong>which Cultivation versions it works with</strong>, so a pairing that turns out to be broken can be corrected after both jars have already shipped.</p>
+
+    <p>This is deliberately the <em>second</em> layer. The first is the add-on's own <code>manifest.json</code>, whose <code>Dependencies</code> entry takes a full semver range rather than just a floor:</p>
+
+    <pre><code class="language-json">"Dependencies": { "Siren:Cultivation": "&gt;=0.7.4 &lt;0.8.0" }</code></pre>
+
+    <p>That is absolute and offline — the engine refuses to load the add-on outside the band before a line of its code runs. What a shipped manifest <em>cannot</em> do is describe a pairing nobody knew was broken at the time. The published compatibility list can, because it is a file that changes without a release.</p>
+
+    <p>When a pairing is listed as broken, a well-behaved add-on <strong>stands itself down and says why in the console</strong> rather than misbehaving quietly. Nothing is deleted, and everything comes back on the next boot once the versions match.</p>
+
+    <p>It <strong>fails open in every direction</strong>. An unreachable site, a malformed list, or a version nobody has written an entry for all leave the mod running untouched, so an offline server is never told its mods disagree. See <a href="../api-registries/">Registries</a> for how to register one.</p>
+
     <h2>Writing your own compatibility</h2>
 
-    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to 156 events across twelve subsystems.</p>
+    <p>Cultivation's API is designed for exactly this. An add-on can read every config file, drive progression, register its own settings into the admin menu, and listen to 160 events across thirteen subsystems.</p>
 
     <p>Since v0.7.0, a mod that <strong>replaces Cultivation's progression ladder</strong> (a <code>ProgressionProvider</code>) has one more duty: players can now keep several <a href="../profiles/">profiles</a>, and switching swaps the cultivator underneath your mod. Until your provider declares <code>supportsProfiles()</code> and keeps its own records in step through <code>ProfileEvents</code>, switching is refused rather than half-performed — see <a href="../api-addons/">Building Add-ons</a>.</p>
 

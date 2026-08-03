@@ -124,6 +124,8 @@ LINKS: dict[str, str] = {
     "/cultivation/auras/": "auras",
     "/cultivation/body-tempering/": "body-tempering",
     "/cultivation/jade-slip/": "jade-slip",
+    # v0.7.4
+    "/cultivation/sacred-bodies/": "sacred-bodies",
     "/cultivation/titles/": "titles",
     "/cultivation/notices/": "notices",
     "/cultivation/techniques/": "techniques",

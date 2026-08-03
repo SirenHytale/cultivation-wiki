@@ -49,35 +49,51 @@
 
     <h1>Spirit Sense</h1>
 
-    <p class="page-lede"><strong>Spirit Sense (灵气感知)</strong> is a cultivator's perception of the Qi in the land around them. Still your mind and the ambient Qi takes shape — motes drifting up from the ground you sit on, and a beacon standing over a <a href="../qi-gathering/">rich or dragon vein</a> from across the landscape. New in v0.6.0, and switched on by default (<code>Spirit-Sense-Enabled</code>).</p>
+    <p class="page-lede"><strong>Spirit Sense (灵气感知)</strong> is a cultivator's perception of the Qi in the land around them, and above all <strong>whether the ground they are standing on can carry their next rank-up</strong>. Still your mind and the ambient Qi takes shape — motes drifting up from the ground you sit on, and a beacon standing over a <a href="../qi-gathering/">rich or dragon vein</a> from across the landscape. New in v0.6.0, and switched on by default (<code>Spirit-Sense-Enabled</code>).</p>
 
     <p>Toggle it with <code>/cultivation sense</code>. It costs nothing to run and never expires.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2>The Question It Answers</h2>
+
+    <p>Since <strong>v0.7.4</strong> the sense answers the question it was always being asked: not <em>"is this ground rich"</em> but <strong>"can I break through here?"</strong></p>
+
+    <p>Fullness alone could never answer that. A breakthrough wants <strong>750 Qi</strong>, and a common vein's entire capacity is <strong>500</strong> — so "Overflowing" on ordinary ground was a full vein that still refused the ritual, and a cultivator could search forever while being told, perfectly truthfully, that the land was rich.</p>
+
+    <p>So the sense now reads your <strong>pending rank-up</strong> and returns a verdict on the ground underfoot:</p>
+
+    <ul><li><strong>Ready</strong> — this chunk can carry the ritual you are ready for, right now.</li><li><strong>Wait</strong> — the vein is deep enough, but needs to refill first.</li><li><strong>Never</strong> — this ground will never do, whatever you do to it. Go elsewhere.</li></ul>
+
+    <p>It is color-coded on the HUD and on the panel, and every square of the map that would carry your ritual right now is washed in bright jade.</p>
+
     <h2>It Unlocks in Two Steps</h2>
 
-    <p>The gate is deliberately split, so that perception arrives before precision.</p>
+    <p>The gate is deliberately split, so that perception arrives before precision. Each stage is gated on a realm <strong>and</strong> a stage within it.</p>
 
     <table>
     <thead><tr><th>Stage</th><th>Config</th><th>Default</th><th>What you get</th></tr></thead>
-    <tbody><tr><td><strong>Qualitative</strong></td><td><code>Spirit-Sense-Min-Realm</code></td><td>2 (Foundation Establishment)</td><td>The reading in <strong>words</strong> only</td></tr><tr><td><strong>Precise</strong></td><td><code>Spirit-Sense-Precise-Min-Realm</code></td><td>4 (Nascent Soul)</td><td>Exact Qi <strong>numbers</strong> as well</td></tr></tbody>
+    <tbody><tr><td><strong>Qualitative</strong></td><td><code>Spirit-Sense-Qualitative-Min-Realm</code> / <code>Spirit-Sense-Qualitative-Min-Stage</code></td><td>0 / 3 — <strong>Body Refinement Peak</strong></td><td>The reading in <strong>words</strong>, plus the verdict</td></tr><tr><td><strong>Precise</strong></td><td><code>Spirit-Sense-Precise-Min-Realm</code> / <code>Spirit-Sense-Precise-Min-Stage</code></td><td>2 / 3 — <strong>Foundation Establishment Peak</strong></td><td>Exact Qi <strong>numbers</strong> as well</td></tr></tbody>
     </table>
 
-    <p>Below the precise realm the HUD tells you whether the Qi runs <strong>barren</strong>, <strong>thin</strong>, <strong>steady</strong>, <strong>ample</strong> or <strong>overflowing</strong>, and whether you are standing on <strong>common ground</strong>, <strong>a rich vein</strong> or <strong>a dragon vein</strong>. It also flags <strong>turbid</strong> ground, where the vein's Qi is evil-aligned and will pull your <a href="../dao/">Yin-Yang balance</a> as you meditate on it.</p>
+    <p>Those two moments are chosen deliberately: they are the first two times a cultivator has to go looking for stronger ground, which is the problem the sense exists to solve.</p>
 
-    <p>At or beyond the precise realm, a second HUD line adds the raw figures: current Qi, the chunk's ceiling, and the percentage between them.</p>
+    <p>Below the precise gate the HUD tells you whether the Qi runs <strong>barren</strong>, <strong>thin</strong>, <strong>steady</strong>, <strong>ample</strong> or <strong>overflowing</strong>, and whether you are standing on <strong>common ground</strong>, <strong>a rich vein</strong> or <strong>a dragon vein</strong>. It also flags <strong>turbid</strong> ground, where the vein's Qi is evil-aligned and will pull your <a href="../dao/">Yin-Yang balance</a> as you meditate on it.</p>
 
-    <p>Words before numbers is the point. A Foundation Establishment cultivator can tell good ground from bad, which is all they need; reading the exact reserve of a vein is a later art.</p>
+    <p>At or beyond the precise gate, a second HUD line adds the raw figures: current Qi, the chunk's ceiling, the percentage between them, and the number the ritual is actually measured against.</p>
+
+    <p>Words before numbers is the point. An early cultivator can tell good ground from bad, which is all they need; reading the exact reserve of a vein is a later art.</p>
 
     <h2>Your Reach Grows With You</h2>
 
     <table>
     <thead><tr><th>Variable Name</th><th>Default Value</th><th>Description</th></tr></thead>
-    <tbody><tr><td><code>Spirit-Sense-Radius-Per-Realm</code></td><td>1</td><td>Extra chunks of reach per realm past the unlock.</td></tr><tr><td><code>Spirit-Sense-Max-Radius-Chunks</code></td><td>4</td><td>The ceiling on that reach.</td></tr></tbody>
+    <tbody><tr><td><code>Spirit-Sense-Base-Radius-Chunks</code></td><td>2</td><td>Reach at the realm that unlocks the sense.</td></tr><tr><td><code>Spirit-Sense-Radius-Per-Realm</code></td><td>1</td><td>Extra chunks of reach per realm past the unlock.</td></tr><tr><td><code>Spirit-Sense-Max-Radius-Chunks</code></td><td>4</td><td>The ceiling on that reach.</td></tr></tbody>
     </table>
 
-    <p>With the defaults a Foundation Establishment cultivator senses <strong>only their own chunk</strong>, and a Void Refinement one senses a <strong>9×9 area</strong> around them. Sensing further is a genuine reason to keep climbing.</p>
+    <p>With the defaults that is a <strong>5×5</strong> area at Body Refinement Peak, <strong>7×7</strong> at Qi Condensation, and <strong>9×9</strong> from Foundation Establishment on. Sensing further is a genuine reason to keep climbing.</p>
+
+    <p>Do not set the base radius to <code>0</code>. Before v0.7.4 the formula effectively did, giving the unlocking realm a reach of exactly its own chunk — a perception that reaches no further than your own feet cannot answer "where should I go", which is the entire point of having it.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 

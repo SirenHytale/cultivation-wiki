@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var _t=localStorage.getItem("cultivation-wiki-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
 <title>Techniques — Cultivation Wiki</title>
-<meta name="description" content="Cultivation Mod - Active arts, their costs, cooldowns and the manual gate">
+<meta name="description" content="Cultivation Mod - Active arts, their costs, cooldowns, the four ways to unlock one, and the gathered and fist arts">
 <link rel="icon" href="../assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://xianxia.dev/techniques/">
 <meta property="og:title" content="Techniques — Cultivation Wiki">
-<meta property="og:description" content="Cultivation Mod - Active arts, their costs, cooldowns and the manual gate">
+<meta property="og:description" content="Cultivation Mod - Active arts, their costs, cooldowns, the four ways to unlock one, and the gathered and fist arts">
 <meta property="og:image" content="https://xianxia.dev/assets/img/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cultivation — a Xianxia progression mod for Hytale">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Techniques — Cultivation Wiki">
-<meta name="twitter:description" content="Cultivation Mod - Active arts, their costs, cooldowns and the manual gate">
+<meta name="twitter:description" content="Cultivation Mod - Active arts, their costs, cooldowns, the four ways to unlock one, and the gathered and fist arts">
 <meta name="twitter:image" content="https://xianxia.dev/assets/img/social-card.png">
 <!-- social:end -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;900&display=swap" media="print" onload="this.media='all'">
@@ -51,6 +51,13 @@
 
     <p class="page-lede">Techniques are the active <strong>arts</strong> a cultivator performs - the things you do rather than the stats you accumulate. They sit on top of the <a href="../dao/">Dao</a> system, cost banked Qi, run on real-time cooldowns, and unlock by realm. Since <strong>0.7.2</strong> each one also carries its own <a href="#mastery">mastery rung</a>, so how strong an art is depends on how much you have used it, not only on how far you have climbed.</p>
 
+    <div class="note warn">
+      <span class="note-title">New in 0.7.4 — reaching a realm is no longer enough</span>
+      Meeting an art's realm, Dao and bloodline now makes you <strong>able to hold it</strong>, not
+      entitled to it. Every art must additionally be <a href="#unlocking">come by</a>, through one of
+      four routes. Existing saves began this release knowing none of them.
+    </div>
+
     <h2>Performing One</h2>
 
     <p>There are two triggers, and they behave identically:</p>
@@ -68,16 +75,41 @@
 
     <div class="panel">
           <div class="panel-head">Activation Order — first failure is what you are told</div>
-          <ol><li>The whole system is enabled (<code>Techniques-Enabled</code>), and this art's own <code>Enabled</code> flag is on.</li><li>If the art's <code>Requires-Manual</code> is set, you must have <strong>learned</strong> it - see below.</li><li>Your realm is at or past its <code>Unlock-Realm</code>.</li><li>If the art is <code>Dao-Specific</code>, your chosen dao matches its <code>Required-Element</code>.</li><li>If the art names a <code>Required-Race</code>, you are of that race. This is what gates the three bloodline arts.</li><li>You have at least its <code>Qi-Cost</code> banked.</li><li>Its <code>Cooldown-Seconds</code> has elapsed since you last used it.</li></ol>
+          <ol><li>The whole system is enabled (<code>Techniques-Enabled</code>), and this art's own <code>Enabled</code> flag is on.</li><li>If the art's <code>Requires-Unlock</code> is set — and it is set on every built-in since 0.7.4 — you must have <strong><a href="#unlocking">come by</a></strong> it.</li><li>Your realm is at or past its <code>Unlock-Realm</code>.</li><li>If the art is <code>Dao-Specific</code>, your chosen dao matches its <code>Required-Element</code>.</li><li>If the art names a <code>Required-Race</code>, you are of that race. This is what gates the three bloodline arts.</li><li>If the art sets <code>Requires-Unarmed</code>, your hand is free. This is what gates the three <a href="#fist-arts">fist arts</a>.</li><li>You have at least its <code>Qi-Cost</code> banked.</li><li>Its <code>Cooldown-Seconds</code> has elapsed since you last used it.</li></ol>
         </div>
 
     <p>On success the Qi is deducted, the cooldown is stamped, and the effect runs. Cooldowns are per-technique and measured in real time, so they keep running while you're doing something else.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 
+    <h2 id="unlocking">Unlocking an Art</h2>
+
+    <p>Every art carries a <code>Requires-Unlock</code> flag, and since <strong>0.7.4 it is true for all 28 built-ins by default</strong>. Meeting an art's realm makes you able to hold it; coming by it is a separate event. There are <strong>four</strong> routes, and an art learned by any of them is learned for good.</p>
+
+    <div class="grid cols-2">
+          <div class="card"><span class="card-han">籍</span><h4>A manual</h4><p>Read its <a href="../manuals/">manual</a> — one per art, twenty-eight of them, plus a <strong>Tattered Manual</strong> that names no art and teaches one at random from those you have already grown into. This is the only route you can go looking for, trade, or take off a body.</p></div>
+          <div class="card"><span class="card-han">悟</span><h4>Enlightenment (頓悟)</h4><p>Sit long enough on good ground and understanding sometimes simply arrives. Every second of meditation that actually draws Qi rolls for it, and richer <a href="../qi-gathering/">veins</a> comprehend faster. This is the route that guarantees nobody is ever hard-stuck behind loot that has not dropped.</p></div>
+          <div class="card"><span class="card-han">破</span><h4>A breakthrough</h4><p>Crossing into a new realm opens one art you had grown into but never met, so a new tier never arrives empty-handed.</p></div>
+          <div class="card"><span class="card-han">宗</span><h4>Sect inscription</h4><p>Your <a href="../sects/">sect</a> has it inscribed in a hall it still holds. This one is <strong>borrowed, not learned</strong>, and resolved live — a sect that loses its hall to a siege stops teaching the art to every member at once.</p></div>
+        </div>
+
+    <p>Not knowing an art outranks every other refusal &mdash; you are told you have never learned it, not that your realm is too low. <code>/cultivation technique</code> divides its listing into what you hold, what is within reach, and what is still beyond you, and the <a href="../keybinds/">keybind menu</a> only offers arts you actually know, so no key is ever bound to something that cannot fire.</p>
+
+    <p>This flag is about whether you may use the art at all. It is separate from <a href="#mastery">mastery</a>, which always wants manuals: a second copy of a manual you can already read is still studied into that art's mastery, so manuals matter for every art you own however you came by it.</p>
+
+    <div class="note">
+      <span class="note-title">For server owners</span>
+      Setting <code>Requires-Unlock: false</code> on a rule in <code>Arts/TechniqueConfig.json</code>
+      restores the pre-0.7.4 behavior for that art — per art, or on all of them. Admins also have
+      <code>/cultivation admin granttechnique &lt;art&gt;</code> (or <code>all</code>) and
+      <code>revoketechnique</code>, both usable on another player.
+    </div>
+
+     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
     <h2>The Built-In Arts</h2>
 
-    <p><strong>22 arts</strong> ship with the mod: nine open to anyone, ten locked to a single Dao, and three to a bloodline. Every number below is the shipped default and can be retuned per-technique in the config. Damage and healing figures are the <em>Entry</em>-rung values — <a href="#mastery">mastery</a> multiplies them.</p>
+    <p><strong>28 arts</strong> ship with the mod: nine open to anyone, ten locked to a single Dao, three to a bloodline, three <a href="#gathered-arts">gathered</a> and three <a href="#fist-arts">fist arts</a>. Every number below is the shipped default and can be retuned per-technique in the config. Damage and healing figures are the <em>Entry</em>-rung values — <a href="#mastery">mastery</a> multiplies them.</p>
 
     <div class="panel">
           <div class="panel-head">The Common Arts — open to every cultivator</div>
@@ -121,6 +153,51 @@
     <p>Demon and Deity are the two aggressive ones, and both give something back &mdash; Blood Devour drinks what it wounds, Divine Descent mends whether or not it connected. Boundless Potential is the Human answer to having no innate element: a long, cheap damage buff with the longest cooldown of the three, on the race that reaches it earliest.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2 id="gathered-arts">The Gathered Arts</h2>
+
+    <p>Three arts are <strong>not loosed the moment you call them</strong>. Use one and you begin gathering Qi; use it again to loose it. The longer you hold, the more it carries.</p>
+
+    <div class="panel">
+          <div class="panel-head">How a gathering works</div>
+          <ul><li>Beginning costs the art's <code>Qi-Cost</code>. Holding then drains <code>ChargeQiPerSecond</code> every second on top of that.</li><li>Below <code>ChargeMinSeconds</code> the art will not fire at all &mdash; a gathering has a floor, so a mis-tap is a cancel rather than a wasted art at minimum power.</li><li>At <code>ChargeMaxSeconds</code> it <strong>looses on its own</strong> rather than making you watch a full bar.</li><li>Moving further than <code>ChargeMoveTolerance</code> from where you began <strong>scatters</strong> it. What these arts really cost is standing still in a fight.</li><li>Run your Qi dry mid-gathering and the art looses at whatever it had reached, rather than being lost.</li><li>Power scales from <strong>&times;1</strong> at the floor up to <code>ChargePowerAtFull</code>.</li></ul>
+        </div>
+
+    <p>A <strong>charge meter</strong> on the HUD tracks it, and the gathering visibly tightens and rises in pitch as it deepens. Only one may be gathering at a time.</p>
+
+    <div class="panel">
+          <div class="panel-head">The Gathered Arts — hold, then loose</div>
+          <table>
+    <thead><tr><th>Technique</th><th>Unlock Realm</th><th>Qi Cost</th><th>Cooldown</th><th>Gathering</th><th>What it does</th></tr></thead>
+    <tbody><tr><td><strong>Piercing Sun Qi Beam (貫日罡氣)</strong></td><td>Nascent Soul</td><td>45 + 14/s</td><td>25s</td><td>0.6&ndash;6s, to &times;3.2</td><td>A single lance along your line of sight, range 45 + 3 per realm. It <strong>pierces</strong> &mdash; it does not stop at the first thing it meets, only at the world itself. 30 damage + 8 per realm; the beam itself widens from 1.5 to 2.75 blocks as it deepens.</td></tr><tr><td><strong>Myriad Swords Return (萬劍歸宗)</strong></td><td>Golden Core Formation</td><td>40 + 11/s</td><td>22s</td><td>0.5&ndash;5s, to &times;2.4</td><td>A storm of sword qi over the ground around you, radius 9 + 0.75 per realm. Every blade falls and cuts on its own, landing on the terrain rather than hanging in a flat disc. <strong>Five blades at a tap, twenty at a full gathering</strong>, 9 damage + 2.5 per realm each.</td></tr><tr><td><strong>Starfall Strike (隕星擊)</strong></td><td>Soul Formation</td><td>55 + 16/s</td><td>30s</td><td>0.75&ndash;7s, to &times;3.6</td><td>Alone among them it lands <strong>somewhere other than where you stand</strong> &mdash; on whatever you are looking at, up to 38 blocks off. 40 damage + 10 per realm, over a radius that grows from 5 to 9 blocks. Deals real <code>Fire</code> damage.</td></tr></tbody>
+    </table>
+        </div>
+
+    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
+
+    <h2 id="fist-arts">The Fist Arts</h2>
+
+    <p>Three arts <strong>refuse while a weapon is in hand</strong>. They are the visible half of a third progression ladder, climbed by fighting bare-handed.</p>
+
+    <h3>The unarmed ladder</h3>
+
+    <p>Every blow you land with a free hand banks fist-art experience, and your bare hands hit harder for it.</p>
+
+    <ul><li><strong>100 levels</strong>, worth up to <strong>+220%</strong> unarmed damage at the top, plus a further <strong>+12% per realm</strong> you have broken into.</li><li>XP is measured by <strong>the damage that actually got through</strong> &mdash; 0.5 per point dealt. Hitting something armored teaches less than hitting something soft, and a punch a shield ate whole teaches nothing.</li><li>The bonus applies to your fists and to the three fist arts, and <strong>never to a weapon</strong>. It also never leaks onto your other techniques: a Sword Qi Slash thrown with empty hands is still a Sword Qi Slash.</li></ul>
+
+    <p>By default anything that is not a weapon counts as a free hand, so a torch or a stack of stone still lets a fist art fly. Server owners who want it strict can set <code>Unarmed-Requires-Empty-Hand</code>, and the whole ladder is switched by <code>Fist-Arts-Enabled</code>.</p>
+
+    <div class="panel">
+          <div class="panel-head">The Fist Arts — empty hands only</div>
+          <table>
+    <thead><tr><th>Technique</th><th>Unlock Realm</th><th>Qi Cost</th><th>Cooldown</th><th>What it does</th></tr></thead>
+    <tbody><tr><td><strong>Crashing Mountain Fist (崩山拳)</strong></td><td>Qi Condensation</td><td>20</td><td>6s</td><td>One committed straight punch &mdash; the shortest reach in the mod at 4.5 blocks, and by far the hardest single blow for its tier. 22 damage + 6 per realm.</td></tr><tr><td><strong>Hundred Rending Fists (百裂拳)</strong></td><td>Foundation Establishment</td><td>35</td><td>12s</td><td>A flurry across a 60-degree arc at range 5, where <strong>every strike lands on everything caught in it</strong>. 8 strikes + 1 per realm, 4.5 damage + 1.2 per realm each.</td></tr><tr><td><strong>Heaven-Shaking Fist (撼天拳)</strong></td><td>Golden Core Formation</td><td>50 + 12/s</td><td>26s</td><td>The summit, and the only art that is <strong>both gathered and unarmed</strong>: thrown from a planted stance and loosed as a shockwave from 5 blocks out to 10 at a full gathering. 30 damage + 8 per realm, to &times;3. Its 1.75-block move tolerance is the tightest of any gathered art &mdash; it wants you rooted.</td></tr></tbody>
+    </table>
+        </div>
+
+    <p>All three scale on the fist ladder as well as your realm, so the levels you spent punching things are what make them worth throwing.</p>
 
     <h2 id="mastery">Mastery</h2>
 
@@ -174,20 +251,6 @@
           <span class="note-title">Stacking Qi Barrier and Iron Body</span>
           <strong>Qi Barrier</strong> and <strong>Iron Body</strong> stack in a defined order: Iron Body's percentage reduction is applied first, and what survives it is deducted from the Qi Barrier pool.
         </div>
-
-    <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
-
-    <h2>The Manual Gate</h2>
-
-    <p>Every art carries a <code>Requires-Manual</code> flag, and it is <strong>false for all 22 built-ins by default</strong> &mdash; out of the box, every technique is available the moment you meet its realm requirement (and its element or bloodline, where it has one).</p>
-
-    <p>Set it true and that art becomes unlearnable except by being taught. Two things count as knowing it:</p>
-
-    <ul><li>You read its <a href="../manuals/">manual</a> yourself. That is permanent and lives on your own character.</li><li>Your <a href="../sects/">sect</a> has it inscribed in a hall it still holds. That one is borrowed and resolved live, so a sect that loses its hall to a siege stops teaching the art to every member at once.</li></ul>
-
-    <p>Not knowing a gated art outranks every other refusal &mdash; you are told you have never learned it, not that your realm is too low.</p>
-
-    <p>This flag is about whether you may use the art at all. It is separate from <a href="#mastery">mastery</a>, which always wants manuals: an art with <code>Requires-Manual</code> false still needs copies of its manual to climb past Entry, so manuals matter on every server whether or not they gate anything.</p>
 
     <img class="divider-ink" src="../assets/img/divider-ink.svg" alt="" width="340" height="24">
 

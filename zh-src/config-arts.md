@@ -1,13 +1,13 @@
 ---
 title: 功法配置
-description: Cultivation 模组 Arts/ 目录下的七份文件：大道、功法、秘籍、炼丹、炼器、本命法宝与灵兽。
+description: Cultivation 模组 Arts/ 目录下的八份文件：大道、功法、拳法、秘籍、炼丹、炼器、本命法宝与灵兽。
 group: 配置
 han: 配
 ---
 
 ### 功法配置
 
-`mods/Siren_Cultivation/Arts/` 中的七份文件涵盖修士所修习、所炼制、所淬炼、所认主的一切 —— 他所行的[大道](/cultivation/dao/)、他所施展的[功法](/cultivation/techniques/)、传授这些的[秘籍](/cultivation/manuals/)、他在[炼丹](/cultivation/alchemy/)中所炼的丹药、他所承受的[炼器](/cultivation/refinement/)、他的[本命法宝](/cultivation/lifebound/)，以及他的[灵兽](/cultivation/beasts/)。
+`mods/Siren_Cultivation/Arts/` 中的八份文件涵盖修士所修习、所炼制、所淬炼、所认主的一切 —— 他所行的[大道](/cultivation/dao/)、他所施展的[功法](/cultivation/techniques/)、他空手所练的[拳法](/cultivation/techniques/#fist-arts)、传授这些的[秘籍](/cultivation/manuals/)、他在[炼丹](/cultivation/alchemy/)中所炼的丹药、他所承受的[炼器](/cultivation/refinement/)、他的[本命法宝](/cultivation/lifebound/)，以及他的[灵兽](/cultivation/beasts/)。
 
 这是最大的一组配置。其中几份文件承载的是数组而非单纯的数值 —— `Techniques`、`Manuals` 与 `Beast-Species` 都是开放的表，你尽可往里添加自己的条目。
 
@@ -104,7 +104,7 @@ han: 配
 | "ConfigVersion" | 1 | 你为此插件加载时的当前版本。 |
 | "Techniques-Enabled" | true | 整套功法系统的总开关。为 false 则一次性禁用每一门功法，与各自的规则无关。 |
 | "Description-Techniques" | 一段解释上述数值的长字符串。 | 重述此开关凌驾于下方 Techniques 数组中的每一条之上。 |
-| "Techniques" | 一个含九条内置规则的数组（见下）。 | 每门功法一条。每条的 `Id` 须匹配某个功法 id，管理器才会将其作为覆写施加。 |
+| "Techniques" | 一个含二十八条内置规则的数组（见下）。 | 每门功法一条。每条的 `Id` 须匹配某个功法 id，管理器才会将其作为覆写施加。 |
 | "Technique-Hotkeys-Enabled" | true | 修士能否以[快捷键](/cultivation/keybinds/)（修饰键加主键）施展功法，而不必只靠 `/cultivation technique`。与 "Techniques-Enabled" 相互独立。 |
 | "Technique-Hotkeys-Q-E-R-Enabled" | false | Q、E、R 是否可被绑定。默认关闭，因为夺走其中任一个的代价，是玩家丢不了物品、开不了背包，或切不了快捷栏方块组 —— 而数字键的代价仅是一次快捷栏切换，且模组会立刻还原。 |
 | "Description-Technique-Hotkeys" | 一段解释上述数值的长字符串。 | 哪些键与修饰键可绑定、为何只有这些，没有 0 键这回事，默认绑定，以及修饰键是自按下起半秒内有效而非按住有效。 |
@@ -120,13 +120,15 @@ han: 配
 | "Required-Element" | "" | 此功法所锁定的 DaoElement 名称。仅在 Dao-Specific 为 true 时有意义。 |
 | "Elements" | "" | 以逗号分隔的 DaoElement 列表，标示该功法所带的属性，用作元数据与风味。 |
 | "Damage-Type" | "" | 伤害类功法所用的 DamageCause 资产 id。留空则效果回退为 PHYSICAL，而大道战斗过滤器仍可能将其重新转为施法者自身的元素。 |
-| "Requires-Manual" | false | 为 true 时，此功法在被[秘籍](/cultivation/manuals/)传授之前无法施展。内置九法默认皆未设此项。 |
+| "Requires-Unlock" | true | 为 true 时，此功法在玩家[求得](/cultivation/techniques/#unlocking)它之前无法施展 —— 或经[秘籍](/cultivation/manuals/)、顿悟、突破，或经宗门铭刻。**自 0.7.4 起二十八门内置功法尽数设此**；设为 false 则该法在境界达标时即可自由施展。此键取代了 `Requires-Manual`，而这次更名本身就是迁移之法：旧配置中残留的 `"Requires-Manual": false` 会被当作未知键忽略，故新的默认值得以生效，而不会被悄悄覆盖。 |
+| "Charged" | false | 为 true 时，此法按一次开始蓄气，再按一次方才放出，蓄得越久威势越盛。其数值随 `Charge*` 参数一并附上。三门[蓄力功法](/cultivation/techniques/#gathered-arts)已设此项。 |
+| "Requires-Unarmed" | false | 为 true 时，手中握有兵器则此法不肯出手。三门[拳法](/cultivation/techniques/#fist-arts)已设此项。何谓空手，由拳法配置中的 `Unarmed-Requires-Empty-Hand` 决定。 |
 | "Unlock-Realm" | "QI_CONDENSATION" | 使用它所需的境界，以枚举名表示。 |
 | "Qi-Cost" | 0.0 | 每次使用所耗的存蓄灵气。 |
 | "Cooldown-Seconds" | 0.0 | 两次使用之间的真实时间冷却。 |
 | "Params" | `[]` | 一个 `Key`／`Value` 对的数组，承载该功法专属的数字，如此一门功法可以自行添加旋钮而无需改动配置的结构。 |
 
-以下是首次运行时写入文件的九条内置规则。
+以下是首次运行时写入文件的二十八条内置规则。
 
 | 功法 Id | 解锁境界 | 灵气消耗 | 冷却 | 属性 | 参数 |
 |:---|:---|:---|:---|:---|:---|
@@ -156,6 +158,21 @@ han: 配
 > **阶梯封顶五层。** 配置中多于五层的会被截至前五层，一层都没的则回退为单层平阶。之所以封顶，是因为界面与语言文件只备了五层 —— 扩展调用 `registerMasteryStage` 超出此数时会得到 `false`，而非默默忽略。
 
 
+#### 拳法配置
+
+空手伤害的阶梯，以及依之而立的拳法，位于 `mods/Siren_Cultivation/Arts/FistConfig.json`。**0.7.4 新增。** 见[拳法](/cultivation/techniques/#fist-arts)。
+
+| 配置项 | 默认值 | 说明 |
+|:---|:---|:---|
+| "Fist-Arts-Enabled" | true | 关闭整条阶梯，连同其伤害加成一并关闭。三门拳法作为功法依然存在，可在功法配置中逐一停用。 |
+| "Unarmed-Requires-Empty-Hand" | false | 何谓空手。false 表示只要不是兵器即可，故手持火把或一叠石块仍可施展拳法；true 则要求手中空无一物。 |
+| "Max-Level" | 100 | 阶梯的上限。全额伤害加成唯有至此方能拿满。 |
+| "Base-Xp-Requirement" | 30.0 | 升至 2 级所需的经验。第 N 级所需为此值乘以 `Xp-Growth-Rate` 的 N-1 次方。 |
+| "Xp-Growth-Rate" | 1.075 | 需求增长的陡峭程度。此处的微小改动会把上限推出很远。 |
+| "Xp-Per-Damage-Dealt" | 0.5 | 每点**真正透进去的**伤害所得的经验。打在披甲之物上所得少于打在血肉之躯上，而被盾牌整个吃下的一拳一无所得。 |
+| "Damage-Bonus-Percent-At-Max" | 220.0 | 至 `Max-Level` 时额外的空手伤害百分比。只及于你的双拳与三门拳法，绝不及于兵器。 |
+| "Damage-Bonus-Percent-Per-Realm" | 12.0 | 在阶梯之外，每破一[境](/cultivation/realms/)另加的空手伤害。 |
+
 #### 秘籍配置
 
 可拾取、能永久传授一门功法或一个天赋节点的典籍，位于路径 `mods/Siren_Cultivation/Arts/ManualConfig.json`。见[秘籍](/cultivation/manuals/)。
@@ -178,7 +195,7 @@ han: 配
 | 配置项 | 默认值 | 说明 |
 |:---|:---|:---|
 | "ItemId" | "" | 该秘籍物品的资产 id。 |
-| "TechniqueId" | "" | 阅读它所传授的功法（若有）。仅对规则中 `Requires-Manual` 为 true 的功法有意义。 |
+| "TechniqueId" | "" | 阅读它所传授的功法（若有）。自 0.7.4 起内置各法皆设有 `Requires-Unlock`，故功法秘籍是一次真正的解锁，而非摆设。 |
 | "SkillNodeId" | "" | 阅读它所解锁的天赋树节点（若有）。该节点的前置要求仍须遵守，但其天赋点消耗被无视。 |
 | "Weight" | 1.0 | 在掉落表中的相对权重。0 表示它永不自行掉落，只能由管理员或其他模组放置。 |
 

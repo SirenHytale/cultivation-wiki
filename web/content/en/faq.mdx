@@ -103,9 +103,13 @@ Another mod that writes display names — a nickname plugin, usually — overwro
 
 ## Arts & Items
 
-### I know a technique but cannot use it
+### I have the realm for a technique but cannot use it
 
-If `Requires-Manual` is on for that art, knowing the realm is not enough — you have to have **learned it from a manual**. Manuals drop from surviving tribulation bolts (4%), from NPC cultivators, and from players you kill. A sect leader can also [inscribe](/sects/) one technique into their hall, lending it to every member for as long as the sect holds that hall.
+Since **0.7.4**, reaching the realm makes you *able to hold* an art rather than entitled to it. `Requires-Unlock` is on for all 28 built-ins, so you also have to have [come by it](/techniques/#unlocking) — by reading its [manual](/manuals/), comprehending it in meditation, being handed it by a breakthrough, or having your [sect](/sects/) inscribe it in a hall it still holds.
+
+Manuals drop from surviving tribulation bolts (4%), from NPC cultivators, and from players you kill. If nothing has dropped for you, meditating on a rich vein is the route that cannot run dry — every second that actually draws Qi rolls for enlightenment.
+
+Server owners who want the old behavior can set `Requires-Unlock: false` per art in `Arts/TechniqueConfig.json`.
 
 ### My Life-Bound weapon stopped gaining levels
 

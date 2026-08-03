@@ -57,7 +57,18 @@
 
     <h2>What They Teach</h2>
 
-    <p><strong>A technique manual</strong> adds that art to your learned set, permanently. This only matters for an art whose rule sets <code>Requires-Manual</code> true - and none of the nine built-in techniques do by default, so out of the box a technique manual is something a server owner or another mod adds alongside a gated art.</p>
+    <p><strong>A technique manual</strong> adds that art to your learned set, permanently.</p>
+
+    <div class="note warn">
+      <span class="note-title">This changed completely in 0.7.4</span>
+      Technique manuals used to be a curiosity: <code>Requires-Manual</code> was false on every
+      built-in art, so nothing was actually gated behind one. Since 0.7.4 the flag is
+      <code>Requires-Unlock</code> and it is <strong>true on all 28 built-ins</strong>, which makes a
+      manual one of the four ways an art is <a href="../techniques/#unlocking">come by</a> at all —
+      and the only one you can go looking for, trade, or take off a body.
+    </div>
+
+    <p>A second copy of a manual you can already read is never wasted: it is studied into that art's <a href="../techniques/#mastery">mastery</a> instead, so manuals stay worth picking up long after the art itself is learned.</p>
 
     <p><strong>A skill-node manual</strong> unlocks that node for free. It still honours the node's prerequisites - a manual cannot hand you a tier-5 fork whose tier-4 parent you never took - but it ignores the point cost entirely.</p>
 
@@ -65,7 +76,21 @@
 
     <h2>The Shipped Manuals</h2>
 
-    <p>Five ship with the mod, all teaching a first-tier skill node:</p>
+    <p><strong>34 ship with the mod</strong> as of 0.7.4: one technique manual for each of the 28 <a href="../techniques/">arts</a>, five teaching a first-tier skill node, and the Tattered Manual.</p>
+
+    <p>Their item quality rises with the art's tier — 25 are Rare, 8 Epic and one Legendary — so a book <strong>glows the color of what it holds</strong> and you can weigh it before you pick it up.</p>
+
+    <div class="panel">
+      <div class="panel-head">The Tattered Manual</div>
+      <p style="margin-bottom:0">
+        Names no art on its cover. Reading it teaches <strong>one at random from those you have
+        already grown into</strong> — never something beyond your realm, and never something you
+        already know. It is the safety net for a cultivator whose luck with named manuals has run
+        dry.
+      </p>
+    </div>
+
+    <p>The five node manuals:</p>
 
     <table>
     <thead><tr><th>Manual</th><th>Teaches</th><th>Drop Weight</th></tr></thead>

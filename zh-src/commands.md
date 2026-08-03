@@ -151,6 +151,8 @@ han: 起
 | `/cultivation admin setrace {种族}，或 player {种族} {玩家}` | 直接设定玩家的[种族](/cultivation/races/)。除非将 `Race-Admin-Bypasses-Realm-Gate` 设为 false，否则会绕过该族的解锁境界。 | `cultivation.admin` |
 | `/cultivation admin grantracechoice [数量]，或 player {数量} {玩家}` | 授予额外的改换种族次数，让玩家可重新打开种族菜单再择一次。默认为 1。 | `cultivation.admin` |
 | `/cultivation admin grantskillpoints [数量]，或 player {数量} {玩家}` | 授予额外的[天赋树](/cultivation/skilltree/)点数。默认为 1。 | `cultivation.admin` |
+| `/cultivation admin granttechnique {功法}，或 granttechnique all，或 granttechnique player {功法} {玩家}` | 直接传授一门[功法](/cultivation/techniques/#unlocking)，绕过那四条途径。`all` 会授予对方已够资格的全部功法。 | `cultivation.admin` |
+| `/cultivation admin revoketechnique {功法}，或 revoketechnique player {功法} {玩家}` | 收回一门已习得的功法 —— 全模组中唯一会剥夺所学之物，其存在是因为敲错的一次授予否则将永久生效。仅凭[宗门](/cultivation/sects/)铭刻而持有的功法不受影响：那一门本就不属于他。 | `cultivation.admin` |
 | `/cultivation admin setlifebound {等级} [经验]，或 player {等级} [经验] {玩家}` | 强制设定玩家手中[本命法宝](/cultivation/lifebound/)的等级，并可选地设定该等级内已存的经验。 | `cultivation.admin` |
 | `/cultivation admin reset，或 reset player {玩家}` | 将玩家的修炼进度重置回炼体期初期、0 点灵气。 | `cultivation.admin` |
 | `/cultivation admin test grant {时限} {玩家}` | 让另一位玩家进入试炼[存档](/cultivation/profiles/)，并指定时限；已有者则延长。 | `cultivation.admin` |
