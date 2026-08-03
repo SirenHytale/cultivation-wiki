@@ -1,0 +1,78 @@
+---
+title: "Add-ons & Compatible Mods"
+description: "Mods that build on Cultivation — replacing the realm ladder, adding playable races, or extending it with new techniques — and how the compatibility works."
+group: "About"
+---
+
+# Add-ons & Compatible Mods
+
+Since v0.5.0 Cultivation is a foundation as much as a mod. Another plugin can replace the entire progression ladder, re-word every message, add a playable race or register new techniques — and everything else keeps working on top.
+
+## How Compatibility Works
+
+Cultivation exposes four extension points that matter to players. An add-on picks whichever it needs; it does not have to take all of them.
+
+<CardGrid cols={2}>
+  <Card title="Replace the ladder" han="梯">
+    A mod supplies its own levels, rank names and curve. Cultivation stops reading its own realms and reads that mod's numbers instead.
+  </Card>
+
+  <Card title="Re-word everything" han="言">
+    Chat, HUD, menus, item names and tooltips can all be renamed without changing a single behaviour.
+  </Card>
+
+  <Card title="Add a race" han="族">
+    New races appear in the race menu beside Human, Demon and Deity, with their own unlock realm, bonuses and Yin bias.
+  </Card>
+
+  <Card title="Add techniques" han="術">
+    Third-party arts register into the same open registry the built-in nine use, with their own realm gates, Qi costs and cooldowns.
+  </Card>
+</CardGrid>
+
+<Note kind="tip" title="The important guarantee">
+  Your original Cultivation progress is **never overwritten** while an add-on is running. It sits untouched underneath, so removing that add-on hands you straight back the realm you had. The realm an add-on says you count as is never written to your save file.
+</Note>
+
+## Known Add-ons
+
+<Panel title="SoulRings · 斗罗大陆">
+  A full re-theme that swaps the Xianxia ladder for a **Soul Land** one — martial souls, soul rings absorbed from slain spirit beasts, and a 1–100 curve in place of seven realms and twenty-eight sub-stages.
+
+  It uses the progression hook to replace the ladder, the theme hook to re-word the mod's vocabulary, registers its own techniques, and adds its own sections to Cultivation's admin config editor. Sects, formations, abodes, duels, alchemy, spirit beasts and the skill tree all continue to work unchanged on top of it — which is the scenario the 0.5.0 API was built for.
+
+  <Chip>in development</Chip> <Chip>same author</Chip>
+</Panel>
+
+<Panel title="Mermaids">
+  Registers **Merfolk** as a playable Cultivation race. It appears in `/cultivation race` alongside the built-in three, with its own unlock realm, stat bonuses and Yin bias, and runs through exactly the same code path as Human, Demon and Deity.
+
+  <Chip>race integration</Chip> <Chip>same author</Chip>
+</Panel>
+
+<Note title="Running an add-on">
+  Install it the same way as Cultivation — the jar goes in your server's `mods\` folder. Cultivation must be installed too; add-ons extend it rather than replace it. Only one mod may replace the progression ladder at a time.
+</Note>
+
+## Compatibility Notes
+
+| Situation | What happens |
+| --- | --- |
+| You remove a progression add-on | You return to the Cultivation realm you had before it was installed. Nothing was overwritten. |
+| Two add-ons both try to replace the ladder | Only one can hold the hook. Run one at a time. |
+| An add-on renames things only partially | Anything it does not rename keeps Cultivation's own wording — and stays translated in every language Cultivation ships. |
+| You see settings not documented on this wiki | They belong to an add-on. Any mod can add its own section to the `/cultivation admin` config editor. |
+| A language pack tries to override Cultivation's text | It is silently discarded. The engine merges language files first-come, and Cultivation's own pack always loads first — which is exactly why the theme hook exists. |
+
+## Building Your Own
+
+Everything above is public API, documented in full with its threading rules. Start with the [API Overview](/api/), then:
+
+- [Add-ons](/api-addons/) — replacing the ladder, re-wording the vocabulary, and adding your own admin config sections.
+- [Registries](/api-registries/) — adding races, techniques and other open registry entries.
+- [Events](/api-events/) — 156 pre-events and post-events covering nearly every mechanic in the mod.
+- [Reference](/api-reference/) — the facade methods and their contracts.
+
+<Note title="Made something?">
+  If you have built a mod that works with Cultivation and want it listed here, get in touch through the [CurseForge page](https://www.curseforge.com/hytale/mods/cultivation/).
+</Note>

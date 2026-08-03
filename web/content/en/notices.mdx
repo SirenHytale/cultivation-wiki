@@ -1,0 +1,49 @@
+---
+title: "Notices"
+description: "Cultivation Mod - the full-screen titles and corner notifications that mark progression, and how far a breakthrough is heard"
+group: "The World"
+---
+
+# Notices
+
+The moments that matter now arrive **on screen** instead of scrolling past in chat. Breaking into a new realm takes over the screen with a title, as it should — and **every cultivator within nine chunks is told**. A breakthrough is a thing that happens to the area, not only to you. New in v0.7.0.
+
+Every notice is an *addition* to the chat line the same event already sends — nothing becomes unrecoverable the instant it fades.
+
+<Divider />
+
+## Titles and Notifications
+
+Two surfaces, sized to what they carry:
+
+| Moment | Surface |
+| --- | --- |
+| Realm **breakthrough** | Full-screen title, six seconds — and a smaller one for everyone near you |
+| Sub-stage **advancement** | Full-screen title, four seconds |
+| **Demotion** out of a stage | Full-screen title — *Your Cultivation Falters* |
+| Founding, joining, leaving a [sect](/sects/) | Full-screen title — carrying **the sect's motto** underneath |
+| A [skill node](/skilltree/) unlocked | Corner notification |
+| A [Life-Bound Treasure](/lifebound/) leveling | Corner notification |
+| A [race](/races/) change, a respec | Corner notification |
+| A ritual beginning — breakthrough, advancement, [refinement](/refinement/) | Corner notification, as a warning |
+
+The sect motto on a join or leave title is the one line of a sect that is genuinely its leader's, said at the moment it means something. A **kicked** player is deliberately not shown it — being handed the words of a sect that just removed you reads as a taunt.
+
+Two moments keep their own, purpose-written titles regardless of these switches: **Qi Deviation** and the **Heart-Devil Trial**. [Tribulation](/tribulations/) strikes show nothing here at all — they fire repeatedly, and a title per bolt would strobe.
+
+## The Breakthrough Broadcast
+
+When someone breaks through, every cultivator within a **nine-chunk radius** sees a smaller title naming them and the realm they just entered. The radius is a plain distance, not a loaded-chunk square, and it is the server owner's to tune:
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Breakthrough-Title-Radius-Chunks` | 9 | How far a breakthrough is felt, in chunks. Clamped between 0 and 32. **0 makes every breakthrough private.** |
+
+## Server Owners
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Notice-Titles-Enabled` | true | All full-screen titles from this system. |
+| `Notice-Notifications-Enabled` | true | All corner notifications. |
+
+Both live in the root `Config.json` — see the [Core config page](/config-core/) — and both leave the chat lines untouched: switching a surface off never silences the event, it only changes how loudly it lands.

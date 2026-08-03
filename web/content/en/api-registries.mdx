@@ -1,0 +1,414 @@
+---
+title: "API Registries"
+description: "Cultivation Mod - registering your own races, techniques, Qi items, titles, sect banners and palettes"
+group: "For Developers"
+---
+
+# API Registries
+
+Listening to [events](/api-events/) lets you reshape what Cultivation already does. The registries here let you add content that the mod then treats as its own - a race that appears in the race menu, a technique usable through every technique trigger, an item that boosts Spirit Vein absorption, a [title](/titles/) on the picker, a banner a sect can fly, a palette that re-colors every menu.
+
+`CultivationAPI` exposes these registration methods (plus one builder helper for technique rules):
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier<RaceConfig> stats)` | `PlayerRace` | Registers a brand-new [race](/races/) players can choose once their cultivation reaches `unlockRealm`. |
+| `CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)` | `Technique` | Registers a brand-new [technique](/techniques/) cultivators can perform. |
+| `CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)` | `TechniqueRule` | Convenience builder for the rule you pass to `registerTechnique`. |
+| `CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)` |  | Registers, or overwrites, the Spirit Vein absorption multiplier granted while that item is held in a meditating player's active hotbar slot. |
+| `CultivationAPI.registerTitle(CultivationTitle title)` <Tag>v0.7.0</Tag> |  | Puts a cosmetic [title](/titles/) of your own on the Titles page. |
+| `CultivationAPI.registerSectBanner(SectBanner banner)` <Tag>v0.7.0</Tag> |  | Adds a banner [sects](/sects/) can fly over their hall. |
+| `CultivationAPI.registerPalette(CultivationPalette palette)` <Tag>v0.7.0</Tag> |  | Adds a palette that re-colors every Cultivation menu and the HUD. |
+
+All of them are safe to call from your own plugin's `setup()` in any load order relative to Cultivation's own `setup()`. The registries are plain static maps that nothing reads until a player actually interacts - opens the race menu, meditates, performs a technique - which only happens well after every plugin has finished loading.
+
+Re-registering the same id for a race or a technique is a **no-op**: it returns the existing entry rather than erroring, so it is safe across a reload of your plugin.
+
+<Divider />
+
+## Registering a race
+
+```java
+@Nonnull
+public static PlayerRace registerRace(@Nonnull String id, @Nonnull String displayName, @Nullable String translationKey,
+                                      @Nonnull CultivationRealm unlockRealm, @Nonnull Supplier<RaceConfig> stats)
+```
+
+| Parameter | Description |
+| --- | --- |
+| `id` | A stable, unique id, not shown to players. Namespace it with your mod's name - `"MyMod:Vampire"` - to avoid colliding with another mod's race of the same short name. |
+| `displayName` | The name shown in the UI when no `translationKey` is given, or as a fallback if the key does not resolve for a player's locale. |
+| `translationKey` | A `server.lang` key for the localized name, or `null` to always show `displayName` as plain untranslated text. |
+| `unlockRealm` | The [realm](/realms/) a player's cultivation must reach before this race can be chosen from the menu. |
+| `stats` | Supplies this race's stat bonuses each time they are needed. |
+
+The `stats` supplier is called live, so back it with your own plugin's `withConfig(name, RaceConfig.codec(...))` for a server-owner-editable JSON file, or just `() -> myConstantConfig` for a fixed one. `unlockRealm` only **seeds** `RaceConfig`'s `Unlock-Realm` when the supplied config does not already specify one - a caller backing their stats with their own JSON file, which may itself set `Unlock-Realm`, stays server-owner-editable.
+
+`RaceConfig` has getters and setters for each of its tunables: `getDescription` / `setDescription`, `getUnlockRealm` / `setUnlockRealm`, `getHealthBonusPercent` / `setHealthBonusPercent`, `getDamageBonusPercent` / `setDamageBonusPercent`, `getQiGainRatePercentBonus` / `setQiGainRatePercentBonus`, `getBreakthroughDurationPercentReduction` / `setBreakthroughDurationPercentReduction`, and `getQiAlignmentYinBiasPercent` / `setQiAlignmentYinBiasPercent`. Those map one-to-one onto the `Health-Bonus-Percent`, `Damage-Bonus-Percent`, `Qi-Gain-Rate-Percent-Bonus`, `Breakthrough-Duration-Percent-Reduction` and `Qi-Alignment-Yin-Bias-Percent` keys in the built-in race config files on the [Config](/config/) page.
+
+Worked example - a Vampire race unlocked at Nascent Soul, with fixed stats:
+
+```java
+import plugin.siren.API.CultivationAPI;
+import plugin.siren.ECS.Races.PlayerRace;
+import plugin.siren.ECS.Realms.CultivationRealm;
+import plugin.siren.Utils.Config.RaceConfig;
+
+public final class MyRaces {
+
+    public static PlayerRace VAMPIRE;
+
+    public static void register(){
+        VAMPIRE = CultivationAPI.registerRace(
+                "MyMod:Vampire",
+                "Vampire",
+                "server.mymod.race.vampire",
+                CultivationRealm.NASCENT_SOUL,
+                MyRaces::vampireStats);
+    }
+
+    private static RaceConfig vampireStats(){
+        RaceConfig config = new RaceConfig();
+        config.setDescription("Blood-drinkers. Frail, but they draw Qi twice as fast.");
+        config.setHealthBonusPercent(-10.0F);
+        config.setDamageBonusPercent(15.0F);
+        config.setQiGainRatePercentBonus(100.0F);
+        config.setBreakthroughDurationPercentReduction(0.0F);
+        config.setQiAlignmentYinBiasPercent(80.0F);
+        return config;
+    }
+}
+```
+
+The `Qi-Alignment-Yin-Bias-Percent` value feeds straight into the Yin-Yang balance described on [The Dao](/dao/) page, so a race registered this way also biases which moral path its members drift toward.
+
+<Divider />
+
+## Registering a technique
+
+```java
+@Nonnull
+public static Technique registerTechnique(@Nonnull String id, @Nonnull String displayName, @Nullable String nameKey,
+                                          @Nullable String descriptionKey, @Nonnull TechniqueRule defaultRule,
+                                          @Nonnull TechniqueEffect effect)
+```
+
+This is the same system the built-in One Step, a Thousand Li uses. Once registered, the technique is usable through **every** technique trigger automatically:
+
+- the `/cultivation technique <id>` command, and its list (see [Commands](/commands/)),
+- any activation item whose `CultivationActivateTechnique` interaction carries this id as its `TechniqueId`,
+- your own trigger - a keybind, another item, an event - via `CultivationAPI.performTechnique`.
+
+| Parameter | Description |
+| --- | --- |
+| `id` | A stable, unique id. It doubles as the config key and the activation item's `TechniqueId`. Namespace it - `"MyMod:flame_step"`. |
+| `displayName` | Shown when no `nameKey` is given, or as a fallback if the key does not resolve. |
+| `nameKey` | A `server.lang` key for the localized name, or `null` to show `displayName` raw. |
+| `descriptionKey` | A `server.lang` key for the description, or `null`. |
+| `defaultRule` | The rule the technique runs by. This is the **only** source of rules for your technique unless a server owner adds a matching override entry to Cultivation's `TechniqueConfig.json`. |
+| `effect` | What performing it does. Only ever invoked after all gates pass and the Qi cost and cooldown have been applied. |
+
+`TechniqueEffect` is a `@FunctionalInterface` with one method, `void execute(TechniqueContext context)`, so a lambda or method reference is enough. Everything the effect needs is on the context: `getAccessor()`, `getRef()`, `getPlayerRef()`, `getTechnique()`, `getRule()`, `getParam(String key, float fallback)`, `getCultivation()`, `getRealmIndex()`, `getStageIndex()`, `getPosition()`, `getLookDirection()`, `getWorld()`, `teleport(Vector3d)`, `spawnParticle(String particleId, Vector3d position)` and `sendMessage(Message)`. The vectors are `org.joml.Vector3d`, so read their components with `x()`, `y()` and `z()`; `getPosition()` returns `null` when the entity has no transform, so guard it before use in production code.
+
+Build the rule with the helper rather than the constructor:
+
+```java
+@Nonnull
+public static TechniqueRule newTechniqueRule(@Nonnull String id, boolean enabled, boolean daoSpecific,
+                                             @Nullable String requiredElement, @Nullable String elements,
+                                             @Nullable String damageType, @Nonnull String unlockRealm,
+                                             float qiCost, float cooldownSeconds, @Nonnull Object... params)
+```
+
+| Parameter | Description |
+| --- | --- |
+| `requiredElement` | A `DaoElement` enum name, e.g. `"WIND"`, when `daoSpecific` is true; otherwise `""` or `null`. |
+| `elements` | Comma-separated `DaoElement` names the technique "carries" - metadata and flavor - or `""`. |
+| `damageType` | A `DamageCause` asset id for a damaging technique, or `""` for none. |
+| `unlockRealm` | The `CultivationRealm` enum name required to use it, e.g. `"QI_CONDENSATION"`. |
+| `params` | Alternating key/value pairs your effect reads back with `context.getParam(key, fallback)`. Must be an **even** number of arguments: `String, float, String, float, ...`. |
+
+Worked example - a Flame Step that carries the Fire element and teleports the cultivator forward:
+
+```java
+import org.joml.Vector3d;
+import plugin.siren.API.CultivationAPI;
+import plugin.siren.ECS.Technique.Technique;
+import plugin.siren.Utils.Config.TechniqueRule;
+
+public final class MyTechniques {
+
+    public static Technique FLAME_STEP;
+
+    public static void register(){
+        TechniqueRule rule = CultivationAPI.newTechniqueRule(
+                "MyMod:flame_step",
+                true,                 // enabled
+                true,                 // daoSpecific
+                "FIRE",               // requiredElement
+                "FIRE",               // carried elements
+                "",                   // damageType - none
+                "QI_CONDENSATION",    // unlockRealm
+                25.0F,                // qiCost
+                8.0F,                 // cooldownSeconds
+                "Distance", 12.0F);   // params
+
+        FLAME_STEP = CultivationAPI.registerTechnique(
+                "MyMod:flame_step",
+                "Flame Step",
+                "server.mymod.technique.flame_step",
+                "server.mymod.technique.flame_step.desc",
+                rule,
+                context -> {
+                    float distance = context.getParam("Distance", 12.0F);
+                    Vector3d from = context.getPosition();
+                    Vector3d look = context.getLookDirection();
+                    context.teleport(new Vector3d(
+                            from.x() + look.x() * distance,
+                            from.y(),
+                            from.z() + look.z() * distance));
+                    context.spawnParticle("MyMod:FlameStepBurst", new Vector3d(from));
+                });
+    }
+}
+```
+
+Because `daoSpecific` is true and `requiredElement` is `"FIRE"`, only cultivators walking the Fire dao can perform it - see [The Dao](/dao/). Performing it fires `TechniqueEvents.PreTechniquePerformEvent` and `TechniquePerformEvent` exactly as a built-in technique does, so other addons can re-price or veto yours too.
+
+To fire it from your own trigger:
+
+```java
+boolean performed = CultivationAPI.performTechnique(accessor, ref, playerRef, MyTechniques.FLAME_STEP);
+```
+
+That runs every gate - system enabled, per-technique enabled, realm unlock, dao match, Qi cost, cooldown - and on success deducts the Qi, stamps the cooldown and runs the effect. The player is messaged either way, with the effect's success message or the failure reason. It returns `true` only when the technique was actually performed.
+
+<Divider />
+
+## Registering a Qi absorption item
+
+```java
+public static void registerQiAbsorptionItemModifier(@Nonnull String itemId, float multiplier)
+```
+
+This is the exact mechanism behind the built-in Qi Gathering Talisman: while the item is in a meditating player's active hotbar slot, their Spirit Vein absorption is multiplied by `multiplier`. Registering an id that already has a modifier **overwrites** it, so you can also re-tune the built-in one.
+
+```java
+CultivationAPI.registerQiAbsorptionItemModifier("MyMod:JadePendant", 1.75F);
+```
+
+Server owners see and edit the built-in entries under the `Qi-Absorption-Item-Modifiers` key on the [Config](/config/) page; the mechanic itself is described on [Qi Gathering](/qi-gathering/).
+
+<Divider />
+
+## Registering admin settings
+
+<Tag>v0.6.1</Tag> An add-on can put its own tunable values into Cultivation's admin menu, where they sit on the section rail beside Cultivation's own and are edited and saved exactly the same way. Both host pages are gated on `cultivation.admin`, so a section may expose real balance numbers.
+
+```
+CultivationAPI.registerAdminConfigSection(
+    CultivationAPI.newAdminConfigSection("MyMod:power",
+            "server.mymod.admin.power", "server.mymod.admin.powerHint",
+            AdminConfigSection.SORT_LAST, config::save,
+            List.of(
+                CultivationAPI.newAdminConfigField("MyMod:BaseXp",
+                        Message.translation("server.mymod.admin.baseXp"),
+                        () -> config.get().getBaseXp(),
+                        value -> config.get().setBaseXp((float) value)),
+                CultivationAPI.newAdminBooleanField("MyMod:Enabled",
+                        Message.translation("server.mymod.admin.enabled"),
+                        () -> config.get().isEnabled(),
+                        config.get()::setEnabled))));
+```
+
+Five kinds of row are available, each backed by the vanilla widget of that shape:
+
+| Factory | Widget |
+| --- | --- |
+| `newAdminConfigField` | A decimal number field. The default, and what every pre-0.6.1 field is. |
+| `newAdminIntField` | A whole-number field - for a count, a level cap or a tier, where two decimal places are noise. |
+| `newAdminBooleanField` | A real checkbox. Before this, a master switch had to masquerade as a 0/1 number, which is why so many of Cultivation's own were config-file only. |
+| `newAdminChoiceField` | A dropdown over `AdminConfigChoice`s - the right shape for anything enum-valued, where a text field would let an admin type something that resolves to nothing. |
+| `newAdminTextField` | Free-form text. |
+
+`withTooltip(field, String)` adds a one-line explanation to any of them.
+
+<Note title="Read through the supplier, never a captured config">
+  Every getter and setter above reaches the config through its holder at the moment it is called. A reload replaces the instance behind the holder, and a captured config object would then be a discarded copy whose edits go nowhere. This is the same rule [CultivationConfigs](/api-reference/) documents.
+</Note>
+
+A tooltip is a plain `String` and therefore **cannot be translated** - the underlying property is a string client-side, and a rich message pushed at it disconnects the player. Put anything that must be readable in every language in the field's *label*, which does take a `Message`.
+
+<Tag>v0.6.1</Tag> Cultivation's own nineteen sections are ordinary registrations in this same registry, so an add-on can **reorder, hide or replace any of them** — registering under an existing key replaces it. Sections also carry `getSortOrder()` (Cultivation's own claim `SORT_BUILTIN_FIRST` upward in steps of 100) and `isVisible()`, which is how the Endless Leveling section hides itself when that mod is not installed.
+
+<Divider />
+
+## Registering a title
+
+<Tag>v0.7.0</Tag> `registerTitle` puts a cosmetic title of your own on the [Titles](/titles/) page, where it is picked, shown above heads, in chat, and on the rankings exactly like a built-in one. Titles are **purely cosmetic** - nothing in this registry grants a stat, a permission side-effect, or any gameplay change.
+
+```java
+CultivationAPI.registerTitle(CultivationTitle.builder("MyMod:dragonslayer")
+        .name("server.mymod.title.dragonslayer")          // server.lang key
+        .section("server.mymod.title.section")            // picker group caption
+        .unlocked((store, ref, player) -> MyDeeds.hasSlainDragon(player))
+        .hint("server.mymod.title.dragonslayer.hint")     // shown greyed until earned
+        .build());
+```
+
+`CultivationTitle.builder(key)` takes:
+
+| Builder method | Description |
+| --- | --- |
+| `name(String)` / `name(Supplier<Message>)` | The display name - a `server.lang` key, or a supplier for parameterised names (the built-in element titles use one for *\{element\} Dao*). |
+| `section(String)` | A caption key grouping titles on the picker. Drawn when it differs from the previous entry, so keep registrations of one section together. |
+| `unlocked(UnlockCheck)` | The *earned* gate: `boolean test(Store, Ref, PlayerRef)`. A locked title **stays on the picker, greyed**, with the hint explaining what earns it. Omit it and the title is available to everyone who can see it. |
+| `hint(String)` / `hint(Supplier<Message>)` | The line shown on the locked tile. |
+| `permission(String)` / `visible(Predicate<PlayerRef>)` | The *visibility* gate: both must pass or the title is hidden from that player **entirely**. This is the operator/feature switch - use `unlocked` for anything a player can work toward. |
+
+Reads: `getTitles()`, `getTitle(String)`, and `getTitle(store, ref)` for a player's equipped title. Registering an existing key **replaces** it; `unregisterTitle` withdraws one. Note the equipped title is stored on the player's *settings*, not their profile - switching [profiles](/profiles/) keeps it - and the mod deliberately does not re-check `unlocked` at read time, so a title that was earnable when equipped stays shown.
+
+One engine caveat worth knowing: the overhead name is written through the shared `PersistentDisplayName` component, so a nickname mod that also writes it will overwrite, or be overwritten by, the title.
+
+<Divider />
+
+## Registering a sect banner
+
+<Tag>v0.7.0</Tag> `registerSectBanner` adds a banner [sects](/sects/) can fly over their hall, beside the built-in six.
+
+```java
+CultivationAPI.registerSectBanner(SectBanner.builder("MyMod:crimson")
+        .name("server.mymod.banner.crimson")
+        .section("server.mymod.banner.section")
+        .swatch(0xD8452E)                       // RGB on the picker tile and map pin
+        .particle("MyMod_HallBanner_Crimson")   // REQUIRED - the light itself
+        .build());
+```
+
+- **A banner is a particle system, not a color.** The engine's color-on-spawn field is unreliable, so the banner's colors are baked into the `.particlesystem` asset itself; `swatch` only tints the picker tile and the hall's [map pin](/sects/). `build()` refuses a banner with no particle.
+- **The asset must burn out on its own.** Give it a finite `TotalParticles` and an explicit system `LifeSpan` sized to finish inside `Sect-Hall-Beacon-Interval-Seconds` (2.5s by default) - an uncapped system would leak an instance on every client that ever walked past the hall, forever.
+- `permission(String)` / `visible(Predicate)` gate who may *fly* it - none of the built-in six are gated.
+- **Uninstalling is safe.** A sect stores the banner *id*, never the banner. An id nobody registers any more simply resolves to the hall's plain vein-tier light, and the choice survives for if the mod returns.
+
+Reads: `getSectBanners()`, `getSectBanner(String)` (null-tolerant). Changing a banner fires `SectEvents.PreSectBannerChangeEvent` / `SectBannerChangeEvent` - see [Events](/api-events/).
+
+<Divider />
+
+## Registering a palette
+
+<Tag>v0.7.0</Tag> `registerPalette` lets a mod re-color every Cultivation menu and the HUD for players who pick it. A palette is mostly **re-colored `.ui` documents**, not hex values: you ship recolored copies of Cultivation's pages under one root and declare which files you cover.
+
+```java
+CultivationAPI.registerPalette(CultivationPalette.builder("MyMod:moonlit")
+        .name("server.mymod.palette.moonlit")
+        .swatch(0x8FA8FF)                                  // picker tile
+        .documentRoot("Common/UI/Custom/Pages/MyMod/Moonlit/")
+        .documents(Set.of("CultivationPage.ui", "CultivationHud.ui"))  // the files you cover
+        .halo(SkillTreeBranch.VITALITY, 0x9BD8A0)          // all nine branches, or none
+        // ... the other eight branches ...
+        .build());
+```
+
+- Declared documents are matched on the **bare file name** against `documentRoot`, so every covered file must live under that one root. A page you do not declare deliberately falls through to Cultivation's own - an unresolvable `.ui` path kills the whole page load with no log line, so the registry never invents one.
+- The nine [skill tree](/skilltree/) branch halos are **all-or-none**: pass every `SkillTreeBranch` or none - `build()` refuses a partial set.
+- `CultivationPalette.DEFAULT_KEY` (`"cultivation:default"`) is the built-in look. `getPalette(store, ref)` returns null for it; `document(palette, basePath)` resolves a path through whichever palette a player is on.
+- Like the equipped title, a player's palette choice lives on their settings, shared across [profiles](/profiles/).
+
+<Divider />
+
+<Divider />
+
+## Registering a beast art \{#beast-arts\}
+
+A [beast art](/beasts/#arts) is the companion-side twin of a technique, and its registry is open for the same reason: a Java enum cannot gain constants at runtime.
+
+```java
+BeastArt frostFang = CultivationAPI.registerBeastArt(
+        "mymod:frost_fang",
+        "Frost Fang",
+        "mymod.beast.art.frost_fang.name",          // or null for raw display text
+        "mymod.beast.art.frost_fang.description",
+        new BeastArtRule("mymod:frost_fang", true, "FOUNDATION_ESTABLISHMENT", 12f, "Ice",
+                new TechniqueParam[]{
+                        new TechniqueParam("Radius", 4f),
+                        new TechniqueParam("BaseDamage", 8f),
+                        new TechniqueParam("DamagePerLevel", 0.7f)
+                }),
+        context -> {
+            // Both ends of the bond: getBeastRef() performs it, getOwnerRef() is served by it.
+            context.sendMessage(Text.of("mymod.beast.art.frost_fang.playerMsg.hit"));
+        });
+```
+
+<Note kind="warn" title="Registering an art gives it to nobody">
+  An art belongs to a **species**. Its id has to appear in that species’ `Arts` list in `BeastConfig.json` before any creature can learn it. That is deliberate — it lets you ship arts and leave the server owner to decide which creatures get them.
+</Note>
+
+The rule’s `UnlockRealm` is the **beast’s** realm, never its owner’s. Its `damageType` names a DamageCause asset (vanilla’s `Fire`, `Ice`, `Poison`…, or one of Cultivation’s `Cultivation_*`); a name that resolves to nothing silently falls back to physical rather than erroring, so a typo costs you the element without a log line.
+
+Reading and driving them: `getBeastArts()`, `getBeastArt(id)`, `getBeastArtRule(art)`, `getKnownBeastArts(accessor, ref)`, and `performBeastArt(accessor, ref, art, playerRef)` — which runs every gate the mod’s own callers run, so you never reproduce them.
+
+## Registering a sect building type \{#sect-buildings\}
+
+A [sect building](/sects/#buildings) kind, with its meditation multiplier, the sect level it waits for, and the switch that decides whether its ground carries the sect’s Dao:
+
+```java
+CultivationAPI.registerSectBuildingType(
+        new SectBuildingType("mymod:frost_terrace", 1.12f, 2, false));
+//                            id                   medMult  level  daoActiveByDefault
+```
+
+The last argument is the one to think about. `false` makes it **neutral ground** — a disciple of any element can cultivate there without being turned toward the sect’s Dao, which is how a sect takes in a friend who walks a different element. A type meant as a guest hall should default to `false`.
+
+Registering a kind only makes it *known*; a server owner still decides whether their sects may raise it. Your entry never overrides a config entry of the same id — the owner’s always wins.
+
+## Registering a Life-Bound trait \{#lifebound-traits\}
+
+A [nature](/lifebound/#natures) a bound treasure can turn out to have. It is rolled once, at binding, and never re-rolled:
+
+```java
+CultivationAPI.registerLifeBoundTrait(
+        new LifeBoundTrait("mymod:frostbite", LifeBoundTrait.Slot.WEAPON,
+                           1f, 0.5f, 25f, 1.2f)      // base, perLevel, max, roll weight
+                .unlocks("frozen_domain", 9));       // an art it lends while held, from level 9
+```
+
+Two consequences worth planning around. Your trait enters the weighted roll **immediately**, so it changes what future bindings can produce — treasures already bound keep whatever they rolled, and there is no re-roll anywhere in the mod. And `Slot` is a real restriction: a `WEAPON` trait never lands on a breastplate, which is what stops the roll from disappointing half the time.
+
+Read one back with `getLifeBoundTraitAmount(stack, "lifesteal")`, which returns 0 when the treasure is of a different nature and so is safe to ask about any trait on any item, and `getLifeBoundGrantedTechnique(stack)` for the art it currently lends.
+
+## Registering a mastery rung \{#mastery-rungs\}
+
+The [mastery ladder](/techniques/#mastery) is normally the server’s five configured rungs. An addon may append one:
+
+```java
+boolean added = CultivationAPI.registerMasteryStage(
+        new MasteryStageRule("Transcendent", "SOUL_FORMATION", 2500f, 8, 2.6f, 0.7f, 0.65f));
+```
+
+It returns **false** if the ladder is already full rather than silently ignoring you — the ladder is capped at five, because the UI and the lang keys only cover that many. Check the return value.
+
+## Raising the caps
+
+<Tag>v0.7.0</Tag> Two limits are addon-raisable rather than config keys, through the same register/unregister shape:
+
+| Method | Default | Ceiling | Raises |
+| --- | --- | --- | --- |
+| `registerTechniquePresetCap(String key, int cap)` | 3 | 8 | How many technique [keybind loadouts](/keybinds/) a player may keep. |
+| `registerProfileCap(String key, int cap)` | 3 | 6 | How many [profiles](/profiles/) a player may keep. The test sandbox never counts against it. |
+
+The `key` is an id for your mod (`"jadeSlip"`). The live value - `getMaxTechniquePresets()` / `getMaxProfiles()` - is the **highest** registered cap, never the sum: two addons that both raise it to six mean six, not twelve. **Nothing is destroyed when a cap falls.** A player who filled six slots and then lost the addon that allowed them keeps all six; only *adding* is refused until they are back under the live cap. Register from `setup()`, withdraw with the matching `unregister*Cap` in `shutdown()`.
+
+<Divider />
+
+## What is not registrable
+
+Not every extension point is a Java registry. `CultivationAPI` exposes `register*` methods for races, techniques, beast arts, sect building types, Life-Bound traits, mastery rungs, Qi absorption items, admin config sections, menu pages, codex entries, titles, sect banners, palettes and the two caps. Skill tree nodes, manuals and spirit beast *species* are declared in Cultivation's own JSON config instead — see the [Config](/config/) page — and are not registrable from code. (An art can be registered from code, but which species learns it is still the config's call.) You can still reach all three through events: node unlocks through `CultivationEvents.PreSkillUnlockEvent`, manuals through `ItemEvents.PreManualReadEvent`, and beast species through the `species()` getter on every `BeastEvents` event.
+
+<Divider />
+
+## See also
+
+- [API Events](/api-events/) - the 156 hooks your registered content fires through.
+- [API Reference](/api-reference/) - reading a player's state before you act on it.
+- [Races](/races/), [Techniques](/techniques/), [Qi Gathering](/qi-gathering/), [Titles](/titles/), [Sects](/sects/), [Config](/config/), [Commands](/commands/).

@@ -1,0 +1,206 @@
+---
+title: "API Reference"
+description: "Cultivation Mod - the CultivationAPI facade methods"
+group: "For Developers"
+---
+
+# API Reference
+
+The rest of `plugin.siren.API.CultivationAPI` - the methods an addon calls directly, rather than the [events](/api-events/) it listens to or the [registries](/api-registries/) it adds to.
+
+Everything on the class is `static`; the constructor is private and it is never instantiated. Most methods take the same two arguments every Hytale ECS system already has in hand:
+
+- `ComponentAccessor<EntityStore> accessor` - the accessor for the store the entity lives in.
+- `Ref<EntityStore> ref` - the entity itself.
+
+<Divider />
+
+## Threading
+
+The source is explicit about this in one place: the event listeners are invoked synchronously on the world thread of the player the event happened to, and you must hop threads yourself - `CompletableFuture.runAsync(task, otherWorld)` - before touching anything that lives on another world.
+
+The reads below carry no separate documented threading contract of their own; they are plain component reads through the accessor you pass in, so the accessor's own thread rules apply. Call them from the world thread that owns the `Ref` you are reading.
+
+Registration and listener calls are the exception in the opposite direction: they are safe from any plugin's `setup()` in any load order, because the backing structures are static maps and `CopyOnWriteArrayList`s that nothing reads until a player interacts with the mod.
+
+<Divider />
+
+## Component types
+
+Ask for a `ComponentType` when you want to read or write a Cultivation component through the ECS yourself rather than through the convenience reads below.
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.getCultivationComponentType()` | `ComponentType<EntityStore, CultivationComponent>` | Realm, stage and banked Qi. |
+| `CultivationAPI.getCultivationStateComponentType()` | `ComponentType<EntityStore, CultivationStateComponent>` | Transient state - meditation, ritual progress. |
+| `CultivationAPI.getCultivationSettingsComponentType()` | `ComponentType<EntityStore, CultivationSettingsComponent>` | Per-player settings, such as the HUD toggle. |
+| `CultivationAPI.getRaceComponentType()` | `ComponentType<EntityStore, RaceComponent>` | The player's chosen [race](/races/). |
+| `CultivationAPI.getSkillTreeComponentType()` | `ComponentType<EntityStore, SkillTreeComponent>` | Unlocked nodes and unspent points - see [Skill Tree](/skilltree/). |
+| `CultivationAPI.getTechniqueComponentType()` | `ComponentType<EntityStore, TechniqueComponent>` | Learned arts and cooldowns - see [Techniques](/techniques/). |
+| `CultivationAPI.getSpiritVeinComponentType()` | `ComponentType<ChunkStore, SpiritVeinComponent>` | A chunk's Spirit Vein pool. Note this one is a **`ChunkStore`** component, not an entity component - see [Qi Gathering](/qi-gathering/). |
+
+<Divider />
+
+## Cultivation state
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.getCultivationComponent(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `CultivationComponent` (nullable) | The raw component, or `null` when the entity does not have one. |
+| `CultivationAPI.getCultivationStateComponent(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `CultivationStateComponent` (nullable) | The raw state component, or `null`. |
+| `CultivationAPI.getRaceComponent(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `RaceComponent` (nullable) | The raw race component, or `null`. |
+| `CultivationAPI.getRealm(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `CultivationRealm` (nullable) | The player's current [realm](/realms/), or `null` if they have no `CultivationComponent` - for example, not a player entity. |
+| `CultivationAPI.getStage(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `CultivationStage` (nullable) | The player's current sub-stage, or `null` on the same condition. |
+| `CultivationAPI.getGlobalLevel(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `int` | Realm and stage flattened into one ever-increasing number. `0` when they have no `CultivationComponent`. |
+| `CultivationAPI.getQi(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `float` | Banked Qi - progress toward their next sub-stage or breakthrough. `0` when they have no `CultivationComponent`. |
+| `CultivationAPI.getRace(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `PlayerRace` (never null) | The player's current race, defaulting to Human when they have no `RaceComponent` yet. |
+| `CultivationAPI.isMeditating(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `boolean` | Whether they are sitting in meditation right now. `false` when they have no state component. |
+
+`CultivationRealm` runs `BODY_REFINEMENT`, `QI_CONDENSATION`, `FOUNDATION_ESTABLISHMENT`, `GOLDEN_CORE_FORMATION`, `NASCENT_SOUL`, `SOUL_FORMATION`, `VOID_REFINEMENT`. `CultivationStage` runs `EARLY`, `MIDDLE`, `LATE`, `PEAK`. Both are documented player-side on the [Cultivation Realms](/realms/) page.
+
+There is no `setQi` or `grantQi` on the facade. To change a player's banked Qi from an addon, hook `CultivationEvents.onPreQiGain` and re-scale `event.setAmount(...)` on the gain that is already happening - that is the supported path, and it is the same one the mod's own race, skill, pill, sect and dao multipliers take. See the [events page](/api-events/).
+
+<Divider />
+
+## Config files
+
+<Tag>v0.6.1</Tag> Every one of Cultivation's nineteen config files is readable and writable through `CultivationConfigs`, so an add-on never has to import the mod's internals to ask what this server is running.
+
+```
+// Read
+boolean daoOn = CultivationConfigs.dao().get().isDaoEnabled();
+
+// Write - persisting is the caller's job, so a batch of edits costs one file write
+var holder = CultivationConfigs.spiritVein();
+holder.get().setSpiritVeinRegenPerSecond(2.5f);
+holder.save();
+```
+
+<Note title="Hold the holder, not the config">
+  Each accessor returns the live `Config<T>` **holder**, not the config object. A reload - an admin pressing Save, or the file changing on disk - replaces the instance behind it, so a captured `DaoConfig` field becomes a discarded copy whose edits go nowhere. Write `CultivationConfigs.dao().get().isDaoEnabled()` at the point of use.
+</Note>
+
+Accessors, grouped as the config folders are: `cultivation()`, `spiritCores()`, `spiritVein()`, `breakthrough()`, `skillTree()`, `raceSystem()`, `race(PlayerRace)` · `dao()`, `technique()`, `manual()`, `alchemy()`, `refinement()`, `lifeBound()`, `beast()` · `sect()`, `formation()`, `dwelling()`, `war()`, `duel()`, `partner()`, `endlessLeveling()`.
+
+<Divider />
+
+## Driving progression
+
+<Tag>v0.6.1</Tag> The write half of the reads above. Every one of these goes through the same path the mod's own commands and rituals use, so an add-on granting Qi fires the same events, honours an installed `ProgressionProvider`, and refreshes the HUD and rankings exactly as meditating would - none of which is true of reaching into the component.
+
+| Method | Description |
+| --- | --- |
+| `addQi(accessor, ref, float amount, PlayerRef playerRef)` | Grants Qi through every multiplier and the cancellable `PreQiGainEvent`, exactly as absorbing a core would. |
+| `setQi(accessor, ref, float qi)` | Sets banked Qi outright, skipping multipliers and events. The admin path. |
+| `setRealm(accessor, ref, CultivationRealm realm)`<br />`setStage(accessor, ref, CultivationStage stage)` | Moves a cultivator outright and re-applies their stat bonuses. Fires no breakthrough event - nothing was broken through. |
+| `completeBreakthrough(accessor, ref, playerRef)`<br />`completeAdvancement(accessor, ref, playerRef)` | Completes the rank-up as though the ritual had just finished: consumes the Qi, grants the points, fires the events, plays the celebration. What an add-on offering its own path to a breakthrough should call. |
+| `demote(accessor, ref, playerRef, boolean wasBreakthrough)` | Applies the failed-ritual penalty, events included. |
+| `grantSkillPoints(accessor, ref, int points)` | Grants unspent points. |
+| `unlockSkillNode(accessor, ref, String nodeId)`<br />`grantSkillNode(accessor, ref, String nodeId)` | Unlock spends points; grant does not - for a node handed out as a reward rather than bought. |
+| `startMeditating(accessor, ref)`<br />`stopMeditating(accessor, ref)` | Seats or lifts a cultivator, pose included. Movement still cancels it. |
+| `isMaxLevel` · `getQiRequiredForNext`<br />`isReadyForBreakthrough` · `isReadyForAdvancement` | The gates the mod itself tests against. |
+
+<Note title="One entity, one thread">
+  All of these run on the caller's thread and touch only the given entity, so they are safe from a system, a command or an interaction on that entity's own world thread. To act on a player who may be in *another* world, hop to their world thread first - `Universe.get().getPlayer(uuid)` → `PlayerRef` → `CompletableFuture.runAsync(..., theirWorld)` - as the mod's own admin tooling does.
+</Note>
+
+<Divider />
+
+## The world's Qi
+
+<Tag>v0.6.1</Tag> `readSpiritVein(World world, int chunkX, int chunkZ)` reports what a chunk's [Spirit Vein](/qi-gathering/) holds **without creating or writing anything** - and answers truthfully for a chunk nobody has ever visited, because the seeding roll is a pure function of the world seed and the chunk position. That is what makes a map overlay or a divining item possible without seeding a vein into every chunk a player walks past.
+
+`drainSpiritVein(World world, int chunkX, int chunkZ, float amount)` draws from it, returning how much was actually available. Must run on that world's own thread.
+
+Coordinates are **chunk** coordinates, not blocks - divide by 16, or use `ChunkUtil.chunkCoordinate(blockX)`.
+
+<Divider />
+
+## Asking the subsystems
+
+<Tag>v0.6.1</Tag> The events for sects, daos, beasts, dwellings and duels existed with no way to ask a question - listening to `SectEvents` without being able to say "what sect is this player in" meant shadowing the whole registry. These close that gap.
+
+| Method | Returns |
+| --- | --- |
+| `getSect(UUID)` · `getSectByName(String)` · `getSectQiBonusPercent(UUID)` | Sect membership and what its hall is worth. UUID-keyed, so they answer for **offline** players. |
+| `getDaoElement` · `getPath` · `getYinPercent` · `getKarma` · `getOrCreateDao` | The cultivator's chosen element, moral path, Yin-Yang balance and the blood on their ledger. |
+| `getBeast(accessor, ref)` | Their bound spirit beast, or `null`. |
+| `getAbode(UUID)` · `getDwellingAt(String world, int chunkX, int chunkZ)` | A claimed Cave Abode, or whatever dwelling encloses a chunk. |
+| `getDuel(UUID)` | The duel they are in right now. |
+| `getMeditationRegenMultiplier(world, chunkX, chunkZ, UUID)` | The combined formation and dwelling multiplier that chunk is worth them. |
+
+<Divider />
+
+## Profiles, titles and palettes
+
+<Tag>v0.7.0</Tag> The read surface for a player's saved cultivators and their cosmetics. Note these take a `Store<EntityStore>` rather than a `ComponentAccessor`.
+
+| Method | Returns |
+| --- | --- |
+| `getActiveProfileName(store, ref)` | The name of the profile they are on, or `""` before any was ever created. |
+| `getProfileCount(store, ref)` | How many real (non-sandbox) profiles they keep. |
+| `isTestProfileActive(store, ref)` | Whether they are on the operator-granted test sandbox - the one the rankings and sect scores ignore. |
+| `getMaxProfiles()` · `getMaxTechniquePresets()` | The live caps - the highest value any addon registered, floor 3. |
+| `getTitle(store, ref)` | Their equipped [title](/titles/), or `null`. |
+| `getSectBanner(String)` · `getPalette(store, ref)` | A registered banner by id; the palette they picked (`null` = the default look). |
+
+**Profiles are observed, not driven.** There is deliberately no `switchProfile` on the facade - a switch is the player's own act, through the menu or `/cultivation profile`. What an addon does is listen (`ProfileEvents`, see [Events](/api-events/)), keep its own per-profile state in step, and declare that it does so via `ProgressionProvider.supportsProfiles()` (see [Building Add-ons](/api-addons/)).
+
+<Divider />
+
+## Which mods are installed
+
+<Tag>v0.6.1</Tag> See [Compatibility](/compatibility/) for what each of these changes.
+
+| Method | Description |
+| --- | --- |
+| `isEndlessLevelingInstalled()` | When true, Cultivation has handed max health and outgoing damage to Endless Leveling. **Worth checking from an add-on that applies stats of its own** - on such a server, EL is where a bonus belongs. |
+| `isPlaceholderApiRegistered()` | PlaceholderAPI is present *and* accepted Cultivation's expansion. See [Placeholders](/placeholders/). |
+| `isMarriageInstalled()` | The gate on [Partnered Cultivation](/partnered-cultivation/). |
+
+<Divider />
+
+## Skill tree
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.getAvailableSkillPoints(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref)` | `int` | Unspent skill tree points, or `0` when they have no `SkillTreeComponent` yet. |
+| `CultivationAPI.isNodeUnlocked(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref, String nodeId)` | `boolean` | Whether the player has unlocked that node id. `false` when they have no `SkillTreeComponent`, or the id matches no unlocked node. |
+
+Node ids are the ones in `plugin.siren.ECS.SkillTree.SkillTreeRegistry` - for example `"VITALITY_1"`. The player-facing map of the tree is on the [Skill Tree](/skilltree/) page, and points are granted per the `Points-Per-Breakthrough` and `Points-Per-Advancement` keys on the [Config](/config/) page.
+
+<Divider />
+
+## Techniques
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.performTechnique(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref, PlayerRef playerRef, Technique technique)` | `boolean` | Performs a technique right now. Returns `true` if it was performed, `false` if a gate blocked it. |
+
+This runs every gate - system enabled, per-technique enabled, realm unlock, dao match, Qi cost, cooldown - and on success deducts the Qi, stamps the cooldown and runs the effect. The player is messaged either way, with the effect's success message or the failure reason. Use it to wire a technique to your own trigger: a keybind, a different item, an event of your own.
+
+It works on built-in techniques and on ones you registered yourself, and it fires `TechniqueEvents.PreTechniquePerformEvent` and `TechniquePerformEvent` in both cases. See [API Registries](/api-registries/) for building a technique, and [Techniques](/techniques/) for the player-facing list.
+
+<Divider />
+
+## Registration
+
+Covered in full on [API Registries](/api-registries/):
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `CultivationAPI.registerRace(String id, String displayName, String translationKey, CultivationRealm unlockRealm, Supplier<RaceConfig> stats)` | `PlayerRace` | Adds a race to the race menu, gated on `unlockRealm`. |
+| `CultivationAPI.registerTechnique(String id, String displayName, String nameKey, String descriptionKey, TechniqueRule defaultRule, TechniqueEffect effect)` | `Technique` | Adds a performable technique. |
+| `CultivationAPI.newTechniqueRule(String id, boolean enabled, boolean daoSpecific, String requiredElement, String elements, String damageType, String unlockRealm, float qiCost, float cooldownSeconds, Object... params)` | `TechniqueRule` | Builds the rule for `registerTechnique`. |
+| `CultivationAPI.registerQiAbsorptionItemModifier(String itemId, float multiplier)` |  | Sets an item's Spirit Vein absorption multiplier while meditating. |
+| `CultivationAPI.registerTitle(CultivationTitle title)` |  | Adds a cosmetic title to the Titles page. |
+| `CultivationAPI.registerSectBanner(SectBanner banner)` |  | Adds a banner sects can fly over their hall. |
+| `CultivationAPI.registerPalette(CultivationPalette palette)` |  | Adds a menu/HUD palette players can pick. |
+| `CultivationAPI.registerProfileCap(String key, int cap)` · `registerTechniquePresetCap(String key, int cap)` |  | Raises the profile / keybind-loadout caps (highest registration wins). |
+
+<Divider />
+
+## See also
+
+- [API Events](/api-events/) - reshape or veto any mechanic.
+- [API Registries](/api-registries/) - add races, techniques, Qi items, titles, sect banners and palettes.
+- [Config](/config/) and [Commands](/commands/) - the server-owner-facing equivalents of most of the above.

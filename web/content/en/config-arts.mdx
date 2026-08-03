@@ -1,0 +1,389 @@
+---
+title: "Arts Configs"
+description: "Cultivation Mod - Arts Configs"
+group: "Configuration"
+---
+
+# Arts Configs
+
+The seven files in `mods/Siren_Cultivation/Arts/` cover everything a cultivator practices, crafts, tempers, and binds to themselves - the [Dao](/dao/) they walk, the [Techniques](/techniques/) they perform, the [Manuals](/manuals/) that teach them, the pills they brew in [Alchemy](/alchemy/), the [Weapon Refinement](/refinement/) they endure, their [Life-Bound Treasures](/lifebound/), and their [Spirit Beasts](/beasts/).
+
+This is the largest config group. Several files hold arrays rather than plain values - `Techniques`, `Manuals`, and `Beast-Species` are open tables you may add your own entries to.
+
+<Divider />
+
+## Dao Config
+
+The elemental daos, the Yin-Yang balance, weather resonance, the Devil/Righteous path split, and Karma (业力), found in the path `mods/Siren_Cultivation/Arts/DaoConfig.json`. See [The Dao](/dao/) and [Karma](/karma/) for what these do in play.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Dao Config" | The name given to this config file. |
+| "ConfigVersion" | 5 | Current Version when you have loaded for the plugin. |
+| "Dao-Enabled" | true | Master toggle for the whole Dao system, both Elemental and Yin-Yang. |
+| "Dao-Unlock-Realm" | "FOUNDATION_ESTABLISHMENT" | The realm at which a player may choose their Elemental Dao, as an enum name. The first choice is free. |
+| "Description-Dao-Basics" | A long string explaining the values above. | Restates the master toggle and that the unlock realm is an enum name, with the first dao choice costing nothing. |
+| "Dao-Switch-Enabled" | true | Whether a cultivator may deliberately change dao at all. Setting this false leaves drift (if enabled) as the only way a dao ever changes. |
+| "Dao-Switch-Base-Qi-Cost" | 500.0 | Banked Qi charged for switching dao from the first realm. |
+| "Dao-Switch-Qi-Cost-Realm-Multiplier" | 1.6 | Multiplies the switch cost per realm reached, stacking - cost = base * multiplier ^ realmIndex. |
+| "Dao-Switch-Cooldown-Hours" | 24.0 | Real-world hours that must pass between deliberate dao switches. |
+| "Description-Dao-Switch" | A long string explaining the values above. | Lays out the switch cost formula and the cooldown, and notes that disabling switching does not disable drift. |
+| "Dao-Damage-Bonus-Percent" | 10.0 | Extra damage a chosen dao adds when it converts your outgoing melee damage to its element. |
+| "Dao-Counter-Bonus-Percent" | 15.0 | Extra damage against a defender whose element yours overcomes in the Wu Xing cycle. |
+| "Dao-Counter-Penalty-Percent" | 10.0 | Damage lost against the element that overcomes yours. |
+| "Dao-Wood-Heal-Percent-Of-Damage" | 20.0 | WOOD gets no flat damage bonus - it heals you for this percent of the damage you deal instead. |
+| "Description-Dao-Combat" | A long string explaining the values above. | Explains element conversion, the counter cycle bonus and penalty, and Wood's heal-instead-of-damage exception. |
+| "Dao-Drift-Enabled" | true | Whether deeds can pull a cultivator's dao toward an element they keep expressing. |
+| "Dao-Drift-Margin" | 25.0 | How far another element's hidden affinity must exceed your chosen dao's before you are warned, and eventually converted. |
+| "Dao-Affinity-Per-Elemental-Kill" | 1.0 | Hidden affinity granted to the killing damage type's element on each elemental kill. |
+| "Description-Dao-Drift" | A long string explaining the values above. | Describes how deeds and race bias build hidden affinity, the warning at the margin, and that disabling drift freezes daos to deliberate choices only. |
+| "YinYang-Endgame-Only" | false | By default every cultivator carries the Yin-Yang balance from the start. Set true to hide and suspend it until YinYang-Unlock-Realm. |
+| "YinYang-Unlock-Realm" | "NASCENT_SOUL" | The realm the balance unlocks at when YinYang-Endgame-Only is true. |
+| "Description-YinYang-Unlock" | A long string explaining the values above. | Restates that the balance is on from the start unless the endgame-only toggle is set. |
+| "Balance-Bonus-Percent" | 10.0 | Bonus to ALL Qi gain and damage while the split sits near 50/50, fading linearly toward the window's edge. |
+| "Balance-Window-Percent" | 15.0 | How far from an even split still counts as balanced. |
+| "Lean-Threshold-Percent" | 70.0 | The Yin or Yang share at which the lean powers below begin to apply. |
+| "Yin-Power-Damage-Percent" | 10.0 | Bonus damage for a cultivator past the Yin lean threshold. |
+| "Yin-Lifedrain-Percent" | 5.0 | Percent of damage dealt returned as health for a deeply Yin cultivator. |
+| "Yang-Defense-Percent" | 10.0 | Incoming damage reduction for a cultivator past the Yang lean threshold. |
+| "Yang-Heal-Bonus-Percent" | 25.0 | How much stronger healing received is for a deeply Yang cultivator, Wood strikes included. |
+| "Description-YinYang-Powers" | A long string explaining the values above. | Walks the balance window bonus and both sets of lean powers in one place. |
+| "Meditation-Alignment-Shift-Per-Tick" | 0.2 | Yin or Yang added per meditation drain tick, depending on the chunk's alignment. |
+| "Chunk-Evil-Qi-Chance" | 0.05 | Odds (0-1) that a chunk's Spirit Vein seeds with EVIL qi rather than good. |
+| "Description-Chunk-Alignment" | A long string explaining the values above. | Explains that each vein rolls an alignment when first seeded, that meditating shifts Yang on good veins and Yin on evil ones, that the race's own bias skews it further, and that veins seeded before this feature count as good. |
+| "Night-Kill-Yin-Enabled" | true | Whether kills feed Yin at all. |
+| "Kill-Yin-Amount" | 1.0 | Yin added per kill. |
+| "Night-Kill-Yin-Multiplier" | 2.0 | Multiplies the Yin from a kill made while the world is in its night phase. |
+| "Description-Kill-Yin" | A long string explaining the values above. | Restates that every kill adds Yin, doubled (by default) at night. |
+| "Weather-Qi-Enabled" | true | Master toggle for weather resonance affecting meditation Qi. |
+| "Weather-Matched-Multiplier" | 1.5 | Qi multiplier while meditating under weather whose element matches your chosen Elemental Dao. |
+| "Weather-Ambient-Multiplier" | 1.15 | The gentler multiplier for any other weather that maps to an element - the heavens stir cultivation for everyone. |
+| "Weather-Element-Keywords" | "Thunder:LIGHTNING,Snow:ICE,Sand:EARTH,Ash:FIRE,Lava:FIRE,Volcanic:FIRE,Blazing:FIRE,Rain:WATER,Swamp:WATER,Fog:WATER,Poison:POISON,Windy:WIND,Wind:WIND,Storm:LIGHTNING,Cursed:VOID,Corrupted:VOID,Void:VOID,Sunny:FIRE" | Comma-separated `keyword:ELEMENT` pairs, matched as case-insensitive substrings of the active weather asset id in list order, first hit wins - so put specific keywords (Snow, Sand) before broad ones (Storm). ELEMENT must be a dao enum name. |
+| "Description-Weather-Qi" | A long string explaining the values above. | Documents the keyword matching rule, the two multipliers, that unmapped or clear weather is neutral, and lists the valid element names (WOOD, EARTH, WATER, FIRE, METAL, ICE, WIND, POISON, LIGHTNING, VOID). |
+| "Path-Enabled" | true | Master toggle for the Devil (魔道) and Righteous (正道) path split. |
+| "Path-Lean-Fraction-Threshold" | 0.5 | How deep (0-1) the stronger Yin or Yang lean must run before the cultivator formally walks that path. |
+| "Path-Devil-PK-Qi-Reward" | 100.0 | Banked Qi a Devil-path cultivator harvests from slaying another player. |
+| "Pk-Same-Victim-Cooldown-Seconds" | 900.0 | Killing the SAME victim again inside this window yields no cultivation spoils at all. 0 disables the check. |
+| "Pk-Min-Victim-Realm" | 1 | A victim whose realm index is below this is worth no spoils regardless. 0 disables the check. |
+| "Description-Pk-Anti-Farm" | A long string explaining the values above. | Explains that the two anti-farm limits gate the Devil PK Qi, the kill's Dao deeds, and the manual drop roll - so cutting down a fresh alt earns nothing - while leaving normal PvP untouched. |
+| "Karma-Enabled" | true | Master toggle for Karma (业力), the heavens' retribution ledger. |
+| "Karma-Per-Player-Kill" | 8.0 | Karma added for killing another player. |
+| "Karma-Per-Farmed-Kill" | 25.0 | Karma added instead when the kill falls inside the anti-farm window - deliberately more than an honest kill, so farming an alt earns retribution rather than nothing. |
+| "Karma-Devil-Multiplier" | 1.5 | Multiplies all karma a Devil-path cultivator accrues. |
+| "Karma-Decay-Per-Hour" | 2.0 | Karma that bleeds away per real-world hour spent without killing anyone. |
+| "Karma-Max" | 200.0 | The karma ceiling. |
+| "Karma-Tribulation-Damage-Percent-At-Max" | 150.0 | Percent harder each tribulation bolt lands at full karma, additive on top of the realm scaling and scaled linearly by how much karma you carry. |
+| "Karma-Tribulation-Extra-Strikes-At-Max" | 4.0 | Additional bolts a ritual draws at full karma, likewise scaled linearly. |
+| "Karma-Cleared-Per-Tribulation-Survived" | 15.0 | Karma burned off by surviving a tribulation strike - enduring the heavens' judgement is how the ledger is settled. |
+| "Description-Karma" | A long string explaining the values above. | The full Karma system in one paragraph: how it is earned, why farmed kills cost more, how it decays and caps, and how it is paid for at the next ritual. |
+| "Path-Devil-Damage-Vs-Righteous-Percent" | 15.0 | Extra damage a Devil deals to Righteous cultivators. |
+| "Path-Righteous-Damage-Vs-Devil-Percent" | 15.0 | Extra damage a Righteous cultivator deals to Devils. |
+| "Path-Righteous-Defense-Vs-Devil-Percent" | 15.0 | Damage a Righteous cultivator takes less of from Devils. |
+| "Description-Path" | A long string explaining the values above. | Summarises how the path is derived from the lean, both sets of path-vs-path edges, the Devil's PK harvest, and that the path shifts as deeds do. |
+
+<Divider />
+
+### Terrain affinity
+
+The land's pull on your element. See [The Ground You Sit On](/dao/#terrain).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Terrain-Dao-Enabled` | true | False leaves the land inert. |
+| `Terrain-Matched-Multiplier` | 1.25 | Qi gained where the land matches the cultivator's own dao. |
+| `Terrain-Ambient-Multiplier` | 1.08 | Qi gained on merely elemental ground. |
+| `Terrain-Affinity-Interval-Seconds` | 10 | How often meditating adds affinity toward the land's element. |
+| `Terrain-Affinity-Per-Interval` | 1.5 | How much it adds. Gentler than a kill on purpose. |
+| `Terrain-Element-Keywords` | 60 pairs | `keyword:ELEMENT`, matched as case-insensitive substrings of the biome's own name, first hit wins. Works with a generator mod's biomes. |
+
+## Technique Config
+
+The rule set behind every active cultivation art, found in the path `mods/Siren_Cultivation/Arts/TechniqueConfig.json`. See [Techniques](/techniques/) for what each one does.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Technique Config" | The name given to this config file. |
+| "ConfigVersion" | 1 | Current Version when you have loaded for the plugin. |
+| "Techniques-Enabled" | true | Master toggle for the whole Technique system. False disables every technique at once, regardless of the individual rules. |
+| "Description-Techniques" | A long string explaining the value above. | Restates that this toggle overrides every entry in the Techniques array below. |
+| "Techniques" | An array of the nine built-in rules (see below). | One entry per technique. Each entry's `Id` must match a technique id for the manager to apply it as an override. |
+| "Technique-Hotkeys-Enabled" | true | Whether cultivators may fire techniques from [a keybind](/keybinds/) (a modifier plus a key) rather than only from `/cultivation technique`. Independent of "Techniques-Enabled". |
+| "Technique-Hotkeys-Q-E-R-Enabled" | false | Whether Q, E and R may be bound at all. Off by default because taking one over costs a player dropping an item, the inventory, or their hotbar block set — the number row only costs a hotbar switch, which the mod immediately undoes. |
+| "Description-Technique-Hotkeys" | A long string explaining the values above. | Which keys and modifiers are bindable and why the set is what it is, that there is no 0 key, the default bindings, and that the modifier arms on the press for half a second rather than while held. |
+| "Description-Technique-Rules" | A long string explaining the array above. | Documents every field of a technique rule and the One Step distance params. |
+
+Each entry in the `Techniques` array uses this shape.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "Id" | "" | Must match a registered technique id for this entry to take effect as an override. |
+| "Enabled" | true | Toggles just this one technique. |
+| "Dao-Specific" | false | If true, only a cultivator whose chosen dao is `Required-Element` may perform it. |
+| "Required-Element" | "" | The DaoElement name this technique is locked to. Only meaningful when Dao-Specific is true. |
+| "Elements" | "" | A comma-separated list of DaoElements the technique carries, as metadata and flavour. |
+| "Damage-Type" | "" | A DamageCause asset id for damaging techniques. Empty means the effect falls back to PHYSICAL, which the Dao combat filter may still re-convert to the caster's own element. |
+| "Requires-Manual" | false | When true this technique cannot be performed until a [manual](/manuals/) has taught it. None of the nine built-ins set this by default. |
+| "Unlock-Realm" | "QI_CONDENSATION" | The realm required to use it, as an enum name. |
+| "Qi-Cost" | 0.0 | Banked Qi spent per use. |
+| "Cooldown-Seconds" | 0.0 | Real-time cooldown between uses. |
+| "Params" | `[]` | An array of `Key`/`Value` pairs holding technique-specific numbers, so a technique can add its own knobs without changing the config's shape. |
+
+These are the nine built-in rules written to the file on first run.
+
+| Technique Id | Unlock Realm | Qi Cost | Cooldown | Elements | Params |
+| --- | --- | --- | --- | --- | --- |
+| "one_step_thousand_li" | QI_CONDENSATION | 50.0 | 5.0 | WIND | BaseDistance 4, DistancePerRealm 2, DistancePerStage 0.5, MaxDistance 40 |
+| "sword_flying" | GOLDEN_CORE_FORMATION | 0.0 | 3.0 | WIND | HorizontalFlySpeed 12, VerticalFlySpeed 10, FlySpeedPerRealm 1.5, QiDrainPerSecond 6, QiDrainReductionPercentPerRealm 5 |
+| "sword_qi_slash" | FOUNDATION_ESTABLISHMENT | 30.0 | 4.0 | (none) | Range 8, ConeHalfAngleDegrees 50, BaseDamage 15, DamagePerRealm 4 |
+| "nine_heavens_thunder_palm" | NASCENT_SOUL | 60.0 | 8.0 | LIGHTNING | Radius 6, BaseDamage 25, DamagePerRealm 6 |
+| "iron_body" | FOUNDATION_ESTABLISHMENT | 25.0 | 20.0 | EARTH | DurationSeconds 10, ReductionPercent 40, ReductionPercentPerRealm 2 |
+| "cloud_step" | QI_CONDENSATION | 15.0 | 15.0 | WIND | DurationSeconds 12, SpeedMultiplier 1.6, SpeedMultiplierPerRealm 0.05 |
+| "healing_pulse" | QI_CONDENSATION | 40.0 | 12.0 | WOOD | BaseHeal 40, HealPerRealm 10 |
+| "qi_barrier" | FOUNDATION_ESTABLISHMENT | 35.0 | 18.0 | METAL | DurationSeconds 15, BaseShieldAmount 60, ShieldPerRealm 15 |
+| "qi_infusion" | QI_CONDENSATION | 20.0 | 15.0 | FIRE | DurationSeconds 10, DamageBonusPercent 30, DamageBonusPercentPerRealm 3 |
+
+Sword Flying is the one technique whose `Qi-Cost` is 0 on purpose - toggling it is free, and the real price is the ongoing `QiDrainPerSecond` charged while airborne. Nine Heavens Thunder Palm is also the only built-in that sets a `Damage-Type` (`Cultivation_Lightning`). Techniques registered by other mods are deliberately not written into this array; they run off their own registered default rule, though you may still add an override entry with a matching `Id` by hand.
+
+<Divider />
+
+### Technique mastery
+
+The five-rung ladder every art climbs. See [Mastery](/techniques/#mastery) for what it means in play.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Mastery-Enabled` | true | Whole-system switch. False returns every art to realm-only strength, exactly as 0.7.1 behaved. |
+| `Mastery-Xp-Per-Use` | 2 | Practice XP banked by one *successful* use. A refused activation teaches nothing. |
+| `Mastery-Xp-Per-Qi-Cost` | 0.05 | Extra XP per point of the art's Qi cost, so an expensive art climbs faster per cast. |
+| `Mastery-Stages` | 5 entries | The ladder itself. Each rung carries `Name`, `RequiredRealm`, `RequiredXp`, `RequiredManuals`, `PowerMultiplier`, `QiCostMultiplier` and `CooldownMultiplier`. |
+
+<Note kind="warn" title="The ladder is capped at five">
+  A config with more than five rungs is clamped to the first five, and one with none falls back to a single flat rung. The cap exists because the UI and the lang keys only cover five — an add-on calling `registerMasteryStage` past that gets `false` back rather than a silently ignored rung.
+</Note>
+
+## Manual Config
+
+Lootable books that permanently teach a technique or a skill-tree node, found in the path `mods/Siren_Cultivation/Arts/ManualConfig.json`. See [Manuals](/manuals/).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Manual Config" | The name given to this config file. |
+| "ConfigVersion" | 1 | Current Version when you have loaded for the plugin. |
+| "Manuals-Enabled" | true | Master toggle for the whole manual system. |
+| "Manual-Consumed-On-Use" | true | Whether reading a manual consumes it. Reading one you already know refuses and consumes nothing either way. |
+| "Manual-Tribulation-Drop-Chance" | 0.04 | Chance a manual drops, rolled once per tribulation strike SURVIVED - so a long ritual is many rolls. |
+| "Manual-Demonic-Cultivator-Drop-Chance" | 0.12 | Chance a manual drops when a player kills an NPC whose role id is listed below. |
+| "Manual-Demonic-Cultivator-Npc-Roles" | "" | Comma-separated NPC role ids that count as demonic cultivators. Empty by default on purpose: role ids vary by world and zone, so shipping a guess would either do nothing or fire on the wrong mob. |
+| "Manual-Player-Kill-Drop-Chance" | 0.02 | Chance that slaying another cultivator shakes loose ONE manual for an art they themselves knew. Deliberately tiny - it is a real loss for the victim. |
+| "Manuals" | An array of the five skill-node manuals (see below). | The drop table, and the reverse index from a technique or node back to the manual that teaches it. |
+| "Description-Manuals" | A long string explaining the values above. | Explains what a manual teaches, the consume rule, all three drop sources, and that the dropped manual is picked from the table by Weight. |
+
+Each entry in the `Manuals` array uses this shape.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ItemId" | "" | The manual item's asset id. |
+| "TechniqueId" | "" | The technique reading it teaches, if any. Only meaningful for a technique whose rule sets `Requires-Manual` true. |
+| "SkillNodeId" | "" | The skill-tree node reading it unlocks, if any. The node's prerequisites are still honoured, but its point cost is ignored. |
+| "Weight" | 1.0 | Relative likelihood within the drop table. 0 means it never drops on its own and must be placed by an admin or another mod. |
+
+These are the five entries written to the file on first run.
+
+| ItemId | Teaches | Weight |
+| --- | --- | --- |
+| "Cultivation_Manual_IronSinew" | Skill node VITALITY_1 | 1.0 |
+| "Cultivation_Manual_HiddenEdge" | Skill node MIGHT_1 | 1.0 |
+| "Cultivation_Manual_ClearSpring" | Skill node INSIGHT_1 | 1.0 |
+| "Cultivation_Manual_UnmovingMountain" | Skill node WARDING_1 | 0.6 |
+| "Cultivation_Manual_WindchaserStride" | Skill node SWIFTNESS_1 | 0.6 |
+
+<Divider />
+
+## Alchemy Config
+
+The four pills and what they do, found in the path `mods/Siren_Cultivation/Arts/AlchemyConfig.json`. See [Alchemy](/alchemy/).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Alchemy Config" | The name given to this config file. |
+| "ConfigVersion" | 2 | Current Version when you have loaded for the plugin. |
+| "QiPill-Gain-Multiplier" | 1.5 | The Qi Gathering Pill multiplies every source of cultivation Qi - meditation drain and absorbed cores alike - by this much. |
+| "QiPill-Duration-Seconds" | 300.0 | How long that multiplier lasts. Re-consuming refreshes the timer. |
+| "Description-QiPill" | A long string explaining the values above. | Restates that the pill covers both Qi sources and that re-consuming refreshes rather than stacks. |
+| "ClarityPill-Ritual-Speed-Multiplier" | 0.75 | Multiplies breakthrough and advancement ritual DURATIONS, so below 1 is faster. |
+| "ClarityPill-Duration-Seconds" | 300.0 | How long that multiplier lasts. |
+| "Description-ClarityPill" | A long string explaining the values above. | Notes the below-1-is-faster convention and that it stacks multiplicatively with race and skill tree ritual-speed bonuses. |
+| "WardPill-Shield-Charges" | 1 | Charges banked per Tribulation Ward Pill consumed. |
+| "WardPill-Max-Stored-Charges" | 3 | The most ward charges a cultivator may hold at once. |
+| "Description-WardPill" | A long string explaining the values above. | Each charge fully negates one tribulation lightning strike's damage - the bolt still falls - and charges persist until used. |
+| "ClearMindPill-Charges" | 1 | Charges banked per Clear-Mind Pill consumed. |
+| "ClearMindPill-Max-Stored-Charges" | 3 | The most clear-mind charges a cultivator may hold at once. |
+| "Description-ClearMindPill" | A long string explaining the values above. | Each charge holds composure through one Heart-Devil Trial pulse (that pulse drains no composure, though the demon still appears), and charges persist until used. |
+
+<Divider />
+
+## Refinement Config
+
+Tempering a weapon in tribulation lightning (炼器), found in the path `mods/Siren_Cultivation/Arts/RefinementConfig.json`. See [Weapon Refinement](/refinement/).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Refinement Config" | The name given to this config file. |
+| "ConfigVersion" | 1 | Current Version when you have loaded for the plugin. |
+| "Refinement-Enabled" | true | Master toggle for weapon refinement. |
+| "Refinement-Unlock-Realm" | "QI_CONDENSATION" | The realm required to refine at all. Deliberately EARLIER than the Dao unlock realm - a refined weapon is how a cultivator who has not yet grasped a dao gets to fight elementally. |
+| "Refinement-Max-Tier" | 9 | The tempering ceiling. Nine (九炼) is the traditional limit. |
+| "Refinement-Min-Chunk-Qi" | 40.0 | The ritual draws on the chunk's Spirit Vein the way a breakthrough does; below this the ritual simply pauses. |
+| "Refinement-Base-Duration-Seconds" | 45.0 | How long a first tempering takes. |
+| "Refinement-Duration-Seconds-Per-Tier" | 15.0 | Added to the duration for each tier already held. |
+| "Refinement-Base-Qi-Cost" | 200.0 | Banked Qi charged for a first tempering. |
+| "Refinement-Qi-Cost-Tier-Multiplier" | 1.6 | Multiplies the Qi cost per tier, stacking. |
+| "Refinement-Base-Success-Chance" | 0.95 | Success odds (0-1) for the first tempering. |
+| "Refinement-Success-Chance-Loss-Per-Tier" | 0.08 | Success odds lost per tier beyond the first. |
+| "Refinement-Min-Success-Chance" | 0.15 | The floor those odds can never fall below. |
+| "Refinement-Demote-On-Fail-From-Tier" | 4 | At or above this target tier, a failure knocks the weapon down one tier instead of merely wasting the attempt. 0 disables demotion entirely. |
+| "Refinement-Destroy-On-Fail" | false | Off by default - a shattered weapon is unrecoverable, and a player may well be tempering an Awakened Life-Bound treasure. |
+| "Refinement-Tribulation-Damage-Percent-Of-Max-Health" | 10.0 | Percent of max health each tribulation strike during a refinement ritual deals, still scaled by realm and still lethal if `Tribulation-Lethal` is on. |
+| "Refinement-Damage-Bonus-Percent-Per-Tier" | 4.0 | Combat damage a refined weapon grants per tier held. |
+| "Refinement-Resonance-Bonus-Percent" | 15.0 | Extra damage when the weapon's element matches the wielder's own chosen dao. |
+| "Description-Refinement" | A long string explaining the values above. | The full ritual: the sit-and-endure loop, the success roll and its floor, what failure costs at each tier, and how a refined weapon supplies its element for damage conversion when its wielder has no dao of their own. |
+
+<Divider />
+
+## Life-Bound Config
+
+The XP curve and combat bonuses for Life-Bound Treasures, found in the path `mods/Siren_Cultivation/Arts/LifeBoundConfig.json`. See [Life-Bound Treasures](/lifebound/).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Life-Bound Treasure Config" | The name given to this config file. |
+| "ConfigVersion" | 3 | Current Version when you have loaded for the plugin. |
+| "LifeBound-Base-Xp-Requirement" | 75.0 | How much XP a Life-Bound Treasure needs to advance from level 1 to level 2. |
+| "LifeBound-Xp-Growth-Rate" | 1.07 | Multiplies the XP requirement for each level gained, stacking. |
+| "LifeBound-Max-Level" | 100 | The highest level a single Life-Bound weapon or armor piece can reach. |
+| "Description-LifeBound-Max-Level" | A long string explaining the value above. | Once the cap is hit the item stops gaining XP entirely rather than banking it uselessly. |
+| "LifeBound-Weapon-Xp-Per-Damage-Dealt" | 0.15 | XP granted to a Life-Bound weapon per point of actual damage it lands on a hit, on any creature, not just kills. |
+| "LifeBound-Armor-Xp-Per-Damage-Taken" | 0.1 | XP granted to each worn Life-Bound armor piece per point of actual damage its wearer takes and survives. |
+| "Description-LifeBound-Xp-Per-Damage" | A long string explaining the two values above. | Both are a multiplier against the FINAL damage on a hit, after weapon bonus and armor reduction are already applied - a 20-damage hit at 0.15 grants 3 XP. Weapon XP fires on every landed hit; armor XP only if the wearer survives. |
+| "LifeBound-Weapon-Damage-Percent-Per-Level" | 1.0 | Percent damage increase per level while wielding a Life-Bound weapon. |
+| "LifeBound-Weapon-Max-Damage-Percent" | 100.0 | Hard cap on the damage bonus a single Life-Bound weapon can grant, however high its level-based bonus would otherwise reach. |
+| "Description-LifeBound-Weapon-Max-Damage-Percent" | A long string explaining the value above. | Restates that a fully-levelled weapon is capped to this value. |
+| "LifeBound-Armor-Reduction-Percent-At-Max-Level" | 55.0 | The damage reduction a single worn Life-Bound armor piece grants once it hits max level. |
+| "Description-LifeBound-Armor-Reduction-Percent-At-Max-Level" | A long string explaining the value above. | The reduction scales linearly from 0% at level 1 to this value at max level, so a level-50 piece of a 100-level cap grants half. |
+| "LifeBound-Armor-Max-Damage-Reduction-Percent" | 60.0 | Hard cap on the COMBINED reduction from every worn Life-Bound armor piece. |
+| "Description-LifeBound-Armor-Max-Damage-Reduction-Percent" | A long string explaining the value above. | Prevents a fully-levelled set from approaching damage immunity however high the individual levels add up. |
+| "LifeBound-Reset-On-Transfer" | true | If true, a Life-Bound item that ends up with a different player silently rebinds to them at level 1 / 0 XP the next time they land a hit with it. If false, it stays permanently bound to its original owner and does nothing for anyone else. |
+| "Description-LifeBound-Reset-On-Transfer" | A long string explaining the value above. | Restates both halves of the rebind rule, including trades and dropped-then-picked-up items. |
+| "Awakened-Bonus-Percent" | 10.0 | Extra damage percent (weapons) or reduction percent (armor) an awakened treasure grants on top of the normal max-level benefit, applied after the usual caps. |
+| "Awakened-Proc-Chance" | 0.25 | Odds (0-1) that a landed hit from an awakened weapon flares with a spirit-energy particle burst. |
+| "Description-Awakened" | A long string explaining the values above. | A treasure awakens on reaching LifeBound-Max-Level: it gains the awakened suffix in its name, the bonus above, and the particle proc. |
+
+<Divider />
+
+### Life-Bound traits
+
+The natures a treasure can roll. See [Traits](/lifebound/#natures).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Life-Bound-Traits-Enabled` | true | False returns every treasure to the flat damage/reduction split of 0.7.1. |
+| `Life-Bound-Traits` | 6 entries | Each carries `Id`, `Slot` (`WEAPON`, `ARMOR` or `ANY`), `BaseAmount`, `AmountPerLevel`, `MaxAmount`, `Weight`, and optionally `UnlockTechnique` plus `UnlockTechniqueLevel`. |
+
+A nature is rolled **once, at binding**, weighted by `Weight` and restricted by `Slot`, and never re-rolled. **Weight 0 retires a trait** from the roll without breaking treasures already carrying it — the safe way to remove one from a live server.
+
+## Beast Config
+
+Spirit Beast companions (灵兽), found in the path `mods/Siren_Cultivation/Arts/BeastConfig.json`. See [Spirit Beasts](/beasts/).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Spirit Beast Config" | The name given to this config file. |
+| "ConfigVersion" | 1 | Current Version when you have loaded for the plugin. |
+| "Beasts-Enabled" | true | Master toggle for Spirit Beast companions. |
+| "Leash-Distance" | 24.0 | How far a summoned beast may stray from its owner before it is pulled back. Its own vanilla AI handles everything inside this radius. |
+| "Description-Beasts" | A long string explaining the values above. | One bound beast per cultivator, summoned and dismissed by command, leashed to its owner, and despawned the moment its owner logs out. |
+| "Tame-Max-Health-Percent" | 30.0 | A wild creature must be beaten down to this share of its health or lower before a talisman can bind it. |
+| "Tame-Chance-Bonus-Per-Realm" | 0.05 | Added to the bind chance per realm the tamer has reached. |
+| "Tame-Chance-Element-Match-Bonus" | 0.25 | Added when the beast's element matches the tamer's chosen dao - a cultivator's dao calls to beasts of like nature. |
+| "Tame-Chance-Max" | 0.95 | The ceiling the final bind chance is capped to. |
+| "Tame-Consume-Talisman-On-Failure" | true | Whether a failed attempt still costs the Beast Taming Talisman. |
+| "Description-Taming" | A long string explaining the values above. | Walks the whole bind roll: species TameChance, plus realm bonus, plus element match, capped at the maximum, against a creature already at or below the health threshold. |
+| "Beast-Base-Xp-Requirement" | 120.0 | XP a beast needs for its first stage. |
+| "Beast-Xp-Growth-Rate" | 1.35 | Multiplies the XP requirement per level, stacking. |
+| "Beast-Xp-Per-Kill" | 12.0 | XP granted whenever its owner kills. |
+| "Beast-Xp-Own-Kill-Multiplier" | 2.0 | Multiplies that XP when the beast itself landed the blow. |
+| "Beast-Xp-Per-Qi-Item-Point" | 0.75 | XP per point of Qi value in an item fed with `/cultivation beast feed`. |
+| "Meditation-Qi-Share-Percent" | 12.0 | Share of the Qi its owner draws while meditating that also feeds the beast. |
+| "Meditation-Share-Taken-From-Owner" | false | False by default: the beast feeds on the ambient overflow rather than taking Qi out of its owner's pocket. Set true to make the share a genuine tithe. |
+| "Beast-Realm-Capped-By-Owner" | true | A beast can never out-rank its master - it stalls at its owner's realm until they advance. |
+| "Description-Progression" | A long string explaining the values above. | The full XP model: kills, fed items, the meditation share and whether it is a tax, the per-stage cost formula, and the owner realm cap. |
+| "Guardian-Damage-Percent-Base" | 4.0 | Outgoing damage a GUARDIAN beast adds to its owner at level 1. |
+| "Guardian-Damage-Percent-Per-Level" | 0.6 | Added to that per beast level. |
+| "Warden-Reduction-Percent-Base" | 5.0 | Incoming damage a WARDEN beast cuts for its owner at level 1. |
+| "Warden-Reduction-Percent-Per-Level" | 0.7 | Added to that per beast level. |
+| "Warden-Reduction-Percent-Max" | 40.0 | The cap on a warden's reduction. |
+| "Gatherer-Qi-Multiplier-Base" | 1.15 | Meditation Qi multiplier a GATHERER beast grants at level 1. |
+| "Gatherer-Qi-Multiplier-Per-Level" | 0.02 | Added to that per beast level. |
+| "Element-Resonance-Multiplier" | 1.25 | Multiplies every figure above when the beast's element matches its owner's chosen dao. |
+| "Description-Bonuses" | A long string explaining the values above. | What each Kind is worth, that every figure is further multiplied by the species' own Power, and that a dismissed beast does nothing at all. |
+| "Egg-Kill-Drop-Chance" | 0.015 | Chance a Spirit Beast Egg drops from a creature kill. |
+| "Description-Eggs" | A long string explaining the value above. | An egg hatches a random species weighted by EggWeight, respects MinRealm the way taming does, and is refused while you already keep a beast. |
+| "Beast-Species" | An array of 23 built-in species (see below). | The tameable roster. Nothing about a species is hardcoded - add your own creatures, or another mod's, by adding entries here. |
+| "Description-Species" | A long string explaining the array above. | Documents every species field and the wild-role vs summon-role distinction. |
+
+Each entry in the `Beast-Species` array uses this shape.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "RoleId" | "" | The WILD NPC role a taming talisman may be used on. |
+| "SummonRoleId" | "" | What the bound companion is spawned as. Leave blank to summon the wild role itself; set it to a vanilla `Tamed_*` variant where one exists so the companion is not hostile to its own master. |
+| "Kind" | "GUARDIAN" | GUARDIAN, WARDEN, or GATHERER - which of the three bonus sets this species provides. |
+| "Element" | "WOOD" | One of the ten daos. This is the beast's OWN nature, unrelated to its owner's. |
+| "TameChance" | 0.35 | Base bind chance (0-1) before the realm, health, and element-resonance adjustments. |
+| "MinRealm" | 0 | Realm ordinal the tamer must have reached to bind this species at all. 0 = Body Refinement. |
+| "Power" | 1.0 | Multiplies everything the species contributes - a rarer, fiercer beast is worth more at the same realm. |
+| "EggWeight" | 1.0 | Relative odds of hatching from an egg. 0 excludes the species from eggs entirely, leaving it wild-tame only. |
+
+These are the 23 species written to the file on first run. None of them sets a `SummonRoleId` by default.
+
+| RoleId | Kind | Element | TameChance | MinRealm | Power | EggWeight |
+| --- | --- | --- | --- | --- | --- | --- |
+| "Wolf_Black" | GUARDIAN | VOID | 0.35 | 1 | 1.0 | 1.0 |
+| "Wolf_White" | GUARDIAN | ICE | 0.35 | 1 | 1.0 | 1.0 |
+| "Emberwulf" | GUARDIAN | FIRE | 0.2 | 3 | 1.4 | 0.4 |
+| "Leopard_Snow" | GUARDIAN | ICE | 0.28 | 2 | 1.2 | 0.7 |
+| "Tiger_Sabertooth" | GUARDIAN | METAL | 0.22 | 3 | 1.4 | 0.5 |
+| "Fen_Stalker" | GUARDIAN | WATER | 0.25 | 2 | 1.2 | 0.6 |
+| "Raptor_Cave" | GUARDIAN | WIND | 0.3 | 2 | 1.1 | 0.8 |
+| "Rex_Cave" | GUARDIAN | METAL | 0.15 | 4 | 1.6 | 0.2 |
+| "Hyena" | GUARDIAN | POISON | 0.35 | 1 | 0.9 | 1.0 |
+| "Bear_Grizzly" | WARDEN | EARTH | 0.28 | 2 | 1.2 | 0.8 |
+| "Bear_Polar" | WARDEN | ICE | 0.26 | 2 | 1.25 | 0.7 |
+| "Yeti" | WARDEN | ICE | 0.18 | 4 | 1.5 | 0.3 |
+| "Tortoise" | WARDEN | EARTH | 0.5 | 0 | 0.9 | 1.2 |
+| "Toad_Rhino" | WARDEN | POISON | 0.4 | 1 | 1.0 | 1.0 |
+| "Toad_Rhino_Magma" | WARDEN | FIRE | 0.25 | 3 | 1.3 | 0.5 |
+| "Armadillo" | WARDEN | METAL | 0.5 | 0 | 0.85 | 1.2 |
+| "Moose_Bull" | WARDEN | EARTH | 0.32 | 1 | 1.1 | 0.9 |
+| "Spark_Living" | GATHERER | LIGHTNING | 0.2 | 3 | 1.5 | 0.4 |
+| "Snapdragon" | GATHERER | WOOD | 0.3 | 2 | 1.2 | 0.7 |
+| "Cactee" | GATHERER | WOOD | 0.4 | 1 | 1.0 | 1.0 |
+| "Trillodon" | GATHERER | WOOD | 0.22 | 3 | 1.35 | 0.5 |
+| "Fox" | GATHERER | WIND | 0.45 | 0 | 0.9 | 1.2 |
+| "Deer_Stag" | GATHERER | WOOD | 0.45 | 0 | 0.9 | 1.2 |
+| "Antelope" | GATHERER | WIND | 0.45 | 0 | 0.85 | 1.2 |
+
+### Growth: arts, evolution and mounts
+
+The 0.7.2 half of the beast system. See [Beast Arts](/beasts/#arts), [Evolution](/beasts/#evolution) and [Mounts](/beasts/#mounts).
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Beast-Arts-Enabled` | true | Whole-system switch for companion arts. |
+| `Beast-Arts-Owner-Commanded` | true | Whether `/cultivation beast art` works at all. |
+| `Beast-Arts-Autonomous` | true | Whether a beast uses its arts unprompted in a fight. |
+| `Beast-Arts-Autonomous-Range` | 12 | How close a fight must be for it to act on its own. |
+| `Beast-Evolution-Enabled` | true | Whole-system switch for evolution. |
+| `Beast-Mounts-Enabled` | true | Whole-system switch for rideable companions. |
+
+Which creature learns what is not here — it is on the species itself, in `BeastSpeciesList`: `Arts` lists the art ids it can grow into, `EvolvesTo` plus `EvolveRealm` name its next form, and `MountRealm` makes it rideable. That is what lets an add-on register an art and still leave the owner to decide which beasts get it.

@@ -1,0 +1,55 @@
+---
+title: "Race Configs"
+description: "Cultivation Mod - Race Configs"
+group: "Configuration"
+---
+
+# Race Configs
+
+Each playable race gets its own file in `mods/Siren_Cultivation/Race/` - `Human.json`, `Demon.json`, and `Deity.json`. They are fully independent of one another and all share the same field layout, so retuning one race never touches the others. See the [Races](/races/) page for what these numbers mean in practice.
+
+Race files are the one exception to the usual layout: they carry no `ConfigName` or `ConfigVersion`, because their entire contents are values a server owner is expected to own outright.
+
+Races registered by other mods do not appear here. A third-party race backs its stats with its own plugin's config file (or a plain constant) through `CultivationAPI.registerRace` - see the [Cultivation API](/api/).
+
+<Divider />
+
+## Per-Race Config
+
+The shared field layout, found in the paths `mods/Siren_Cultivation/Race/Human.json`, `mods/Siren_Cultivation/Race/Demon.json`, and `mods/Siren_Cultivation/Race/Deity.json`.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "Description" | Per race - see the table below. | Flavor text shown in the race selection menu. |
+| "Unlock-Realm" | "BodyRefinement" | The realm a player's cultivation must reach before this race can be chosen from the race menu. Accepts a realm name such as `BodyRefinement` or `GoldenCoreFormation`, or a 1-based realm number. |
+| "Description-Unlock-Realm" | A long string explaining the value above. | Lists the accepted value forms and notes that the admin `setrace` override ignores this gate unless `Race-Admin-Bypasses-Realm-Gate` is disabled in [RaceSystemConfig](/config-cultivation/). |
+| "Health-Bonus-Percent" | 0.0 | Percent bonus to max health, layered multiplicatively on top of the realm/level health bonus. |
+| "Damage-Bonus-Percent" | 0.0 | Percent bonus to outgoing damage, layered on top of the realm/level damage bonus. |
+| "Qi-Gain-Rate-Percent-Bonus" | 0.0 | Percent bonus to ALL Qi gained by this race - both meditation (Spirit Vein) absorption and core absorption. 10 = +10% Qi from every source. |
+| "Description-Qi-Gain-Rate-Percent-Bonus" | A long string explaining the value above. | Restates that both Qi sources are covered by the one number. |
+| "Breakthrough-Duration-Percent-Reduction" | 0.0 | Percent reduction to how long this race's realm breakthrough ritual takes. 20 = breakthroughs take 20% less time. |
+| "Description-Breakthrough-Duration-Percent-Reduction" | A long string explaining the value above. | Notes that the value is clamped in code so it can never reduce the duration by more than 90%, however high it is set. |
+| "Qi-Alignment-Yin-Bias-Percent" | 0.0 | Percent skew this race applies to the Yin/Yang alignment shift of meditation qi in the [Dao](/dao/) system. 50 = half of what would have been Yang becomes Yin instead; -30 = 30% of would-be Yin becomes Yang. 0 is neutral. |
+| "Description-Qi-Alignment-Yin-Bias" | A long string explaining the value above. | Frames the skew in flavour terms - demonic natures darken absorbed qi, heavenly natures purify it. |
+
+<Divider />
+
+## The built-in three
+
+These are the values written to each file on first run.
+
+| Race | Unlock Realm | Health | Damage | Qi Gain | Breakthrough Speed | Yin Bias |
+| --- | --- | --- | --- | --- | --- | --- |
+| Human | BodyRefinement | +0% | +0% | +10% | +0% | 0% |
+| Demon | GoldenCoreFormation | -10% | +25% | -10% | +0% | +50% |
+| Deity | GoldenCoreFormation | +20% | -10% | +5% | 20% faster | -30% |
+
+And their default flavour text.
+
+| Race | Description |
+| --- | --- |
+| Human | "Adaptable and quick to learn. No combat extremes, but Qi flows a little more readily." |
+| Demon | "Brutal and battle-hungry. Ferocious in combat, but crude cultivation technique slows their Qi gathering." |
+| Deity | "Blessed with a heavenly constitution. Sturdy and swift to break through, though less fierce in a fight." |
+
+The Yin bias is what makes race choice matter beyond raw stats: a Demon's absorbed qi darkens toward Yin at half again the usual rate, pushing them toward the Devil Path (魔道) and eventually into [Heart-Devil Trials](/tribulations/) at every breakthrough, while a Deity drifts the other way toward the Righteous Path (正道).

@@ -1,0 +1,125 @@
+---
+title: "Cultivation API"
+description: "Cultivation Mod - the public API other mods compile against"
+group: "For Developers"
+---
+
+# Cultivation API
+
+Cultivation ships a public integration surface for other Hytale mods: `plugin.siren.API.CultivationAPI` plus eleven `*Events` classes in the same package. It is the intended stable shape of the mod - prefer it over reaching into `CultivationManager`, `Cultivation` or the ECS components directly, since those are free to change between versions.
+
+There are four things you can do with it:
+
+- **Read** a player's cultivation state - realm, stage, global level, banked Qi, race, meditation state, skill points, unlocked nodes. See the [API Reference](/api-reference/).
+- **Register** new content that behaves exactly like the built-in content - a race, a technique, a Qi absorption item modifier, a title, a sect banner, a palette. See [API Registries](/api-registries/).
+- **Listen** to (and re-tune, or veto) 156 events across every subsystem in the mod. See [API Events](/api-events/).
+- **Replace** a whole layer of the mod - the progression ladder itself, its entire vocabulary, or both - while every other subsystem keeps running on top. New in 0.5.0; see [API Addons](/api-addons/).
+
+This page documents the API as of Cultivation **0.7.0**.
+
+<Note>
+  **The sources are published.** Every public API class, with its javadoc, lives at [github.com/SirenHytale/Cultivation-API](https://github.com/SirenHytale/Cultivation-API) — alongside a generated reference for all 156 events, a worked example add-on, and a brief written for AI coding assistants. The javadoc in those sources is the authoritative contract; this wiki is the guided tour.
+</Note>
+
+<Divider />
+
+## Adding Cultivation to your project
+
+Maven `pom.xml`:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>plugin.siren</groupId>
+        <artifactId>Cultivation</artifactId>
+        <version>0.7.0</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+```
+
+Then declare it in your Hytale `manifest.json`. Cultivation's own manifest publishes itself as group `Siren`, name `Cultivation`, so the dependency id is `Siren:Cultivation`:
+
+```json5
+"OptionalDependencies": {
+  "Siren:Cultivation": ">=0.5.0"
+}
+```
+
+Use `"Dependencies"` instead if your mod cannot function without Cultivation present.
+
+<Divider />
+
+## The entry point
+
+Everything is static. `CultivationAPI` has a private constructor and is never instantiated - you call it straight off the class:
+
+```java
+import plugin.siren.API.CultivationAPI;
+import plugin.siren.ECS.Realms.CultivationRealm;
+
+CultivationRealm realm = CultivationAPI.getRealm(accessor, ref);
+float qi = CultivationAPI.getQi(accessor, ref);
+```
+
+The read methods all take a `ComponentAccessor<EntityStore>` and a `Ref<EntityStore>` - the same pair every Hytale ECS system already has in hand. Anything that reads a component returns `null` (or 0, or Human) when the player does not have that component yet, so a fresh player never throws.
+
+Listener and registry calls are safe from your own plugin's `setup()` in **any** load order relative to Cultivation's own `setup()`. The registries are plain static maps and the listener lists are `CopyOnWriteArrayList`s; nothing reads either until a player actually interacts with the mod, which is long after every plugin has finished loading.
+
+<Divider />
+
+## Your first listener
+
+The pattern is `CultivationEvents.onPreX(...)` to change or veto something before it happens, and `CultivationEvents.onX(...)` to be told once it is committed. Both take a `java.util.function.Consumer` of the event type, so a lambda is all you need:
+
+```java
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import plugin.siren.API.CultivationEvents;
+import plugin.siren.ECS.Realms.CultivationRealm;
+
+public final class MyCultivationHooks {
+
+    public static void register(){
+        // Make the jump into Golden Core Formation cost twice as much banked Qi.
+        CultivationEvents.onPreBreakthrough(event -> {
+            if(event.toRealm() == CultivationRealm.GOLDEN_CORE_FORMATION){
+                event.setQiCost(event.qiCost() * 2.0F);
+            }
+        });
+
+        // Refuse the very last realm outright.
+        CultivationEvents.onPreBreakthrough(event -> {
+            if(event.toRealm() == CultivationRealm.VOID_REFINEMENT){
+                event.setCancelled(true);
+            }
+        });
+
+        // React once it has actually happened - the component already shows the new realm.
+        CultivationEvents.onBreakthrough(event -> {
+            if(event.player() != null){
+                recordAscension(event.player(), event.newRealm());
+            }
+        });
+    }
+
+    private static void recordAscension(PlayerRef player, CultivationRealm realm){
+        // your own bookkeeping here
+    }
+}
+```
+
+Call `MyCultivationHooks.register()` from your plugin's `setup()`. There is deliberately no unregister - a listener's lifetime is the server's lifetime, matching how plugins load once and stay.
+
+<Divider />
+
+## Pages
+
+| Page | Covers |
+| --- | --- |
+| [API Events](/api-events/) | Every event in the eleven `*Events` classes, what it exposes, and what cancelling one does. |
+| [API Registries](/api-registries/) | `registerRace`, `registerTechnique`, `registerQiAbsorptionItemModifier`, `registerTitle`, `registerSectBanner`, `registerPalette` and the addon-raisable caps. |
+| [API Reference](/api-reference/) | The component-type getters and the state reads on the `CultivationAPI` facade. |
+| [API Addons](/api-addons/) | `ProgressionProvider` (including `supportsProfiles`), `CultivationTheme` and `AdminConfigSection` - replacing the ladder, the wording, and adding your own admin settings. |
+
+Player-facing documentation for the systems these hooks sit on top of lives on the main wiki: [Cultivation Realms](/realms/), [Qi Gathering](/qi-gathering/), [The Dao](/dao/), [Techniques](/techniques/), [Sects](/sects/), [Sect Wars](/wars/), [Formations](/formations/), [Cave Abodes](/dwelling/), [Duels](/duels/) and [Spirit Beasts](/beasts/). Every number an event lets you re-tune also has a server-owner-facing equivalent on the [Config](/config/) page, and most of them mirror something on the [Commands](/commands/) page.

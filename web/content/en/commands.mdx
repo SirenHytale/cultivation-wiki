@@ -1,0 +1,198 @@
+---
+title: "Commands"
+description: "Cultivation Mod - Commands"
+group: "Start Here"
+---
+
+# Commands
+
+The mod registers two root commands: `/cultivation` (aliases: `/cult`, `/qi`) and `/sect`.
+
+Arguments in `{braces}` are required, arguments in `[brackets]` are optional. Anything that takes a player takes a player reference - the name of an online player.
+
+The whole sect suite is mounted underneath the cultivation root as well, so `/cultivation sect create` and `/sect create` are the same command acting on the same data. The shorter `/sect` spelling is used throughout this page.
+
+<Divider />
+
+## Player Commands
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation` | Opens your cultivation stats page. | `cultivation` |
+| `/cultivation info (i)` | Prints your realm, stage, and Qi progress to chat. | `cultivation` |
+| `/cultivation meditate (med, cultivate)` | Toggles meditation, drawing Spirit Qi from the vein of the chunk you sat down in. Standing up mid-ritual forfeits it - see [Qi Gathering](/qi-gathering/). | `cultivation` |
+| `/cultivation bind [confirm]` | Personalizes the item in your hand into a [Life-Bound Treasure](/lifebound/). Run on your own already-leveled treasure and it warns instead; `confirm` re-binds it, resetting it to level 1. | `cultivation` |
+| `/cultivation race` | Opens the race menu to view racial benefits and choose your [race](/races/) once you are eligible. | `cultivation` |
+| `/cultivation hud` | Toggles the persistent Cultivation HUD on or off. | `cultivation` |
+| `/cultivation settings (options)` | Opens the player settings menu. | `cultivation` |
+| `/cultivation bonuses` | Opens the Active Bonuses page, listing every modifier currently affecting you. | `cultivation` |
+| `/cultivation aura` | Toggles whether you give off a cultivation [aura](/auras/). Whether you *see* your own, or anyone else's, are separate switches in Settings. | `cultivation` |
+
+<Divider />
+
+## Profiles
+
+`/cultivation profile` manages your saved cultivators - see [Profiles](/profiles/). Numbers refer to the list's 1-based slots; names match case-insensitively.
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation profile [list]` | Lists your profiles with realm, stage and Qi, marking the one you are on. | `cultivation` |
+| `/cultivation profile new confirm (create)` | Starts a brand-new cultivator from Body Refinement and switches you onto it. Only acts when passed the literal word `confirm`. | `cultivation` |
+| `/cultivation profile switch {number\|name} (use, load)` | Saves the cultivator you are on and loads that one. | `cultivation` |
+| `/cultivation profile rename {name}` | Renames the profile you are on. Names are capped at 24 characters. | `cultivation` |
+| `/cultivation profile delete {number\|name} (remove)` | Erases that save for good. Refuses the profile you are on and the last one you have. The Profiles menu asks twice before doing this; the command acts at once. | `cultivation` |
+
+The test-profile sandbox is a separate, operator-granted toolkit on the same command - see [Profiles](/profiles/) for what it exempts you from. Every branch below except `test` itself also requires that the sandbox is the profile you are currently on.
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation profile test {duration}` | Enters (or extends) the sandbox cultivator. The duration is **required** - `90s`, `30m`, `4h`, `2d`, or a bare number of minutes; 1 minute to 30 days. It is wall-clock, so logging off does not pause it. | `cultivation.profile.test` |
+| `/cultivation profile realm {realm}` | Sets the sandbox's realm by enum name, e.g. `VOID_REFINEMENT`. | `cultivation.profile.test` |
+| `/cultivation profile stage {stage}` | Sets the sub-stage: `EARLY`, `MIDDLE`, `LATE` or `PEAK`. | `cultivation.profile.test` |
+| `/cultivation profile qi {amount}` | Sets banked Qi. | `cultivation.profile.test` |
+| `/cultivation profile points {amount}` | Sets (not adds) available skill points. | `cultivation.profile.test` |
+| `/cultivation profile race {race}` | Sets the sandbox's race, bypassing the realm gate. | `cultivation.profile.test` |
+| `/cultivation profile reset` | Wipes the sandbox back to a brand-new cultivator without leaving it. | `cultivation.profile.test` |
+
+<Divider />
+
+## Cultivation Arts
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation skilltree (skills)` | Opens the [Skill Tree](/skilltree/). | `cultivation` |
+| `/cultivation dao` | Opens the [Dao](/dao/) page - your element, path, and Yin-Yang balance. | `cultivation` |
+| `/cultivation codex` | Opens the in-game [Codex](/codex/) — 24 articles written against this server's real numbers and your own progress. | `cultivation` |
+| `/cultivation sense` | Toggles [Spirit Sense](/spirit-sense/) — your perception of the ambient Qi in the land, including beacons over rich and dragon veins. | `cultivation` |
+| `/cultivation partner` | Reports your [Partnered Cultivation](/partnered-cultivation/) standing with your spouse, and which condition is stopping a session. Requires the Marriage mod. | `cultivation` |
+| `/cultivation technique (tech) [use <name>]` | Bare lists every [technique](/techniques/) with its unlock realm, Qi cost, and current availability. `use` performs one. | `cultivation` |
+| `/cultivation refine (temper) [start <element>]` | With no element, reports the held weapon's current refinement and what the next tier would cost and risk. With an element, spends the Qi up front and seats you into the [refinement](/refinement/) ritual. | `cultivation` |
+| `/cultivation respec (resetskillpoints, resetskills)` | Refunds every skill point you paid for and clears those nodes. Nodes taught by a [manual](/manuals/) cost no points, so they are neither refunded nor wiped. Requires `Respec-Enabled`. | `cultivation` |
+
+<Divider />
+
+## Spirit Beasts
+
+Binding a beast happens out in the world rather than through a command - see [Spirit Beasts](/beasts/).
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation beast (companion, pet)` | Prints your bound beast's species, kind, element, realm, and current contribution. | `cultivation` |
+| `/cultivation beast summon (call)` | Calls your bound beast into the world at your side. Its bonus applies only while it is summoned. | `cultivation` |
+| `/cultivation beast dismiss (recall)` | Sends the beast's body away. It keeps every stage it has cultivated. | `cultivation` |
+| `/cultivation beast feed` | Feeds the entire stack in your hand to the beast, converting each item's Qi worth into beast XP. | `cultivation` |
+| `/cultivation beast info` | The same readout as bare `/cultivation beast`, in subcommand form — species, kind, element, realm and contribution, plus the arts it knows, what it would evolve into and whether it can carry you. | `cultivation` |
+| `/cultivation beast art [use <name>]` | Commands one of the beast’s [arts](/beasts/#arts). Run bare to list what it knows and what is still ahead of it. | `cultivation` |
+| `/cultivation beast evolve` | Grows the beast into its next [form](/beasts/#evolution), carrying its levels and bond across. If it cannot yet, this says exactly what is missing. | `cultivation` |
+| `/cultivation beast mount` | Summons the beast in its rideable body, for the seven [species](/beasts/#mounts) that grow large enough. | `cultivation` |
+| `/cultivation beast release [confirm]` | Severs the bond entirely so you can tame another. Everything the beast cultivated is lost, so it only acts when passed the literal word `confirm`. | `cultivation` |
+
+<Divider />
+
+## Cave Abode
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation abode (dwelling, cave)` | Reports your [Cave Abode](/dwelling/), and your sect hall's spring if you have one, from anywhere. | `cultivation` |
+| `/cultivation abode claim` | Claims (or moves) your abode to the chunk you are standing in. Any ground will take an abode, but the vein beneath it decides how fast the spring gathers. | `cultivation` |
+| `/cultivation abode collect (drink)` | Drinks the Spirit Spring dry, banking what it gathered as your own Qi. Must be run standing inside the abode or your sect's hall. | `cultivation` |
+| `/cultivation abode deposit (offer)` | Offers the entire stack in your hand as upkeep, each item worth the hours listed for it in `Upkeep-Item-Hours`. Must be run inside the abode. | `cultivation` |
+| `/cultivation abode info` | The same readout as bare `/cultivation abode`, in subcommand form. | `cultivation` |
+| `/cultivation abode abandon [confirm]` | Gives up your abode and frees the ground. On its own it reports what the spring has banked - `confirm` throws that away with it. | `cultivation` |
+
+<Divider />
+
+## Formations
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation formations (formation, arrays)` | Lists every [formation](/formations/) you control - your sect's and your personal ones - with its type, world, anchor chunk, and radius. | `cultivation` |
+
+<Divider />
+
+## Duels
+
+`/cultivation duel` takes an action word, and some actions take a further argument. See [Duels](/duels/).
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation duel challenge {player} [wager]` | Stakes banked Qi and challenges another cultivator. Omitting the wager duels for nothing; a wager that is not a whole number is rejected by the engine, and a negative one is refused outright. | `cultivation` |
+| `/cultivation duel accept {player}` | Accepts that player's pending challenge, starting the duel. | `cultivation` |
+| `/cultivation duel decline {player}` | Declines that player's pending challenge. | `cultivation` |
+| `/cultivation duel yield (forfeit)` | Forfeits your current duel - the wager goes to your opponent. | `cultivation` |
+
+<Divider />
+
+## Sects
+
+Every command here is also reachable as `/cultivation sect ...`. In-sect authority (leader, elder, member) is enforced per action rather than by permission node - see [Sects](/sects/).
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/sect` | Opens the sect menu UI. | `cultivation.sect` |
+| `/sect create {name}` | Founds a new sect under that name. | `cultivation.sect` |
+| `/sect invite {player}` | Invites an online player to your sect. | `cultivation.sect` |
+| `/sect join {sect}` | Joins a sect by name. | `cultivation.sect` |
+| `/sect leave` | Leaves your current sect. | `cultivation.sect` |
+| `/sect kick {player}` | Removes a member from your sect, whether they are online or not. | `cultivation.sect` |
+| `/sect disband [confirm]` | Warns, naming the sect and its member count; `confirm` dissolves it entirely and tells every member. | `cultivation.sect` |
+| `/sect claim` | Claims (or moves) the sect hall to the chunk you are standing in. Only succeeds on a Spirit Vein of the configured quality. | `cultivation.sect` |
+| `/sect inscribe` | Carves the technique manual in your hand into the hall, teaching that art to every member for as long as the sect holds the hall. The manual is consumed. Run empty-handed, it scours the existing inscription away instead. | `cultivation.sect` |
+| `/sect banner [set <banner>]` | With no argument, lists the [banners](/sects/) your sect may fly, marking the current one. With a name - `azure`, or the full `cultivation:azure` - flies it over the hall; `none` returns to the plain vein light. Leader or elder only. | `cultivation.sect` |
+| `/sect dao [element]` | Names the sect’s own [Dao](/sects/#sect-dao), so ground it holds turns Qi toward that element. Run bare to see the current one, or pass `none` to clear it. Leader only. | `cultivation.sect` |
+| `/sect building [claim\|dao\|abandon\|list]` | Raises a [holding](/sects/#buildings) on the chunk you are standing in, toggles whether that building’s ground carries the sect Dao, gives one up, or lists what the sect holds and what it could still raise. Leader only to claim or change. | `cultivation.sect` |
+| `/sect info (i)` | Prints your sect's standing - members, hall, banner, and bonuses. | `cultivation.sect` |
+| `/sect menu (ui)` | Opens the sect menu UI, the same page bare `/sect` opens. | `cultivation.sect` |
+
+<Divider />
+
+## Sect Wars
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/sect war [sect]` | With no argument, or with `status`, reports the siege your sect is in - hold accrued, time left in the window, whether defenders are contesting it - or the cooldown remaining if there is no siege. Any member may query it. | `cultivation.sect` |
+| `/sect war {sect}` | Declares a siege on that rival sect's claimed hall. Leader only. See [Sect Wars](/wars/). | `cultivation.sect` |
+
+<Divider />
+
+## Rankings
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation top (leaderboard)` | Prints the server's top 10 cultivators by realm and stage. | `cultivation` |
+| `/sect top (leaderboard)` | Prints the server's top 10 sects. | `cultivation.sect` |
+
+<Divider />
+
+## Admin Commands
+
+Every command below that takes a `[player]` works on a name the server has actually seen before. Aim one at somebody who has never joined this world - a typo, usually - and it says so rather than reporting nothing at all.
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation admin` | Opens the live in-game config editor UI. | `cultivation.admin` |
+| `/cultivation admin setrealm {realm} \| player {realm} {name}` | Sets a player's [realm](/realms/) directly, keeping their current stage. | `cultivation.admin` |
+| `/cultivation admin setstage {stage} \| player {stage} {name}` | Sets a player's sub-stage directly (Early, Middle, Late, or Peak), keeping their current realm. | `cultivation.admin` |
+| `/cultivation admin setqi {qi} \| player {qi} {name}` | Sets a player's currently banked Qi directly. | `cultivation.admin` |
+| `/cultivation admin setrace {race} \| player {race} {name}` | Sets a player's [race](/races/) directly. Bypasses that race's unlock realm unless `Race-Admin-Bypasses-Realm-Gate` is set to false. | `cultivation.admin` |
+| `/cultivation admin grantracechoice [amount] \| player {amount} {name}` | Grants additional race changes, letting the player reopen the race menu and pick again. Defaults to 1. | `cultivation.admin` |
+| `/cultivation admin grantskillpoints [amount] \| player {amount} {name}` | Grants additional [skill tree](/skilltree/) points. Defaults to 1. | `cultivation.admin` |
+| `/cultivation admin setlifebound {level} [xp] \| player {level} [xp] {name}` | Force-sets the level, and optionally the banked XP within that level, of the [Life-Bound Treasure](/lifebound/) the player is holding. | `cultivation.admin` |
+| `/cultivation admin test grant {duration} {name}` | Puts another player into a sandbox [profile](/profiles/) for a set time, or extends the one they have. | `cultivation.admin` |
+| `/cultivation admin test realm {realm} {name}` | Sets that sandbox cultivator's realm. Refused unless they are on the sandbox slot. | `cultivation.admin` |
+| `/cultivation admin test stage {stage} {name}` | Sets that sandbox cultivator's stage. | `cultivation.admin` |
+| `/cultivation admin test qi {amount} {name}` | Sets that sandbox cultivator's banked Qi. | `cultivation.admin` |
+| `/cultivation admin test end {name}` | Ends a sandbox profile early and returns the player to their own progress. | `cultivation.admin` |
+| `/land` | Names the claim you are standing on and opens its [land rules](/land/). | `cultivation` |
+| `/cultivation admin reset \| reset player {name}` | Resets a player's cultivation progress back to Body Refinement, Early-Stage, with 0 Qi. | `cultivation.admin` |
+
+<Divider />
+
+## Debug Commands
+
+| Command | Description | Permission |
+| --- | --- | --- |
+| `/cultivation debug (d)` | The debug command group. | `cultivation.debug` |
+| `/cultivation debug vein` | Prints the tier and current/max Qi of the Spirit Vein in the chunk you are standing in. | `cultivation.debug.vein` |
+
+Every admin command that targets another player accepts an optional player argument - omit it to target yourself. See [Permissions](/permissions/) for the full permission list and what is granted by default.

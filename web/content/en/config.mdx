@@ -1,0 +1,94 @@
+---
+title: "Main Config"
+description: "Cultivation Mod - Main Config"
+group: "Configuration"
+mermaid: true
+---
+
+# Config
+
+Everything the Cultivation mod can be tuned with lives under `mods/Siren_Cultivation/`, updated here for **Cultivation v0.7.0**. Rather than one enormous file, the settings are split into themed files and grouped into folders - the progression core in `Cultivation/`, everything a cultivator practices in `Arts/`, everything that only matters because other cultivators exist in `Society/`, one file per playable race in `Race/`, and the server's own runtime save state in `Data/`.
+
+Every settings file carries its own `ConfigName` and `ConfigVersion`. The version increases automatically whenever that file's layout or balance changes, and your existing settings are migrated for you - you never need to edit `ConfigVersion` by hand, and setting it backwards only causes the migration to run again. Files also contain `Description-*` string fields, which are documentation rather than settings: the mod rewrites them to their current text on load, so editing one does nothing.
+
+Every value on these pages can also be changed live, in game, with `/cultivation admin` instead of touching JSON at all. See the [Commands](/commands/) and [Permissions](/permissions/) pages for how to reach it.
+
+As of 0.5.0, other mods can add **their own** sections to that editor, appearing beside Cultivation's own on the Config tab and in an admin-only block of the settings menu. Anything you see there that is not documented on these pages belongs to another mod - see [API Addons](/api-addons/).
+
+As of 0.7.2 the editor covers **22 sections and 135 settings**, and rows can be checkboxes, whole numbers, dropdowns or text rather than only decimals - so the master switches that used to be JSON-only (sects, the dao, techniques, beasts, formations, abodes, duels, wars, refinement, manuals, respec, Spirit Sense, tribulation and the Heart-Devil Trial) are now in-game toggles. 0.7.2 added a Beast Growth section of its own and put technique mastery, terrain affinity, the sect Dao, sect buildings and the Life-Bound natures in reach of the same editor. Cultivation's own sections are ordinary API registrations, which is what lets an add-on reorder, hide or replace one - see [Registries](/api-registries/).
+
+<Divider />
+
+## The folder groups
+
+| Group | Files | Covers |
+| --- | --- | --- |
+| [Core Config](/config-core/) | `Config.json` | The Qi curve and the per-level health/damage bonuses. |
+| [Cultivation Configs](/config-cultivation/) | `SpiritCoreConfig`, `SpiritVeinConfig`, `BreakthroughConfig`, `RaceSystemConfig`, `SkillTreeConfig` | Where Qi comes from, what advancing costs, and what a rank-up pays out. |
+| [Arts Configs](/config-arts/) | `DaoConfig`, `TechniqueConfig`, `ManualConfig`, `AlchemyConfig`, `RefinementConfig`, `LifeBoundConfig`, `BeastConfig` | What a cultivator practices, crafts, tempers, and binds to themselves. |
+| [Society Configs](/config-society/) | `SectConfig`, `FormationConfig`, `DwellingConfig`, `WarConfig`, `DuelConfig`, `PartnerConfig` | Sects, the ground they hold, the homes they build, and the fights they pick. |
+| [Compatibility](/compatibility/) | `EndlessLevelingConfig` | How Cultivation shares the stats it raises with other mods. Inert unless that mod is installed. |
+| [Race Configs](/config-race/) | `Human.json`, `Demon.json`, `Deity.json` | One independent stat file per playable race. |
+| [Data Files](/config-data/) | `SectsData`, `FormationsData`, `WarsData`, `DwellingsData`, `LeaderboardData` | Runtime save state. Not settings - do not hand-edit these. |
+
+<Divider />
+
+## Folder layout
+
+```
+mods/Siren_Cultivation/
+├── Config.json
+├── Cultivation/
+│   ├── SpiritCoreConfig.json
+│   ├── SpiritVeinConfig.json
+│   ├── BreakthroughConfig.json
+│   ├── RaceSystemConfig.json
+│   └── SkillTreeConfig.json
+├── Arts/
+│   ├── DaoConfig.json
+│   ├── TechniqueConfig.json
+│   ├── ManualConfig.json
+│   ├── AlchemyConfig.json
+│   ├── RefinementConfig.json
+│   ├── LifeBoundConfig.json
+│   └── BeastConfig.json
+├── Society/
+│   ├── SectConfig.json
+│   ├── FormationConfig.json
+│   ├── DwellingConfig.json
+│   ├── WarConfig.json
+│   ├── DuelConfig.json
+│   └── PartnerConfig.json
+├── Compatibility/
+│   └── EndlessLevelingConfig.json
+├── Race/
+│   ├── Human.json
+│   ├── Demon.json
+│   └── Deity.json
+└── Data/
+    ├── SectsData.json
+    ├── FormationsData.json
+    ├── WarsData.json
+    ├── DwellingsData.json
+    └── LeaderboardData.json
+```
+
+<Divider />
+
+## Where to start
+
+```mermaid
+flowchart TD;
+    A["mods/<br/>Siren_Cultivation/"] --> B["Config.json<br/>the Qi curve"];
+    A --> C["Cultivation/<br/>gaining and spending Qi"];
+    A --> D["Arts/<br/>daos, techniques, crafts"];
+    A --> E["Society/<br/>sects, land, conflict"];
+    A --> F["Race/<br/>per-race stats"];
+    A --> G["Data/<br/>save state, do not edit"];
+    click B "../config-core/" "View the Core Config page";
+    click C "../config-cultivation/" "View the Cultivation Configs page";
+    click D "../config-arts/" "View the Arts Configs page";
+    click E "../config-society/" "View the Society Configs page";
+    click F "../config-race/" "View the Race Configs page";
+    click G "../config-data/" "View the Data Files page";
+```

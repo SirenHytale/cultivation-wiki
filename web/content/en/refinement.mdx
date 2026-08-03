@@ -1,0 +1,68 @@
+---
+title: "Weapon Refinement"
+description: "Cultivation Mod - Tempering weapons in tribulation lightning"
+group: "Arts & Treasures"
+---
+
+# Weapon Refinement
+
+**Refinement (炼器)** is the art of tempering a weapon in heavenly tribulation lightning until it takes on a [Dao](/dao/) element. Run `/cultivation refine {element}` (alias `temper`) with the weapon in hand and you sit down into a ritual much like a breakthrough - the lightning falls on **you**, not the blade.
+
+It unlocks at **Qi Condensation** (`Refinement-Unlock-Realm`) and is enabled by default.
+
+Run `/cultivation refine` with no element to see what your held weapon currently is, and what one more tempering would cost, take and risk.
+
+<Divider />
+
+## The Ritual
+
+- The chunk you sit in must hold at least `Refinement-Min-Chunk-Qi` (40) Spirit Vein Qi - a far lower bar than a breakthrough, since refinement is meant to be doable anywhere reasonable.
+- The banked Qi is spent **up front**, when the ritual starts, not on success. That mirrors how abandoning a breakthrough costs you a stage, and stops anyone rolling the ritual repeatedly for free by standing up whenever the vein runs dry.
+- Only one ritual at a time. A refinement cannot be layered onto a breakthrough or advancement already under way.
+- Tribulation lightning strikes you on the usual `Tribulation-Strike-Interval-Seconds` for `Refinement-Tribulation-Damage-Percent-Of-Max-Health` (10%) of your max health, still scaled by realm and still lethal if `Tribulation-Lethal` is on. Tempering a blade can kill you.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Refinement-Base-Qi-Cost` | 200 | Cost of a tier I attempt. |
+| `Refinement-Qi-Cost-Tier-Multiplier` | 1.6 | Multiplied per tier beyond the first. |
+| `Refinement-Base-Duration-Seconds` | 45 | Length of a tier I ritual. |
+| `Refinement-Duration-Seconds-Per-Tier` | 15 | Added per tier beyond the first. |
+| `Refinement-Max-Tier` | 9 | The ceiling - tiers are shown as I through IX. |
+
+<Divider />
+
+## Success, Failure and Risk
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Refinement-Base-Success-Chance` | 0.95 | Chance at tier I. |
+| `Refinement-Success-Chance-Loss-Per-Tier` | 0.08 | Subtracted per tier beyond the first. |
+| `Refinement-Min-Success-Chance` | 0.15 | Floor - no attempt is ever more hopeless than this. |
+| `Refinement-Demote-On-Fail-From-Tier` | 4 | At or above this target tier, failure also costs a tier. |
+| `Refinement-Destroy-On-Fail` | false | If true, a demoting failure destroys the weapon outright. |
+
+At the defaults that works out to 95% at tier I, sliding down to the 15% floor by the upper tiers. Below tier IV a failure only wastes the banked Qi. From tier IV up it also knocks the weapon down a tier - and a weapon demoted out of tier I simply becomes a plain weapon again.
+
+The command warns you before an attempt that carries the demotion risk.
+
+<Divider />
+
+## What a Refined Weapon Does
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Refinement-Damage-Bonus-Percent-Per-Tier` | 4 | Outgoing damage bonus per tier - +36% at tier IX. |
+| `Refinement-Resonance-Bonus-Percent` | 15 | Added when the weapon's element matches its wielder's own dao. |
+
+A refined weapon also **supplies its element** to the combat system for a wielder who has no dao of their own: the damage converts to that element and takes the full Wu Xing counter cycle, bonus and penalty alike. That is the point of refinement for a cultivator who has not reached Foundation Establishment yet, or who never chose an element. When the weapon's element does match your dao, the resonance bonus stacks on top of everything else.
+
+The tier and element live on the item's own metadata and are shown in its tooltip. Re-tempering an already-refined weapon with a **different** element starts that new element over at tier I, so switching a finished weapon's affinity throws away everything you put into it.
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation refine` | Report the held weapon's refinement and what the next tier costs. Alias: `temper`. | `cultivation` |
+  | `/cultivation refine {element}` | Begin a tempering ritual with that Dao element. | `cultivation` |
+</Panel>
+
+Every value on this page lives in the refinement config - see [Config](/config-arts/) - and the commands are on the [Commands](/commands/) page.

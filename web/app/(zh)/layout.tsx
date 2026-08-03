@@ -1,0 +1,75 @@
+import type { Metadata } from "next";
+import { Cinzel } from "next/font/google";
+import "@/styles/xianxia.css";
+import "@/styles/next-overrides.css";
+import { DrawerProvider } from "@/components/chrome/Drawer";
+import { Footer } from "@/components/chrome/Footer";
+import { Header } from "@/components/chrome/Header";
+import { ThemeScript } from "@/components/chrome/ThemeScript";
+import { SITE } from "@/lib/nav";
+import { t } from "@/lib/i18n";
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: `${SITE.zhTitle} — ${SITE.zhTagline}`,
+    template: `%s — 修真百科`,
+  },
+  description: "修真 —— Hytale 的仙侠修炼模组。境界、灵气、宗门、功法与大道。",
+  openGraph: {
+    siteName: "Cultivation Wiki",
+    type: "website",
+    locale: "zh_CN",
+    images: [
+      {
+        url: "/assets/img/social-card.png",
+        width: 1200,
+        height: 630,
+        alt: "Cultivation — a Xianxia progression mod for Hytale",
+      },
+    ],
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+/** Chinese root layout. A separate root layout is what lets <html lang> be
+    zh-CN in the server-rendered HTML rather than patched in after hydration. */
+export default function ChineseLayout({ children }: { children: React.ReactNode }) {
+  const ui = t("zh");
+  return (
+    <html lang="zh-CN" data-theme="dark" className={cinzel.variable} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* See the note in the English layout: next/font has no Chinese subset
+            for this family, so it cannot be self-hosted. It matters more here
+            than anywhere — this is the body font for the whole tree. */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&display=swap"
+        />
+      </head>
+      <body>
+        <DrawerProvider>
+          <a className="skip-link" href="#main">
+            {ui.skipToContent}
+          </a>
+          <Header lang="zh" />
+          {/* See the English layout: the .layout grid is per-page so the home
+              page can be full-bleed and sidebar-less. */}
+          {children}
+          <Footer lang="zh" />
+        </DrawerProvider>
+      </body>
+    </html>
+  );
+}

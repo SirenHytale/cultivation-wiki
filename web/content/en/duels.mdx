@@ -1,0 +1,98 @@
+---
+title: "Duels"
+description: "Cultivation Mod - Consensual Qi-wager duels between cultivators"
+group: "The World"
+mermaid: true
+---
+
+# Duels
+
+A **duel** is a consensual 1v1 between two cultivators with banked Qi staked on the outcome. Both sides opt in, the loser forfeits their Qi to the winner, and the transfer conserves Qi exactly - nothing is created.
+
+Gated behind `Duels-Enabled` (default `true`).
+
+<Divider />
+
+## Challenge and Accept
+
+```mermaid
+flowchart TD;
+    Challenge["/cultivation duel challenge Rival 500<br/>Expires in 60s"];
+    Decline["/cultivation duel decline<br/>Nothing staked, nothing lost"];
+    Accept["/cultivation duel accept Challenger<br/>The duel is live"];
+    Death["One duelist dies<br/>Their opponent wins"];
+    Yield["/cultivation duel yield<br/>You forfeit the wager"];
+    Void["Voided<br/>Timeout or a logout - no payout"];
+
+    Challenge --> Accept;
+    Challenge --> Decline;
+    Accept --> Death;
+    Accept --> Yield;
+    Accept --> Void;
+```
+
+- `/cultivation duel challenge <player> [wager]` stakes that much of your banked Qi and challenges them. Omit the wager entirely for an **honor duel** with nothing on the line. Type something that is *not* a whole number and the challenge is **rejected** rather than quietly staking 0 - so `1O0` for `100` tells you, instead of sending a duel you thought was worth a hundred Qi. A negative wager is refused too.
+- The challenge expires after **60 seconds** if it goes unanswered (`Duel-Challenge-Expiry-Seconds`).
+- `Duel-Max-Wager` caps the stake. It is **0 by default, meaning uncapped**; any positive value is a ceiling, and a challenge above it is refused.
+- `/cultivation duel accept <player>` accepts that player's pending challenge and the duel begins at once. Both duelists are told the stake.
+- `/cultivation duel decline <player>` throws the challenge away.
+- Neither player may be in another duel - one duel at a time, on both sides.
+
+Duels are **never persisted**. A server restart voids anything in flight.
+
+<Divider />
+
+## Deciding a Duel
+
+A duel ends in one of three ways.
+
+**By death.** The duel is decided by one duelist *dying*, not by who struck them. The opponent wins whether they landed the blow themselves, their [Spirit Beast](/beasts/) did, a third party interfered, or the loser simply drowned. Anything narrower would leave duels that can never resolve.
+
+**By yielding.** `/cultivation duel yield` (alias `forfeit`) ends it immediately and pays the wager to your opponent.
+
+**Voided.** No Qi changes hands at all when a duel becomes undecidable:
+
+- Either participant logs out.
+- The duel runs past **600 seconds** (`Duel-Max-Duration-Seconds`; `0` disables the timeout). This is the backstop against an opponent who simply walks away and never fights.
+
+Whoever is still online is told the duel was called off.
+
+<Divider />
+
+## The Payout
+
+The loser forfeits **up to** the wager in banked Qi, and the winner gains **exactly what the loser actually forfeited**. If the loser could not cover the full stake, the winner receives only what was really there - a duel is never a Qi faucet. A participant who is offline when the payout resolves is skipped, and since a skipped loser forfeits nothing, the winner gains nothing either.
+
+The Qi moves off your banked total; it does not touch your realm or stage. See [Cultivation Realms](/realms/) for what banked Qi is spent on.
+
+<Divider />
+
+## Duels on a PvP-Disabled World
+
+`Duel-Overrides-World-Pvp` is **new in v0.4.1** and defaults to `true`.
+
+Normally a world with `IsPvpEnabled` set to false cancels all player-versus-player damage, which would leave a duel decidable only by yielding. Since a duel is explicit, mutual, staked consent, Cultivation re-permits exactly that damage - and only that damage:
+
+- Only between the two duelists, only while their duel is live.
+- Only when the world's PvP flag was demonstrably the sole reason the hit was cancelled. If PvP is actually enabled there, the cancellation came from something else and is left alone.
+- Never through spawn protection, invulnerability, intangibility, a player already dead, or a world with incoming player damage switched off entirely.
+- The revived hit still runs through all of Cultivation's own damage filters afterwards, so realm scaling, [Dao](/dao/) conversion, Life-Bound and technique effects all apply as usual.
+
+Set it to `false` to make the world's PvP rule absolute - in which case a duel on such a world can only be settled by `/cultivation duel yield`.
+
+<Divider />
+
+## Commands
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation duel challenge <player> [wager]` | Stakes banked Qi and challenges another cultivator. | `cultivation` |
+  | `/cultivation duel accept <player>` | Accepts that player's pending challenge. | `cultivation` |
+  | `/cultivation duel decline <player>` | Declines that player's pending challenge. | `cultivation` |
+  | `/cultivation duel yield` | Forfeits your current duel; the wager goes to your opponent. | `cultivation` |
+</Panel>
+
+<Divider />
+
+`Duels-Enabled`, `Duel-Challenge-Expiry-Seconds`, `Duel-Max-Wager`, `Duel-Overrides-World-Pvp` and `Duel-Max-Duration-Seconds` all live in the society config - see [Society Config](/config-society/) for the full field reference, and [Commands](/commands/) for every command in the mod. For the other ways cultivators come to blows, see [Sect Wars](/wars/) and [Sects](/sects/).

@@ -1,0 +1,100 @@
+---
+title: "Formations"
+description: "Cultivation Mod - Placeable chunk-anchored spirit arrays"
+group: "The World"
+---
+
+# Formations
+
+A **Formation (阵法)** is a spirit array inscribed into the ground, anchored to one chunk and reaching out over the chunks around it. There are three kinds: one that feeds your own cultivation, one that starves everyone else's, and one that hurts anybody who walks in uninvited. They are how a [Sect](/sects/) turns a claimed mountain into ground that actually defends itself.
+
+The whole system is gated behind `Formations-Enabled` (default `true`).
+
+<Divider />
+
+## The Three Arrays
+
+| Array | Radius | Effect |
+| --- | --- | --- |
+| **Spirit-Gathering Array** (聚灵阵) | 2 chunks (`QiGathering-Radius-Chunks`) | Multiplies meditation Qi regen by **1.4x** (`QiGathering-Regen-Multiplier`) for its controllers meditating in range. |
+| **Mountain-Guarding Array** (护山大阵) | 2 chunks (`Warding-Radius-Chunks`) | Multiplies meditation Qi regen by **0.25x** (`Warding-Outsider-Regen-Multiplier`) for outsiders meditating in range. Controllers are unaffected. |
+| **Immortal-Binding Array** (困仙阵) | 1 chunk (`Trapping-Radius-Chunks`) | Roots and wounds intruders caught inside it. |
+
+Radius is square (Chebyshev), measured in chunks from the anchor - so radius 2 covers a 5x5 block of chunks, and radius 1 a 3x3.
+
+By default a Spirit-Gathering Array only feeds its own controllers. Set `QiGathering-Benefits-Everyone` to `true` to make it a public good that helps any meditator in range.
+
+A Mountain-Guarding Array does more than choke Qi: outsiders also cannot inscribe their own formations on warded ground, and cannot claim a [Cave Abode](/dwelling/) there.
+
+**The Immortal-Binding Array's trap**, every **3 seconds** (`Trapping-Interval-Seconds`), does the following to every intruder standing inside it:
+
+- Deals **4% of their max health** (`Trapping-Damage-Percent-Of-Max-Health`) through the normal damage pipeline, so armour and the mod's own damage reductions apply.
+- Applies the `Root` entity effect for **2.5 seconds** (`Trapping-Debuff-Effect` / `Trapping-Debuff-Duration-Seconds`). Blank the effect id to skip the debuff and keep only the damage.
+- Never kills. `Trapping-Lethal` is `false` by default, so a trap tick always leaves at least a sliver of health - the intruder has to flee its bounds, not respawn. Set it `true` to let a trap finish off a persistent trespasser.
+
+Controllers walk through their own trap freely.
+
+<Divider />
+
+## Who Controls a Formation
+
+Control follows a single rule: **your sect if you are in one, otherwise you personally.**
+
+- Placed by a sect member, the array is controlled by the sect, and every member of that sect is a beneficiary.
+- Placed by a soloist, it is controlled by their UUID alone.
+
+Membership is resolved live, so joining or leaving a sect immediately changes who benefits from - and who is an outsider to - that sect's arrays, without touching the stored formation. Two consequences worth knowing:
+
+- **Renaming a sect** carries its formations with it (see [Sects](/sects/)), so a sect never ends up warded and trapped by its own arrays.
+- **Disbanding a sect** disperses every array it controlled. Left behind they would match no living sect, making everyone an outsider forever, with nobody able to remove them.
+
+<Divider />
+
+## Placing and Removing
+
+Each array has its own **Formation Flag** item. Use the flag while standing in the chunk you want as the anchor.
+
+| Flag item | Places | Crafted from |
+| --- | --- | --- |
+| Spirit-Gathering Array Flag | 聚灵阵 | 1 Profound Core + 1 Spirit Core |
+| Mountain-Guarding Array Flag | 护山大阵 | 1 Divine Core + 1 Profound Core |
+| Immortal-Binding Array Flag | 困仙阵 | 2 Divine Cores |
+
+See [Qi Gathering](/qi-gathering/) for where cultivation cores come from. None of the three flags drops on death.
+
+The flag is a **toggle**. Using it on a chunk where you already control an array of that same type **removes** it instead of placing a second one. Otherwise:
+
+- The flag is consumed only on a successful placement - a refusal costs you nothing.
+- Placement is refused if another controller already holds an array of that type on that exact chunk.
+- Placement is refused on ground warded against you, whether by someone else's Mountain-Guarding Array or by a sustained [Cave Abode](/dwelling/).
+- Placement is refused once you are at your cap: **3 formations per controller** (`Max-Formations-Per-Controller`). The cap is per controller, so a whole sect shares three between them.
+
+`/cultivation formations` (aliases `formation`, `arrays`) lists every array you control - type, world, anchor chunk and radius, newest first - so you can walk back to one and disperse it.
+
+<Tag>v0.7.0</Tag> Arrays you or your sect control are also **pinned on Hytale's own world map**, colored by what the array does - green draws Qi, blue wards, red catches - so a map full of them reads without opening a single label. Only *your* arrays appear: a Trapping array's whole value is that the person walking into it did not know, and publishing every array to every map would quietly disable the mechanic.
+
+<Divider />
+
+## Overlap and Stacking
+
+Only an *exact-chunk duplicate of the same type* is refused, so arrays on neighbouring chunks overlap freely. To keep that from compounding, **each type applies at most once** however many arrays of that type cover the chunk you are standing on. Three Mountain-Guarding arrays laid side by side choke an outsider at 0.25x, not 0.25x cubed.
+
+Different types do combine: an outsider meditating inside both a Spirit-Gathering array that benefits everyone and a Mountain-Guarding array gets 1.4 x 0.25.
+
+A [Cave Abode](/dwelling/)'s own meditation multipliers are applied separately from this, on top.
+
+<Divider />
+
+## Commands
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation formations` | Lists every formation you control, with its anchor chunk and radius. | `cultivation` |
+</Panel>
+
+Placement and removal have no command - they are done entirely with the flag items.
+
+<Divider />
+
+Every value on this page lives in the society config - see [Society Config](/config-society/) for the full field reference, and [Commands](/commands/) for every command in the mod. Formations interlock with [Sects](/sects/), defend a hall during [Sect Wars](/wars/), and share their warding rules with [Cave Abodes](/dwelling/).

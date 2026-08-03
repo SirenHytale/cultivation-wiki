@@ -1,0 +1,75 @@
+---
+title: "Karma"
+description: "Cultivation Mod - Karma from slaying cultivators, and how the heavens collect it"
+group: "The Path"
+---
+
+# Karma
+
+**Karma (业力)** is the weight of blood on a cultivator's ledger. It is charged for killing other players, it bleeds away on its own if you stop, and the heavens collect it at your next [tribulation](/tribulations/). New in v0.4.1, and switched on by default (`Karma-Enabled`).
+
+Karma lives on your Dao page alongside the Yin-Yang balance - `/cultivation dao`.
+
+<Divider />
+
+## Earning It
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Karma-Per-Player-Kill` | 8 | Charged for slaying another player. |
+| `Karma-Per-Farmed-Kill` | 25 | Charged instead when the kill is a farmed one. |
+| `Karma-Devil-Multiplier` | 1.5 | A [Devil Path](/dao/) cultivator accrues this many times as much. |
+| `Karma-Max` | 200 | The ceiling. Everything the tribulation does scales off your fraction of it. |
+
+Karma is charged on **every** player kill, honest or not. Only players count - hunting creatures costs you nothing.
+
+## The Farmed-Kill Deterrent
+
+A kill is "farmed" when you kill the same victim again inside `Pk-Same-Victim-Cooldown-Seconds` (900), or when the victim's realm index is below `Pk-Min-Victim-Realm` (1). A farmed kill pays **nothing at all** - no Devil Path Qi, no dao deeds, no [manual](/manuals/) drop roll.
+
+What it does do is charge 25 karma instead of 8. That is the whole point of the design: cutting down the same fresh alt over and over does not merely stop rewarding you, it starts building a debt. Farming an alt buys retribution, not power.
+
+For a Devil-path cultivator the multiplier stacks on top, so a farmed kill on the Devil Path costs 37.5 karma - about a fifth of the whole scale in a single blow.
+
+## Decay
+
+Karma bleeds off at `Karma-Decay-Per-Hour` (2) for every real hour you go without killing anyone. It is wall-clock based and settled lazily rather than ticked, so it keeps draining while you are logged out - simply not killing anyone for a few days clears a light ledger on its own.
+
+## Severity Bands
+
+The scale is divided into quarters, and you are warned in chat when you cross into a new one rather than after every kill. At the defaults, that puts warnings at 50, 100 and 150 karma. The bands exist purely to pace the warnings - the retribution itself is a smooth curve, not a set of thresholds.
+
+<Divider />
+
+## How the Heavens Collect
+
+Karma does nothing to you day to day. It is paid at your next ritual, and it makes [tribulation](/tribulations/) worse in two ways at once, both scaled linearly by how much of `Karma-Max` you carry.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Karma-Tribulation-Damage-Percent-At-Max` | 150 | At full karma every bolt lands 150% harder. |
+| `Karma-Tribulation-Extra-Strikes-At-Max` | 4 | At full karma the ritual draws up to 4 additional bolts. |
+
+**Deeper bolts.** A tribulation strike normally deals 15% of your max health, scaled by realm. Karma multiplies that percentage by `1 + karmaFraction x 1.5`, so a cultivator at half karma takes bolts 75% harder and one at full karma takes them 2.5 times as hard.
+
+**More of them, in the same time.** The extra strikes are delivered by *compressing the interval between bolts*, not by extending the ritual - a karma-laden breakthrough takes exactly as long as a clean one, it just gets hit more often on the way through. That is deliberate: lengthening the ritual would punish you twice for the same debt.
+
+## Settling the Ledger
+
+Surviving a tribulation strike burns off `Karma-Cleared-Per-Tribulation-Survived` (15). Only a bolt you actually survive counts - the roll is deferred to the following meditation tick, after the damage has fully resolved through your armor, Iron Body, Qi Barrier and everything else, so the survivor is simply the one still standing.
+
+This is what keeps a heavy ledger survivable rather than a spiral. Enduring the heavens' judgement is how the debt is meant to be paid; waiting it out is merely the slow way. When your karma reaches zero mid-ritual you are told so.
+
+<Divider />
+
+## Turning It Off
+
+`Karma-Enabled` false switches the whole system off: no karma is charged, none decays, and tribulations ignore it entirely. The anti-farm gates (`Pk-Same-Victim-Cooldown-Seconds`, `Pk-Min-Victim-Realm`) are separate and keep working either way.
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation dao` | Open the Dao page - your current karma is shown here. | `cultivation` |
+</Panel>
+
+Every value on this page lives in the Dao config alongside the paths - see [Config](/config-arts/) - and the commands are on the [Commands](/commands/) page.

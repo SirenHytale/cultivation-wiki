@@ -1,0 +1,138 @@
+---
+title: "FAQ & Troubleshooting"
+description: "Answers to the most common Cultivation questions: why a breakthrough will not start, why a ritual paused, why you lost a sub-stage, why cores are not dropping, and how to fix them."
+group: "Start Here"
+---
+
+# FAQ & Troubleshooting
+
+Almost everything that looks like a bug in Cultivation is a mechanic doing its job. These are the ones people hit most, with the setting behind each one so you can check or change it yourself.
+
+## Rituals & Breakthroughs
+
+### My breakthrough will not start
+
+Three conditions must all be true, and the ritual silently waits until they are:
+
+- You are at **Peak** sub-stage of your current realm.
+- You have banked the Qi the next rank costs — check `/cultivation`.
+- The chunk you sat down in holds at least **750** vein Qi (`Breakthrough-Min-Chunk-Qi`). A sub-stage advancement only needs **200** (`Advancement-Min-Chunk-Qi`).
+
+Use `/cultivation debug vein` to read the current chunk's Qi. Most "it won't start" reports are a vein that has been meditated dry.
+
+### My ritual started, then froze partway
+
+The vein dropped below the minimum while you were drawing on it. The ritual *pauses* rather than fails, and resumes on its own once the vein regenerates past the bar. Progress already made is kept.
+
+<Note kind="tip" title="Why this happens">
+  Meditation drains `2.75` Qi/second but a vein only regenerates `1.5`/second. You will always outpace regeneration on one chunk — that is deliberate. Rotate between a few good chunks instead of camping one.
+</Note>
+
+### I lost a sub-stage and my banked Qi
+
+Two things cause a demotion, both intended:
+
+- **You cancelled the ritual** — by standing up, or by drifting more than `0.35` blocks from where you sat (`Meditation-Movement-Cancel-Threshold`).
+- **Qi Deviation** — your composure broke during a [Heart-Devil Trial](/tribulations/) (`HeartDevil-Deviation-Demotes`).
+
+You are never demoted below Early-Stage of your *current* realm, so a failed breakthrough cannot cost you a whole realm.
+
+### The breakthrough killed me
+
+Working as designed. Tribulation lightning is lethal by default (`Tribulation-Lethal`) and lands a bolt every **6 seconds of ritual progress** for **15%** of your max health, scaling **×1.12** per realm reached.
+
+Go in at full health, bank a Tribulation Ward Pill, stack damage reduction, and settle your [karma](/karma/) first — karma buys you both deeper and more frequent bolts. Server owners who want the drama without the deaths can set `Tribulation-Lethal` to `false`; bolts then always leave a sliver of health.
+
+### I am facing an inner demon instead of lightning
+
+Your Yin or Yang lean has reached `HeartDevil-Lean-Threshold` (`0.5`). Past that point the heavens send the **Heart-Devil Trial** instead, which attacks composure rather than health. A Tribulation Ward Pill does nothing here — you need a **Clear-Mind Pill**. Pulling your balance back toward the middle takes you off that track entirely.
+
+## Qi & Spirit Veins
+
+### My vein never seems to refill
+
+Veins regenerate at `1.5`/second, and draining pulls from a **1-chunk radius** (`Spirit-Vein-Drain-Radius-Chunks`) — so sitting just one chunk over is not far enough. Move properly, or find a rich vein.
+
+<Note kind="warn" title="Server owners: the rule that matters">
+  Regeneration × the tier multiplier must stay **below** the drain rate. At the defaults, a dragon vein is `1.5 × 1.6 = 2.4`, still under the `2.75` drain. Push regeneration past drain and that chunk becomes an infinite Qi fountain.
+</Note>
+
+### I am not getting any cores
+
+Drop chances are low on purpose, rolled **rarest-first**, and **at most one core drops per kill**:
+
+| Core | Chance per kill | Qi |
+| --- | --- | --- |
+| <Chip>Spirit Core</Chip> | 12% `Spirit-Core-Drop-Chance` | 30 |
+| <Chip>Profound Core</Chip> | 3.5% `Profound-Core-Drop-Chance` | 80 |
+| <Chip>Divine Core</Chip> | 0.8% `Divine-Core-Drop-Chance` | 220 |
+
+Absorb them *while meditating* for a **×1.1** bonus (`Meditation-Core-Bonus-Multiplier`).
+
+## Races, Sects & Land
+
+### The race menu will not let me choose
+
+Demon and Deity unlock at **Golden Core Formation**. Human is available from the start. If you have already spent your one choice, an admin can grant another with `/cultivation admin grantracechoice <player>`.
+
+### I cannot claim a sect hall here
+
+Halls require a **rich vein or better** (`Sect-Hall-Min-Vein-Tier`, default `1`). Ordinary chunks can never host a hall — set it to `2` to demand a dragon vein. Rich veins roll at **3%** of chunks and dragon veins at **0.3%**, deterministically from the world seed, so scouting is the real cost.
+
+### I lost my Cave Abode
+
+Upkeep lapsed. Abodes cost Spirit Stones over time (`Upkeep-Enabled`) with a **168-hour grace period** (`Upkeep-Grace-Hours`) before the claim is released. You can bank up to **720 hours** ahead (`Upkeep-Max-Banked-Hours`). Turn `Upkeep-Enabled` off entirely on a relaxed server.
+
+## Profiles & Presence
+
+### Does my sect come with my new profile?
+
+No — and neither does your [abode](/dwelling/), your [formations](/formations/) or your marriage. A [profile](/profiles/) carries *who you are* (realm, Qi, race, dao, skill tree, techniques); everything anchored to the account or the world is shared by all of them. Your equipped [title](/titles/) and settings are account-wide too.
+
+### Why can I not switch profiles?
+
+A mod that replaces Cultivation's progression ladder must declare that it keeps its own records in step with your saves. Until it does, switching is **refused rather than half-performed** — the message names the cause. Ask that add-on's author about `ProgressionProvider.supportsProfiles()`, or see [Building Add-ons](/api-addons/).
+
+### How do I stop seeing everyone's auras?
+
+Settings → *Cultivation Aura* → **Show me other cultivators' auras**. To stop giving one off, use `/cultivation aura` or the first toggle in the same section. A server owner can switch [auras](/auras/) off entirely with `Aura-Enabled`.
+
+### My title vanished from my nameplate
+
+Another mod that writes display names — a nickname plugin, usually — overwrote it; the overhead name is shared engine state and the last writer wins. Re-equip the [title](/titles/), or drop the other mod's nickname for that player.
+
+## Arts & Items
+
+### I know a technique but cannot use it
+
+If `Requires-Manual` is on for that art, knowing the realm is not enough — you have to have **learned it from a manual**. Manuals drop from surviving tribulation bolts (4%), from NPC cultivators, and from players you kill. A sect leader can also [inscribe](/sects/) one technique into their hall, lending it to every member for as long as the sect holds that hall.
+
+### My Life-Bound weapon stopped gaining levels
+
+Check it is still *yours*. A Life-Bound Treasure is bound to a specific player, not an item type. Depending on server config, an item that changes hands either silently rebinds or stays permanently inert for anyone but its original owner. Run `/cultivation bind` on your own bound item to reset it to level 1.
+
+## Servers & Compatibility
+
+### Does this work in singleplayer?
+
+Yes. Everything except the multiplayer-only systems (sects, wars, duels) works solo, and those refuse politely rather than breaking. See [Tuning Presets](/presets/) for a solo-friendly starting configuration.
+
+### My realms have different names and a different curve
+
+An add-on has replaced the progression system through the 0.5.0 provider hook — that is a supported feature, not a bug. Your original Cultivation progress is never overwritten while an add-on is running; it sits underneath untouched, and removing the add-on hands you back the realm you had. See [Compatible Mods](/addons/).
+
+### I edited a config file and nothing changed
+
+Three usual causes:
+
+- You edited a `Description-*` field. Those are documentation, not settings — the mod rewrites them on load.
+- You edited `ConfigVersion`. Never do this by hand; migration is automatic.
+- The value is also live in `/cultivation admin`, and a later in-game save overwrote your file edit.
+
+### Nothing works after updating
+
+Delete the **old jar** first — two copies of `Cultivation.jar` on the classpath will conflict. Your configs and player data are migrated automatically and do not need resetting between versions.
+
+<Note title="Still stuck?">
+  Check the [Commands](/commands/) page for the exact syntax and permission each command needs, and [Configuration](/config/) for every value referenced above.
+</Note>

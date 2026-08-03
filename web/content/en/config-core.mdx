@@ -1,0 +1,45 @@
+---
+title: "Core Config"
+description: "Cultivation Mod - Core Config"
+group: "Configuration"
+---
+
+# Core Config
+
+The one file that sits at the root of `mods/Siren_Cultivation/`. It holds the Qi curve every realm and sub-stage requirement is derived from, and the flat stat bonuses a cultivator earns for each rank climbed. If you only ever change one file to make your server harder or gentler, this is it. See [Cultivation Realms](/realms/) for what the curve produces, and [Qi Gathering](/qi-gathering/) for where the Qi itself comes from.
+
+<Divider />
+
+## Config
+
+The core Qi curve, per-level stat bonuses, and the server-wide switches for [auras](/auras/) and [notices](/notices/), found in the path `mods/Siren_Cultivation/Config.json`.
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| "ConfigName" | "Cultivation Config" | The name given to this config file. |
+| "ConfigVersion" | 4 | Current Version when you have loaded for the plugin. |
+| "Base-Qi-Requirement" | 175.0 | The amount of Qi needed to advance from the very first sub-stage (Body Refinement, Early-Stage). Every other requirement in the curve scales off of this base number. |
+| "Description-Base-Qi-Requirement" | A long string explaining the value above. | Restates that this is the first sub-stage's requirement and that the whole curve scales from it. |
+| "Substage-Growth-Rate" | 1.55 | Multiplies the Qi requirement for each sub-stage climbed within a realm (Early -> Middle -> Late -> Peak). |
+| "Realm-Base-Multiplier" | 4.25 | Multiplies the Qi requirement per realm reached, stacking on top of the substage growth. |
+| "Realm-Breakthrough-Multiplier" | 5.5 | An extra multiplier applied only to the Qi cost of a realm breakthrough (Peak -> the next realm's Early-Stage), on top of the normal curve. |
+| "Description-Realm-Breakthrough-Multiplier" | A long string explaining the value above. | Explains that this extra multiplier is what makes a realm breakthrough feel like a much bigger deal than a routine sub-stage advancement. |
+| "Health-Bonus-Per-Level" | 4.0 | Additive max health granted per total sub-level gained (realm * 4 + stage). |
+| "Damage-Percent-Bonus-Per-Level" | 2.0 | Percent damage increase granted per total sub-level gained. |
+| "Aura-Enabled" | true | Server-wide master switch for [cultivation auras](/auras/) - both the realm aura and the meditation aura. Players who only want to hide their own, or stop seeing everyone else's, have their own three toggles in Settings instead. |
+| "Aura-Pulse-Interval-Seconds" | 4.0 | How often each aura is re-spawned at its player's position. Clamped between 1.0 and 6.0 - the particle assets are sized so exactly two pulses overlap at the default. |
+| "Aura-Desc" | A long string explaining the values above. | Restates the split between this server-wide switch and the per-player Settings toggles. |
+| "Notice-Titles-Enabled" | true | The full-screen [titles](/notices/) for breakthroughs, advancements, demotions and sect changes. Chat still says everything these show, so switching them off loses nothing. |
+| "Notice-Notifications-Enabled" | true | The corner [notifications](/notices/) for smaller moments - a skill node unlocked, a Life-Bound level, a respec, a ritual beginning. |
+| "Breakthrough-Title-Radius-Chunks" | 9 | How far a realm breakthrough is announced to other cultivators, as a radial distance in chunks. Clamped between 0 and 32; 0 keeps every breakthrough private. |
+| "Notice-Desc" | A long string explaining the values above. | Notes that Qi Deviation and the Heart-Devil Trial keep their own purpose-written titles regardless of these switches. |
+
+<Divider />
+
+## Notes on the curve
+
+The Qi requirement for a given rank-up is `Base-Qi-Requirement`, grown by `Substage-Growth-Rate` for each sub-stage inside the realm and by `Realm-Base-Multiplier` for each realm already reached, with `Realm-Breakthrough-Multiplier` layered on top only when the rank-up is a realm breakthrough. Raising `Substage-Growth-Rate` steepens the climb inside a realm; raising `Realm-Base-Multiplier` widens the gap between realms.
+
+Two other systems reduce what a player actually pays: the tier-8 Qi Cost Reduction skill stat (capped by `Qi-Cost-Reduction-Cap-Percent` in the [Skill Tree config](/config-cultivation/)), and a race's `Qi-Gain-Rate-Percent-Bonus` (see the [Race Configs](/config-race/)) which raises income rather than lowering cost.
+
+The two stat bonuses are applied per total sub-level, counted as `realm * 4 + stage`, so they grow smoothly across the whole progression rather than jumping only at realm boundaries. Race bonuses from `Health-Bonus-Percent` and `Damage-Bonus-Percent` layer on top of these.

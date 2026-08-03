@@ -1,0 +1,69 @@
+---
+title: "Data Files"
+description: "Cultivation Mod - Data Files"
+group: "Configuration"
+---
+
+# Data Files
+
+The five files in `mods/Siren_Cultivation/Data/` are not settings. They are the server's own save state, written through the same config machinery as everything else purely because that machinery is the proven way this engine persists a server-wide array to disk.
+
+**Do not hand-edit these while the server is running.** For each one, a manager class holds the live authoritative copy in memory and rewrites the whole file on every mutation - so any change you make on disk is silently overwritten the next time anything happens in that system. If you genuinely need to surgically fix one, stop the server first, edit, and start it again.
+
+They also carry no `ConfigName` or `ConfigVersion`, since there is no user-facing layout to version or migrate.
+
+Everything below describes what each file stores, not how to tune it. The tunable settings for these systems live in the [Society Configs](/config-society/).
+
+<Divider />
+
+## Sects Data
+
+Every sect on the server, found in the path `mods/Siren_Cultivation/Data/SectsData.json`. Held live by SectManager.
+
+A single `Sects` array. Each sect records its name, its leader's UUID, its member and elder rosters, its join policy and any pending join requests, its motto, and - if it holds one - its hall: the world, the hall chunk's X and Z, and the Spirit Vein tier that chunk rolled. A sect that has inscribed a technique into its hall also stores which technique that is, since it must be revoked from every member the moment the hall is lost.
+
+See [Sects](/sects/).
+
+<Divider />
+
+## Formations Data
+
+Every placed formation on the server, found in the path `mods/Siren_Cultivation/Data/FormationsData.json`. Held live by FormationManager.
+
+A single `Formations` array. Each formation records its type, the world and chunk it is anchored to, its radius in chunks, and its controller - either an owner UUID for a personally placed formation or a sect name for a sect-controlled one - plus the time it was created.
+
+See [Formations](/formations/).
+
+<Divider />
+
+## Wars Data
+
+In-flight sieges and post-war cooldowns, found in the path `mods/Siren_Cultivation/Data/WarsData.json`. Held live by WarManager.
+
+Two arrays. `Sieges` holds each live siege: the attacking and defending sect names, the world and chunk of the contested hall, how much hold time the attacker has accrued so far, and how much of the siege window remains. `Cooldowns` holds each sect name that is currently immune from being besieged, with the timestamp that immunity expires at.
+
+Because the remaining window and the cooldown expiry are both persisted, a server restart mid-siege does not hand either side a free reset.
+
+See [Sect Wars](/wars/).
+
+<Divider />
+
+## Dwellings Data
+
+Every claimed Cave Abode and every sect-hall spring, found in the path `mods/Siren_Cultivation/Data/DwellingsData.json`. Held live by DwellingManager.
+
+A single `Dwellings` array. Each entry records its owner UUID (or the sect name, for a hall spring), the world, chunk, and radius it covers, the Spirit Vein tier beneath it, the owner's realm ordinal (which sets the spring's pool cap), the Qi currently banked in its spring, the timestamp that Qi was last accrued to, the timestamp its paid upkeep runs out at, and when it was created.
+
+The two timestamps are why abodes accrue on wall-clock time rather than ticking: the spring's growth is computed from the gap between `LastAccrualMillis` and now, so it fills correctly across a restart or a long absence without the server doing any work while nobody is there.
+
+See [Cave Abodes](/dwelling/).
+
+<Divider />
+
+## Leaderboard Data
+
+The server-wide ranking index, found in the path `mods/Siren_Cultivation/Data/LeaderboardData.json`. Held live by CultivationLeaderboard.
+
+A single `Entries` array, one per known cultivator: their UUID, their last-seen username, their realm and stage ordinals, and their banked Qi.
+
+This is persisted rather than kept purely in memory because sect rankings are summed from it. While the index lived only in memory, a member who had not logged in since the last restart scored zero, so sect standings ranked sects by who happened to be online rather than by their actual roster.

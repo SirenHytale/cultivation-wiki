@@ -1,0 +1,371 @@
+---
+title: "API Events"
+description: "Cultivation Mod - the full event reference for addon developers"
+group: "For Developers"
+---
+
+# API Events
+
+Cultivation exposes 156 events across twelve `*Events` classes in `plugin.siren.API`. Nearly every mechanic in the mod is exposed twice - once as a cancellable `Pre*` event fired before the change, and once as a plain post-event fired after it is committed.
+
+Every class follows the conventions documented on `CultivationEvents`, so learning one teaches you all eleven.
+
+<Divider />
+
+## Pre and post
+
+A `Pre*` event extends `plugin.siren.API.CancellableEvent` and fires **before** anything is applied. It gives you two powers:
+
+- `event.setCancelled(true)` vetoes the operation. The mod checks the flag the instant dispatch returns and abandons the operation, leaving no state changed. Nothing is rolled back because nothing was applied yet - that is the whole reason these fire before the fact. A cancelled pre-event means the matching post-event never fires.
+- The setters on the event re-tune the numbers driving the operation - a breakthrough's Qi cost, a technique's cooldown, a tribulation bolt's damage, a tame's odds. Whatever the listeners leave in those fields when dispatch finishes is what the mod actually uses. This is the supported way to reshape a mechanic from an addon without touching the [Config](/config/) files.
+
+A post-event is a plain Java `record`. It cannot be cancelled and is purely a notification; by the time it fires, the change is already visible on the component.
+
+`CancellableEvent` exposes exactly two methods:
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `isCancelled()` | `boolean` | Whether some listener has vetoed this operation. |
+| `setCancelled(boolean cancelled)` |  | Vetoes, or with `false` un-vetoes, the operation. |
+
+**Every listener runs, even after one cancels.** A later listener is free to call `setCancelled(false)` and let the operation through, so plugin load order decides who wins a disagreement. If you only want to observe, listen for the post-event instead.
+
+<Divider />
+
+## Registering and threading
+
+Each event has a matching `on*` registration method taking a `Consumer` of the event type:
+
+```java
+CultivationEvents.onPreQiGain(event -> event.setAmount(event.amount() * 1.25F));
+DaoEvents.onPathChange(event -> myPlugin.announce(event.player(), event.newPath()));
+```
+
+Registration is a plain `CopyOnWriteArrayList.add`, safe from any plugin's `setup()` in any load order. There is no unregister - listener lifetime is server lifetime.
+
+Listeners are invoked **synchronously on the world thread of the player the event happened to**. Component reads through the usual accessors are safe inside a listener, but do not block, and hop threads yourself (for example `CompletableFuture.runAsync(task, otherWorld)`) before touching anything that lives on another world. A listener that throws is logged and skipped, so one broken addon can break neither the mod's own systems nor the other addons listening to the same event.
+
+Two subsystems carry extra constraints, both stated in their own source:
+
+- **Sects.** Sect mutations run inside `SectManager`'s synchronized methods, so a `SectEvents` listener is holding that lock. Read what you need, hand it off, and return. Do not call back into `SectManager`'s mutating methods from a listener.
+- **UUIDs instead of PlayerRefs.** `SectEvents`, `DuelEvents`, `FormationEvents` and `DwellingEvents` identify players by `java.util.UUID`, because those operations routinely touch offline players - a kicked member, a disbanded sect's roster, a duel that outlived a session. Resolve one with `Universe.get().getPlayer(uuid)` and check `isValid()`.
+
+<Divider />
+
+## Cultivation core
+
+`plugin.siren.API.CultivationEvents` - 28 events covering Qi, meditation, rituals, breakthroughs, advancements, demotions, tribulations, the Heart-Devil Trial, Qi Deviation, races, Life-Bound Treasures and the skill tree. Player-facing docs: [Cultivation Realms](/realms/), [Qi Gathering](/qi-gathering/), [Tribulations](/tribulations/), [Races](/races/), [Life-Bound Treasures](/lifebound/), [Skill Tree](/skilltree/).
+
+Two enums live on this class: `RitualType` (`BREAKTHROUGH`, `ADVANCEMENT`, `REFINEMENT`) and `MeditationStopReason` (`COMMAND`, `MOVEMENT`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreQiGainEvent` | Yes | Qi is about to be banked, for **every** source - meditation ticks, duel payouts, admin grants - after all the mod's own multipliers. | `ref()`, `player()`, `amount()` / `setAmount(float)`, `baseAmount()` (what it was before any listener touched it). |
+| `QiGainEvent` | No | Qi was banked. | `ref()`, `player()`, `amount()`, `totalQi()`. |
+| `PreMeditationStartEvent` | Yes | A player is about to sit down to meditate. Cancel to keep them on their feet. | `ref()`, `player()`. |
+| `MeditationStartEvent` | No | A player sat down to meditate. | `ref()`, `player()`. |
+| `PreMeditationStopEvent` | Yes | A player is about to stop meditating. Cancel to make a ritual unbreakable, or to suppress the movement-cancel. | `ref()`, `player()`, `reason()`. |
+| `MeditationStopEvent` | No | A player stopped. Any ritual penalty has already been applied. | `ref()`, `player()`, `reason()`. |
+| `PreRitualStartEvent` | Yes | A timed ritual is about to begin. Cancel and the player keeps meditating (banking Qi) but never enters the ritual. | `ref()`, `player()`, `type()`, `requiredSeconds()` / `setRequiredSeconds(float)`. |
+| `RitualStartEvent` | No | The tick that first accrued ritual progress. | `ref()`, `player()`, `type()`. |
+| `PreBreakthroughEvent` | Yes | A realm breakthrough is about to complete. Cancel to hold them at Peak stage - progress resets and they may retry. | `ref()`, `player()`, `fromRealm()`, `toRealm()`, `qiCost()` / `setQiCost(float)`. |
+| `BreakthroughEvent` | No | The breakthrough completed; their stage is `EARLY`. | `ref()`, `player()`, `newRealm()`. |
+| `PreAdvancementEvent` | Yes | A sub-stage advancement is about to complete. Cancel to hold them where they are. | `ref()`, `player()`, `realm()`, `fromStage()`, `toStage()`, `qiCost()` / `setQiCost(float)`. |
+| `AdvancementEvent` | No | The advancement completed. | `ref()`, `player()`, `realm()`, `newStage()`. |
+| `PreDemotionEvent` | Yes | A player is about to lose a sub-stage for abandoning a ritual. Cancel and they walk away free - their banked Qi survives too. | `ref()`, `player()`, `realm()`, `oldStage()`, `newStage()`, `wasBreakthrough()`. |
+| `DemotionEvent` | No | The demotion landed; banked Qi is wiped and the granting skill points revoked. | `ref()`, `player()`, `realm()`, `oldStage()`, `newStage()`, `wasBreakthrough()`. |
+| `PreTribulationStrikeEvent` | Yes | Tribulation lightning is about to strike a mid-ritual cultivator. Cancel to spare them entirely - no bolt, no thunder, no damage. Set damage to 0 to let the bolt fall harmlessly. | `ref()`, `player()`, `damage()` / `setDamage(float)` (post-lethality-cap, pre-armor), `breakthroughRitual()`. |
+| `TribulationStrikeEvent` | No | The bolt fell. | `ref()`, `player()`, `damage()`, `breakthroughRitual()`. |
+| `PreHeartDevilTrialEvent` | Yes | A Heart-Devil pulse is about to torment a mid-ritual cultivator. Set the drain to 0 to make the apparition purely cosmetic. | `ref()`, `player()`, `composureDrain()` / `setComposureDrain(float)`, `leanFraction()` (0-1), `pulseIndex()` (from 0), `breakthroughRitual()`. |
+| `HeartDevilTrialEvent` | No | A pulse resolved. | `ref()`, `player()`, `composureRemaining()`, `deviated()`, `breakthroughRitual()`. |
+| `PreQiDeviationEvent` | Yes | Composure has shattered and Qi Deviation (走火入魔) is about to be applied. Cancel to spare the penalty - the ritual still ends. | `ref()`, `player()`, `demotes()` / `setDemotes(boolean)`, `qiLoss()` / `setQiLoss(float)`, `breakthroughRitual()`. |
+| `QiDeviationEvent` | No | The penalty landed. Exactly one of `demoted()` / `qiLost()` carries it. | `ref()`, `player()`, `demoted()`, `qiLost()`, `breakthroughRitual()`. |
+| `PreRaceChangeEvent` | Yes | A race is about to change. Cancel and the race menu simply reports no change. | `ref()`, `player()`, `oldRace()`, `newRace()`, `adminOverride()`. |
+| `RaceChangeEvent` | No | The race changed. Not fired when an admin sets the race a player already has. | `ref()`, `player()`, `oldRace()`, `newRace()`, `adminOverride()`. |
+| `PreSkillUnlockEvent` | Yes | A skill tree node is about to be unlocked. Cancel and their points are not spent. | `ref()`, `player()`, `node()`, `pointCost()` / `setPointCost(int)`. |
+| `SkillUnlockEvent` | No | The node is unlocked; points spent and modifiers re-applied. | `ref()`, `player()`, `node()`. |
+| `PreRespecEvent` | Yes | A skill tree respec is about to run. | `ref()`, `player()`, `refundedPoints()` / `setRefundedPoints(int)`. |
+| `RespecEvent` | No | Every node was cleared and the points handed back. | `ref()`, `player()`, `refundedPoints()`. |
+| `PreLifeBoundLevelUpEvent` | Yes | A Life-Bound Treasure is about to level. Cancel to hold it at its current level - the XP is still banked. | `owner()`, `item()` (the stack **before** the level-up is written), `oldLevel()`, `newLevel()`. |
+| `LifeBoundLevelUpEvent` | No | The treasure levelled. | `owner()`, `item()` (already updated), `newLevel()`. |
+
+Config keys these override: `setRequiredSeconds` corresponds to `Breakthrough-Base-Seconds` and `Advancement-Base-Seconds`; `PreTribulationStrikeEvent.setDamage` to `Tribulation-Damage-Percent-Of-Max-Health` and `Advancement-Tribulation-Damage-Percent-Of-Max-Health`; `setComposureDrain` to `HeartDevil-Composure-Drain-Per-Pulse`; `setDemotes` / `setQiLoss` to `HeartDevil-Deviation-Demotes` and `HeartDevil-Deviation-Qi-Loss-Percent`; `PreRespecEvent` mirrors `Respec-Enabled` and the `/cultivation respec` command. See [Config](/config/) and [Commands](/commands/).
+
+`player()` is `@Nullable` throughout this class - it is null only when the `PlayerRef` component was unavailable.
+
+<Divider />
+
+## Dao and karma
+
+`plugin.siren.API.DaoEvents` - 14 events covering elements, drift, the Yin-Yang balance, moral paths and karma. Player-facing docs: [The Dao](/dao/) and [Karma](/karma/).
+
+Alignment and karma move on nearly every meditation tick and every kill, so these fire often. Keep the listeners cheap, and prefer the path and drift events when you only care about the outcome. The class carries one enum, `ElementChangeReason` (`CHOSEN`, `DRIFT`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreDaoElementChangeEvent` | Yes | A cultivator is about to take, or switch to, an element. Cancel and it reports an unchanged dao. | `ref()`, `player()`, `dao()`, `oldElement()` (null on first choice), `newElement()` / `setNewElement(DaoElement)`, `reason()`, `qiCost()` / `setQiCost(float)` (always 0 for a first choice and for `DRIFT`). |
+| `DaoElementChangeEvent` | No | The element changed. | `ref()`, `player()`, `dao()`, `oldElement()`, `newElement()`, `reason()`, `qiCost()`. |
+| `PreDaoAffinityGainEvent` | Yes | Deed affinity is about to be added toward an element - the pressure that eventually causes drift. | `player()`, `dao()`, `element()`, `amount()` / `setAmount(float)`. |
+| `DaoAffinityGainEvent` | No | The affinity was added. | `player()`, `dao()`, `element()`, `amount()`. |
+| `DaoDriftWarningEvent` | No | A cultivator was warned their dao is drifting. Fires once per newly-threatening element. | `player()`, `dao()`, `chosenElement()`, `driftingTo()`. |
+| `PreAlignmentShiftEvent` | Yes | A Yin-Yang shift is about to be applied. The race-bias split happens after this. | `dao()`, `amount()` / `setAmount(float)` (the raw shift), `towardYin()`. |
+| `AlignmentShiftEvent` | No | The balance moved. | `dao()`, `yin()`, `yang()` - the amounts actually added after race bias split the shift. |
+| `PrePathChangeEvent` | Yes | A moral path is about to change. Cancel and the underlying balance is untouched, so this only suppresses the reclassification. | `player()`, `dao()`, `oldPath()`, `newPath()`. |
+| `PathChangeEvent` | No | The path changed and was announced. | `player()`, `dao()`, `oldPath()`, `newPath()`. |
+| `PreKarmaGainEvent` | Yes | Karma (业力) is about to be charged for a kill. Cancel to leave the ledger clean. | `player()`, `dao()`, `amount()` / `setAmount(float)`, `farmedKill()` (a repeat kill inside the anti-farm window - worth no Qi, but more karma). |
+| `KarmaGainEvent` | No | Karma was charged. | `player()`, `dao()`, `amount()`, `total()` (after the `Karma-Max` cap), `farmedKill()`. |
+| `KarmaClearedEvent` | No | Karma was worked off - by enduring a tribulation strike, or by the wall-clock decay of not killing anyone. | `dao()`, `amount()`, `total()`, `fromTribulation()`. |
+| `PreDevilHarvestEvent` | Yes | A Devil-path (魔道) cultivator is about to harvest banked Qi from a slain player. | `killer()`, `killerPlayer()`, `qi()` / `setQi(float)`. |
+| `DevilHarvestEvent` | No | The harvest happened. | `killer()`, `killerPlayer()`, `qi()`. |
+
+Config keys these override: `PreDaoElementChangeEvent.setQiCost` corresponds to `Dao-Switch-Base-Qi-Cost` and `Dao-Switch-Qi-Cost-Realm-Multiplier`; `PreDaoAffinityGainEvent.setAmount` to `Dao-Affinity-Per-Elemental-Kill` (with `Dao-Drift-Margin` deciding when drift trips); `PreAlignmentShiftEvent.setAmount` to `Meditation-Alignment-Shift-Per-Tick` and `Kill-Yin-Amount`, with the post-event split governed by `Qi-Alignment-Yin-Bias-Percent`; `PreKarmaGainEvent.setAmount` to `Karma-Per-Player-Kill` and `Karma-Per-Farmed-Kill`; `PreDevilHarvestEvent.setQi` to `Path-Devil-PK-Qi-Reward`.
+
+<Divider />
+
+## Techniques
+
+`plugin.siren.API.TechniqueEvents` - 13 events covering performing and learning arts (功法), the Sword Flying toggle, and the timed combat buffs. Player-facing docs: [Techniques](/techniques/) and [Manuals](/manuals/).
+
+These fire for third-party techniques registered through [`CultivationAPI.registerTechnique`](/api-registries/) exactly as they do for the built-in ones - the gate, cost and cooldown pipeline is shared. Two enums live here: `BuffType` (`IRON_BODY`, `QI_INFUSION`, `QI_BARRIER`, `CLOUD_STEP`) and `FlightStopReason` (`TOGGLE`, `QI_EXHAUSTED`, `DEATH`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreTechniquePerformEvent` | Yes | A technique is about to be performed - every gate has already passed. Cancel to refuse it silently: no Qi spent, no cooldown. | `ref()`, `player()`, `technique()`, `qiCost()` / `setQiCost(float)`, `cooldownSeconds()` / `setCooldownSeconds(float)` (0 or less stamps no cooldown). |
+| `TechniquePerformEvent` | No | The Qi is spent, the cooldown stamped, and the effect has run. | `ref()`, `player()`, `technique()`, `qiCost()`. |
+| `PreTechniqueLearnEvent` | Yes | A technique is about to be learned for good. Cancel to refuse it - the manual is consumed either way, matching how a manual for an already-known art is spent. | `ref()`, `player()`, `techniqueId()`. |
+| `TechniqueLearnEvent` | No | The art is learned. Sect-taught arts are resolved live and never fire this - listen for the sect inscription events instead. | `ref()`, `player()`, `techniqueId()`. |
+| `PreSwordFlightStartEvent` | Yes | A cultivator is about to take to the sky on their sword. | `ref()`, `player()`, `horizontalSpeed()` / `setHorizontalSpeed(float)`, `verticalSpeed()` / `setVerticalSpeed(float)`. |
+| `SwordFlightStartEvent` | No | They are airborne. | `ref()`, `player()`, `horizontalSpeed()`, `verticalSpeed()`. |
+| `PreSwordFlightStopEvent` | Yes | A cultivator is about to come down. Safe to cancel for `TOGGLE`, but cancelling a `DEATH` stop leaves flight state on a corpse - gate on `reason()`. | `ref()`, `player()`, `reason()`. |
+| `SwordFlightStopEvent` | No | They came down; their mount, if any, has already despawned. | `ref()`, `player()`, `reason()`. |
+| `PreTechniqueBuffApplyEvent` | Yes | A timed technique buff is about to be applied. | `ref()`, `player()`, `type()`, `durationSeconds()` / `setDurationSeconds(float)`, `magnitude()` / `setMagnitude(float)`. |
+| `TechniqueBuffApplyEvent` | No | The buff is on. `magnitude` means whatever that buff measures - a reduction percent, a damage percent, a shield pool, a speed multiplier. | `ref()`, `player()`, `type()`, `durationSeconds()`, `magnitude()`. |
+| `TechniqueBuffExpireEvent` | No | Cloud Step's speed multiplier was reverted, on expiry or on cleanup. | `ref()`, `player()`, `type()`. |
+| `PreTechniqueMasteryAdvanceEvent` | Yes | An art is about to rise a mastery rung. Cancel to hold it where it is — the XP and the studied manuals stay banked, so it simply tries again the next time anything about it changes. | `ref()`, `player()`, `techniqueId()`, `stage()` (the rung it is rising *to*). |
+| `TechniqueMasteryAdvanceEvent` | No | An art’s mastery rose a rung. | `ref()`, `player()`, `techniqueId()`, `stage()`. |
+
+Config keys these override: `PreTechniquePerformEvent` mirrors the per-technique `Qi-Cost` and `Cooldown-Seconds` entries in the technique rules (see [Config](/config/)), and the `/cultivation technique <id>` command on the [Commands](/commands/) page. `PreTechniqueLearnEvent` only ever fires for techniques whose rule sets `Requires-Manual`.
+
+<Divider />
+
+## Items
+
+`plugin.siren.API.ItemEvents` - 12 events covering cultivation drops, pills, cores, manuals and weapon refinement (炼器). Player-facing docs: [Qi Gathering](/qi-gathering/), [Alchemy](/alchemy/), [Manuals](/manuals/), [Weapon Refinement](/refinement/).
+
+Learning a technique from a manual fires the technique learn events above; a manual that teaches a skill node goes through the core skill-unlock events. This class covers the manual **item** itself. Two enums live here: `LootType` (`CULTIVATION_CORE`, `BEAST_EGG`, `SPIRIT_STONE`, `MANUAL`) and `RefinementOutcome` (`SUCCESS`, `DESTROYED`, `DEMOTED`, `FAILED`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreLootDropEvent` | Yes | A cultivation drop is about to be handed over. Cancel to deny it. | `ref()`, `player()`, `type()`, `itemId()` / `setItemId(String)` - substitute a different item entirely. |
+| `LootDropEvent` | No | The drop landed in a player's inventory and was announced. Never fires when the roll missed or the item did not fit. | `ref()`, `player()`, `type()`, `itemId()`. |
+| `PreManualReadEvent` | Yes | A manual is about to teach. Cancel to refuse - the manual is consumed either way. | `ref()`, `player()`, `techniqueId()` (set when it teaches a technique), `skillNodeId()` (set when it teaches a node). |
+| `ManualReadEvent` | No | The manual was read and its teaching applied. | `ref()`, `player()`, `techniqueId()`, `skillNodeId()`. |
+| `PrePillConsumeEvent` | Yes | A spirit pill is about to take effect. Cancel and the pill is **not** consumed. | `ref()`, `player()`, `effect()` - the interaction's configured effect id. |
+| `PillConsumeEvent` | No | The pill was consumed and its effect applied. | `ref()`, `player()`, `effect()`. |
+| `PreSpiritCoreConsumeEvent` | Yes | A cultivation core is about to be absorbed. Cancel and the core is **not** consumed. | `ref()`, `player()`, `qi()` / `setQi(float)` (meditation bonus already folded in), `meditating()`. |
+| `SpiritCoreConsumeEvent` | No | The core was absorbed. | `ref()`, `player()`, `qi()` - what was actually banked. |
+| `PreRefinementStartEvent` | Yes | A refinement ritual is about to begin. Cancel and no Qi is spent. | `ref()`, `player()`, `element()`, `targetTier()`, `qiCost()` / `setQiCost(float)`. |
+| `RefinementStartEvent` | No | The ritual began; the Qi is spent and the cultivator seated. | `ref()`, `player()`, `element()`, `targetTier()`, `qiCost()`. |
+| `PreRefinementCompleteEvent` | Yes | A refinement ritual is about to resolve. Cancel to abandon it silently - the weapon is untouched, the up-front Qi stays spent. | `ref()`, `player()`, `element()`, `targetTier()`, `successChance()` / `setSuccessChance(float)` - 1 guarantees it, 0 dooms it. |
+| `RefinementCompleteEvent` | No | The ritual resolved. | `ref()`, `player()`, `element()`, `targetTier()`, `outcome()`, `stack()` - the weapon afterward, or null when destroyed. |
+
+Config keys these override: `PreLootDropEvent` corresponds to the drop-chance keys (`Spirit-Core-Drop-Chance`, `Profound-Core-Drop-Chance`, `Divine-Core-Drop-Chance`, `Egg-Kill-Drop-Chance`, `SpiritStone-Kill-Drop-Chance`, `Manual-Tribulation-Drop-Chance`, `Manual-Player-Kill-Drop-Chance`); `PreSpiritCoreConsumeEvent.setQi` to `Spirit-Core-Qi-Value` / `Profound-Core-Qi-Value` / `Divine-Core-Qi-Value` and `Meditation-Core-Bonus-Multiplier`; `PreRefinementStartEvent.setQiCost` to `Refinement-Base-Qi-Cost` and `Refinement-Qi-Cost-Tier-Multiplier`; `PreRefinementCompleteEvent.setSuccessChance` to `Refinement-Base-Success-Chance`, `Refinement-Success-Chance-Loss-Per-Tier` and `Refinement-Min-Success-Chance`.
+
+<Divider />
+
+## Beasts
+
+`plugin.siren.API.BeastEvents` - 18 events covering taming, hatching, summoning, a companion's own cultivation, and since 0.7.2 its arts, evolutions and mounts. Player-facing docs: [Spirit Beasts](/beasts/).
+
+Two enums live here: `BindSource` (`TAME`, `HATCH`) and `DismissReason` (`DISMISSED` - sent home, keeps everything it cultivated; `RELEASED` - freed for good, the bond broken).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreBeastTameAttemptEvent` | Yes | A tame is about to be rolled. Cancel to refuse the attempt outright - no talisman is spent. | `ref()`, `player()`, `species()`, `chance()` / `setChance(float)` - 0-1, after realm and dao-resonance weighting. |
+| `BeastTameAttemptEvent` | No | The roll resolved. | `ref()`, `player()`, `species()`, `chance()`, `success()`. |
+| `PreBeastBindEvent` | Yes | A companion is about to be bound. Cancel and the cultivator keeps whatever beast they already had - the talisman or egg is still spent. | `ref()`, `player()`, `species()`, `source()`. |
+| `BeastBindEvent` | No | The companion is bound, replacing whatever came before. | `ref()`, `player()`, `species()`, `source()`. |
+| `PreBeastSummonEvent` | Yes | A companion's body is about to be spawned. Cancel and the player is told the summon failed. | `owner()`, `player()`, `species()`. |
+| `BeastSummonEvent` | No | The body spawned beside its master. | `owner()`, `player()`, `beast()` (the spawned entity), `species()`. |
+| `PreBeastDismissEvent` | Yes | A companion is about to be sent home or freed. | `owner()`, `player()`, `reason()`. |
+| `BeastDismissEvent` | No | The body left the world. | `owner()`, `player()`, `reason()`. |
+| `PreBeastXpGainEvent` | Yes | A companion is about to gain XP. Fires for every source - meditation shares, kills and hand-feeding alike. | `owner()`, `player()`, `beast()` (the live `SpiritBeastComponent` - realm, stage, banked XP), `amount()` / `setAmount(float)`. |
+| `BeastXpGainEvent` | No | The XP was banked. | `owner()`, `player()`, `amount()`, `stagesGained()` (0 when it only banked progress). |
+| `PreBeastAdvanceEvent` | Yes | A companion is about to advance a stage. Cancel to hold it where it is - the XP for that stage is already spent, so this costs it the progress. | `owner()`, `player()`, `fromRealm()`, `fromStage()`. |
+| `BeastAdvanceEvent` | No | The companion advanced. Fires once per stage. | `owner()`, `player()`, `realm()`, `stage()`. |
+| `PreBeastArtEvent` | Yes | A companion is about to perform an art. Cancel to stop it — the cooldown is only stamped once the effect has actually run, so a vetoed art costs the beast nothing and it tries again on its next opening. | `owner()`, `player()`, `beast()`, `art()`, `commanded()` (false when the beast chose it itself). |
+| `BeastArtEvent` | No | A companion performed one of its arts. | `owner()`, `player()`, `beast()`, `art()`, `commanded()`. |
+| `PreBeastEvolveEvent` | Yes | A companion is about to be put through the evolution ritual. The Qi has **not** been taken at this point, so a veto costs the cultivator nothing. | `owner()`, `player()`, `beast()`, `from()`, `to()`, `successChance()` / setter. |
+| `BeastEvolveEvent` | No | The ritual resolved. `succeeded()` says which way, and `to()` is null on failure. | `owner()`, `player()`, `beast()`, `from()`, `to()`, `succeeded()`. |
+| `PreBeastMountEvent` | Yes | A companion is about to be summoned in its rideable body. Cancel to refuse the mount. | `owner()`, `player()`, `beast()`, `species()`. |
+| `BeastMountEvent` | No | The companion was summoned in its rideable body. | `owner()`, `player()`, `beast()`, `species()`. |
+
+Config keys these override: `PreBeastTameAttemptEvent.setChance` corresponds to `Tame-Chance-Bonus-Per-Realm`, `Tame-Chance-Element-Match-Bonus` and `Tame-Chance-Max` (with `Tame-Consume-Talisman-On-Failure` deciding what a miss costs); `PreBeastXpGainEvent.setAmount` to `Beast-Xp-Per-Kill`, `Beast-Xp-Own-Kill-Multiplier` and `Beast-Xp-Per-Qi-Item-Point`. Whole-system gate: `Beasts-Enabled`, with `Beast-Arts-Enabled`, `Beast-Evolution-Enabled` and `Beast-Mounts-Enabled` gating the three 0.7.2 systems independently.
+
+<Divider />
+
+## Sects
+
+`plugin.siren.API.SectEvents` - 29 events covering founding, membership, ranks, halls, hall inscriptions and banners. Player-facing docs: [Sects](/sects/), and the `/sect` suite on the [Commands](/commands/) page.
+
+Remember the two constraints from above: listeners hold `SectManager`'s lock, and players are `UUID`s here. Two enums live on this class: `JoinMethod` (`INVITE`, `OPEN`, `REQUEST`) and `LeaveReason` (`LEFT`, `KICKED`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreSectCreateEvent` | Yes | A player is about to found a sect (宗门). Cancel and it reports a refused creation. | `leader()`, `name()` / `setName(String)` - re-validated for shape and uniqueness afterward. |
+| `SectCreateEvent` | No | The sect was founded and indexed. | `leader()`, `sect()`. |
+| `PreSectDisbandEvent` | Yes | A sect is about to be disbanded. Cancel to keep it standing. | `leader()`, `sect()`. |
+| `SectDisbandEvent` | No | Members are unindexed and formations released. `sect` is the now-orphaned object, still readable for its final roster. | `leader()`, `sect()`. |
+| `PreSectInviteEvent` | Yes | An invite is about to be issued. | `inviter()`, `invitee()`, `sect()`, `expiryMillis()` / `setExpiryMillis(long)` - wall-clock millis at which it lapses. |
+| `SectInviteEvent` | No | The invite is pending, not accepted. | `inviter()`, `invitee()`, `sect()`. |
+| `PreSectJoinEvent` | Yes | A player is about to join. Cancel and the invite or request survives, so they can try again. | `player()`, `sect()`, `method()`. |
+| `SectJoinEvent` | No | They are on the roster. | `player()`, `sect()`, `method()`. |
+| `PreSectLeaveEvent` | Yes | A player is about to leave or be kicked. Cancel to keep them on the roster. | `player()`, `sect()`, `reason()`, `actor()`. |
+| `SectLeaveEvent` | No | They are off the roster. `actor` is the kicker for `KICKED`, the player themselves for `LEFT`. | `player()`, `sect()`, `reason()`, `actor()`. |
+| `PreSectJoinRequestEvent` | Yes | A join request is about to be queued against a `REQUEST`-policy sect. | `player()`, `sect()`. |
+| `SectJoinRequestEvent` | No | The request is queued. | `player()`, `sect()`. |
+| `SectJoinRequestDeniedEvent` | No | A manager denied a pending request. | `manager()`, `applicant()`, `sect()`. |
+| `PreSectRankChangeEvent` | Yes | An elder rank is about to change. | `leader()`, `target()`, `sect()`, `promoted()` - true for member to elder. |
+| `SectRankChangeEvent` | No | The rank changed. | `leader()`, `target()`, `sect()`, `promoted()`. |
+| `PreSectMottoChangeEvent` | Yes | A motto is about to be set. | `manager()`, `sect()`, `oldMotto()`, `motto()` / `setMotto(String)` - the 60-character cap still applies afterward. |
+| `SectMottoChangeEvent` | No | The motto was replaced. | `manager()`, `sect()`, `oldMotto()`, `newMotto()`. |
+| `PreSectJoinPolicyChangeEvent` | Yes | A join policy is about to change. | `leader()`, `sect()`, `oldPolicy()`, `policy()` / `setPolicy(Sect.JoinPolicy)`. |
+| `SectJoinPolicyChangeEvent` | No | The policy changed. | `leader()`, `sect()`, `oldPolicy()`, `newPolicy()`. |
+| `PreSectRenameEvent` | Yes | A sect is about to be renamed. | `leader()`, `sect()`, `oldName()`, `newName()` / `setNewName(String)` - re-validated afterward. |
+| `SectRenameEvent` | No | Renamed; formations, hall springs and pending invites already carried over. | `leader()`, `sect()`, `oldName()`, `newName()`. |
+| `PreSectInscriptionChangeEvent` | Yes | A hall inscription is about to change. | `leader()`, `sect()`, `oldTechniqueId()`, `newTechniqueId()` / `setNewTechniqueId(String)` - empty scours it away. |
+| `SectInscriptionChangeEvent` | No | The inscription changed. | `leader()`, `sect()`, `oldTechniqueId()`, `newTechniqueId()`. |
+| `PreSectHallClaimEvent` | Yes | A hall is about to be claimed. Cancel and it reports the chunk as already claimed. | `leader()`, `sect()`, `world()`, `chunkX()`, `chunkZ()`, `veinTier()`. |
+| `SectHallClaimEvent` | No | The sect claimed, or moved, its hall onto a spirit vein. | `leader()`, `sect()`, `world()`, `chunkX()`, `chunkZ()`, `veinTier()`. |
+| `PreSectHallCaptureEvent` | Yes | A hall is about to change hands to a victorious besieger. Cancel to leave it with its defender - the siege still resolves as won. | `attacker()`, `defender()`, `world()`, `chunkX()`, `chunkZ()`, `veinTier()`. |
+| `PreSectBannerChangeEvent` | Yes | A sect's banner is about to change. Cancel to keep the old one flying. The id is **not** re-validated after a listener rewrites it - an unregistered id is not an error, it simply resolves to the vein-tier default light. | `manager()`, `sect()`, `oldBannerId()`, `bannerId()` / `setBannerId(String)`. |
+| `SectBannerChangeEvent` | No | The banner changed. The hall's standing light swaps to it on its next pulse. | `manager()`, `sect()`, `oldBannerId()`, `newBannerId()`. |
+
+Config keys these override: `PreSectInviteEvent.setExpiryMillis` corresponds to `Sect-Invite-Expiry-Seconds`; hall claims are gated by `Sect-Hall-Min-Vein-Tier`; inscriptions by `Sect-Inscription-Enabled`; the whole subsystem by `Sects-Enabled` and `Sect-Max-Members`. The banner ids the banner events carry are whatever is in the banner registry - the six built-ins plus anything an addon added through [`registerSectBanner`](/api-registries/).
+
+<Divider />
+
+## Wars
+
+`plugin.siren.API.WarEvents` - 5 events covering declaring a siege on a rival's hall and how it resolves. Player-facing docs: [Sect Wars](/wars/).
+
+The hall actually changing hands is `SectEvents.SectHallCaptureEvent`, fired from inside the capture - veto **that** one to let a siege be won without the hall moving. One enum lives here: `SiegeFailReason` (`LAPSED`, `DEFENDER_GONE`).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreWarDeclareEvent` | Yes | A siege is about to be declared. Cancel and the caller is told wars are disabled. | `attacker()`, `defender()`, `windowMillis()` / `setWindowMillis(long)` - how long the attacker has to complete their hold. |
+| `WarDeclareEvent` | No | The siege is live and both sides have been told. | `attacker()`, `defender()`, `siege()`. |
+| `PreSiegeCaptureEvent` | Yes | A siege is about to be won. Cancel to leave it running - the attacker keeps holding and will trip this again on their next presence tick, so cancel only while some condition of yours is unmet. | `attacker()`, `defender()`, `siege()`. |
+| `SiegeCaptureEvent` | No | The attacker held long enough. The hall transfer has already been attempted and the defender's immunity cooldown started. | `attacker()`, `defender()`, `siege()`. |
+| `SiegeFailEvent` | No | The siege ended with the hall still in its defender's hands. | `siege()`, `reason()`. |
+
+Config keys these override: `PreWarDeclareEvent.setWindowMillis` corresponds to `War-Window-Seconds`; related keys are `War-Required-Hold-Seconds`, `War-Cooldown-Hours`, `War-Defender-Grace-Seconds`, `War-Requires-Defender-Online` and the `Wars-Enabled` gate.
+
+<Divider />
+
+## Duels
+
+`plugin.siren.API.DuelEvents` - 8 events covering challenging, accepting, and how a Qi-wager duel resolves. Player-facing docs: [Duels](/duels/), and `/cultivation duel` on the [Commands](/commands/) page.
+
+Players are `UUID`s here because a duel routinely outlives one participant's session - that is exactly what voids it. One enum lives here: `DuelEndReason` (`DEATH` - the wager transfers; `VOIDED` - a participant left or the duel ran past its max duration, and no wager moves).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreDuelChallengeEvent` | Yes | A challenge is about to be issued. | `challenger()`, `challenged()`, `wager()` / `setWager(int)` - the configured maximum is re-checked afterward. |
+| `DuelChallengeEvent` | No | The challenge is pending the other player's answer. | `challenger()`, `challenged()`, `wager()`. |
+| `DuelDeclineEvent` | No | The challenge was declined; no duel started. | `challenger()`, `challenged()`. |
+| `PreDuelStartEvent` | Yes | A duel is about to start. Cancel to refuse it - the challenge is consumed either way, so the challenger must issue a fresh one. | `challenger()`, `challenged()`, `wager()` / `setWager(int)` - re-tuning it here is what the live duel actually pays out. |
+| `DuelStartEvent` | No | The duel is live; both players are flagged as dueling. | `challenger()`, `challenged()`, `wager()`. |
+| `DuelEndEvent` | No | The duel ended. For `DEATH` the winner and loser are meaningful and the payout is queued; for `VOIDED` they are simply the two participants. | `winner()`, `loser()`, `wager()`, `reason()`. |
+| `PreDuelPayoutEvent` | Yes | A decided duel's wager is about to move. Cancel to let the winner take nothing. | `winner()`, `loser()`, `amount()` / `setAmount(int)` - what actually moves is still capped by what the loser holds. |
+| `DuelPayoutEvent` | No | The wager moved. `amount` is what the loser could cover, which is exactly what the winner gained. | `winner()`, `loser()`, `amount()`. |
+
+Config keys these override: `setWager` corresponds to `Duel-Max-Wager`; related keys are `Duel-Challenge-Expiry-Seconds`, `Duel-Max-Duration-Seconds`, `Duel-Overrides-World-Pvp` and the `Duels-Enabled` gate.
+
+<Divider />
+
+## Formations
+
+`plugin.siren.API.FormationEvents` - 6 events covering laying and dispersing chunk-anchored spirit arrays, and the Trapping array wounding an intruder. Player-facing docs: [Formations](/formations/).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreFormationPlaceEvent` | Yes | An array is about to be laid. Cancel and it reports the ground as warded. | `owner()`, `sectName()` (empty when the array is theirs personally), `world()`, `chunkX()`, `chunkZ()`, `type()`, `radiusChunks()` / `setRadiusChunks(int)`. |
+| `FormationPlaceEvent` | No | The array is live on its chunk. | `owner()`, `sectName()`, `formation()`. |
+| `PreFormationRemoveEvent` | Yes | An array is about to be dispersed by its controller. Cancel to leave it standing. | `owner()`, `sectName()`, `formation()`. |
+| `FormationRemoveEvent` | No | Dispersed. `formation` is the now-removed object. | `owner()`, `sectName()`, `formation()`. |
+| `PreFormationTrapStrikeEvent` | Yes | A Trapping array (困仙阵) is about to wound an intruder. Cancel to spare them this tick entirely - no particle, no debuff, no damage. Set damage to 0 to root them harmlessly. | `ref()`, `player()`, `world()`, `chunkX()`, `chunkZ()`, `damage()` / `setDamage(float)` - post-lethality-cap, pre-armor; 0 when the intruder's health could not be resolved. |
+| `FormationTrapStrikeEvent` | No | The intruder was wounded. | `ref()`, `player()`, `world()`, `chunkX()`, `chunkZ()`, `damage()`. |
+
+Config keys these override: `setRadiusChunks` corresponds to `QiGathering-Radius-Chunks`, `Warding-Radius-Chunks` or `Trapping-Radius-Chunks`, depending on `type()`; `PreFormationTrapStrikeEvent.setDamage` to `Trapping-Damage-Percent-Of-Max-Health` (with `Trapping-Lethal`, `Trapping-Interval-Seconds` and `Trapping-Debuff-Duration-Seconds` alongside it). Whole-system gates: `Formations-Enabled` and `Max-Formations-Per-Controller`.
+
+<Divider />
+
+## Dwellings
+
+`plugin.siren.API.DwellingEvents` - 12 events covering claiming a Cave Abode (洞府), its Spirit Spring, upkeep, and closed-door seclusion. Player-facing docs: [Cave Abodes](/dwelling/).
+
+Sect hall springs are created and moved automatically to follow their sect's hall; that housekeeping deliberately fires nothing. Listen for the sect hall claim and capture events instead - they are what causes it.
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreDwellingClaimEvent` | Yes | An abode is about to be claimed or moved. Cancel and it reports warded ground. | `owner()`, `world()`, `chunkX()`, `chunkZ()`, `veinTier()`, `moved()`, `radiusChunks()` / `setRadiusChunks(int)`. |
+| `DwellingClaimEvent` | No | The abode was claimed, or an existing one moved - a move keeps the banked spring and paid upkeep. | `owner()`, `dwelling()`, `moved()`. |
+| `PreDwellingAbandonEvent` | Yes | An abode is about to be given up. Cancel to keep it standing. | `owner()`, `dwelling()`. |
+| `DwellingAbandonEvent` | No | Given up; whatever the spring held went with it. | `owner()`, `dwelling()`. |
+| `PreDwellingLapseEvent` | Yes | An abode is about to be reclaimed for unpaid upkeep. Cancel to reprieve it - it survives only until the next sweep re-tests it, so cancel from a listener that keeps deciding, not a one-off. | `dwelling()`. |
+| `DwellingLapseEvent` | No | A personal abode was reclaimed by the world, past its grace period. | `dwelling()`. |
+| `PreSpringCollectEvent` | Yes | A Spirit Spring is about to be emptied. Cancel to leave it full. | `dwelling()`, `amount()` / `setAmount(float)` - changes what the collector walks away with; the spring is emptied regardless. |
+| `SpringCollectEvent` | No | The spring was emptied. `amount` is the Qi handed over - the caller credits it. | `dwelling()`, `amount()`. |
+| `PreUpkeepDepositEvent` | Yes | Upkeep is about to be paid. Cancel and it reports nothing banked. | `dwelling()`, `itemId()`, `quantity()`, `hours()` / `setHours(float)` - what the whole offering is worth, before the banked-hours cap. |
+| `UpkeepDepositEvent` | No | Upkeep was paid in. `hoursGranted` is what was actually banked, which is less than what was offered once the cap is hit. | `dwelling()`, `itemId()`, `quantity()`, `hoursGranted()`. |
+| `PreSeclusionSettleEvent` | Yes | A seclusion retreat is about to pay out. Cancel to forfeit it - the player is told the spring is dry. | `ref()`, `player()`, `dwelling()`, `hours()` (already capped by `Seclusion-Max-Hours`), `qi()` / `setQi(float)` (already limited to what the spring could cover when `Seclusion-Drains-Spring` is on). |
+| `SeclusionSettleEvent` | No | The cultivator emerged and was paid for their absence. | `ref()`, `player()`, `dwelling()`, `hours()`, `qi()`. |
+
+Config keys these override: `PreDwellingClaimEvent.setRadiusChunks` corresponds to `Dwelling-Radius-Chunks`; `PreSpringCollectEvent.setAmount` to `Spring-Qi-Per-Hour`, `Spring-Pool-Base-Cap` and `Spring-Pool-Cap-Per-Realm`; `PreUpkeepDepositEvent.setHours` to `Upkeep-Item-Hours`, capped by `Upkeep-Max-Banked-Hours`; `PreDwellingLapseEvent` to `Upkeep-Grace-Hours`; `PreSeclusionSettleEvent.setQi` to `Seclusion-Qi-Per-Hour`. Whole-system gates: `Dwellings-Enabled`, `Upkeep-Enabled`, `Seclusion-Enabled`.
+
+<Divider />
+
+<Divider />
+
+## Body Tempering
+
+`plugin.siren.API.BodyTemperingEvents` - 4 events covering the second progression ladder, the one climbed by taking the hit rather than by gathering Qi. Player-facing docs: [Body Tempering](/body-tempering/).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreXpGainEvent` | Yes | A cultivator is about to earn tempering XP from damage that reached them. The amount is **editable**, not merely refusable — this is the supported way to retune the whole ladder for one player or one situation. | `ref()`, `player()`, `amount()` / `setAmount(float)`, `level()`. |
+| `XpGainEvent` | No | The XP was banked. | `ref()`, `player()`, `amount()`, `level()`. |
+| `PreLevelUpEvent` | Yes | A tempering level is about to be gained. Cancel to hold the cultivator where they are. | `ref()`, `player()`, `fromLevel()`, `toLevel()`. |
+| `LevelUpEvent` | No | The level was gained. Fires once per level when a single blow crosses several. | `ref()`, `player()`, `fromLevel()`, `toLevel()`. |
+
+Whole-system gate: `Body-Tempering-Enabled`. Note that XP is measured *after* armor, so a listener that reads `amount()` is seeing what actually got through, not what was swung.
+
+## Cultivation profiles
+
+`plugin.siren.API.ProfileEvents` - 7 events covering a player's saved cultivators: switching between them, creating one, erasing one, and a test profile expiring. Player-facing docs: [Profiles](/profiles/).
+
+These carry a `Profile` payload (`CultivationProfilesComponent.Profile`) - useful members are `getName()`, `isTest()`, `getExpiresAtMillis()` and `remainingMillis(long)`. Note there is **no** pre-event for expiry: a test profile's time limit is not vetoable.
+
+**These listeners may write.** Uniquely in the API, profile listeners run on the owning world thread *outside any ticking system*, so reading *and writing* components directly through the `Store` is safe here - the one exception to the usual "never write from a listener" rule. That is deliberate: a progression addon must be able to save and load its own state during a switch (see [`ProgressionProvider.supportsProfiles()`](/api-addons/)).
+
+| Event | Cancellable | Fires | Exposes |
+| --- | --- | --- | --- |
+| `PreProfileSwitchEvent` | Yes | A player is about to change cultivators. Cancel to refuse the switch - the command reports it blocked. | `ref()`, `player()`, `from()` (null on a first-time backfill), `to()`. |
+| `ProfileSwitchEvent` | No | The switch committed - the arriving profile's realm, Qi, race, dao, skill tree and techniques are already on the components. Load your own per-profile state here. | `ref()`, `player()`, `from()` (null on a first-time backfill), `to()`. |
+| `PreProfileCreateEvent` | Yes | A fresh cultivator is about to be created. Cancel to refuse it - no slot is used. | `ref()`, `player()`. |
+| `ProfileCreateEvent` | No | The profile exists and the player is on it. | `ref()`, `player()`, `profile()`. |
+| `PreProfileDeleteEvent` | Yes | A save is about to be erased for good. Cancel to keep it. | `ref()`, `player()`, `profile()`. |
+| `ProfileDeleteEvent` | No | The save is gone. Erase your own state for it here. | `ref()`, `player()`, `profile()`. |
+| `ProfileExpireEvent` | No | A test profile's wall-clock limit ran out. `wasActive()` says whether the player was playing it - and so has just been put back on a real cultivator. | `ref()`, `player()`, `profile()`, `wasActive()`. |
+
+If your addon keeps progression of its own, handle `PreProfileSwitchEvent` (save the profile being left) and `ProfileSwitchEvent` (load the arriving one), then return `true` from `ProgressionProvider.supportsProfiles()` - until you do, switching is refused outright while your provider is installed rather than half-performed. The caps are addon-raisable too: `registerProfileCap` on the [API facade](/api-reference/) lifts the three-slot default (ceiling six, highest registration wins, and nothing is ever destroyed when a cap falls).
+
+<Divider />
+
+## See also
+
+- [API Registries](/api-registries/) - adding your own races, techniques, Qi absorption items, titles, sect banners and palettes.
+- [API Reference](/api-reference/) - reading a player's cultivation state directly.
+- [Config](/config/) - every server-owner-facing key an event lets you override per-player.
+- [Commands](/commands/) - the commands most of these events sit behind.

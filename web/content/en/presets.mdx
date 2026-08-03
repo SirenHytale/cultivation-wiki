@@ -1,0 +1,123 @@
+---
+title: "Server Tuning Presets"
+description: "Starting configurations for Cultivation: gentle, default, hardcore, PvP-focused and solo servers, as tables of real config keys you can apply directly."
+group: "Configuration"
+---
+
+# Server Tuning Presets
+
+Cultivation ships more than a hundred tunable values, which is a lot to face on a fresh server. These are five opinionated starting points — change what you like afterwards. Every key below is real; anything not listed keeps its default.
+
+<Note title="How to apply these">
+  You can edit the JSON under `mods/Siren_Cultivation/`, or set the same values live in game through `/cultivation admin` with no restart. The **File** column tells you where each key lives — see [Configuration](/config/) for the full reference.
+</Note>
+
+## Gentle
+
+For a small friendly server, or players new to the genre. Progress is quicker, the heavens are survivable, and nothing you own can be lost to neglect.
+
+| Key | Value | Default | File |
+| --- | --- | --- | --- |
+| `Base-Qi-Requirement` | 120.0 | 175.0 | `Config.json` |
+| `Substage-Growth-Rate` | 1.45 | 1.55 | `Config.json` |
+| `Realm-Base-Multiplier` | 3.5 | 4.25 | `Config.json` |
+| `Tribulation-Lethal` | false | true | `BreakthroughConfig` |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 10.0 | 15.0 | `BreakthroughConfig` |
+| `Spirit-Core-Drop-Chance` | 0.18 | 0.12 | `SpiritCoreConfig` |
+| `Profound-Core-Drop-Chance` | 0.06 | 0.035 | `SpiritCoreConfig` |
+| `Upkeep-Enabled` | false | true | `DwellingConfig` |
+| `Spring-Qi-Per-Hour` | 90.0 | 60.0 | `DwellingConfig` |
+
+<Note kind="tip" title="Keep the spectacle">
+  Leave `Tribulation-Enabled` on even here. Turning lethality off keeps the lightning, the noise and the tension while guaranteeing a bolt always leaves a sliver of health.
+</Note>
+
+## Default
+
+The shipped balance, listed so you can see what you are moving away from — and return to it. A first breakthrough is a real event, a failed one costs a sub-stage, and land is worth fighting over.
+
+| Key | Value | What it sets |
+| --- | --- | --- |
+| `Base-Qi-Requirement` | 175.0 | Qi for the very first rung |
+| `Substage-Growth-Rate` | 1.55 | Cost growth per sub-stage |
+| `Realm-Base-Multiplier` | 4.25 | Cost step at each new realm |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 15.0 | Damage per bolt |
+| `Spirit-Vein-Regen-Per-Second` | 1.5 | Vein recovery |
+| `Spirit-Vein-Drain-Per-Second` | 2.75 | Meditation drain |
+
+## Hardcore
+
+A long, punishing climb where Void Refinement is a server event rather than a weekend. Advancements become dangerous too, and Qi is genuinely scarce.
+
+| Key | Value | Default | File |
+| --- | --- | --- | --- |
+| `Base-Qi-Requirement` | 260.0 | 175.0 | `Config.json` |
+| `Substage-Growth-Rate` | 1.70 | 1.55 | `Config.json` |
+| `Realm-Base-Multiplier` | 5.0 | 4.25 | `Config.json` |
+| `Advancement-Tribulation-Enabled` | true | false | `BreakthroughConfig` |
+| `Tribulation-Damage-Percent-Of-Max-Health` | 20.0 | 15.0 | `BreakthroughConfig` |
+| `Tribulation-Damage-Realm-Multiplier` | 1.18 | 1.12 | `BreakthroughConfig` |
+| `HeartDevil-Composure-Drain-Per-Pulse` | 45.0 | 34.0 | `BreakthroughConfig` |
+| `Spirit-Core-Drop-Chance` | 0.07 | 0.12 | `SpiritCoreConfig` |
+| `Spirit-Vein-Regen-Per-Second` | 1.0 | 1.5 | `SpiritVeinConfig` |
+| `Spirit-Vein-Rich-Chance` | 0.02 | 0.03 | `SpiritVeinConfig` |
+
+<Note kind="warn" title="Turn advancement tribulations on carefully">
+  With `Advancement-Tribulation-Enabled` set to `true`, every one of the 28 rungs draws lightning rather than just the seven breakthroughs. At 6% of max health per bolt it is survivable — but combined with `Tribulation-Lethal` it means a careless low-health player can die to routine progress.
+</Note>
+
+## PvP & Sect War
+
+For a server where the point is the conflict. Wars come around often, sects are large enough to field a raid, and holding ground actually hurts trespassers.
+
+| Key | Value | Default | File |
+| --- | --- | --- | --- |
+| `Sect-Max-Members` | 20 | 12 | `SectConfig` |
+| `War-Cooldown-Hours` | 6.0 | 24.0 | `WarConfig` |
+| `War-Required-Hold-Seconds` | 90.0 | 120.0 | `WarConfig` |
+| `War-Window-Seconds` | 900.0 | 600.0 | `WarConfig` |
+| `Trapping-Lethal` | true | false | `FormationConfig` |
+| `Trapping-Damage-Percent-Of-Max-Health` | 6.0 | 4.0 | `FormationConfig` |
+| `Duel-Max-Wager` | 2000 | 0 (unlimited) | `DuelConfig` |
+| `Sect-Hall-Min-Vein-Tier` | 2 | 1 | `SectConfig` |
+
+<Note kind="warn" title="Leave War-Requires-Defender-Online alone">
+  It defaults to `true` for good reason. Setting it `false` allows a sect to lose the hall it spent weeks scouting while nobody is logged in, which is the fastest way to lose a playerbase. Shorten `War-Cooldown-Hours` instead — that produces more fights without producing sleeping victims.
+</Note>
+
+Raising `Sect-Hall-Min-Vein-Tier` to `2` restricts halls to dragon veins only — roughly 0.3% of chunks. That makes a hall genuinely rare and therefore worth a siege, but on a small map it can mean very few valid sites, so check your world first.
+
+## Solo & Small Co-op
+
+Singleplayer, or two or three friends. The multiplayer systems refuse politely when off, so turning them down removes menus that would otherwise never be used.
+
+| Key | Value | Default | File |
+| --- | --- | --- | --- |
+| `Wars-Enabled` | false | true | `WarConfig` |
+| `Duels-Enabled` | false | true | `DuelConfig` |
+| `Upkeep-Enabled` | false | true | `DwellingConfig` |
+| `Sect-Hall-Min-Vein-Tier` | 1 | 1 | `SectConfig` |
+| `Spring-Qi-Per-Hour` | 100.0 | 60.0 | `DwellingConfig` |
+| `Seclusion-Qi-Per-Hour` | 40.0 | 25.0 | `DwellingConfig` |
+| `Spirit-Vein-Rich-Chance` | 0.05 | 0.03 | `SpiritVeinConfig` |
+
+Leaving `Sects-Enabled` on is deliberate even solo — a one-person sect still claims a hall and still earns the sect-wide Qi bonus, which is a meaningful chunk of progression to switch off.
+
+## The One Rule You Must Not Break
+
+<Note kind="warn" title="Vein regeneration must stay below drain">
+  `Spirit-Vein-Regen-Per-Second` multiplied by the highest tier multiplier (`Spirit-Vein-Dragon-Regen-Multiplier`, default `1.6`) has to remain **lower** than `Spirit-Vein-Drain-Per-Second`.
+
+  At the defaults: `1.5 × 1.6 = 2.4`, safely under the `2.75` drain. If the product ever exceeds drain, a dragon-vein chunk regenerates faster than a player can consume it, becomes an infinite Qi fountain, and the entire progression curve stops mattering — no matter how high you set the Qi requirements.
+</Note>
+
+## Retuning a Live Server
+
+- **Curve changes are retroactive.** Raising `Base-Qi-Requirement` or the multipliers re-prices every remaining rank for existing players. Nobody is demoted, but their next rank-up may suddenly cost far more.
+- **Vein settings are seeded once per chunk**, deterministically from the world seed. Changing the rich or dragon chance affects chunks nobody has visited yet — already-seeded chunks keep what they rolled.
+- **Disabling a system keeps its data.** Setting `Sects-Enabled` to `false` stops the commands and the bonus but leaves every sect intact on disk, so you can re-enable without losing anything.
+- **Never edit `ConfigVersion`** — migration is automatic, and setting it backwards just re-runs the migration.
+
+<Note title="These are starting points, not official balance">
+  The values above are suggestions built around the shipped defaults, not tested competitive tuning. Change one group at a time and watch how your players actually progress.
+</Note>

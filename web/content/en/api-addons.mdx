@@ -1,0 +1,160 @@
+---
+title: "API Addons"
+description: "Cultivation Mod - replacing the progression ladder, the wording, and adding admin settings"
+group: "For Developers"
+---
+
+# API Addons
+
+New in Cultivation **0.5.0**.
+
+[Events](/api-events/) let you reshape what Cultivation does. [Registries](/api-registries/) let you add content it treats as its own. The three hooks on this page go further: they let another mod **take over** a whole layer of Cultivation and keep everything else running on top.
+
+| Hook | Replaces |
+| --- | --- |
+| [`ProgressionProvider`](#progressionprovider) | The entire realm / stage / Qi ladder. |
+| [`CultivationTheme`](#cultivationtheme) | Every word the mod shows a player. |
+| [`AdminConfigSection`](#adminconfigsection) | Nothing -- it *adds* your own settings to Cultivation's admin menus. |
+
+All three are installed from your plugin's `setup()`, in any load order relative to Cultivation's own. Nothing reads them until a player meditates, opens a menu, or trips a realm gate, which is long after every plugin has loaded.
+
+<Divider />
+
+## ProgressionProvider
+
+```java
+CultivationAPI.setProgressionProvider(@Nullable ProgressionProvider provider)
+CultivationAPI.getProgressionProvider()
+```
+
+Hands your mod the realm/stage/Qi ladder. From the moment one is installed, every command, UI page, HUD line and gameplay gate in Cultivation reads its numbers from you instead of from the player's `CultivationComponent`: `/cultivation` shows your rank names, the HUD shows your XP bar, the meditation ritual runs your rank-ups.
+
+**Everything else in the mod keeps working.** [Sects](/sects/), [the Dao](/dao/), [techniques](/techniques/), [spirit beasts](/beasts/), [formations](/formations/), [cave abodes](/dwelling/), [duels](/duels/), [alchemy](/alchemy/), [refinement](/refinement/) and the [skill tree](/skilltree/) all sit on top of whatever ladder is installed.
+
+### Realm gates
+
+Dozens of gates across the mod are written against `CultivationRealm` -- a technique's unlock realm, a race's, a spirit beast species' minimum realm, refinement tiers, abode quality, the Dao unlock. Rather than rewrite them, Cultivation asks your provider which realm the player **counts as**:
+
+```java
+@Nonnull CultivationRealm getEquivalentRealm(ComponentAccessor<EntityStore> accessor, Ref<EntityStore> ref);
+```
+
+Map your own levels onto the seven realms however you like, and every existing gate understands your progression for free.
+
+### Two kinds of rank-up
+
+Cultivation drives rank-ups through its timed meditation ritual and offers two flavours. Map your progression onto them however suits:
+
+| Flavour | Ritual |
+| --- | --- |
+| **Advancement** | The routine step. Shorter, lower Spirit Vein requirement, no [tribulation](/tribulations/) lightning by default. |
+| **Breakthrough** | The milestone step. Longer, higher vein requirement, tribulation lightning -- or the Heart-Devil Trial for a deeply-leaned cultivator. |
+
+Only one may be ready at a time; `isReadyForBreakthrough` is tested first. Returning true from neither simply means meditation does its ordinary thing that tick. You also supply the ritual durations yourself through `getBreakthroughDurationSeconds` and `getAdvancementDurationSeconds`, so the [built-in timings](/realms/) do not apply to your ladder.
+
+### What you store
+
+The interface is deliberately **stateless** -- every method is handed the accessor and ref of the player being asked about, so your own persisted component stays the single source of truth. The player's `CultivationComponent` still exists and is left completely alone, which is what lets a server uninstall your addon and get its original realms back untouched.
+
+<Note>
+  **Threading.** Every method is called on that player's world thread, and the accessor may be a `CommandBuffer` rather than a `Store`. Component **creation** must go through the accessor, not `ref.getStore().putComponent` -- the latter throws *"Store is currently processing!"* and takes the world down. Reads are fine either way.
+</Note>
+
+Only one provider can be installed at a time. The last to register wins, and a warning naming both is logged, since two mods each believing they own progression is a misconfiguration rather than something to silently pick a winner for. Pass `null` to hand progression back to the built-in system.
+
+### Profiles under a provider
+
+<Tag>v0.7.0</Tag> The interface gained one `default` method:
+
+```java
+default boolean supportsProfiles(){
+    return false;
+}
+```
+
+And that default **refuses [profile](/profiles/) switching outright** while your provider is installed - the player is told another mod governs progression here. That is deliberate: a switch swaps the player's `CultivationComponent`, race, dao, skill tree and techniques underneath you, and a provider that has not planned for it would be left describing the wrong cultivator - half-performed is worse than refused.
+
+To lift the refusal, do both of these and then return `true`:
+
+- Handle `ProfileEvents.PreProfileSwitchEvent` - save your own state for the profile being left.
+- Handle `ProfileEvents.ProfileSwitchEvent` - load your state for the arriving one.
+
+Profile listeners are the one place in the API allowed to **write components directly through the `Store`** - they run on the world thread outside any ticking system, precisely so a provider can do this bookkeeping. See [Events](/api-events/) for the full `ProfileEvents` table. The one exception to the refusal is the operator's [test sandbox](/profiles/), which is allowed even under a provider - it cannot change your addon's view of the player, and the command says so.
+
+<Divider />
+
+## CultivationTheme
+
+```java
+CultivationAPI.setTheme(@Nullable CultivationTheme theme)
+CultivationAPI.getTheme()
+```
+
+Re-words the mod's entire player-facing vocabulary without touching its behaviour, so a setting with soul masters and academies rather than cultivators and sects reads as its own game instead of a re-skin. Every string Cultivation shows a player -- chat, commands, HUD, menus, item names, tooltips -- is routed through your `translate` first, and whatever you return is used verbatim.
+
+```java
+@Nullable Message translate(@Nonnull String key);
+```
+
+Return `null` for any key you do not re-word and Cultivation's own wording is used, so a theme may cover as much or as little as it likes.
+
+### Why a hook and not a language file
+
+Because the engine will not let you do it with one. Language files from every asset pack are merged into a single catalog, and that merge is **first-writer-wins** -- a duplicate key from a later pack is discarded and logged as `'x' has multiple definitions`. Cultivation's own pack loads before any addon that depends on it, so an addon shipping `server.cultivation.playerMsg.breakthrough` in its own `server.lang` would be silently ignored, and even winning that race would only mean winning it on that particular boot.
+
+So a theme keeps its strings under **its own keys** -- which collide with nothing -- and maps Cultivation's keys onto them.
+
+<Note>
+  Return a `Message.translation(...)` of your own key rather than `Message.raw(...)` wherever you can. Raw text is identical in every language, and Cultivation is translated.
+</Note>
+
+`translate` is called on whatever thread is building the message, often several times per rendered line, so it must be fast, thread-safe and free of side effects -- a lookup in an immutable map is the intended shape. Any `.param(...)` placeholders Cultivation fills in are applied to whatever you return, so a replacement must keep the same placeholder names; drop one and it renders empty.
+
+<Divider />
+
+## AdminConfigSection
+
+```java
+CultivationAPI.registerAdminConfigSection(@Nonnull AdminConfigSection section)
+CultivationAPI.unregisterAdminConfigSection(@Nonnull String sectionKey)
+CultivationAPI.getAdminConfigSections()
+CultivationAPI.newAdminConfigField(String key, Message label, ...)
+```
+
+Adds a group of tunable numbers to Cultivation's admin menu, where it appears as its own section button on the Config tab of `/cultivation admin` beside Cultivation's own nine -- with the same rows, the same editing, and the same single Save. The same settings also appear in a **Mod Settings** block at the bottom of the ordinary Cultivation settings menu, visible to admins only.
+
+One section per config file is the shape Cultivation uses for itself and the one that reads best.
+
+| Member | Purpose |
+| --- | --- |
+| `getKey()` | A stable id, unique across every registered section. Namespace it (`"SoulRings:spiritPower"`). What a click on the button sends back, so it is deliberately independent of list order. |
+| `getLabel()` | The section button and heading. Use a `Message.translation(...)` so it localizes. |
+| `getHint()` | One line explaining what the section tunes -- the button tooltip and the text under the heading. |
+| `getFields()` | The rows, in display order. Build them with `newAdminConfigField` rather than implementing `AdminConfigField` yourself. |
+| `save()` | Persists the section after an admin presses Save. |
+
+Only **numbers** are supported, because the row widget behind it is a number input. Express a boolean as a 0/1 field with a label saying so, and keep anything list-shaped in the config file -- Cultivation makes the same call for its own booleans and its Qi-absorption item table.
+
+Both host pages are gated on `cultivation.admin`, and the gate is re-checked server-side on save rather than trusted from the menu, so a section may safely expose real balance numbers.
+
+<Note>
+  Return a **stable** field list. The page matches an admin's in-flight edits to fields by key, so a list that changes shape between render and save silently drops those edits. Clamp out-of-range values in the field's `set` -- the page re-displays whatever `get` returns afterwards, so a coerced value is shown back to the admin rather than silently disagreeing with what they typed.
+</Note>
+
+Registering the same section key twice replaces the first, so this is safe across a reload of your plugin.
+
+<Divider />
+
+## Reading a player under any ladder
+
+Three facade methods report a cultivator's standing under whichever system happens to be live, so your code does not need to know whether a provider is installed:
+
+| Method | Returns |
+| --- | --- |
+| `CultivationAPI.getGlobalLevel(accessor, ref)` | The installed provider's level, or the built-in realm/stage flattened into one ever-increasing number. |
+| `CultivationAPI.getQi(accessor, ref)` | Banked progress toward the next rank-up -- the provider's progress if one is installed, else banked Qi. |
+| `CultivationAPI.refreshProgression(accessor, ref)` | Re-reads the provider's view of a player, after your own mod changes their level outside a rank-up. |
+
+`CultivationAPI.getRealm(accessor, ref)` returns the **effective** realm, which is the provider's equivalent realm while one is installed -- this is what every gate in the mod tests against. `CultivationAPI.getStage(accessor, ref)` is always `null` under a provider, since a replacement ladder has no sub-stages -- it has only its own `getSubRankLabel`. Prefer `getGlobalLevel` for anything numeric.
+
+The [rankings](/realms/) and `/cultivation top` sort on that flattened level, so a replacement progression ranks correctly against itself. For the built-in ladder the ordering is exactly what realm-then-stage always produced.

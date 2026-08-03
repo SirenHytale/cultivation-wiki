@@ -1,0 +1,133 @@
+---
+title: "Cave Abodes"
+description: "Cultivation Mod - Claimed dwellings, Spirit Springs, upkeep and seclusion"
+group: "The World"
+---
+
+# Cave Abodes
+
+A **Cave Abode (洞府)** is a pocket of ground a cultivator claims as their own. Inside it, meditation goes further, outsiders are pushed back, and a **Spirit Spring (灵泉)** slowly gathers Qi for you whether or not you are logged in - as long as you keep feeding the place. It is the mod's answer to "what do I do with the hours I am not playing".
+
+The whole system is gated behind `Dwellings-Enabled` (default `true`).
+
+<Divider />
+
+## Claiming an Abode
+
+`/cultivation abode claim` claims the chunk you are standing in as the heart of your abode.
+
+- The abode covers **1 chunk in every direction** (`Dwelling-Radius-Chunks`), a 3x3 pocket of chunks.
+- **One abode per cultivator.** Claiming again simply moves it, and moving keeps your banked spring and paid upkeep - relocating a home should not cost you what you stored in it.
+- You cannot claim ground already covered by another abode or by a sect hall's spring, including your own sect's - a hall already gathers there, and stacking a personal spring on it would double-dip the same chunk.
+- You cannot claim ground warded against you by someone else's Mountain-Guarding [Formation](/formations/).
+- Any Spirit Vein tier will do, but the vein under your claim decides how fast the spring fills.
+
+`/cultivation abode abandon` gives the claim up outright - and the banked spring is lost with it. Run on its own it does not abandon anything: it tells you how much Qi the spring is currently holding, so you can go and `collect` it first. Only `/cultivation abode abandon confirm` actually walks away.
+
+While an abode is **sustained** (its upkeep is paid), it changes meditation on its ground:
+
+| Meditating inside an abode | Qi regen multiplier | Config key |
+| --- | --- | --- |
+| You, in your own abode (or a member in their sect's hall) | **1.25x** | `Dwelling-Owner-Regen-Multiplier` |
+| Anyone else | **0.5x** | `Dwelling-Outsider-Regen-Multiplier` |
+
+Outsiders also cannot inscribe [Formations](/formations/) on a sustained abode's ground. A lapsed abode is just an empty cave until its owner feeds it again - no multipliers, no ward.
+
+<Tag>v0.7.0</Tag> Your claimed abode is **marked on Hytale's own world map**, so finding your way home no longer means remembering coordinates. The pin is yours alone - other players' maps do not show it.
+
+<Divider />
+
+## The Spirit Spring
+
+Nothing about the spring ticks. Its contents are worked out from wall-clock elapsed time whenever anyone touches the abode, which is exactly why offline accrual works at all: you can be logged out for a week with the chunk unloaded, and the spring still holds precisely what it should.
+
+- Base rate: **60 Qi per real-world hour** (`Spring-Qi-Per-Hour`).
+- **x1.5** on a rich Spirit Vein (`Spring-Rich-Vein-Multiplier`), **x2.5** on a dragon vein (`Spring-Dragon-Vein-Multiplier`).
+- Pool cap: **500 + 250 per realm** you have reached (`Spring-Pool-Base-Cap` / `Spring-Pool-Cap-Per-Realm`). An abandoned abode overflows and wastes whatever it gathers past the cap. Your realm is re-read onto the abode whenever you visit it, since an offline owner's realm cannot be read.
+- The spring only fills for hours your **upkeep actually covered**. Feeding a neglected abode does not retroactively fill it.
+
+`/cultivation abode collect` (alias `drink`) drinks the spring dry and banks the whole pool into your own Qi. You must be **standing inside the abode** - the spring is a place, not an allowance.
+
+<Divider />
+
+## Upkeep and Spirit Stones
+
+An abode has to be fed. `/cultivation abode deposit` (alias `offer`), run standing inside it, offers up the **entire stack in your hand**; each item is worth the hours listed for it in `Upkeep-Item-Hours`.
+
+| Tribute item | Hours of sustenance each |
+| --- | --- |
+| Spirit Stone | 24 |
+| Divine Core | 36 |
+| Profound Core | 12 |
+| Spirit Core | 4 |
+| Qi Gathering Pill | 6 |
+| Clarity Pill | 6 |
+| Tribulation Ward Pill | 8 |
+| Clear-Mind Pill | 8 |
+
+Anything not on that list is refused as tribute, so a server owner can add their own currency simply by naming it in the config.
+
+**Spirit Stones** are the intended currency - a crystallized shard of ambient Qi, and nothing else in the mod consumes them. Two sources:
+
+- **4%** chance on slaying a creature (`SpiritStone-Kill-Drop-Chance`), rolled independently of the cultivation-core roll, so one kill can yield both.
+- **35%** chance for **surviving** a tribulation strike (`SpiritStone-Tribulation-Drop-Chance`) - the heavens' lightning crystallizes the Qi it scatters. See [Tribulations](/tribulations/).
+
+Burning a Divine Core on rent is meant to sting; the cores are accepted at a deliberately worse rate than stones.
+
+The upkeep timeline:
+
+- A newly claimed abode starts with **0 free hours** (`Upkeep-Initial-Free-Hours`) - its spring stays dry until you first feed it. That is deliberate: any grant here is handed out again on every new claim, so a generous value would let players abandon and re-claim to dwell for free.
+- No abode may bank more than **720 hours** at once (`Upkeep-Max-Banked-Hours`). A deposit that would exceed the ceiling is capped; a deposit into an already-full abode is refused outright rather than swallowing your stack for nothing.
+- When upkeep runs out the spring **stops gathering immediately** and the abode's multipliers and ward switch off.
+- After a further **168 hours** of grace (`Upkeep-Grace-Hours`) a personal claim is **released entirely** and everything banked in it is lost.
+
+Set `Upkeep-Enabled` to `false` to make abodes permanent and free.
+
+<Divider />
+
+## Sect Hall Springs
+
+With `Sect-Hall-Spring-Enabled` on (the default), a [Sect](/sects/)'s claimed hall grows a **shared** Spirit Spring of its own, on top of every member's personal abode:
+
+- It gathers at **1.5x** the personal rate (`Sect-Spring-Rate-Multiplier`) into a pool **2x** as deep (`Sect-Spring-Pool-Cap-Multiplier`).
+- Its pool cap scales with the **highest realm** among its members, read live, so a hall full of high-realm cultivators holds far more than one claimed on day one.
+- **Any member** may collect it by standing in the hall and running `/cultivation abode collect`. First one there takes the lot, so it rewards showing up.
+- It takes upkeep exactly like a personal abode, and any member standing in the hall can deposit tribute.
+- It follows the hall: moving the hall moves the spring, and **losing the hall in a siege hands the spring, and everything banked in it, to the victor**. See [Sect Wars](/wars/).
+- A neglected sect spring is never released the way a personal claim is - it belongs to the hall, so it merely stops gathering until fed.
+- A hall claimed on top of somebody's existing abode does not grow a second spring over the same ground; the sect gets its spring on a later sweep, once whoever is dwelling there has moved on.
+
+<Divider />
+
+## Closed-Door Seclusion
+
+**Seclusion (闭关)** is what happens if you begin meditating inside your own abode - or your sect's hall - and then log out. You keep cultivating while you are away.
+
+- You gather **25 Qi per real-world hour** offline (`Seclusion-Qi-Per-Hour`), credited the moment you next log in.
+- At most **24 hours** of any single absence counts (`Seclusion-Max-Hours`).
+- The abode's upkeep must be paid both when you leave and when you return.
+- By default the Qi is **drawn from the abode's Spirit Spring** rather than conjured (`Seclusion-Drains-Spring`), so seclusion and `/cultivation abode collect` compete for one reserve and an abode can never pay twice for the same hours. A dry spring pays a retreat nothing. Turn it off to let seclusion generate Qi independently.
+- Come back to an abode that is no longer yours or no longer fed - upkeep lapsed, the hall taken in a siege, the sect left - and the retreat is forfeit. The cave stopped sustaining you.
+
+It is deliberately far slower than sitting there awake. Seclusion exists so a cultivator who cannot spend forty minutes meditating still advances, not as a better way to cultivate. Set `Seclusion-Enabled` to `false` to switch it off entirely.
+
+<Divider />
+
+## Commands
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation abode` | Prints your abode's status, then your sect hall's spring if you have one. | `cultivation` |
+  | `/cultivation abode claim` | Claims or moves your abode to the chunk you stand in. | `cultivation` |
+  | `/cultivation abode collect` | Drinks the spring you are standing in, banking its Qi. | `cultivation` |
+  | `/cultivation abode deposit` | Offers the whole stack in your hand as upkeep. | `cultivation` |
+  | `/cultivation abode info` | The same status readout as bare `/cultivation abode`. | `cultivation` |
+  | `/cultivation abode abandon [confirm]` | Reports what the spring holds; `confirm` gives up the claim and loses it. | `cultivation` |
+</Panel>
+
+`abode` also answers to `dwelling` and `cave`.
+
+<Divider />
+
+Every value on this page lives in the society config - see [Society Config](/config-society/) for the full field reference, and [Commands](/commands/) for every command in the mod. Abodes interlock with [Sects](/sects/), are warded against by [Formations](/formations/), and change hands during [Sect Wars](/wars/).

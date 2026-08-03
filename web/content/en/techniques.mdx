@@ -1,0 +1,188 @@
+---
+title: "Techniques"
+description: "Cultivation Mod - Active arts, their costs, cooldowns and the manual gate"
+group: "Arts & Treasures"
+---
+
+# Techniques
+
+Techniques are the active **arts** a cultivator performs - the things you do rather than the stats you accumulate. They sit on top of the [Dao](/dao/) system, cost banked Qi, run on real-time cooldowns, and unlock by realm. Since **0.7.2** each one also carries its own [mastery rung](#mastery), so how strong an art is depends on how much you have used it, not only on how far you have climbed.
+
+## Performing One
+
+There are two triggers, and they behave identically:
+
+<CardGrid cols={2}>
+  <Card title="`/cultivation technique {name}`" han="令">
+    (alias `tech`). Names are matched loosely - `sword_qi_slash`, `SwordQiSlash` and `sword qi slash` all resolve to the same art.
+  </Card>
+
+  <Card title="Use a technique item." han="器">
+    Manual: One Step, a Thousand Li and Manual: Sword Flying are reusable focuses that perform their art when used. The item is never consumed - the Qi cost and cooldown are the real limiters.
+  </Card>
+</CardGrid>
+
+Run `/cultivation technique` with no argument to list every enabled art with its unlock realm, its Qi cost, and whether you can currently use it.
+
+## The Gates
+
+An activation is checked in this order, and the first failure is what you are told:
+
+<Panel title="Activation Order — first failure is what you are told">
+  1. The whole system is enabled (`Techniques-Enabled`), and this art's own `Enabled` flag is on.
+  2. If the art's `Requires-Manual` is set, you must have **learned** it - see below.
+  3. Your realm is at or past its `Unlock-Realm`.
+  4. If the art is `Dao-Specific`, your chosen dao matches its `Required-Element`.
+  5. If the art names a `Required-Race`, you are of that race. This is what gates the three bloodline arts.
+  6. You have at least its `Qi-Cost` banked.
+  7. Its `Cooldown-Seconds` has elapsed since you last used it.
+</Panel>
+
+On success the Qi is deducted, the cooldown is stamped, and the effect runs. Cooldowns are per-technique and measured in real time, so they keep running while you're doing something else.
+
+<Divider />
+
+## The Built-In Arts
+
+**22 arts** ship with the mod: nine open to anyone, ten locked to a single Dao, and three to a bloodline. Every number below is the shipped default and can be retuned per-technique in the config. Damage and healing figures are the *Entry*-rung values — [mastery](#mastery) multiplies them.
+
+<Panel title="The Common Arts — open to every cultivator">
+  | Technique | Unlock Realm | Qi Cost | Cooldown | What it does |
+  | --- | --- | --- | --- | --- |
+  | **One Step, a Thousand Li (一步千里)** | Qi Condensation | 50 | 5s | Instantly carries you forward. Distance is 6 blocks + 3 per realm + 0.75 per stage, capped at 60. |
+  | **Sword Flying (御剑飞行)** | Golden Core Formation | 0 | 3s | A toggle granting real flight. |
+  | **Sword Qi Slash (剑气斩)** | Foundation Establishment | 30 | 4s | An instant cone strike in front of you - range 8, 50 degree half-angle, 15 damage + 4 per realm. |
+  | **Nine Heavens Thunder Palm (九天雷掌)** | Nascent Soul | 60 | 8s | An AoE lightning strike around you - radius 6, 25 damage + 6 per realm. Never hits the caster. |
+  | **Iron Body (金刚不坏)** | Foundation Establishment | 25 | 20s | 10 seconds of incoming-damage reduction: 40% + 2% per realm, capped at 90%. |
+  | **Cloud Step (疾风步)** | Qi Condensation | 15 | 15s | 12 seconds of ground speed at x1.6, +0.05 per realm. |
+  | **Healing Pulse (疗伤诀)** | Qi Condensation | 40 | 12s | An instant self-heal of 40 + 10 per realm. |
+  | **Qi Barrier (护体真气)** | Foundation Establishment | 35 | 18s | A 15-second absorption pool of 60 + 15 per realm - a pool, not a percentage. |
+  | **Qi Infusion (真气灌注)** | Qi Condensation | 20 | 15s | 10 seconds of +30% outgoing damage, +3% per realm. |
+</Panel>
+
+## The Dao Arts \{#dao-arts\}
+
+Ten arts, one for every element, and each usable **only by a cultivator who walks that Dao**. Choosing an element is no longer only a question of which damage type your strikes convert to — it decides which art you get.
+
+Eight of the ten are area bursts centred on you and carry their element's own damage type, so they take the [Wu Xing counter bonuses](/dao/) for free. Two are not strikes at all: Wood mends and Water wards, which is rather the point of those elements.
+
+<Panel title="One Art per Element">
+  | Technique | Dao | Unlock Realm | Qi Cost | Cooldown | What it does |
+  | --- | --- | --- | --- | --- | --- |
+  | **Blazing Lotus (烈焰莲)** | Fire | Foundation Establishment | 40 | 12s | A burst of petals around you — radius 6, 18 damage + 5 per realm, as Fire. |
+  | **Frozen Domain (冰封领域)** | Ice | Foundation Establishment | 40 | 14s | The widest of the bursts — radius 7, 14 damage + 4 per realm, as Ice. |
+  | **Golden Edge (金锋)** | Metal | Foundation Establishment | 38 | 10s | Tight and quick — radius 5, 22 damage + 6 per realm, as Metal. |
+  | **Gale Rend (孡风裂)** | Wind | Qi Condensation | 28 | 8s | The cheapest and fastest — radius 6, 12 damage + 3.5 per realm, as Wind. |
+  | **Venom Mist (毒雾)** | Poison | Qi Condensation | 30 | 16s | Radius 6.5, 10 damage + 4 per realm, as Poison. Low per-hit, widest reach of the early arts. |
+  | **Mountain Press (山岳镇)** | Earth | Foundation Establishment | 42 | 13s | Radius 5, 20 damage + 5.5 per realm, as Earth. |
+  | **Thunderclap Descent (雷霆落)** | Lightning | Golden Core Formation | 55 | 15s | Radius 5.5, 28 damage + 7 per realm, as Lightning. |
+  | **Void Devour (虚空噬)** | Void | Nascent Soul | 65 | 20s | Radius 6, 24 damage + 6 per realm, as Void — and returns **25% of everything it dealt** to you as health. |
+  | **Verdant Renewal (青木复苏)** | Wood | Qi Condensation | 30 | 25s | Not a strike. An instant self-heal of 30 + 9 per realm — stronger than the common Healing Pulse, and the wood Dao's own. |
+  | **Flowing Current (流水劲)** | Water | Qi Condensation | 26 | 20s | Not a strike. 10 seconds of 12% + 3% per realm incoming-damage reduction. |
+</Panel>
+
+<Note title="Changing your Dao changes your arts">
+  A Dao art is gated on the element you *currently* walk, not the one you walked when you learned it. Drift to another element — by deed, by weather, or now by the [ground you meditate on](/dao/#terrain) — and the old element's art stops working while the new one's becomes available. Mastery you built on it is not lost; it simply waits.
+</Note>
+
+## The Bloodline Arts \{#race-arts\}
+
+Three arts, one per race, gated on a `Required-Race` rather than an element. They are why a [race](/races/) choice is now about what you can do rather than only about your multipliers.
+
+<Panel title="One Art per Bloodline">
+  | Technique | Race | Unlock Realm | Qi Cost | Cooldown | What it does |
+  | --- | --- | --- | --- | --- | --- |
+  | **Blood Devour (噬血)** | Demon | Foundation Establishment | 45 | 18s | Radius 5, 20 damage + 5 per realm, and returns **40% of the damage dealt** as health — the deepest drain in the mod. |
+  | **Divine Descent (神降)** | Deity | Golden Core Formation | 60 | 22s | Radius 7, 26 damage + 6 per realm as Lightning, plus a flat 25 self-heal whether or not it hit anything. |
+  | **Boundless Potential (万法归一)** | Human | Qi Condensation | 35 | 45s | Not a strike. 20 seconds of +15% outgoing damage, +4% per realm — no element, and nothing closed off. |
+</Panel>
+
+Demon and Deity are the two aggressive ones, and both give something back — Blood Devour drinks what it wounds, Divine Descent mends whether or not it connected. Boundless Potential is the Human answer to having no innate element: a long, cheap damage buff with the longest cooldown of the three, on the race that reaches it earliest.
+
+<Divider />
+
+## Mastery \{#mastery\}
+
+Before 0.7.2 an art was exactly as strong as your realm made it. Learn Sword Qi Slash at Foundation Establishment and it did what a Foundation Establishment art does — and it kept doing precisely that until you broke through, however many thousand times you had thrown it. **Mastery is the mod measuring practice instead.**
+
+Every technique climbs its own five-rung ladder, **separately from every other art you know**. Two cultivators of identical realm can be nowhere near each other on the same technique.
+
+<Panel title="The Five Rungs">
+  | Rung | Realm | Practice XP | Manuals | Power | Qi Cost | Cooldown |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | **Entry (入门)** | — | 0 | 0 | ×1 | ×1 | ×1 |
+  | **Minor Accomplishment (小成)** | Qi Condensation | 60 | 1 | ×1.2 | ×0.95 | ×0.95 |
+  | **Major Accomplishment (大成)** | Foundation Establishment | 200 | 2 | ×1.45 | ×0.9 | ×0.88 |
+  | **Consummation (圆满)** | Golden Core Formation | 500 | 3 | ×1.75 | ×0.85 | ×0.8 |
+  | **Pinnacle (登峰造极)** | Nascent Soul | 1,100 | 5 | ×2.2 | ×0.75 | ×0.7 |
+</Panel>
+
+### All three, at once
+
+A rung is not bought and is not a ritual. It needs **every one of its three requirements satisfied together**:
+
+- **A realm you have reached.** The only part of the old model that survives.
+- **Practice XP the art itself earned**, and only from *successful* uses — a refused activation teaches nothing. Each use is worth 2 XP plus 0.05 per point of the art's Qi cost, so an expensive art climbs faster per cast and a cheap one climbs by being used often.
+- **Copies of its manual studied into it.** Reading a manual for an art you already know no longer tells you that you knew it — it studies the art deeper.
+
+Whichever of the three lands last is what promotes the art, and you are told the moment it happens. That includes a breakthrough: clear the realm gate on an art that already had the XP and the books and it advances there and then — possibly several rungs at once, if it had been waiting a long time.
+
+<Note kind="tip" title="A duplicate manual is no longer a wasted drop">
+  This is the change that most alters how [manuals](/manuals/) feel. Before, the second copy of a manual you had already read did nothing whatsoever. It is now the third requirement of the ladder, and the only source of it — there is no way to buy or grind a manual count.
+</Note>
+
+### What a rung is worth
+
+Mastery pays in three directions at once, and all three matter. At Pinnacle an art hits **2.2× as hard**, costs **25% less Qi**, and returns **30% faster**. That is a genuine reordering: a well-worn art from three realms ago can be worth more in a fight than one you unlocked this morning.
+
+The multiplier applies to every magnitude the art produces — damage, healing, absorption pools, buff percentages. The cost and cooldown discounts are applied everywhere the raw numbers used to be read, including the affordability check and the “you need N Qi” message, so what `/cultivation technique` lists is what you will actually pay.
+
+`/cultivation technique` shows the rung each art stands on and what its next one still needs. Realm now decides only whether you may *hold* an art; what makes it strong is having actually used it.
+
+<Note title="Coming from 0.7.1">
+  Every art you already know starts at **Entry** and climbs from your next use of it. Practice before 0.7.2 was never recorded, so it cannot be credited. Set `Mastery-Enabled` to false and every art behaves exactly as it did in 0.7.1.
+</Note>
+
+## Notes on a few of them
+
+**One Step, a Thousand Li** only uses the horizontal component of where you are looking - pitch is ignored - and the path is stepped one block at a time. The dash stops one column short of a wall (a rise of more than 2 blocks), a chasm (a drop of more than 8), a column with no headroom, or an unloaded chunk. Its reach was widened in 0.7.2 — 6 blocks base rather than 4, +3 per realm rather than +2, and a ceiling of 60 rather than 40. You always land standing on solid ground; in the worst case you simply don't move.
+
+**Sword Flying** costs nothing to toggle. The real price is an ongoing drain of 6 Qi/second while airborne, reduced by 5% per realm reached. Flight speed is 12 horizontal and 10 vertical, +1.5 per realm. Activating it again lands you, and it is refused outright while a breakthrough or advancement ritual is under way. It also spawns a **rideable flying sword** next to you - right-click it to mount, the ordinary interact-to-mount flow. Flight works whether or not you ever mount it, so a failed spawn costs you nothing.
+
+**Sword Qi Slash** and **Nine Heavens Thunder Palm** deal their damage through the same entry point melee combat uses, which means they pass through every damage filter the mod registers. If you walk a [dao](/dao/), your strike converts to your element and takes its counter bonuses for free - your cultivation path colours all your techniques.
+
+<Note kind="tip" title="Stacking Qi Barrier and Iron Body">
+  **Qi Barrier** and **Iron Body** stack in a defined order: Iron Body's percentage reduction is applied first, and what survives it is deducted from the Qi Barrier pool.
+</Note>
+
+<Divider />
+
+## The Manual Gate
+
+Every art carries a `Requires-Manual` flag, and it is **false for all 22 built-ins by default** — out of the box, every technique is available the moment you meet its realm requirement (and its element or bloodline, where it has one).
+
+Set it true and that art becomes unlearnable except by being taught. Two things count as knowing it:
+
+- You read its [manual](/manuals/) yourself. That is permanent and lives on your own character.
+- Your [sect](/sects/) has it inscribed in a hall it still holds. That one is borrowed and resolved live, so a sect that loses its hall to a siege stops teaching the art to every member at once.
+
+Not knowing a gated art outranks every other refusal — you are told you have never learned it, not that your realm is too low.
+
+This flag is about whether you may use the art at all. It is separate from [mastery](#mastery), which always wants manuals: an art with `Requires-Manual` false still needs copies of its manual to climb past Entry, so manuals matter on every server whether or not they gate anything.
+
+<Divider />
+
+## An Open Registry
+
+Techniques are not a closed list. Another mod registers one with `CultivationAPI.registerTechnique`, supplying its own effect and its own default rule, and it appears in `/cultivation technique`'s listing, obeys the same gates, and can be bound to an item exactly like a built-in. A third-party art runs off its own registered default rule with no config entry at all; a server owner can still add an override by hand with a matching `Id`. See [Registries](/api-registries/).
+
+A third-party effect that throws is logged and shrugged off - a broken art cannot take the mod down with it.
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation technique` | List every enabled art with its realm, its Qi cost after mastery, its availability, and the mastery rung it stands on. Alias: `tech`. | `cultivation` |
+  | `/cultivation technique {name}` | Perform an art. | `cultivation` |
+</Panel>
+
+Per-technique rules, costs, cooldowns and params live in the arts configs — see [Config](/config-arts/), where the five mastery rungs are also defined — and the commands are on the [Commands](/commands/) page.

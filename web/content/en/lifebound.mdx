@@ -1,0 +1,114 @@
+---
+title: "Life-Bound Treasures"
+description: "Cultivation Mod - Life-Bound Treasures"
+group: "Arts & Treasures"
+---
+
+# Life-Bound Treasures
+
+A **Life-Bound Treasure** is a weapon or armor piece personalized to one specific player rather than to its item type - it levels up from combat, and its bonus grows with it.
+
+## Binding an Item
+
+Run `/cultivation bind` while holding the item to personalize it. Running the command again on your own already-bound item resets it back to level 1 - so if that item has grown past level 1, the bare command only warns you, naming the level you are about to throw away. It takes `/cultivation bind confirm` to go through with it. A treasure still sitting at level 1 has nothing to lose, so it re-binds without asking.
+
+- **Weapons** gain XP from every hit that lands (any creature, not just kills), and level up to deal more damage.
+- **Armor** gains XP from surviving hits, and levels up to reduce incoming damage.
+- The item's level shows in its name, and its tooltip states exactly how much benefit it is currently granting - no hidden numbers.
+
+<Divider />
+
+## Leveling Curve
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `LifeBound-Base-Xp-Requirement` | 75 | XP needed to go from level 1 to level 2. |
+| `LifeBound-Xp-Growth-Rate` | 1.07 | Multiplies the XP requirement for every level gained, stacking. |
+| `LifeBound-Max-Level` | 100 | Once reached, the item stops gaining XP - and awakens. |
+
+Both XP rates are a multiplier against the **final** damage dealt or taken on a hit, after weapon bonus and armor reduction are already applied:
+
+- `LifeBound-Weapon-Xp-Per-Damage-Dealt`: 0.15 - a 20-damage hit dealt grants 3 XP.
+- `LifeBound-Armor-Xp-Per-Damage-Taken`: 0.1 - fires only if the wearer survives the hit.
+
+The [skill tree's](/skilltree/) tier-8 Life-Bound XP Gain capstones multiply both rates.
+
+<Divider />
+
+## Combat Bonuses
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `LifeBound-Weapon-Damage-Percent-Per-Level` | 1.0 | Damage bonus percent added per level. |
+| `LifeBound-Weapon-Max-Damage-Percent` | 100 | Hard cap on a single weapon's damage bonus. |
+| `LifeBound-Armor-Reduction-Percent-At-Max-Level` | 55 | What one armor piece reduces at max level, scaling linearly from 0% at level 1 - a level-50 piece grants half of it. |
+| `LifeBound-Armor-Max-Damage-Reduction-Percent` | 60 | Hard cap on the combined reduction from every worn Life-Bound piece. |
+
+The 60% combined cap exists so a fully-levelled Life-Bound set cannot approach damage immunity, however many pieces are worn.
+
+These four settings govern the two *original* benefits, which since 0.7.2 are two of [six natures](#natures) a treasure can roll. A treasure whose nature is Blood Drinker or Vessel of Life is not bound by them — its own trait entry carries its cap.
+
+<Divider />
+
+## Traits: a Treasure’s Nature \{#natures\}
+
+Before **0.7.2** every bound weapon was the same weapon with a different number on it. Now a treasure has a **nature**, and it is rolled **once, at the moment you bind it, and never rolled again**. The blade a cultivator happens to bind is theirs, and cannot be traded in for a different kind.
+
+<Panel title="The Six Natures">
+  | Trait | Slot | Base | Per level | Cap | Weight | What it does |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | **Keen Edge (锋锐)** | Weapon | 0 | 1.5 | 60 | 3 | Outgoing damage percent — the familiar one, and the commonest. |
+  | **Warding Shell (护体甲壳)** | Armor | 0 | 1 | 40 | 3 | Damage reduction percent — the other familiar one. |
+  | **Blood Drinker (饮血)** | Weapon | 1 | 0.4 | 20 | 1.5 | Returns a share of the damage dealt as health. Unlocks **Blood Devour** at level 8. |
+  | **Qi Siphon (吸灵)** | Weapon | 1 | 0.6 | 30 | 1.5 | Feeds its wielder Qi on every hit — a blade that feeds you rather than itself. |
+  | **Vessel of Life (生命之器)** | Armor | 2 | 1.2 | 60 | 1.5 | Flat max health. Widens the vessel instead of thickening the shell. |
+  | **Spirit Conduit (灵脉导引)** | Any | 2 | 0.8 | 35 | 1 | Multiplies the Qi you draw while meditating. Unlocks **Qi Barrier** at level 10. |
+</Panel>
+
+A trait’s magnitude is `BaseAmount + AmountPerLevel × level`, capped at `MaxAmount` — and what that magnitude *means* differs per trait. Damage and reduction are percentages as before; Blood Drinker and Qi Siphon are what one hit returns; Spirit Conduit multiplies meditation; Vessel of Life is flat health.
+
+### How the roll works
+
+- **Weight decides the odds.** The two originals are twice as likely as the drinkers and four times as likely as Spirit Conduit — so the nature a long-term cultivator actually wants is the rarest.
+- **Slot is a real restriction.** A `Weapon` trait never lands on a breastplate, which is what stops half of all rolls from being useless. Only Spirit Conduit can appear on either.
+- **Weight 0 retires a nature** from the roll without breaking treasures already carrying it — the way to remove one from a live server.
+
+### Arts a treasure lends you
+
+Two natures grow into more than a number. Once the treasure reaches the trait’s `UnlockTechniqueLevel`, it **lends its owner an art while it is held**:
+
+- **Blood Drinker** at level 8 lends [Blood Devour](/techniques/#race-arts) — normally a Demon-only art.
+- **Spirit Conduit** at level 10 lends [Qi Barrier](/techniques/).
+
+It is checked **live**, so sheathing the treasure takes the art away again. `UnlockTechnique` names any registered technique id, which means a server owner or an add-on can point a trait at anything on the [technique list](/techniques/), including its own.
+
+<Note title="Coming from 0.7.1">
+  Treasures bound before this release **keep the exact benefit and the exact numbers they already had** — a bound weapon stays a Keen Edge weapon at the same percentage, and a bound armor piece stays Warding Shell. Nothing is re-rolled, because a nature is decided once and there is no re-roll in the mod at all. Setting `Life-Bound-Traits-Enabled` to false returns every treasure to the flat damage/reduction split of 0.7.1.
+</Note>
+
+## Awakening
+
+A Life-Bound Treasure that reaches `LifeBound-Max-Level` **awakens**, and gains a final benefit applied on top of the usual caps:
+
+- `Awakened-Bonus-Percent` (10): extra damage percent for a weapon, extra damage reduction percent for armor.
+- `Awakened-Proc-Chance` (0.25): each landed weapon hit has a 25% chance to flare with a spirit-energy particle burst.
+
+Because the awakened bonus is applied after the caps, an awakened weapon can exceed `LifeBound-Weapon-Max-Damage-Percent` and an awakened set can exceed the 60% combined armor cap - awakening is the reward for taking one item all the way to 100.
+
+<Divider />
+
+## Changing Owners
+
+If a Life-Bound item ends up with a different player - traded, dropped and picked up - `LifeBound-Reset-On-Transfer` (true by default) decides what happens:
+
+- **true:** the item silently rebinds to its new holder at level 1 / 0 XP the next time they land a hit with it.
+- **false:** the item stays permanently bound to its original owner and grants nothing to anyone else.
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation bind [confirm]` | Bind the held item. On your own treasure above level 1 it warns; `confirm` resets it to level 1. | `cultivation` |
+  | `/cultivation admin setlifebound {player} {level} [xp]` | Force the level (and optionally XP) of a held Life-Bound item. | `cultivation` |
+</Panel>
+
+Every number on this page lives in `Arts/LifeBoundConfig.json` - see [Arts Configs](/config-arts/) - and the commands are documented in full on the [Commands](/commands/) page.

@@ -1,0 +1,211 @@
+/* Bridges between the ported stylesheet and Next.js-managed resources.
+   xianxia.css is kept byte-identical to the static site's copy so the two
+   never drift; anything the framework changes belongs here instead. */
+
+/* Cinzel is now self-hosted by next/font rather than fetched from Google, so
+   the display stack points at the generated variable. The fallbacks are
+   unchanged, and --font-han still resolves to the CJK face. */
+:root {
+  --font-display: var(--font-cinzel), "Noto Serif SC", Georgia, "Times New Roman", serif;
+}
+
+/* The divider is now an inline <svg> rather than an <img>, so that its
+   currentColor artwork can actually pick up `color: var(--gold-400)` from
+   xianxia.css — inside an <img> it resolved to black and vanished on the dark
+   theme. Keep its intrinsic proportions rather than letting a parent stretch it. */
+svg.divider-ink {
+  height: auto;
+}
+
+/* On paper, --gold-400 (#C9A227) is the unmodified dark-theme gold — the light
+   palette darkens --gold-200/300 but not --gold-400, so the divider came out
+   brighter than everything around it. Match the bronze the light theme uses
+   for its other gilt, and lift the opacity to hold the same weight. */
+html[data-theme="light"] .divider-ink {
+  color: #8a5a12;
+  opacity: 0.7;
+}
+
+/* Home page hero scenery and body width.
+
+   These lived in a <style> block inside the static index.html (identical in
+   zh/index.html) rather than in xianxia.css, so the first migration pass lost
+   them: the SVG scene rendered with default black fills and no drift, and
+   .home-body had nothing constraining it, which let the content run the full
+   width of the screen. Ported verbatim. */
+
+.sky-far {
+  fill: #0e0603;
+}
+.peak-far {
+  fill: #2a1109;
+}
+.peak-mid {
+  fill: #1c0b05;
+}
+.peak-near {
+  fill: #120704;
+}
+.cloud {
+  fill: #e4d6b0;
+  opacity: 0.07;
+}
+.cloud-b {
+  fill: #f6d77b;
+  opacity: 0.05;
+}
+html[data-theme="light"] .sky-far {
+  fill: #efe1c4;
+}
+html[data-theme="light"] .peak-far {
+  fill: #cbb68c;
+}
+html[data-theme="light"] .peak-mid {
+  fill: #a98e68;
+}
+html[data-theme="light"] .peak-near {
+  fill: #7a6244;
+}
+html[data-theme="light"] .cloud {
+  fill: #fffdf4;
+  opacity: 0.55;
+}
+html[data-theme="light"] .cloud-b {
+  fill: #ffffff;
+  opacity: 0.4;
+}
+
+.drift-a {
+  animation: drift-a 64s linear infinite;
+}
+.drift-b {
+  animation: drift-b 92s linear infinite;
+}
+@keyframes drift-a {
+  from {
+    transform: translateX(-120px);
+  }
+  to {
+    transform: translateX(1560px);
+  }
+}
+@keyframes drift-b {
+  from {
+    transform: translateX(1560px);
+  }
+  to {
+    transform: translateX(-220px);
+  }
+}
+
+.hero-seal {
+  animation: seal-turn 90s linear infinite;
+}
+@keyframes seal-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scrim: guarantees the hero copy stays legible over the sun and the ridges,
+   no matter how the scene crops at a given viewport size. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 46% at 50% 56%,
+    rgba(14, 6, 3, 0.72),
+    rgba(14, 6, 3, 0.3) 62%,
+    transparent 100%
+  );
+}
+html[data-theme="light"] .hero::after {
+  background: radial-gradient(
+    58% 46% at 50% 56%,
+    rgba(239, 225, 196, 0.86),
+    rgba(239, 225, 196, 0.42) 62%,
+    transparent 100%
+  );
+}
+
+/* Home page runs full-width: no sidebar rail behind the hero. */
+.home-body {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 56px 30px 96px;
+}
+.home-body h2:first-of-type {
+  margin-top: 0;
+}
+/* The home page tagged the paragraph under each <h2> with .section-lead. MDX
+   has no hook for that, so the selector does it structurally — same idea as
+   the doc-page lede. The class is kept too, for any hand-written markup. */
+.section-lead,
+.home-body h2 + p {
+  color: var(--text-dim);
+  max-width: 66ch;
+  margin-bottom: 1.8em;
+}
+
+/* Pre-rendered diagrams.
+
+   Both theme variants are inlined as SVG at build time (see
+   tools/prerender_mermaid.mjs) and swapped with CSS, so switching Yin/Yang is
+   instant and no diagram renderer ever reaches the browser. The base rule in
+   xianxia.css fades a diagram in on data-processed, which is already set. */
+.mermaid-wrap .diagram-light {
+  display: none;
+}
+html[data-theme="light"] .mermaid-wrap .diagram-light {
+  display: block;
+}
+html[data-theme="light"] .mermaid-wrap .diagram-dark {
+  display: none;
+}
+
+/* The 404. These lived in a <style> block inside the static 404.html; there is
+   no per-page style tag here, so they move into the stylesheet unchanged. */
+.lost {
+  position: relative;
+  z-index: 1;
+  min-height: 72vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 60px 24px;
+}
+.lost .code {
+  font-family: var(--font-han);
+  font-size: clamp(5rem, 3rem + 12vw, 11rem);
+  line-height: 1;
+  color: var(--crimson-700);
+  opacity: 0.5;
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+.lost h1 {
+  margin: -0.2em 0 0.4em;
+}
+.lost p {
+  color: var(--text-dim);
+  max-width: 46ch;
+  margin: 0 auto 1.8em;
+}
+
+/* The lede.
+
+   convert_docs.py used to stamp class="page-lede" onto the first paragraph
+   after the <h1>. MDX has no equivalent hook and hand-tagging one paragraph
+   per page would be 102 edits waiting to drift, so the selector does the job
+   structurally instead. Matches .page-lede in xianxia.css exactly. */
+main.content > h1 + p {
+  font-size: 1.08rem;
+  color: var(--text-dim);
+  max-width: 68ch;
+  margin-bottom: 1.6em;
+}

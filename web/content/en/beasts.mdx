@@ -1,0 +1,165 @@
+---
+title: "Spirit Beasts"
+description: "Cultivation Mod - Taming, hatching and raising a spirit beast companion"
+group: "Arts & Treasures"
+---
+
+# Spirit Beasts
+
+A **spirit beast (灵兽)** is a companion bound to you for good - it advances through the same realms you do, on its own XP pool, and serves you according to what kind of creature it is.
+
+You may keep **one** bound beast at a time. Release it before binding another. It is summoned and dismissed at will, keeps its own vanilla AI while it is out, is pulled back to you whenever it strays further than `Leash-Distance` (24 blocks), and despawns on its own the moment you log out.
+
+The system is enabled by default (`Beasts-Enabled`).
+
+<Divider />
+
+## The Three Kinds
+
+A species' kind is what makes collecting a second beast worth doing. A **dismissed** beast does nothing at all - the bonus is for keeping it at your side.
+
+| Kind | What it does | Defaults |
+| --- | --- | --- |
+| **Guardian** | Raises your outgoing damage, and fights beside you with its own AI. | `Guardian-Damage-Percent-Base` 4%, +0.6% per level. |
+| **Warden** | Cuts your incoming damage. | `Warden-Reduction-Percent-Base` 5%, +0.7% per level, capped at 40%. |
+| **Gatherer** | Multiplies your meditation Qi while summoned. | `Gatherer-Qi-Multiplier-Base` x1.15, +0.02 per level. |
+
+Every figure is multiplied by the species' own `Power`, and again by `Element-Resonance-Multiplier` (1.25) when the beast's element matches your chosen [dao](/dao/).
+
+<Divider />
+
+## Taming
+
+Use a **Beast Taming Talisman** on a wild creature from the roster whose health has fallen to `Tame-Max-Health-Percent` (30%) or less. Wound it first, then bind it.
+
+Your chance is the species' own `TameChance`, plus:
+
+- `Tame-Chance-Bonus-Per-Realm` (+0.05) per realm you have reached, and
+- `Tame-Chance-Element-Match-Bonus` (+0.25) if the beast's element matches your chosen dao - a cultivator's dao calls to beasts of like nature, and they yield far more readily to it.
+
+The result is capped at `Tame-Chance-Max` (0.95). With `Tame-Consume-Talisman-On-Failure` true (the default) a failed attempt still costs you the talisman, and the beast is left standing where it was.
+
+## Hatching
+
+**Spirit Beast Eggs** drop from creature kills at `Egg-Kill-Drop-Chance` (1.5%). Use one to break it open and whatever sleeps inside bonds itself to you, chosen at random weighted by each species' `EggWeight`. A species with an egg weight of 0 never hatches and must be tamed in the wild. An egg respects `MinRealm` the same way taming does, and hatching while you already keep a beast is refused.
+
+<Divider />
+
+## The Roster
+
+`MinRealm` is a realm index — 0 is Body Refinement, 1 Qi Condensation, 2 Foundation Establishment, 3 Golden Core Formation, 4 Nascent Soul. The last three columns are all **the beast's own realm**, never yours.
+
+| Species | Kind | Element | Tame Chance | Min Realm | Power | Arts | Evolves Into | Rideable |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Wolf_Black | Guardian | Void | 35% | 1 | 1 | Rending Claw | Emberwulf (realm 3) | — |
+| Wolf_White | Guardian | Ice | 35% | 1 | 1 | Rending Claw | Leopard_Snow (realm 3) | — |
+| Emberwulf | Guardian | Fire | 20% | 3 | 1.4 | Rending Claw, Ember Maw | — | — |
+| Leopard_Snow | Guardian | Ice | 28.000000000000004% | 2 | 1.2 | Rending Claw | Tiger_Sabertooth (realm 4) | — |
+| Tiger_Sabertooth | Guardian | Metal | 22% | 3 | 1.4 | Rending Claw, Beast Soul Howl | — | realm 3 |
+| Fen_Stalker | Guardian | Water | 25% | 2 | 1.2 | Rending Claw | — | — |
+| Raptor_Cave | Guardian | Wind | 30% | 2 | 1.1 | Rending Claw | Rex_Cave (realm 4) | — |
+| Rex_Cave | Guardian | Metal | 15% | 4 | 1.6 | Rending Claw, Ember Maw, Beast Soul Howl | — | realm 4 |
+| Hyena | Guardian | Poison | 35% | 1 | 0.9 | Rending Claw | Fen_Stalker (realm 3) | — |
+| Bear_Grizzly | Warden | Earth | 28.000000000000004% | 2 | 1.2 | Rending Claw, Stone Hide | Bear_Polar (realm 3) | realm 3 |
+| Bear_Polar | Warden | Ice | 26% | 2 | 1.25 | Rending Claw, Stone Hide | Yeti (realm 4) | realm 3 |
+| Yeti | Warden | Ice | 18% | 4 | 1.5 | Stone Hide, Rending Claw, Beast Soul Howl | — | realm 4 |
+| Tortoise | Warden | Earth | 50% | 0 | 0.9 | Stone Hide | — | — |
+| Toad_Rhino | Warden | Poison | 40% | 1 | 1 | Stone Hide | Toad_Rhino_Magma (realm 3) | — |
+| Toad_Rhino_Magma | Warden | Fire | 25% | 3 | 1.3 | Stone Hide, Ember Maw | — | — |
+| Armadillo | Warden | Metal | 50% | 0 | 0.85 | Stone Hide | Tortoise (realm 2) | — |
+| Moose_Bull | Warden | Earth | 32% | 1 | 1.1 | Rending Claw, Stone Hide | — | realm 2 |
+| Spark_Living | Gatherer | Lightning | 20% | 3 | 1.5 | Spirit Siphon, Beast Soul Howl | — | — |
+| Snapdragon | Gatherer | Wood | 30% | 2 | 1.2 | Spirit Siphon | Trillodon (realm 4) | — |
+| Cactee | Gatherer | Wood | 40% | 1 | 1 | Spirit Siphon | Snapdragon (realm 2) | — |
+| Trillodon | Gatherer | Wood | 22% | 3 | 1.35 | Spirit Siphon, Beast Soul Howl | — | realm 3 |
+| Fox | Gatherer | Wind | 45% | 0 | 0.9 | Spirit Siphon | Spark_Living (realm 4) | — |
+| Deer_Stag | Gatherer | Wood | 45% | 0 | 0.9 | Spirit Siphon | — | — |
+| Antelope | Gatherer | Wind | 45% | 0 | 0.85 | Spirit Siphon | — | — |
+
+A beast's element is its **own** nature and has nothing to do with its owner's — matching them is a bonus, not a requirement. Nothing about a species is hardcoded, so a server owner (or another mod) can add creatures to this list, give one an [art](#arts), point it at an [evolution](#evolution), or make it [rideable](#mounts).
+
+<Divider />
+
+## Raising It
+
+A beast advances through the same realms and stages you do, on its own XP pool. Each stage costs `Beast-Base-Xp-Requirement` (120) x `Beast-Xp-Growth-Rate` (1.35) ^ level.
+
+| Source | Default |
+| --- | --- |
+| Your kills | `Beast-Xp-Per-Kill` 12, multiplied by `Beast-Xp-Own-Kill-Multiplier` (2) when the beast landed the blow itself. |
+| Feeding | `Beast-Xp-Per-Qi-Item-Point` 0.75 per point of Qi in what you feed it. |
+| Your meditation | `Meditation-Qi-Share-Percent` 12% of the Qi you draw. |
+
+The meditation share is a **bonus** by default - you still bank the full amount - unless `Meditation-Share-Taken-From-Owner` is set, which turns it into a genuine tithe deducted before your own Qi is credited.
+
+`Beast-Realm-Capped-By-Owner` (true) means a beast can never out-rank its master: it stalls at your realm until you advance.
+
+**Feeding** takes the item in your hand. Cores are worth exactly what you would have absorbed - 30, 80 and 220 for Spirit, Profound and Divine - a Spirit Stone is worth 40, and any of the four [alchemy pills](/alchemy/) is worth 25. Anything else, a beast will not eat.
+
+<Divider />
+
+## Beast Arts \{#arts\}
+
+A raised beast is not only a stat block that follows you. Since **0.7.2** it learns **arts of its own** — the companion-side counterpart of your [techniques](/techniques/), with their own cooldowns and their own unlock realms.
+
+<Panel title="The Five Arts">
+  | Art | Unlock Realm | Cooldown | What it does |
+  | --- | --- | --- | --- |
+  | **Rending Claw (裂爪)** | Body Refinement | 9s | A sweep at everything pressing in around the beast — radius 3.5, 4 damage + 0.6 per beast level, physical. The art nearly every Guardian starts with. |
+  | **Ember Maw (焰口)** | Qi Condensation | 14s | A breath of fire — radius 5, 6 damage + 0.8 per level, as Fire. Rare: only the Emberwulf and the Cave Rex ever learn it. |
+  | **Stone Hide (石甲)** | Foundation Establishment | 30s | Not a strike. 8 seconds of damage reduction laid over *its master* — 10% + 0.5 per level, capped at 35%. What a Warden is for. |
+  | **Spirit Siphon (吸灵)** | Qi Condensation | 45s | Not a strike. Pulls 8 Qi + 1.5 per level out of the air and hands it to its owner. The Gatherer’s art. |
+  | **Beast Soul Howl (兽魂啸)** | Golden Core Formation | 60s | The late roar any kind may learn: it mends its master for 12 + 1.2 per level. Only the four terminal forms reach it. |
+</Panel>
+
+Every magnitude above scales on **the beast’s own level** rather than its realm, so a long-raised companion of a modest species is not embarrassed by a freshly evolved one.
+
+Two rules shape how these feel. An art belongs to a **species**, not to an individual — a Fox will never learn Ember Maw however long you raise it, and the roster above is the whole truth about which creature can learn what. And each art unlocks at **the beast's own realm**: you cannot lend your companion your cultivation, so a Nascent Soul master with a freshly tamed wolf has a wolf that knows one art.
+
+Your beast uses them **on its own** when a fight starts within about a dozen blocks of it, choosing whatever is off cooldown and useful. You can also call one deliberately with `/cultivation beast art {name}`. Both halves are switchable independently — `Beast-Arts-Autonomous` and `Beast-Arts-Owner-Commanded` — so a server that wants companions to be purely reactive, or purely commanded, can have either.
+
+## Evolution \{#evolution\}
+
+Half the roster is not a destination. **Twelve of the 24 species grow into another**, and the chains run several links deep:
+
+<Panel title="The Growth Chains">
+  - **Wolf_White** → Leopard_Snow → Tiger_Sabertooth — the longest Guardian line, ending in a mount.
+  - **Wolf_Black** → Emberwulf — Void into Fire, and the only common route to Ember Maw.
+  - **Hyena** → Fen_Stalker, and **Raptor_Cave** → Rex_Cave.
+  - **Armadillo** → Tortoise, and **Bear_Grizzly** → Bear_Polar → Yeti — the Warden line, rideable from the middle link onward.
+  - **Toad_Rhino** → Toad_Rhino_Magma.
+  - **Cactee** → Snapdragon → Trillodon, and **Fox** → Spark_Living — the two Gatherer lines.
+</Panel>
+
+Evolving is deliberate, not automatic: run `/cultivation beast evolve` once the beast has reached the target form's realm. It **carries its levels, its XP and its bond across**, and takes on the new form's element, power and arts. Nothing is re-rolled and nothing is lost — a black wolf that becomes an Emberwulf is the same companion, and it keeps its name.
+
+Note that an evolution frequently **changes the beast's element**: Wolf_Black is Void and Emberwulf is Fire, Hyena is Poison and Fen_Stalker is Water. If you were matching your companion's element to your own Dao, that is worth knowing before you press it. If the beast cannot evolve yet, the command tells you exactly what is still missing rather than simply refusing.
+
+## Mounts \{#mounts\}
+
+**Seven species grow large enough to carry a rider** — Tiger_Sabertooth, Rex_Cave, Bear_Grizzly, Bear_Polar, Yeti, Moose_Bull and Trillodon. Raise one to the realm listed in the roster and `/cultivation beast mount` puts you on its back.
+
+Only Moose_Bull is rideable early, at realm 2; everything else asks for realm 3 or 4, and four of the seven are terminal [evolution](#evolution) forms rather than creatures you can tame directly. Riding one is therefore something you arrive at by raising a companion for a long time, not something you buy.
+
+<Note kind="tip" title="Two ways to travel">
+  A mount is the second flight-free way to cross ground, alongside [Sword Flying](/techniques/) — and unlike the sword it costs no Qi at all to keep going. Both are ordinary right-click-to-mount interactions; if right-clicking does nothing on a build before 0.7.2, that is the interaction bug fixed in this release, not something you are doing wrong.
+</Note>
+
+## Commands
+
+<Panel title="Commands">
+  | Command | Description | Permission |
+  | --- | --- | --- |
+  | `/cultivation beast summon` | Call your beast to your side. Alias: `call`. | `cultivation` |
+  | `/cultivation beast dismiss` | Send it away. Alias: `recall`. | `cultivation` |
+  | `/cultivation beast feed` | Feed it the item in your hand. | `cultivation` |
+  | `/cultivation beast art [name]` | Command one of its arts. Run bare to list what it knows and what is still ahead of it. | `cultivation` |
+  | `/cultivation beast evolve` | Grow it into its next form, or explain what that still needs. | `cultivation` |
+  | `/cultivation beast mount` | Ride it, once its species and realm allow. | `cultivation` |
+  | `/cultivation beast info` | Its species, kind, element, realm, stage and XP — plus the arts it knows, what it would evolve into, and whether it can carry you. | `cultivation` |
+  | `/cultivation beast release` | Release it for good, freeing you to bind another. | `cultivation` |
+</Panel>
+
+The parent command `/cultivation beast` also answers to `companion` and `pet`.
+
+Every value on this page, including the whole species roster, lives in the beast config - see [Config](/config-arts/) - and the commands are documented in full on the [Commands](/commands/) page.

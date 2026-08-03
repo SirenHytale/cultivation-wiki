@@ -1,0 +1,65 @@
+---
+title: "Manuals"
+description: "Cultivation Mod - Lootable books that teach a technique or a skill node"
+group: "Arts & Treasures"
+---
+
+# Manuals
+
+A **cultivation manual** is a lootable book that permanently teaches you something. Use it to read it. A manual teaches either a [technique](/techniques/) or a [skill tree](/skilltree/) node - never both - and it is the only thing in the mod that hands out progression you did not pay for.
+
+The system is on by default (`Manuals-Enabled`).
+
+<Divider />
+
+## What They Teach
+
+**A technique manual** adds that art to your learned set, permanently. This only matters for an art whose rule sets `Requires-Manual` true - and none of the nine built-in techniques do by default, so out of the box a technique manual is something a server owner or another mod adds alongside a gated art.
+
+**A skill-node manual** unlocks that node for free. It still honours the node's prerequisites - a manual cannot hand you a tier-5 fork whose tier-4 parent you never took - but it ignores the point cost entirely.
+
+Nodes taught this way are recorded as *granted* rather than merely unlocked, which matters for `/cultivation respec`: a respec refunds points per node you paid for, so a free node is excluded from the refund and survives the reset intact. Reading manuals cannot mint skill points, and respeccing cannot destroy a manual you already consumed.
+
+## The Shipped Manuals
+
+Five ship with the mod, all teaching a first-tier skill node:
+
+| Manual | Teaches | Drop Weight |
+| --- | --- | --- |
+| Manual of Iron Sinew | Vitality, tier 1 (max health) | 1.0 |
+| Manual of the Hidden Edge | Might, tier 1 (damage %) | 1.0 |
+| Manual of the Clear Spring | Insight, tier 1 (Qi gain %) | 1.0 |
+| Manual of the Unmoving Mountain | Warding, tier 1 (damage reduction %) | 0.6 |
+| Manual of the Windchaser's Stride | Swiftness, tier 1 (movement speed %) | 0.6 |
+
+Which manual drops is chosen from this table by `Weight`. A weight of 0 means an entry never drops on its own and can only be handed out deliberately. The table is config-driven, and another mod can register its own manuals in Java.
+
+<Divider />
+
+## Where They Drop
+
+| Variable Name | Default Value | Description |
+| --- | --- | --- |
+| `Manual-Tribulation-Drop-Chance` | 0.04 | Rolled every time you **survive** a tribulation strike. |
+| `Manual-Demonic-Cultivator-Drop-Chance` | 0.12 | Rolled when you slay an NPC whose role id is listed in `Manual-Demonic-Cultivator-Npc-Roles`. |
+| `Manual-Player-Kill-Drop-Chance` | 0.02 | Rolled when you slay another player. |
+
+`Manual-Demonic-Cultivator-Npc-Roles` is **empty by default** - a server owner fills it with the NPC role ids their world treats as demonic cultivators, which is what makes that drop source live.
+
+The player-kill roll is deliberately tiny, and it is special: what falls is a manual for something the **victim themselves knew**, drawn from their own learned techniques and unlocked nodes. Cutting down a cultivator can genuinely shake an art loose from them. Like every other PvP spoil it is gated by the anti-farm rules - a farmed kill rolls nothing at all. See [Karma](/karma/).
+
+A manual that has nowhere to go is not awarded. If your hotbar and storage are both full, the roll is reported honestly: no item, no message, no claim of a find.
+
+<Divider />
+
+## Reading One
+
+Use the manual in hand. It is consumed on a successful read when `Manual-Consumed-On-Use` is true (the default).
+
+A manual you cannot use refuses and consumes nothing either way:
+
+- **Already known** - you already have that technique or node.
+- **Prerequisite missing** - the node it teaches sits behind a node you have not taken.
+- **Unknown** - it names a technique or node that does not exist.
+
+Manual behaviour, drop chances and the drop table all live in the arts configs - see [Config](/config-arts/) - and the related commands are on the [Commands](/commands/) page.
