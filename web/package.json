@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "diagrams": "node tools/prerender_mermaid.mjs",
+    "skilltree": "python tools/make_skilltree_data.py",
+    "card": "python tools/make_card.py",
+    "art": "python tools/make_art.py"
   },
   "dependencies": {
     "github-slugger": "^2.0.0",

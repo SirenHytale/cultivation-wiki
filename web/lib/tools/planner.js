@@ -1,19 +1,20 @@
-/* Ported from the static site's assets/js/planner.js by tools/port_tools.py.
+/* Edit this file directly — it is the source. It was originally ported from the
+   pre-Next site, which no longer exists.
 
-   The logic is deliberately unchanged — it matches the mod's own Java — and
-   only the wrapper differs: an ES module exporting init(lang) in place of an
-   IIFE that read globals and waited for DOMContentLoaded. React calls init()
-   from an effect once the markup it binds to is mounted.
+   The logic matches the mod's own Java and should be changed only when the mod
+   changes. It is an ES module exporting init(lang); React calls init() from an
+   effect once the markup it binds to (lib/tools/shells.ts) is mounted, which is
+   why it queries the DOM rather than rendering anything itself.
 */
 import DATA from "../data/skilltree.json";
 
 export function init(LANG) {
   /* ---------- language --------------------------------------------------
-       Same detection site.js uses. Branch and stat names are NOT translated in
-       data/skilltree.js: that file is generated straight from the mod's English
-       registry by tools/make_skilltree_data.py, so a re-run would wipe anything
-       added there. The Chinese names live here instead, keyed by the registry's
-       own keys, and fall back to the English label when a key is missing. */
+       Branch and stat names are NOT translated in lib/data/skilltree.json: that
+       file is generated straight from the mod's English registry by
+       `npm run skilltree`, so a re-run would wipe anything added there. The
+       Chinese names live here instead, keyed by the registry's own keys, and
+       fall back to the English label when a key is missing. */
   
     var ZH_BRANCH = {
       VITALITY: "体魄", RESILIENCE: "韧性", MIGHT: "力道", WARDING: "护体",

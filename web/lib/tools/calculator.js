@@ -1,12 +1,13 @@
-/* Ported from the static site's assets/js/calculator.js by tools/port_tools.py.
+/* Edit this file directly — it is the source. It was originally ported from the
+   pre-Next site, which no longer exists.
 
-   The logic is deliberately unchanged — it matches the mod's own Java — and
-   only the wrapper differs: an ES module exporting init(lang) in place of an
-   IIFE that read globals and waited for DOMContentLoaded. React calls init()
-   from an effect once the markup it binds to is mounted.
+   The Qi curve here matches the mod's own CultivationManager and should be
+   changed only when the mod changes. It is an ES module exporting init(lang);
+   React calls init() from an effect once the markup it binds to
+   (lib/tools/shells.ts) is mounted, which is why it queries the DOM rather than
+   rendering anything itself.
 */
 export function init(LANG) {
-  /* Language, detected the same way site.js does it. */
   
     var L = {
       en: {
